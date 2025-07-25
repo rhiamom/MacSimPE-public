@@ -1,12 +1,19 @@
 //
 //  FileStream.h
-//  MacSimpe
-//
-//  Created by Catherine Gramze on 7/25/25.
+//  SimPE for Mac
 //
 
-#ifndef FileStream_h
-#define FileStream_h
+#import "Stream.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
-#endif /* FileStream_h */
+@interface FileStream : Stream
+
+@property (nonatomic, readonly) NSString *name;
+
+- (instancetype)initWithPath:(NSString *)path access:(FileAccess)access;
+- (instancetype)initWithData:(NSData *)data access:(FileAccess)access;
+
+@end
+
+NS_ASSUME_NONNULL_END

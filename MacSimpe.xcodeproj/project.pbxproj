@@ -6,6 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B6CDCC772E33E8C7004FDF82 /* SharedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC762E33E8B1004FDF82 /* SharedTypes.m */; };
+		B6CDCC7D2E33EB1F004FDF82 /* ToolTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC7C2E33EB1F004FDF82 /* ToolTypes.m */; };
+		B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC802E33EBD2004FDF82 /* SidebarView.m */; };
+		B6CDCC862E33F887004FDF82 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC852E33F358004FDF82 /* File.m */; };
+		B6CDCC8B2E33FC6B004FDF82 /* Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC8A2E33FC6B004FDF82 /* Stream.m */; };
+		B6CDCC8E2E33FE4E004FDF82 /* MemoryStream.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC8D2E33FE4E004FDF82 /* MemoryStream.m */; };
+		B6CDCC902E340297004FDF82 /* FileStream.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC8F2E340297004FDF82 /* FileStream.m */; };
+		B6CDCC942E340521004FDF82 /* BinaryReader.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC932E340521004FDF82 /* BinaryReader.m */; };
+		B6CDCC972E340622004FDF82 /* BinaryWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC962E340622004FDF82 /* BinaryWriter.m */; };
+		B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC992E340790004FDF82 /* HeaderData.m */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B6CDCC5A2E33E838004FDF82 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +40,26 @@
 		B6CDCC442E33E837004FDF82 /* MacSimpe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacSimpe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CDCC592E33E838004FDF82 /* MacSimpeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacSimpeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CDCC632E33E838004FDF82 /* MacSimpeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacSimpeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6CDCC762E33E8B1004FDF82 /* SharedTypes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedTypes.m; sourceTree = "<group>"; };
+		B6CDCC782E33E932004FDF82 /* SharedTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedTypes.h; sourceTree = "<group>"; };
+		B6CDCC792E33EA2F004FDF82 /* ToolTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToolTypes.h; sourceTree = "<group>"; };
+		B6CDCC7C2E33EB1F004FDF82 /* ToolTypes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToolTypes.m; sourceTree = "<group>"; };
+		B6CDCC7F2E33EB76004FDF82 /* SidebarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SidebarView.h; sourceTree = "<group>"; };
+		B6CDCC802E33EBD2004FDF82 /* SidebarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SidebarView.m; sourceTree = "<group>"; };
+		B6CDCC842E33F2EB004FDF82 /* File.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
+		B6CDCC852E33F358004FDF82 /* File.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = File.m; sourceTree = "<group>"; };
+		B6CDCC892E33FBFF004FDF82 /* Stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stream.h; sourceTree = "<group>"; };
+		B6CDCC8A2E33FC6B004FDF82 /* Stream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Stream.m; sourceTree = "<group>"; };
+		B6CDCC8C2E33FD63004FDF82 /* MemoryStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryStream.h; sourceTree = "<group>"; };
+		B6CDCC8D2E33FE4E004FDF82 /* MemoryStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MemoryStream.m; sourceTree = "<group>"; };
+		B6CDCC8F2E340297004FDF82 /* FileStream.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileStream.m; sourceTree = "<group>"; };
+		B6CDCC912E3402CB004FDF82 /* FileStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileStream.h; sourceTree = "<group>"; };
+		B6CDCC922E3404F4004FDF82 /* BinaryReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BinaryReader.h; sourceTree = "<group>"; };
+		B6CDCC932E340521004FDF82 /* BinaryReader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryReader.m; sourceTree = "<group>"; };
+		B6CDCC952E3405F0004FDF82 /* BinaryWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BinaryWriter.h; sourceTree = "<group>"; };
+		B6CDCC962E340622004FDF82 /* BinaryWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryWriter.m; sourceTree = "<group>"; };
+		B6CDCC982E34070A004FDF82 /* HeaderData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderData.h; sourceTree = "<group>"; };
+		B6CDCC992E340790004FDF82 /* HeaderData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeaderData.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,10 +108,13 @@
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
-				B6CDCC462E33E837004FDF82 /* MacSimpe */,
+				B6CDCC872E33FBC2004FDF82 /* IO */,
+				B6CDCC832E33F1CA004FDF82 /* Packages */,
+				B6CDCC822E33F0F3004FDF82 /* GUI */,
 				B6CDCC5C2E33E838004FDF82 /* MacSimpeTests */,
 				B6CDCC662E33E838004FDF82 /* MacSimpeUITests */,
 				B6CDCC452E33E837004FDF82 /* Products */,
+				B6CDCC462E33E837004FDF82 /* MacSimpe */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,6 +126,47 @@
 				B6CDCC632E33E838004FDF82 /* MacSimpeUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B6CDCC822E33F0F3004FDF82 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				B6CDCC782E33E932004FDF82 /* SharedTypes.h */,
+				B6CDCC762E33E8B1004FDF82 /* SharedTypes.m */,
+				B6CDCC7F2E33EB76004FDF82 /* SidebarView.h */,
+				B6CDCC802E33EBD2004FDF82 /* SidebarView.m */,
+				B6CDCC792E33EA2F004FDF82 /* ToolTypes.h */,
+				B6CDCC7C2E33EB1F004FDF82 /* ToolTypes.m */,
+			);
+			path = GUI;
+			sourceTree = "<group>";
+		};
+		B6CDCC832E33F1CA004FDF82 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				B6CDCC852E33F358004FDF82 /* File.m */,
+				B6CDCC842E33F2EB004FDF82 /* File.h */,
+				B6CDCC982E34070A004FDF82 /* HeaderData.h */,
+				B6CDCC992E340790004FDF82 /* HeaderData.m */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		B6CDCC872E33FBC2004FDF82 /* IO */ = {
+			isa = PBXGroup;
+			children = (
+				B6CDCC892E33FBFF004FDF82 /* Stream.h */,
+				B6CDCC8A2E33FC6B004FDF82 /* Stream.m */,
+				B6CDCC8C2E33FD63004FDF82 /* MemoryStream.h */,
+				B6CDCC8D2E33FE4E004FDF82 /* MemoryStream.m */,
+				B6CDCC8F2E340297004FDF82 /* FileStream.m */,
+				B6CDCC912E3402CB004FDF82 /* FileStream.h */,
+				B6CDCC922E3404F4004FDF82 /* BinaryReader.h */,
+				B6CDCC932E340521004FDF82 /* BinaryReader.m */,
+				B6CDCC952E3405F0004FDF82 /* BinaryWriter.h */,
+				B6CDCC962E340622004FDF82 /* BinaryWriter.m */,
+			);
+			path = IO;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +312,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6CDCC7D2E33EB1F004FDF82 /* ToolTypes.m in Sources */,
+				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
+				B6CDCC772E33E8C7004FDF82 /* SharedTypes.m in Sources */,
+				B6CDCC902E340297004FDF82 /* FileStream.m in Sources */,
+				B6CDCC942E340521004FDF82 /* BinaryReader.m in Sources */,
+				B6CDCC972E340622004FDF82 /* BinaryWriter.m in Sources */,
+				B6CDCC8E2E33FE4E004FDF82 /* MemoryStream.m in Sources */,
+				B6CDCC862E33F887004FDF82 /* File.m in Sources */,
+				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
+				B6CDCC8B2E33FC6B004FDF82 /* Stream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,6 +484,8 @@
 				DEVELOPMENT_TEAM = AJHGU52KS3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "SimPE for Mac";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -404,6 +493,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Gramze-Sweatshop.MacSimpe";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -424,6 +514,8 @@
 				DEVELOPMENT_TEAM = AJHGU52KS3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "SimPE for Mac";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -431,6 +523,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Gramze-Sweatshop.MacSimpe";
 				PRODUCT_NAME = "$(TARGET_NAME)";

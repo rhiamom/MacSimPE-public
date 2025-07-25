@@ -1,12 +1,22 @@
 //
 //  MemoryStream.h
-//  MacSimpe
-//
-//  Created by Catherine Gramze on 7/25/25.
+//  SimPE for Mac
 //
 
-#ifndef MemoryStream_h
-#define MemoryStream_h
+#import "Stream.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
-#endif /* MemoryStream_h */
+@interface MemoryStream : Stream
+
+@property (nonatomic, readonly) NSData *data;
+
+- (instancetype)init;
+- (instancetype)initWithData:(NSData *)data;
+- (instancetype)initWithCapacity:(NSInteger)capacity;
+
+- (NSData *)toData;
+
+@end
+
+NS_ASSUME_NONNULL_END
