@@ -32,12 +32,12 @@
 #import "MemoryStream.h"
 #import "FileStream.h"
 #import "BinaryReader.h"
+#import "HeaderData.h"
+#import "HoleIndexItem.h"
+#import "PackedFileDescriptor.h"
+#import "HoleIndexItem.h"
 
-// Constants
-const uint32_t FILELIST_TYPE = 0xE86B1EEF;
-
-@interface File ()
-{
+@interface File () {
     // Private instance variables (matching C# fields)
     BinaryReader *_reader;
     PackageBaseType _type;
@@ -338,13 +338,158 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
 }
 
 - (void)closeWithTotal:(BOOL)total {
-    // TODO: Implement closing logic
+    if (self.reader != nil) {
+        [self.reader close];
+    }
+    
+    if (total) {
+        if (self.index != nil) {
+            for (id<IPackedFileDescriptor> pfd in self.index) {
+                if (pfd != nil) {
+                    [pfd markInvalid];
+                }
+            }
+        }
+    }
+    
+    // TODO: Add PackageMaintainer cleanup if needed
 }
 
-// MARK: - Dealloc
-- (void)dealloc {
-    [self closeWithTotal:YES];
+#pragma mark - Missing IPackageFile Protocol Methods
+
+- (id<IPackageFile>)clone {
+    // TODO: Implement clone method
+    return nil;
 }
+
+- (id<IPackedFileDescriptor>)getFileIndex:(uint32_t)index {
+    // TODO: Implement
+    return nil;
+}
+
+- (void)remove:(id<IPackedFileDescriptor>)pfd {
+    // TODO: Implement
+}
+
+- (void)removeMarked {
+    // TODO: Implement
+}
+
+- (void)addDescriptors:(NSArray<id<IPackedFileDescriptor>> *)pfds {
+    // TODO: Implement
+}
+
+- (id<IPackedFileDescriptor>)addWithType:(uint32_t)type subtype:(uint32_t)subtype group:(uint32_t)group instance:(uint32_t)instance {
+    // TODO: Implement
+    return nil;
+}
+
+- (void)addDescriptor:(id<IPackedFileDescriptor>)pfd {
+    // TODO: Implement
+}
+
+- (void)addDescriptor:(id<IPackedFileDescriptor>)pfd isNew:(BOOL)isNew {
+    // TODO: Implement
+}
+
+- (void)copyDescriptors:(id<IPackageFile>)package {
+    // TODO: Implement
+}
+
+- (id<IPackedFileDescriptor>)newDescriptorWithType:(uint32_t)type subtype:(uint32_t)subtype group:(uint32_t)group instance:(uint32_t)instance {
+    // TODO: Implement
+    return nil;
+}
+
+- (NSArray<id<IPackedFileDescriptor>> *)findFile:(NSString *)filename {
+    // TODO: Implement
+    return @[];
+}
+
+- (NSArray<id<IPackedFileDescriptor>> *)findFile:(NSString *)filename type:(uint32_t)type {
+    // TODO: Implement
+    return @[];
+}
+
+- (NSArray<id<IPackedFileDescriptor>> *)findFiles:(uint32_t)type {
+    // TODO: Implement
+    return @[];
+}
+
+- (NSArray<id<IPackedFileDescriptor>> *)findFileWithSubtype:(uint32_t)subtype instance:(uint32_t)instance {
+    // TODO: Implement
+    return @[];
+}
+
+- (NSArray<id<IPackedFileDescriptor>> *)findFileWithType:(uint32_t)type subtype:(uint32_t)subtype instance:(uint32_t)instance {
+    // TODO: Implement
+    return @[];
+}
+
+- (id<IPackedFileDescriptor>)findFileWithDescriptor:(id<IPackedFileDescriptor>)pfd {
+    // TODO: Implement
+    return nil;
+}
+
+- (id<IPackedFileDescriptor>)findFileWithType:(uint32_t)type subtype:(uint32_t)subtype group:(uint32_t)group instance:(uint32_t)instance {
+    // TODO: Implement
+    return nil;
+}
+
+- (id<IPackedFileDescriptor>)findExactFile:(id<IPackedFileDescriptor>)pfd {
+    // TODO: Implement
+    return nil;
+}
+
+- (id<IPackedFileDescriptor>)findExactFileWithType:(uint32_t)type subtype:(uint32_t)subtype group:(uint32_t)group instance:(uint32_t)instance offset:(uint32_t)offset {
+    // TODO: Implement
+    return nil;
+}
+
+- (NSArray<id<IPackedFileDescriptor>> *)findFilesByGroup:(uint32_t)group {
+    // TODO: Implement
+    return @[];
+}
+
+- (id<IPackedFile>)read:(uint32_t)item {
+    // TODO: Implement
+    return nil;
+}
+
+- (id<IPackedFile>)readDescriptor:(id<IPackedFileDescriptor>)pfd {
+    // TODO: Implement
+    return nil;
+}
+
+- (id<IPackedFile>)getStream:(id<IPackedFileDescriptor>)pfd {
+    // TODO: Implement
+    return nil;
+}
+
+- (void)save {
+    // TODO: Implement
+}
+
+- (void)saveWithFilename:(NSString *)filename {
+    // TODO: Implement
+}
+
+- (void)beginUpdate {
+    // TODO: Implement
+}
+
+- (void)forgetUpdate {
+    // TODO: Implement
+}
+
+- (void)endUpdate {
+    // TODO: Implement
+}
+    
+    // MARK: - Dealloc
+    - (void)dealloc {
+        [self closeWithTotal:YES];
+    }
 
 @end
 

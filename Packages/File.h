@@ -28,13 +28,17 @@
  ***************************************************************************/
 
 #import <Foundation/Foundation.h>
+#import "IPackageFile.h"
+#import "PackedFileDescriptors.h"
+#import "PackedFileDescriptor.h"
+#import "HoleIndexItem.h"
 
 // Forward declarations
 @class BinaryReader;
 @class HeaderData;
-@class PackedFileDescriptor;
 @class CompressedFileList;
-@class HoleIndexItem;
+
+
 @protocol IPackageFile;
 @protocol IPackedFileDescriptor;
 @protocol IPackedFile;
@@ -59,7 +63,7 @@ typedef NS_ENUM(uint8_t, PackageBaseType) {
 @property (nonatomic, assign) BOOL persistent;
 @property (nonatomic, readonly) PackageBaseType type;
 @property (nonatomic, readonly) id<IPackageHeader> header;
-@property (nonatomic, readonly) NSArray<id<IPackedFileDescriptor>> *index;
+@property (nonatomic, readonly) PackedFileDescriptors *index;
 @property (nonatomic, readonly) BOOL hasUserChanges;
 @property (nonatomic, strong, nullable) NSString *fileName;
 @property (nonatomic, readonly) NSString *saveFileName;
@@ -67,6 +71,11 @@ typedef NS_ENUM(uint8_t, PackageBaseType) {
 @property (nonatomic, readonly) BOOL loadedCompressedState;
 @property (nonatomic, readonly, nullable) PackedFileDescriptor *fileList;
 @property (nonatomic, readonly, nullable) CompressedFileList *fileListFile;
+@property (nonatomic, copy) void (^endedUpdate)(void);
+@property (nonatomic, copy) void (^addedResource)(void);
+@property (nonatomic, copy) void (^removedResource)(void);
+@property (nonatomic, copy) void (^indexChanged)(void);
+@property (nonatomic, copy) void (^savedIndex)(void);
 
 // MARK: - Initialization
 - (instancetype)initWithBinaryReader:(nullable BinaryReader *)br;

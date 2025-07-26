@@ -17,6 +17,13 @@
 		B6CDCC942E340521004FDF82 /* BinaryReader.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC932E340521004FDF82 /* BinaryReader.m */; };
 		B6CDCC972E340622004FDF82 /* BinaryWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC962E340622004FDF82 /* BinaryWriter.m */; };
 		B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC992E340790004FDF82 /* HeaderData.m */; };
+		B6CDCC9D2E34271B004FDF82 /* HeaderIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC9C2E34271B004FDF82 /* HeaderIndex.m */; };
+		B6CDCCA02E3427DE004FDF82 /* HeaderHole.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC9F2E3427DE004FDF82 /* HeaderHole.m */; };
+		B6CDCCA32E342902004FDF82 /* HoleIndexItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCA22E342902004FDF82 /* HoleIndexItem.m */; };
+		B6CDCCA72E342B3D004FDF82 /* PackedFileDescriptorSimple.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCA62E342B3D004FDF82 /* PackedFileDescriptorSimple.m */; };
+		B6CDCCAA2E342B97004FDF82 /* PackedFileDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCA92E342B97004FDF82 /* PackedFileDescriptor.m */; };
+		B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCB32E34416F004FDF82 /* MetaData.m */; };
+		B6CDCCBB2E345922004FDF82 /* PackedFileDescriptors.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCBA2E345922004FDF82 /* PackedFileDescriptors.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +67,27 @@
 		B6CDCC962E340622004FDF82 /* BinaryWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BinaryWriter.m; sourceTree = "<group>"; };
 		B6CDCC982E34070A004FDF82 /* HeaderData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderData.h; sourceTree = "<group>"; };
 		B6CDCC992E340790004FDF82 /* HeaderData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeaderData.m; sourceTree = "<group>"; };
+		B6CDCC9B2E3426C9004FDF82 /* HeaderIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderIndex.h; sourceTree = "<group>"; };
+		B6CDCC9C2E34271B004FDF82 /* HeaderIndex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeaderIndex.m; sourceTree = "<group>"; };
+		B6CDCC9E2E3427A9004FDF82 /* HeaderHole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderHole.h; sourceTree = "<group>"; };
+		B6CDCC9F2E3427DE004FDF82 /* HeaderHole.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeaderHole.m; sourceTree = "<group>"; };
+		B6CDCCA12E3428CC004FDF82 /* HoleIndexItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HoleIndexItem.h; sourceTree = "<group>"; };
+		B6CDCCA22E342902004FDF82 /* HoleIndexItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoleIndexItem.m; sourceTree = "<group>"; };
+		B6CDCCA52E342AF5004FDF82 /* PackedFileDescriptorSimple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileDescriptorSimple.h; sourceTree = "<group>"; };
+		B6CDCCA62E342B3D004FDF82 /* PackedFileDescriptorSimple.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileDescriptorSimple.m; sourceTree = "<group>"; };
+		B6CDCCA82E342B75004FDF82 /* PackedFileDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileDescriptor.h; sourceTree = "<group>"; };
+		B6CDCCA92E342B97004FDF82 /* PackedFileDescriptor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileDescriptor.m; sourceTree = "<group>"; };
+		B6CDCCAC2E342CAA004FDF82 /* IPackageHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageHeader.h; sourceTree = "<group>"; };
+		B6CDCCAF2E342D63004FDF82 /* IPackageHeaderHole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageHeaderHole.h; sourceTree = "<group>"; };
+		B6CDCCB02E3438A4004FDF82 /* IPackageHeaderIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageHeaderIndex.h; sourceTree = "<group>"; };
+		B6CDCCB22E3440F7004FDF82 /* MetaData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetaData.h; sourceTree = "<group>"; };
+		B6CDCCB32E34416F004FDF82 /* MetaData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetaData.m; sourceTree = "<group>"; };
+		B6CDCCB52E3447B2004FDF82 /* IPackedFileDescriptorSimple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileDescriptorSimple.h; sourceTree = "<group>"; };
+		B6CDCCB62E344A43004FDF82 /* IPackedFileDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileDescriptor.h; sourceTree = "<group>"; };
+		B6CDCCB82E3451DA004FDF82 /* IPackedFileDescriptorBasic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileDescriptorBasic.h; sourceTree = "<group>"; };
+		B6CDCCB92E3458C2004FDF82 /* PackedFileDescriptors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileDescriptors.h; sourceTree = "<group>"; };
+		B6CDCCBA2E345922004FDF82 /* PackedFileDescriptors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileDescriptors.m; sourceTree = "<group>"; };
+		B6CDCCBD2E34665C004FDF82 /* IPackageFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageFile.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -108,6 +136,8 @@
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
+				B6CDCCB12E3440CA004FDF82 /* Helper */,
+				B6CDCCAB2E342C69004FDF82 /* Interfaces */,
 				B6CDCC872E33FBC2004FDF82 /* IO */,
 				B6CDCC832E33F1CA004FDF82 /* Packages */,
 				B6CDCC822E33F0F3004FDF82 /* GUI */,
@@ -148,6 +178,18 @@
 				B6CDCC842E33F2EB004FDF82 /* File.h */,
 				B6CDCC982E34070A004FDF82 /* HeaderData.h */,
 				B6CDCC992E340790004FDF82 /* HeaderData.m */,
+				B6CDCC9B2E3426C9004FDF82 /* HeaderIndex.h */,
+				B6CDCC9C2E34271B004FDF82 /* HeaderIndex.m */,
+				B6CDCC9E2E3427A9004FDF82 /* HeaderHole.h */,
+				B6CDCC9F2E3427DE004FDF82 /* HeaderHole.m */,
+				B6CDCCA12E3428CC004FDF82 /* HoleIndexItem.h */,
+				B6CDCCA22E342902004FDF82 /* HoleIndexItem.m */,
+				B6CDCCA52E342AF5004FDF82 /* PackedFileDescriptorSimple.h */,
+				B6CDCCA62E342B3D004FDF82 /* PackedFileDescriptorSimple.m */,
+				B6CDCCA82E342B75004FDF82 /* PackedFileDescriptor.h */,
+				B6CDCCA92E342B97004FDF82 /* PackedFileDescriptor.m */,
+				B6CDCCB92E3458C2004FDF82 /* PackedFileDescriptors.h */,
+				B6CDCCBA2E345922004FDF82 /* PackedFileDescriptors.m */,
 			);
 			path = Packages;
 			sourceTree = "<group>";
@@ -167,6 +209,29 @@
 				B6CDCC962E340622004FDF82 /* BinaryWriter.m */,
 			);
 			path = IO;
+			sourceTree = "<group>";
+		};
+		B6CDCCAB2E342C69004FDF82 /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				B6CDCCAC2E342CAA004FDF82 /* IPackageHeader.h */,
+				B6CDCCAF2E342D63004FDF82 /* IPackageHeaderHole.h */,
+				B6CDCCB02E3438A4004FDF82 /* IPackageHeaderIndex.h */,
+				B6CDCCB52E3447B2004FDF82 /* IPackedFileDescriptorSimple.h */,
+				B6CDCCB62E344A43004FDF82 /* IPackedFileDescriptor.h */,
+				B6CDCCBD2E34665C004FDF82 /* IPackageFile.h */,
+			);
+			path = Interfaces;
+			sourceTree = "<group>";
+		};
+		B6CDCCB12E3440CA004FDF82 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				B6CDCCB22E3440F7004FDF82 /* MetaData.h */,
+				B6CDCCB32E34416F004FDF82 /* MetaData.m */,
+				B6CDCCB82E3451DA004FDF82 /* IPackedFileDescriptorBasic.h */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,15 +378,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6CDCC7D2E33EB1F004FDF82 /* ToolTypes.m in Sources */,
+				B6CDCC9D2E34271B004FDF82 /* HeaderIndex.m in Sources */,
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
 				B6CDCC772E33E8C7004FDF82 /* SharedTypes.m in Sources */,
 				B6CDCC902E340297004FDF82 /* FileStream.m in Sources */,
+				B6CDCCAA2E342B97004FDF82 /* PackedFileDescriptor.m in Sources */,
 				B6CDCC942E340521004FDF82 /* BinaryReader.m in Sources */,
 				B6CDCC972E340622004FDF82 /* BinaryWriter.m in Sources */,
+				B6CDCCA32E342902004FDF82 /* HoleIndexItem.m in Sources */,
 				B6CDCC8E2E33FE4E004FDF82 /* MemoryStream.m in Sources */,
 				B6CDCC862E33F887004FDF82 /* File.m in Sources */,
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
+				B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */,
+				B6CDCCA72E342B3D004FDF82 /* PackedFileDescriptorSimple.m in Sources */,
+				B6CDCCBB2E345922004FDF82 /* PackedFileDescriptors.m in Sources */,
 				B6CDCC8B2E33FC6B004FDF82 /* Stream.m in Sources */,
+				B6CDCCA02E3427DE004FDF82 /* HeaderHole.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
