@@ -38,7 +38,7 @@
     self = [super init];
     if (self) {
         _parent = hd;
-        _type = 0;
+        _iType = 0;
     }
     return self;
 }
@@ -47,12 +47,12 @@
  * returns the Index Type of the File
  * @remarks This value should be 7
  */
-- (int32_t)type {
-    return _type;
+- (int32_t)iType {
+    return _iType;
 }
 
-- (void)setType:(int32_t)type {
-    _type = type;
+- (void)setType:(int32_t)iType {
+    _iType = iType;
 }
 
 - (int32_t)itemSize {

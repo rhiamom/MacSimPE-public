@@ -58,12 +58,12 @@
 /**
  * Returns the Type of the referenced File
  */
-@property (nonatomic, assign) uint32_t type;
+@property (nonatomic, assign) uint32_t pfdType;
 
 /**
  * Returns the Name of the represented Type
  */
-@property (nonatomic, readonly) TypeAlias *typeName;
+@property (nonatomic, readonly) TypeAlias *pfdTypeName;
 
 /**
  * Returns the Group the referenced file is assigned to

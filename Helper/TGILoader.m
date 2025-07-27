@@ -156,7 +156,7 @@ static TGILoader *_shared = nil;
     // In the future, you might want to implement localization support
     TypeAlias *typeAlias = [[TypeAlias alloc] initWithContainsFilename:containsFilename
                                                              shortName:shortName
-                                                                typeId:type
+                                                                typeID:type
                                                                   name:name
                                                              extension:extension
                                                                  known:known

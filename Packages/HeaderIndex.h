@@ -6,7 +6,7 @@
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop               *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop               *
  *   rhiamom@mac.com                                                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +24,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#import <Foundation/Foundation.h>
+
 #import "HeaderHole.h"
 #import "HeaderData.h"
 #import "IPackageHeaderIndex.h"
@@ -38,7 +38,7 @@
 @interface HeaderIndex : HeaderHole <IPackageHeaderIndex>
 
 @property (nonatomic, weak) id<IPackageHeader> parent;
-@property (nonatomic, assign) int32_t type;
+@property (nonatomic, assign) int32_t iType;
 
 - (instancetype)initWithHeader:(id<IPackageHeader>)hd;
 - (void)useInParent;

@@ -68,7 +68,7 @@
  */
 - (instancetype)initWithContainsFilename:(BOOL)containsFilename
                                shortName:(NSString *)shortName
-                                      id:(uint32_t)val
+                                      typeID:(uint32_t)val
                                     name:(NSString *)name;
 
 /**
@@ -81,7 +81,7 @@
  */
 - (instancetype)initWithContainsFilename:(BOOL)containsFilename
                                shortName:(NSString *)shortName
-                                      id:(uint32_t)val
+                                      typeID:(uint32_t)val
                                     name:(NSString *)name
                                extension:(NSString *)extension;
 
@@ -97,7 +97,7 @@
  */
 - (instancetype)initWithContainsFilename:(BOOL)containsFilename
                                shortName:(NSString *)shortName
-                                      id:(uint32_t)val
+                                      typeID:(uint32_t)val
                                     name:(NSString *)name
                                extension:(NSString *)extension
                                    known:(BOOL)known
@@ -114,7 +114,7 @@
  */
 - (instancetype)initWithContainsFilename:(BOOL)containsFilename
                                shortName:(NSString *)shortName
-                                      id:(uint32_t)val
+                                      typeID:(uint32_t)val
                                     name:(NSString *)name
                                    known:(BOOL)known
                            noDecompForCache:(BOOL)noDecompForCache;

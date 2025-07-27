@@ -1,4 +1,4 @@
-//
+///
 //  Helper.m
 //  MacSimpe
 //
@@ -49,9 +49,7 @@ NSString * const HelperNeighborhoodPackage = @"_neighborhood.package";
 @implementation Helper
 
 // Static variables
-static Registry *_windowsRegistry = nil;
 static Parameters *_commandlineParameters = nil;
-static NSString *_profile = @"";
 static TGILoader *_tgiLoader = nil;
 static NSArray<NSString *> *_knownHoods = nil;
 
@@ -64,31 +62,12 @@ static BOOL _anyPackage = NO;
 
 // MARK: - Properties
 
-+ (Registry *)windowsRegistry {
-    if (!_windowsRegistry) {
-        _windowsRegistry = [[Registry alloc] init];
-    }
-    return _windowsRegistry;
-}
-
-+ (void)setWindowsRegistry:(Registry *)registry {
-    _windowsRegistry = registry;
-}
-
 + (Parameters *)commandlineParameters {
     return _commandlineParameters;
 }
 
 + (void)setCommandlineParameters:(Parameters *)parameters {
     _commandlineParameters = parameters;
-}
-
-+ (NSString *)profile {
-    return _profile;
-}
-
-+ (void)setProfile:(NSString *)profile {
-    _profile = [profile copy];
 }
 
 // MARK: - Run Mode Flags
@@ -765,34 +744,6 @@ static BOOL _anyPackage = NO;
     return NO;
 }
 
-// MARK: - Language Support
-
-+ (NSInteger)getMatchingLanguage {
-    NSString *languageCode = [[NSLocale currentLocale] languageCode];
-    if (!languageCode) return MetaDataLanguagesEnglish;
-    
-    languageCode = [languageCode uppercaseString];
-    
-    if ([languageCode isEqualToString:@"DE"]) return MetaDataLanguagesGerman;
-    if ([languageCode isEqualToString:@"ES"]) return MetaDataLanguagesSpanish;
-    if ([languageCode isEqualToString:@"FI"]) return MetaDataLanguagesFinnish;
-    if ([languageCode isEqualToString:@"ZH"]) return MetaDataLanguagesSimplifiedChinese;
-    if ([languageCode isEqualToString:@"FR"]) return MetaDataLanguagesFrench;
-    if ([languageCode isEqualToString:@"JA"]) return MetaDataLanguagesJapanese;
-    if ([languageCode isEqualToString:@"IT"]) return MetaDataLanguagesItalian;
-    if ([languageCode isEqualToString:@"NL"]) return MetaDataLanguagesDutch;
-    if ([languageCode isEqualToString:@"DA"]) return MetaDataLanguagesDanish;
-    if ([languageCode isEqualToString:@"NO"]) return MetaDataLanguagesNorwegian;
-    if ([languageCode isEqualToString:@"HE"]) return MetaDataLanguagesHebrew;
-    if ([languageCode isEqualToString:@"RU"]) return MetaDataLanguagesRussian;
-    if ([languageCode isEqualToString:@"PT"]) return MetaDataLanguagesPortuguese;
-    if ([languageCode isEqualToString:@"PL"]) return MetaDataLanguagesPolish;
-    if ([languageCode isEqualToString:@"TH"]) return MetaDataLanguagesThai;
-    if ([languageCode isEqualToString:@"KO"]) return MetaDataLanguagesKorean;
-    
-    return MetaDataLanguagesEnglish;
-}
-
 // MARK: - Key/Shortcut Support
 
 + (NSString *)toKeys:(NSString *)shortcut {
@@ -837,54 +788,6 @@ static BOOL _anyPackage = NO;
 
 @end
 
-// MARK: - AppPreferences Implementation
-
-@implementation AppPreferences
-
-+ (uint8_t)languageCode {
-    NSInteger code = [[NSUserDefaults standardUserDefaults] integerForKey:@"SimPELanguageCode"];
-    return code == 0 ? 1 : (uint8_t)code;
-}
-
-+ (void)setLanguageCode:(uint8_t)languageCode {
-    [[NSUserDefaults standardUserDefaults] setInteger:languageCode forKey:@"SimPELanguageCode"];
-}
-
-+ (BOOL)hiddenMode {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SimPEHiddenMode"];
-}
-
-+ (void)setHiddenMode:(BOOL)hiddenMode {
-    [[NSUserDefaults standardUserDefaults] setBool:hiddenMode forKey:@"SimPEHiddenMode"];
-}
-
-+ (BOOL)useCache {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SimPEUseCache"];
-}
-
-+ (void)setUseCache:(BOOL)useCache {
-    [[NSUserDefaults standardUserDefaults] setBool:useCache forKey:@"SimPEUseCache"];
-}
-
-+ (NSString *)languageCache {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:@"SimPELanguageCache"] ?: @"";
-}
-
-+ (void)setLanguageCache:(NSString *)languageCache {
-    [[NSUserDefaults standardUserDefaults] setObject:languageCache forKey:@"SimPELanguageCache"];
-}
-
-+ (BOOL)asynchronLoad {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SimPEAsynchronLoad"];
-}
-
-+ (void)setAsynchronLoad:(BOOL)asynchronLoad {
-    [[NSUserDefaults standardUserDefaults] setBool:asynchronLoad forKey:@"SimPEAsynchronLoad"];
-}
-
-
-@end
-
 // MARK: - DataFolder Implementation
 
 @implementation DataFolder
@@ -907,8 +810,8 @@ static BOOL _anyPackage = NO;
 
 + (NSString *)profilePath:(NSString *)s readOnly:(BOOL)readOnly {
     NSString *path = [Helper simPeDataPath];
-    if ([Helper profile].length > 0 && readOnly) {
-        path = [[[Helper simPeDataPath] stringByAppendingPathComponent:@"Profiles"] stringByAppendingPathComponent:[Helper profile]];
+    if ([AppPreferences profile].length > 0 && readOnly) {
+        path = [[[Helper simPeDataPath] stringByAppendingPathComponent:@"Profiles"] stringByAppendingPathComponent:[AppPreferences profile]];
     }
     return [path stringByAppendingPathComponent:s];
 }
@@ -951,43 +854,6 @@ static BOOL _anyPackage = NO;
 
 + (NSString *)mruXREG {
     return [self mruXREGW]; // Only one global MRU list
-}
-
-@end
-
-// MARK: - MetaData Implementation
-
-@implementation MetaData
-// Implementation would go here if needed
-@end
-
-// MARK: - Boolset Implementation
-
-@implementation Boolset {
-    uint32_t _value;
-}
-
-- (instancetype)initWithValue:(uint32_t)value {
-    self = [super init];
-    if (self) {
-        _value = value;
-    }
-    return self;
-}
-
-- (BOOL)objectAtIndexedSubscript:(NSInteger)index {
-    if (index < 0 || index >= 32) return NO;
-    return (_value & (1 << index)) != 0;
-}
-
-- (void)setObject:(BOOL)value atIndexedSubscript:(NSInteger)index {
-    if (index < 0 || index >= 32) return;
-    
-    if (value) {
-        _value |= (1 << index);
-    } else {
-        _value &= ~(1 << index);
-    }
 }
 
 @end

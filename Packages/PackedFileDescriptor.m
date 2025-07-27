@@ -42,10 +42,10 @@
     return [self initWithType:0 group:0 instanceHi:0 instanceLo:0];
 }
 
-- (instancetype)initWithType:(uint32_t)type group:(uint32_t)grp instanceHi:(uint32_t)ihi instanceLo:(uint32_t)ilo {
+- (instancetype)initWithType:(uint32_t)pfdType group:(uint32_t)grp instanceHi:(uint32_t)ihi instanceLo:(uint32_t)ilo {
     self = [super init];
     if (self) {
-        _type = type;
+        _pfdType = self.pfdType;
         _group = grp;
         _subType = ihi;
         _instance = ilo;
@@ -53,9 +53,9 @@
     return self;
 }
 
-- (void)setType:(uint32_t)type {
-    if (_type != type) {
-        _type = type;
+- (void)setType:(uint32_t)pfdType {
+    if (_pfdType != pfdType) {
+        _pfdType = pfdType;
         [self descriptionChangedFkt];
     }
 }
@@ -82,7 +82,7 @@
 }
 
 - (TypeAlias *)typeName {
-    return [MetaData findTypeAlias:self.type];
+    return [MetaData findTypeAlias:self.pfdType];
 }
 
 - (void)descriptionChangedFkt {
@@ -257,7 +257,6 @@
 }
 
 - (NSString *)getResDescString {
-    Registry *registry = [Helper windowsRegistry];
     ResourceListUnnamedFormats format = (ResourceListUnnamedFormats)[AppPreferences resourceListUnknownDescriptionFormat];
     
     if (format == ResourceListUnnamedFormatsFullTGI) {
@@ -282,7 +281,6 @@
 }
 
 - (NSString *)toResListString {
-    Registry *registry = [Helper windowsRegistry];
     ResourceListFormats format = [AppPreferences resourceListFormat];
     
     if (format == ResourceListFormatsShortTypeNames) {

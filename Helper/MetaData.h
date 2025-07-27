@@ -408,6 +408,6 @@ typedef NS_ENUM(uint16_t, ExpansionPack) {
 + (NSArray<NSNumber *> *)compressionCandidates;
 + (NSArray<NSNumber *> *)cachedFileTypes;
 + (ChildAge)ageTranslation:(LifeSections)age;
-+ (TypeAlias *)findTypeAlias:(uint32_t)type;
++ (TypeAlias *)findTypeAlias:(uint32_t)pfdType;
 
 @end

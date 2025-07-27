@@ -29,6 +29,30 @@
 
 #import <Foundation/Foundation.h>
 
+// Forward declarations
+@class Registry;
+
+// MARK: - MetaData Languages (moved from MetaData class)
+typedef NS_ENUM(NSInteger, MetaDataLanguages) {
+    MetaDataLanguagesEnglish = 1,
+    MetaDataLanguagesGerman = 2,
+    MetaDataLanguagesSpanish = 3,
+    MetaDataLanguagesFinnish = 4,
+    MetaDataLanguagesSimplifiedChinese = 5,
+    MetaDataLanguagesFrench = 6,
+    MetaDataLanguagesJapanese = 7,
+    MetaDataLanguagesItalian = 8,
+    MetaDataLanguagesDutch = 9,
+    MetaDataLanguagesDanish = 10,
+    MetaDataLanguagesNorwegian = 11,
+    MetaDataLanguagesHebrew = 12,
+    MetaDataLanguagesRussian = 13,
+    MetaDataLanguagesPortuguese = 14,
+    MetaDataLanguagesPolish = 15,
+    MetaDataLanguagesThai = 16,
+    MetaDataLanguagesKorean = 17
+};
+
 /**
  * Handles Application Settings stored in NSUserDefaults (replaces Windows Registry)
  */
@@ -36,6 +60,9 @@
 
 // MARK: - Constants
 extern const uint8_t RegistryRecentCount;
+
+// MARK: - Language Support
++ (NSInteger)getMatchingLanguage;
 
 // MARK: - Initialization
 - (instancetype)init;
@@ -69,10 +96,14 @@ typedef NS_ENUM(NSInteger, ResourceListUnnamedFormats) {
     ResourceListUnnamedFormatsGroupInstance = 1,
     ResourceListUnnamedFormatsFullTGI = 2
 };
+
 typedef NS_ENUM(NSInteger, ReportFormats) {
     ReportFormatsDescriptive = 0,
     ReportFormatsCsv = 1
 };
+
+// MARK: - Class Properties
+@property (class, nonatomic, strong) Registry *windowsRegistry;
 
 // MARK: - SimPE Directory Management
 - (void)updateSimPeDirectory;
@@ -94,9 +125,6 @@ typedef NS_ENUM(NSInteger, ReportFormats) {
 @property (nonatomic, assign) BOOL hiddenMode;
 @property (nonatomic, assign) BOOL useMaxisGroupsCache;
 @property (nonatomic, assign) BOOL decodeFilenamesState;
-@property (class, nonatomic, assign) ResourceListUnnamedFormats resourceListUnknownDescriptionFormat;
-@property (class, nonatomic, assign) ResourceListFormats resourceListFormat;
-
 
 // MARK: - User Account
 @property (nonatomic, copy) NSString *username;
@@ -138,7 +166,6 @@ typedef NS_ENUM(NSInteger, ReportFormats) {
 @property (nonatomic, assign) BOOL lockDocks;
 @property (nonatomic, strong) NSDate *lastUpdateCheck;
 
-
 // MARK: - Resource List Display Settings
 @property (nonatomic, assign) ResourceListFormats resourceListFormat;
 @property (nonatomic, assign) ResourceListUnnamedFormats resourceListUnknownDescriptionFormat;
@@ -148,6 +175,12 @@ typedef NS_ENUM(NSInteger, ReportFormats) {
 @property (nonatomic, readonly, assign) BOOL resourceListInstanceFormatHexOnly;
 @property (nonatomic, readonly, assign) BOOL resourceListInstanceFormatDecOnly;
 @property (nonatomic, readonly, assign) BOOL resourceListInstanceFormatHexDec;
+
+// MARK: - Class methods for static resource list format access
++ (ResourceListUnnamedFormats)resourceListUnknownDescriptionFormat;
++ (void)setResourceListUnknownDescriptionFormat:(ResourceListUnnamedFormats)format;
++ (ResourceListFormats)resourceListFormat;
++ (void)setResourceListFormat:(ResourceListFormats)format;
 
 // MARK: - Report Settings
 @property (nonatomic, assign) ReportFormats reportFormat;
@@ -160,5 +193,31 @@ typedef NS_ENUM(NSInteger, ReportFormats) {
 - (void)clearRecentFileList;
 - (NSArray<NSString *> *)getRecentFiles;
 - (void)addRecentFile:(NSString *)filename;
+
+@end
+
+// MARK: - App Preferences
+
+@interface AppPreferences : NSObject
+
+@property (class, nonatomic, assign) uint8_t languageCode;
+@property (class, nonatomic, assign) BOOL hiddenMode;
+@property (class, nonatomic, assign) BOOL useCache;
+@property (class, nonatomic, copy) NSString *languageCache;
+@property (class, nonatomic, copy) NSString *profile;
+@property (class, nonatomic, assign) BOOL asynchronLoad;
+
+@end
+
+// MARK: - MetaData (placeholder)
+@interface MetaData : NSObject
+@end
+
+// MARK: - Boolset (bit manipulation helper)
+@interface Boolset : NSObject
+
+- (instancetype)initWithValue:(uint32_t)value;
+- (BOOL)objectAtIndexedSubscript:(NSInteger)index;
+- (void)setObject:(BOOL)value atIndexedSubscript:(NSInteger)index;
 
 @end

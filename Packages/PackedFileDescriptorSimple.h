@@ -8,7 +8,7 @@
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop               *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop               *
  *   rhiamom@mac.com                                                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -32,11 +32,11 @@
 
 @interface PackedFileDescriptorSimple : NSObject <IPackedFileDescriptorSimple>
 
-@property (nonatomic, assign) uint32_t type;
+@property (nonatomic, assign) uint32_t pfdType;
 @property (nonatomic, assign) uint32_t group;
 @property (nonatomic, assign) uint32_t instance;
 @property (nonatomic, assign) uint32_t subType;
-@property (nonatomic, readonly) TypeAlias *typeName;
+@property (nonatomic, readonly) TypeAlias *pfdTypeName;
 @property (nonatomic, readonly) uint32_t offset;
 @property (nonatomic, readonly) int32_t size;
 @property (nonatomic, readonly) int32_t indexedSize;
@@ -56,10 +56,6 @@
 
 - (instancetype)init;
 - (instancetype)initWithType:(uint32_t)type group:(uint32_t)grp instanceHi:(uint32_t)ihi instanceLo:(uint32_t)ilo;
-- (NSString *)generateXmlMetaInfo;
-- (BOOL)sameAs:(id)obj;
-- (void)markInvalid;
-- (void)beginUpdate;
-- (void)endUpdate;
+
 
 @end

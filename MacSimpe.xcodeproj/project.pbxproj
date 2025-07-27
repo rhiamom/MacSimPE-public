@@ -71,6 +71,8 @@
 		B62437ED2E35A3350052119F /* additionalschools.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = additionalschools.xml; sourceTree = "<group>"; };
 		B62437EF2E35A3490052119F /* additionalmajors.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = additionalmajors.xml; sourceTree = "<group>"; };
 		B62437F12E35A35C0052119F /* additionalcareers.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = additionalcareers.xml; sourceTree = "<group>"; };
+		B632A4362E36A3160024810C /* ClstWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClstWrapper.h; sourceTree = "<group>"; };
+		B632A4372E36A3AD0024810C /* ClstWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClstWrapper.m; sourceTree = "<group>"; };
 		B64E6BA42E353091009AD0A7 /* IAlias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAlias.h; sourceTree = "<group>"; };
 		B64E6BA52E353151009AD0A7 /* Alias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alias.h; sourceTree = "<group>"; };
 		B64E6BA62E3531DF009AD0A7 /* Alias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Alias.m; sourceTree = "<group>"; };
@@ -197,6 +199,15 @@
 			path = XMLResourceFiles;
 			sourceTree = "<group>";
 		};
+		B632A4352E36A2FD0024810C /* Clst */ = {
+			isa = PBXGroup;
+			children = (
+				B632A4362E36A3160024810C /* ClstWrapper.h */,
+				B632A4372E36A3AD0024810C /* ClstWrapper.m */,
+			);
+			path = Clst;
+			sourceTree = "<group>";
+		};
 		B64E6BAE2E3539F9009AD0A7 /* GenericHandlers */ = {
 			isa = PBXGroup;
 			children = (
@@ -224,6 +235,7 @@
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
+				B632A4352E36A2FD0024810C /* Clst */,
 				B62437E22E35A2470052119F /* XMLResourceFiles */,
 				B64E6BB32E353E8B009AD0A7 /* HandlerCommon */,
 				B64E6BAE2E3539F9009AD0A7 /* GenericHandlers */,

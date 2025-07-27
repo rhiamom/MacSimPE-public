@@ -61,7 +61,7 @@ typedef NS_ENUM(uint8_t, PackageBaseType) {
 // MARK: - Properties
 @property (nonatomic, readonly, nullable) BinaryReader *reader;
 @property (nonatomic, assign) BOOL persistent;
-@property (nonatomic, readonly) PackageBaseType type;
+@property (nonatomic, readonly) PackageBaseType pType;
 @property (nonatomic, readonly) id<IPackageHeader> header;
 @property (nonatomic, readonly) PackedFileDescriptors *index;
 @property (nonatomic, readonly) BOOL hasUserChanges;
@@ -70,7 +70,7 @@ typedef NS_ENUM(uint8_t, PackageBaseType) {
 @property (nonatomic, readonly) uint32_t fileGroupHash;
 @property (nonatomic, readonly) BOOL loadedCompressedState;
 @property (nonatomic, readonly, nullable) PackedFileDescriptor *fileList;
-@property (nonatomic, readonly, nullable) CompressedFileList *fileListFile;
+@property (nonatomic, strong) CompressedFileList *fileListFile;
 @property (nonatomic, copy) void (^endedUpdate)(void);
 @property (nonatomic, copy) void (^addedResource)(void);
 @property (nonatomic, copy) void (^removedResource)(void);

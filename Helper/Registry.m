@@ -32,7 +32,26 @@
 
 const uint8_t RegistryRecentCount = 15;
 
+// Static variables for AppPreferences
+static NSString *_profile = @"";
+
 @implementation Registry
+
+// Static variable for class property
+static Registry *_windowsRegistry = nil;
+
+// MARK: - Class Properties
+
++ (Registry *)windowsRegistry {
+    if (!_windowsRegistry) {
+        _windowsRegistry = [[Registry alloc] init];
+    }
+    return _windowsRegistry;
+}
+
++ (void)setWindowsRegistry:(Registry *)registry {
+    _windowsRegistry = registry;
+}
 
 // MARK: - Initialization
 
@@ -55,6 +74,34 @@ const uint8_t RegistryRecentCount = 15;
 - (void)flush {
     // Force synchronization of NSUserDefaults
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+// MARK: - Language Support
+
++ (NSInteger)getMatchingLanguage {
+    NSString *languageCode = [[NSLocale currentLocale] languageCode];
+    if (!languageCode) return MetaDataLanguagesEnglish;
+    
+    languageCode = [languageCode uppercaseString];
+    
+    if ([languageCode isEqualToString:@"DE"]) return MetaDataLanguagesGerman;
+    if ([languageCode isEqualToString:@"ES"]) return MetaDataLanguagesSpanish;
+    if ([languageCode isEqualToString:@"FI"]) return MetaDataLanguagesFinnish;
+    if ([languageCode isEqualToString:@"ZH"]) return MetaDataLanguagesSimplifiedChinese;
+    if ([languageCode isEqualToString:@"FR"]) return MetaDataLanguagesFrench;
+    if ([languageCode isEqualToString:@"JA"]) return MetaDataLanguagesJapanese;
+    if ([languageCode isEqualToString:@"IT"]) return MetaDataLanguagesItalian;
+    if ([languageCode isEqualToString:@"NL"]) return MetaDataLanguagesDutch;
+    if ([languageCode isEqualToString:@"DA"]) return MetaDataLanguagesDanish;
+    if ([languageCode isEqualToString:@"NO"]) return MetaDataLanguagesNorwegian;
+    if ([languageCode isEqualToString:@"HE"]) return MetaDataLanguagesHebrew;
+    if ([languageCode isEqualToString:@"RU"]) return MetaDataLanguagesRussian;
+    if ([languageCode isEqualToString:@"PT"]) return MetaDataLanguagesPortuguese;
+    if ([languageCode isEqualToString:@"PL"]) return MetaDataLanguagesPolish;
+    if ([languageCode isEqualToString:@"TH"]) return MetaDataLanguagesThai;
+    if ([languageCode isEqualToString:@"KO"]) return MetaDataLanguagesKorean;
+    
+    return MetaDataLanguagesEnglish;
 }
 
 // MARK: - SimPE Directory Management
@@ -208,7 +255,7 @@ const uint8_t RegistryRecentCount = 15;
 
 - (NSInteger)languageCode {
     NSInteger code = [[NSUserDefaults standardUserDefaults] integerForKey:@"Language"];
-    return code != 0 ? code : [Helper getMatchingLanguage];
+    return code != 0 ? code : [Registry getMatchingLanguage];
 }
 
 - (void)setLanguageCode:(NSInteger)languageCode {
@@ -584,8 +631,10 @@ const uint8_t RegistryRecentCount = 15;
     [[NSUserDefaults standardUserDefaults] setObject:[recentFiles copy] forKey:@"RecentFiles"];
 }
 
+// MARK: - Class Methods for Resource List Format Access
+
 + (ResourceListUnnamedFormats)resourceListUnknownDescriptionFormat {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:@"ResourceListUnknownDescriptionFormat"];
+    return (ResourceListUnnamedFormats)[[NSUserDefaults standardUserDefaults] integerForKey:@"ResourceListUnknownDescriptionFormat"];
 }
 
 + (void)setResourceListUnknownDescriptionFormat:(ResourceListUnnamedFormats)format {
@@ -600,6 +649,96 @@ const uint8_t RegistryRecentCount = 15;
     [[NSUserDefaults standardUserDefaults] setInteger:format forKey:@"ResourceListFormat"];
 }
 
+@end
 
+// MARK: - AppPreferences Implementation
+
+@implementation AppPreferences
+
++ (NSString *)profile {
+    return _profile;
+}
+
++ (void)setProfile:(NSString *)profile {
+    _profile = [profile copy];
+}
+
++ (uint8_t)languageCode {
+    NSInteger code = [[NSUserDefaults standardUserDefaults] integerForKey:@"SimPELanguageCode"];
+    return code == 0 ? 1 : (uint8_t)code;
+}
+
++ (void)setLanguageCode:(uint8_t)languageCode {
+    [[NSUserDefaults standardUserDefaults] setInteger:languageCode forKey:@"SimPELanguageCode"];
+}
+
++ (BOOL)hiddenMode {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SimPEHiddenMode"];
+}
+
++ (void)setHiddenMode:(BOOL)hiddenMode {
+    [[NSUserDefaults standardUserDefaults] setBool:hiddenMode forKey:@"SimPEHiddenMode"];
+}
+
++ (BOOL)useCache {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SimPEUseCache"];
+}
+
++ (void)setUseCache:(BOOL)useCache {
+    [[NSUserDefaults standardUserDefaults] setBool:useCache forKey:@"SimPEUseCache"];
+}
+
++ (NSString *)languageCache {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"SimPELanguageCache"] ?: @"";
+}
+
++ (void)setLanguageCache:(NSString *)languageCache {
+    [[NSUserDefaults standardUserDefaults] setObject:languageCache forKey:@"SimPELanguageCache"];
+}
+
++ (BOOL)asynchronLoad {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SimPEAsynchronLoad"];
+}
+
++ (void)setAsynchronLoad:(BOOL)asynchronLoad {
+    [[NSUserDefaults standardUserDefaults] setBool:asynchronLoad forKey:@"SimPEAsynchronLoad"];
+}
+
+@end
+
+// MARK: - MetaData Implementation
+
+@implementation MetaData
+// Implementation would go here if needed
+@end
+
+// MARK: - Boolset Implementation
+
+@implementation Boolset {
+    uint32_t _value;
+}
+
+- (instancetype)initWithValue:(uint32_t)value {
+    self = [super init];
+    if (self) {
+        _value = value;
+    }
+    return self;
+}
+
+- (BOOL)objectAtIndexedSubscript:(NSInteger)index {
+    if (index < 0 || index >= 32) return NO;
+    return (_value & (1 << index)) != 0;
+}
+
+- (void)setObject:(BOOL)value atIndexedSubscript:(NSInteger)index {
+    if (index < 0 || index >= 32) return;
+    
+    if (value) {
+        _value |= (1 << index);
+    } else {
+        _value &= ~(1 << index);
+    }
+}
 
 @end

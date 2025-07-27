@@ -34,20 +34,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class MetaData;
+@class TypeAlias;
 @class BinaryReader;
-@class IPackageHeader;
+@protocol IPackageHeader;
 @class PackedFile;
 
 @interface PackedFileDescriptorSimple : NSObject <IPackedFileDescriptorSimple>
 
-@property (nonatomic, assign) uint32_t type;
+@property (nonatomic, assign) uint32_t pfdType;
 @property (nonatomic, assign) uint32_t group;
 @property (nonatomic, assign) uint32_t instance;
 @property (nonatomic, assign) uint32_t subType;
-@property (nonatomic, readonly) TypeAlias *typeName;
+@property (nonatomic, readonly) TypeAlias *pfdTypeName;
 
 - (instancetype)init;
-- (instancetype)initWithType:(uint32_t)type group:(uint32_t)grp instanceHi:(uint32_t)ihi instanceLo:(uint32_t)ilo;
+- (instancetype)initWithType:(uint32_t)pfdType group:(uint32_t)grp instanceHi:(uint32_t)ihi instanceLo:(uint32_t)ilo;
 
 @end
 

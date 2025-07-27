@@ -29,6 +29,7 @@
 
 #import "MetaData.h"
 #import "TypeAlias.h"
+#import "TGILoader.h"
 
 @implementation MetaData
 
@@ -142,57 +143,18 @@
     }
 }
 
-+ (TypeAlias *)findTypeAlias:(uint32_t)type {
-    // Hard-coded common types until TGI loader is working
-    switch (type) {
-        case 0x1C4A276C:
-            return [[TypeAlias alloc] initWithContainsFilename:NO
-                                                     shortName:@"TXTR"
-                                                            id:type
-                                                          name:@"Texture"
-                                                     extension:@"txtr"];
-        case 0x49596978:
-            return [[TypeAlias alloc] initWithContainsFilename:NO
-                                                     shortName:@"TXMT"
-                                                            id:type
-                                                          name:@"Texture Material"
-                                                     extension:@"txmt"];
-        case 0x4C697E5A:
-            return [[TypeAlias alloc] initWithContainsFilename:NO
-                                                     shortName:@"MMAT"
-                                                            id:type
-                                                          name:@"Material Definition"
-                                                     extension:@"mmat"];
-        case 0x7BA3838C:
-            return [[TypeAlias alloc] initWithContainsFilename:NO
-                                                     shortName:@"GMND"
-                                                            id:type
-                                                          name:@"Geometric Node"
-                                                     extension:@"gmnd"];
-        case 0x42484156:
-            return [[TypeAlias alloc] initWithContainsFilename:NO
-                                                     shortName:@"BHAV"
-                                                            id:type
-                                                          name:@"Behavior"
-                                                     extension:@"bhav"];
-        case 0x4F424A44:
-            return [[TypeAlias alloc] initWithContainsFilename:NO
-                                                     shortName:@"OBJD"
-                                                            id:type
-                                                          name:@"Object Definition"
-                                                     extension:@"objd"];
-        case 0xE86B1EEF:
-            return [[TypeAlias alloc] initWithContainsFilename:NO
-                                                     shortName:@"DIR"
-                                                            id:type
-                                                          name:@"Directory"
-                                                     extension:@"dir"];
-        default:
-            return [[TypeAlias alloc] initWithContainsFilename:NO
-                                                     shortName:@"UNK"
-                                                            id:type
-                                                          name:[NSString stringWithFormat:@"0x%08X", type]
-                                                     extension:@"dat"];
++ (TypeAlias *)findTypeAlias:(uint32_t)pfdType {
+    TypeAlias *typeAlias = [[TGILoader shared] getByType:pfdType];
+    
+    // If not found in TGI loader, return a default unknown type
+    if (!typeAlias) {
+        typeAlias = [[TypeAlias alloc] initWithContainsFilename:NO
+                                                      shortName:@"UNK"
+                                                         typeID:pfdType
+                                                           name:[NSString stringWithFormat:@"0x%08X", pfdType]
+                                                      extension:@"dat"];
     }
+    
+    return typeAlias;
 }
         @end

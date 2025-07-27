@@ -38,6 +38,6 @@
 @property (nonatomic, assign) int32_t count;
 @property (nonatomic, assign) uint32_t offset;
 @property (nonatomic, assign) int32_t size;
-@property (nonatomic, readonly) int32_t itemSize;
+@property (nonatomic, readonly, assign) int32_t itemSize;
 
 @end

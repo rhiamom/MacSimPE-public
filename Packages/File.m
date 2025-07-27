@@ -8,7 +8,7 @@
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop               *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop               *
  *   rhiamom@mac.com                                                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -36,11 +36,14 @@
 #import "HoleIndexItem.h"
 #import "PackedFileDescriptor.h"
 #import "HoleIndexItem.h"
+#import "IPackageHeaderIndex.h"
+#import "ClstWrapper.h"
+#import <Foundation/Foundation.h>
 
 @interface File () {
     // Private instance variables (matching C# fields)
     BinaryReader *_reader;
-    PackageBaseType _type;
+    PackageBaseType _pType;
     HeaderData *_header;
     PackedFileDescriptor *_filelist;
     CompressedFileList *_filelistfile;
@@ -80,8 +83,8 @@
     // TODO: Add reader management logic
 }
 
-- (PackageBaseType)type {
-    return _type;
+- (PackageBaseType)pType {
+    return _pType;
 }
 
 - (id<IPackageHeader>)header {
@@ -143,7 +146,7 @@
     self = [super init];
     if (self) {
         _pause = NO;
-        _type = PackageBaseTypeStream;
+        _pType = PackageBaseTypeStream;
         [self openByStream:br];
     }
     return self;
@@ -212,21 +215,21 @@
     NSData *data = [NSData dataWithContentsOfFile:filename options:0 error:&error];
     
     if (data != nil) {
-        _type = PackageBaseTypeFilename;
+        _pType = PackageBaseTypeFilename;
         _flname = filename;
         
         MemoryStream *stream = [[MemoryStream alloc] initWithData:data];
         BinaryReader *br = [[BinaryReader alloc] initWithStream:stream];
         [self openByStream:br];
     } else {
-        _type = PackageBaseTypeStream;
+        _pType = PackageBaseTypeStream;
         [self openByStream:nil];
     }
 }
 
 - (void)reloadReader {
     if (_reader != nil) return;
-    if (_type == PackageBaseTypeStream) return;
+    if (_pType == PackageBaseTypeStream) return;
     
     NSError *error;
     NSData *data = [NSData dataWithContentsOfFile:_flname options:0 error:&error];
@@ -243,7 +246,7 @@
         return;
     }
     
-    if (_type == PackageBaseTypeFilename) {
+    if (_pType == PackageBaseTypeFilename) {
         [self closeReader];
         
         NSError *error;
@@ -262,7 +265,7 @@
 - (void)closeReader {
     if (_persistent) return;
     
-    if ((_type == PackageBaseTypeFilename) && (_reader != nil)) {
+    if ((_pType == PackageBaseTypeFilename) && (_reader != nil)) {
         [_reader close];
         _reader = nil;
     }
@@ -279,7 +282,7 @@
 
 // MARK: - File Index Loading
 - (void)loadFileIndex {
-    NSInteger count = [_header.index count];
+    NSInteger count = _header.index.count;
     NSMutableArray<id<IPackedFileDescriptor>> *newFileIndex = [[NSMutableArray alloc] initWithCapacity:count];
     
     [_reader.baseStream seekToOffset:_header.index.offset origin:SeekOriginBegin];
@@ -291,7 +294,7 @@
     _fileindex = [newFileIndex copy];
     
     if (self.fileList != nil) {
-        self.fileList = self.fileList;
+        self.fileListFile = [[CompressedFileList alloc] initWithFileList:self.fileList package:self];
     }
 }
 

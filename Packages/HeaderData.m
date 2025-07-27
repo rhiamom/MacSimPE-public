@@ -6,7 +6,7 @@
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop               *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop               *
  *   rhiamom@mac.com                                                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -52,7 +52,7 @@
     self = [super init];
     if (self) {
         _lockIndexDuringLoad = NO;
-        _index = [[HeaderIndex alloc] initWithHeaderData:self];
+        _index = [[HeaderIndex alloc] initWithHeader:self];
         _hole = [[HeaderHole alloc] init];
         
         // Initialize ID to "DBPF"
@@ -63,9 +63,9 @@
         
         _majorVersion = 1;
         _minorVersion = 1;
-        _index.type = 7;
+        _index.iType = 7;
         
-        _indexType = IndexTypesLongFileIndex;
+        _indexType = ptLongFileIndex;
         
         // Initialize arrays to zero
         memset(_reserved00, 0, sizeof(_reserved00));
@@ -163,7 +163,7 @@
     _modified = [reader readInt32];
     
     // Read index information
-    _index.type = [reader readInt32];
+    _index.iType = [reader readInt32];
     if (!_lockIndexDuringLoad) {
         _index.count = [reader readInt32];
         _index.offset = [reader readUInt32];
@@ -208,7 +208,7 @@
     [writer writeInt32:_modified];
     
     // Write index information
-    [writer writeInt32:_index.type];
+    [writer writeInt32:_index.iType];
     [writer writeInt32:_index.count];
     [writer writeUInt32:_index.offset];
     [writer writeInt32:_index.size];

@@ -38,6 +38,8 @@
  * returns the Index Type of the File
  * @remarks This value should be 7
  */
-@property (nonatomic, assign) int32_t type;
+@property (nonatomic, assign) int32_t iType;
+@property (nonatomic, assign) int32_t count;
+@property (nonatomic, assign) uint32_t offset;
 
 @end

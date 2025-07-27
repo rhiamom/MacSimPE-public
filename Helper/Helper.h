@@ -54,9 +54,7 @@ extern NSString * const HelperPathSep;
 extern NSString * const HelperNeighborhoodPackage;
 
 // MARK: - Properties
-@property (class, nonatomic, strong) Registry *windowsRegistry;
 @property (class, nonatomic, strong) Parameters *commandlineParameters;
-@property (class, nonatomic, copy) NSString *profile;
 
 // MARK: - Run Mode Flags
 @property (class, nonatomic, assign) BOOL localMode;
@@ -183,24 +181,8 @@ extern NSString * const HelperNeighborhoodPackage;
 // MARK: - Plugin Loading
 + (BOOL)canLoadPlugin:(NSString *)flname;
 
-// MARK: - Language Support
-+ (NSInteger)getMatchingLanguage;
-
 // MARK: - Key/Shortcut Support
 + (NSString *)toKeys:(NSString *)shortcut;
-
-@end
-
-/**
- * App Preferences - similar to Windows Registry functionality
- */
-@interface AppPreferences : NSObject
-
-@property (class, nonatomic, assign) uint8_t languageCode;
-@property (class, nonatomic, assign) BOOL hiddenMode;
-@property (class, nonatomic, assign) BOOL useCache;
-@property (class, nonatomic, copy) NSString *languageCache;
-@property (class, nonatomic, assign) BOOL asynchronLoad;
 
 @end
 
@@ -221,9 +203,7 @@ extern NSString * const HelperNeighborhoodPackage;
 @property (class, nonatomic, readonly, copy) NSString *mruXREGW;
 @property (class, nonatomic, readonly, copy) NSString *mruXREG;
 
-
 + (NSString *)profilePath:(NSString *)s;
 + (NSString *)profilePath:(NSString *)s readOnly:(BOOL)readOnly;
 
 @end
-

@@ -48,14 +48,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) int64_t version;
 @property (nonatomic, assign) uint32_t created;
 @property (nonatomic, readonly) int32_t modified;
-@property (nonatomic, readonly) id<IPackageHeaderIndex> index;
+@property (nonatomic, readwrite, strong) id<IPackageHeaderIndex> index;
 @property (nonatomic, readonly) id<IPackageHeaderHoleIndex> holeIndex;
 @property (nonatomic, assign) IndexTypes indexType;
 @property (nonatomic, readonly) BOOL isVersion0101;
 
+
 // MARK: - Internal Properties (for File.m access)
 @property (nonatomic, readonly) HeaderIndex *headerIndex;  // Direct access to HeaderIndex
-@property (nonatomic, readonly) HeaderHole *hole;          // Direct access to HeaderHole
+@property (nonatomic, readonly) id<IPackageHeaderHoleIndex> hole;          // Direct access to HeaderHole
 
 // MARK: - Initialization
 - (instancetype)init;

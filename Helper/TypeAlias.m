@@ -37,7 +37,7 @@
 
 - (instancetype)initWithContainsFilename:(BOOL)containsFilename
                                shortName:(NSString *)shortName
-                                      id:(uint32_t)val
+                                      typeID:(uint32_t)val
                                     name:(NSString *)name {
     self = [super initWithId:val name:name];
     if (self) {
@@ -52,12 +52,12 @@
 
 - (instancetype)initWithContainsFilename:(BOOL)containsFilename
                                shortName:(NSString *)shortName
-                                      id:(uint32_t)val
+                                      typeID:(uint32_t)val
                                     name:(NSString *)name
                                extension:(NSString *)extension {
     return [self initWithContainsFilename:containsFilename
                                 shortName:shortName
-                                       id:val
+                                       typeID:val
                                      name:name
                                 extension:extension
                                     known:YES
@@ -66,7 +66,7 @@
 
 - (instancetype)initWithContainsFilename:(BOOL)containsFilename
                                shortName:(NSString *)shortName
-                                      id:(uint32_t)val
+                                      typeID:(uint32_t)val
                                     name:(NSString *)name
                                extension:(NSString *)extension
                                    known:(BOOL)known
@@ -84,7 +84,7 @@
 
 - (instancetype)initWithContainsFilename:(BOOL)containsFilename
                                shortName:(NSString *)shortName
-                                      id:(uint32_t)val
+                                      typeID:(uint32_t)val
                                     name:(NSString *)name
                                    known:(BOOL)known
                            noDecompForCache:(BOOL)noDecompForCache {
