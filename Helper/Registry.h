@@ -209,15 +209,3 @@ typedef NS_ENUM(NSInteger, ReportFormats) {
 
 @end
 
-// MARK: - MetaData (placeholder)
-@interface MetaData : NSObject
-@end
-
-// MARK: - Boolset (bit manipulation helper)
-@interface Boolset : NSObject
-
-- (instancetype)initWithValue:(uint32_t)value;
-- (BOOL)objectAtIndexedSubscript:(NSInteger)index;
-- (void)setObject:(BOOL)value atIndexedSubscript:(NSInteger)index;
-
-@end

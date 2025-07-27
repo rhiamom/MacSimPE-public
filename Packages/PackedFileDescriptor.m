@@ -34,6 +34,7 @@
 #import "IPackageHeader.h"
 #import "MetaData.h"
 #import "IPackedFileWrapper.h"
+#import "TGILoader.h"
 
 
 @implementation PackedFileDescriptorSimple
@@ -145,7 +146,7 @@
     pfd.offset = self.offset;
     pfd.size = self.size;
     pfd.subType = self.subType;
-    pfd.type = self.type;
+    pfd.type = self.pfdType;
     pfd.changed = self.changed;
     pfd.wasCompressed = self.wasCompressed;
     pfd.markForReCompress = self.markForReCompress;
@@ -210,14 +211,14 @@
 }
 
 - (NSString *)exportFileName {
-    return [NSString stringWithFormat:@"%@-%@", [Helper hexStringUInt:self.type], self.filename];
+    return [NSString stringWithFormat:@"%@-%@", [Helper hexStringUInt:self.pfdType], self.filename];
 }
 
 - (NSString *)path {
     if (_path == nil) {
         _path = [NSString stringWithFormat:@"%@ - %@",
-                [Helper hexStringUInt:self.type],
-                [Helper removeUnlistedCharacters:self.typeName.name allowed:HelperPathCharacters]];
+                [Helper hexStringUInt:self.pfdType],
+                [Helper removeUnlistedCharacters:self.pfdTypeName.name allowed:HelperPathCharacters]];
     }
     return _path;
 }
@@ -235,7 +236,7 @@
      HelperLbr];
     
     [xml appendFormat:@"%@%@<type>%@", HelperTab, HelperTab, HelperLbr];
-    [xml appendFormat:@"%@%@%@<number>%u</number>%@", HelperTab, HelperTab, HelperTab, self.type, HelperLbr];
+    [xml appendFormat:@"%@%@%@<number>%u</number>%@", HelperTab, HelperTab, HelperTab, self.pfdType, HelperLbr];
     [xml appendFormat:@"%@%@</type>%@", HelperTab, HelperTab, HelperLbr];
     [xml appendFormat:@"%@%@<classid>%u</classid>%@", HelperTab, HelperTab, self.subType, HelperLbr];
     [xml appendFormat:@"%@%@<group>%u</group>%@", HelperTab, HelperTab, self.group, HelperLbr];
@@ -248,7 +249,7 @@
 - (NSString *)description {
     NSString *name = [NSString stringWithFormat:@"%@: %@ - %@ - %@ - %@",
                      self.typeName.description,
-                     [Helper hexStringUInt:self.type],
+                     [Helper hexStringUInt:self.pfdType],
                      [Helper hexStringUInt:self.subType],
                      [Helper hexStringUInt:self.group],
                      [Helper hexStringUInt:self.instance]];
@@ -257,11 +258,11 @@
 }
 
 - (NSString *)getResDescString {
-    ResourceListUnnamedFormats format = (ResourceListUnnamedFormats)[AppPreferences resourceListUnknownDescriptionFormat];
+    ResourceListUnnamedFormats format = (ResourceListUnnamedFormats)[Registry resourceListUnknownDescriptionFormat];
     
     if (format == ResourceListUnnamedFormatsFullTGI) {
         return [NSString stringWithFormat:@"%@ - %@ - %@ - %@",
-                [Helper hexStringUInt:self.type],
+                [Helper hexStringUInt:self.pfdType],
                 [Helper hexStringUInt:self.subType],
                 [Helper hexStringUInt:self.group],
                 [Helper hexStringUInt:self.instance]];
@@ -281,22 +282,22 @@
 }
 
 - (NSString *)toResListString {
-    ResourceListFormats format = [AppPreferences resourceListFormat];
+    ResourceListFormats format = [Registry resourceListFormat];
     
     if (format == ResourceListFormatsShortTypeNames) {
-        return [NSString stringWithFormat:@"%@: %@", self.typeName.shortName, [self getResDescString]];
+        return [NSString stringWithFormat:@"%@: %@", self.pfdTypeName.shortName, [self getResDescString]];
     }
     
     if (format == ResourceListFormatsJustNames) {
-        return self.typeName.description;
+        return self.pfdTypeName.description;
     }
     
     if (format == ResourceListFormatsJustLongType) {
-        return self.typeName.description;
+        return self.pfdTypeName.description;
     }
     
     // Default: LongTypeNames
-    return [NSString stringWithFormat:@"%@: %@", self.typeName.description, [self getResDescString]];
+    return [NSString stringWithFormat:@"%@: %@", self.pfdTypeName.description, [self getResDescString]];
 }
 
 #pragma mark - Compare Methods
@@ -316,7 +317,7 @@
     }
     
     id<IPackedFileDescriptor> pfd = (id<IPackedFileDescriptor>)obj;
-    return ((self.type == pfd.type) && (self.longInstance == pfd.longInstance) &&
+    return ((self.pfdType == pfd.pfdType) && (self.longInstance == pfd.longInstance) &&
             (self.group == pfd.group) && (self.offset == pfd.offset));
 }
 
@@ -335,7 +336,7 @@
     }
     
     id<IPackedFileDescriptor> pfd = (id<IPackedFileDescriptor>)obj;
-    return ((self.type == pfd.type) && (self.longInstance == pfd.longInstance) && (self.group == pfd.group));
+    return ((self.pfdType == pfd.pfdType) && (self.longInstance == pfd.longInstance) && (self.group == pfd.group));
 }
 
 - (NSUInteger)hash {
@@ -465,7 +466,7 @@
 - (NSString *)exceptionString {
     return [NSString stringWithFormat:@"%@ (%@) - %@ - %@ - %@",
             self.typeName.name,
-            [Helper hexStringUInt:self.type],
+            [Helper hexStringUInt:self.pfdType],
             [Helper hexStringUInt:self.subType],
             [Helper hexStringUInt:self.group],
             [Helper hexStringUInt:self.instance]];

@@ -1,5 +1,5 @@
 //
-//  ClstWrapper.h
+//  IPackedFileSaveExtension.h
 //  MacSimpe
 //
 //  Created by Catherine Gramze on 7/27/25.
@@ -28,70 +28,54 @@
  ***************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import "AbstractWrapper.h"
-#import "IFileWrapper.h"
-#import "IFileWrapperSaveExtension.h"
 
 // Forward declarations
 @protocol IPackedFileDescriptor;
-@protocol IPackageFile;
-@class ClstItem;
+@class MemoryStream, BinaryWriter;
 
 /**
- * This is the actual FileWrapper for Compressed File Lists
+ * Protocol for File handlers that are able to save their content to a BinaryStream
+ *
+ * @note If you want to implement a Wrapper you must use the IFileWrapperSaveExtension protocol
  */
-@interface CompressedFileList : AbstractWrapper <IFileWrapper, IFileWrapperSaveExtension>
-
-// MARK: - Properties
+@protocol IPackedFileSaveExtension <NSObject>
 
 /**
- * Returns or Sets the type of the Index
+ * Returns the FileDescriptor Associated with the File
+ *
+ * @note When the Descriptor is returned, make sure that the userdata is not out of data
  */
-@property (nonatomic, assign) IndexTypes indexType;
+@property (nonatomic, strong) id<IPackedFileDescriptor> fileDescriptor;
 
 /**
- * Contains all available Items
+ * Returns the current Stream (the Data that is stored in the Attributes of the wrapper)
+ *
+ * @note This Property is used to process the synchronizeUserData command, and returns
+ * the BinaryStream representation of the current State of this Wrapper.
  */
-@property (nonatomic, strong) NSArray<ClstItem *> *items;
-
-// MARK: - Initialization
+@property (nonatomic, readonly, strong) MemoryStream *currentStateData;
 
 /**
- * Constructor
+ * true if the stored Data was changed but synchronizeUserData wasn't called
  */
-- (instancetype)init;
+@property (nonatomic, assign) BOOL changed;
 
 /**
- * Constructor
- * @param type Size of the Package Index
+ * Used to update the UserData contained in a Packed File
  */
-- (instancetype)initWithIndexType:(IndexTypes)type;
+- (void)synchronizeUserData;
 
 /**
- * Constructor, Initializes the Object with Data from the File
- * @param pfd The PackedFileDescriptor
- * @param package The Package File
+ * Saves the data represented by this Object to the writer
+ * @param writer The BinaryWriter
+ * @return The Size of the Data written
  */
-- (instancetype)initWithFileList:(id<IPackedFileDescriptor>)pfd package:(id<IPackageFile>)package;
-
-// MARK: - Methods
+- (NSInteger)save:(BinaryWriter *)writer;
 
 /**
- * Returns the Number of the File matching the passed Descriptor
- * @param pfd A PackedFileDescriptor
- * @return -1 if none was found or the index number of the first matching file
+ * Saves the data in the UserData Attribute of a PackedFileDescriptor
+ * @param pfd The Descriptor where you want to store the Data in
  */
-- (NSInteger)findFile:(id<IPackedFileDescriptor>)pfd;
-
-/**
- * Clears all items
- */
-- (void)clear;
-
-/**
- * Adds a new File to the Items
- * @param item the new File
- */
-- (void)add:(ClstItem *)item;
+- (void)saveToDescriptor:(id<IPackedFileDescriptor>)pfd;
 
 @end

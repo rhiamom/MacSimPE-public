@@ -8,7 +8,7 @@
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop               *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop         *
  *   rhiamom@mac.com                                                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -27,88 +27,166 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#import <Foundation/Foundation.h>
-#import "IAlias.h"
+#import "Alias.h"
+#import "Helper.h"
 
-/**
- * Connects a value with a name
- */
-@interface StaticAlias : NSObject <IAlias>
+// MARK: - StaticAlias Implementation
 
-/**
- * Stores arbitrary Data
- */
-@property (nonatomic, strong) NSArray *tag;
+@implementation StaticAlias {
+    uint32_t _typeID;
+}
 
-/**
- * The id Value
- */
-@property (nonatomic, readonly) uint32_t typeID;
+- (instancetype)initWithId:(uint32_t)val name:(NSString *)name {
+    return [self initWithId:val name:name tag:nil];
+}
 
-/**
- * The long Name
- */
-@property (nonatomic, copy) NSString *name;
+- (instancetype)initWithId:(uint32_t)val name:(NSString *)name tag:(NSArray *)tag {
+    self = [super init];
+    if (self) {
+        _typeID = val;
+        _name = [name copy];
+        _tag = tag;
+    }
+    return self;
+}
 
-/**
- * Constructor of the class
- * @param val The id
- * @param name The name
- */
-- (instancetype)initWithId:(uint32_t)val name:(NSString *)name;
+- (uint32_t)typeID {
+    return _typeID;
+}
 
-/**
- * Constructor of the class
- * @param val The id
- * @param name The name
- * @param tag Arbitrary data array
- */
-- (instancetype)initWithId:(uint32_t)val name:(NSString *)name tag:(NSArray *)tag;
+- (NSString *)description {
+    return self.name ?: [NSString stringWithFormat:@"0x%08X", self.typeID];
+}
+
+- (void)dealloc {
+    // Cleanup
+    _tag = nil;
+    _name = nil;
+}
 
 @end
 
-/**
- * Connects a value with a name (with formatting template support)
- */
-@interface Alias : StaticAlias
+// MARK: - Alias Implementation
 
-/**
- * Constructor of the class
- * @param val The id
- * @param name The name
- */
-- (instancetype)initWithId:(uint32_t)val name:(NSString *)name;
+@implementation Alias {
+    NSString *_template;
+}
 
-/**
- * Constructor of the class
- * @param val The id
- * @param name The name
- * @param tag Arbitrary data array
- */
-- (instancetype)initWithId:(uint32_t)val name:(NSString *)name tag:(NSArray *)tag;
++ (NSString *)defaultTemplate {
+#ifdef DEBUG
+    return @"{name} (0x{id})";
+#else
+    return @"{name} (0x{id})";
+#endif
+}
 
-/**
- * Constructor of the class
- * @param val The id
- * @param name The name
- * @param template The toString Template
- */
-- (instancetype)initWithId:(uint32_t)val name:(NSString *)name template:(NSString *)template;
+- (instancetype)initWithId:(uint32_t)val name:(NSString *)name {
+    return [self initWithId:val name:name template:[Alias defaultTemplate]];
+}
 
-/**
- * Constructor of the class
- * @param val The id
- * @param name The name
- * @param tag Arbitrary data array
- * @param template The toString Template
- */
-- (instancetype)initWithId:(uint32_t)val name:(NSString *)name tag:(NSArray *)tag template:(NSString *)template;
+- (instancetype)initWithId:(uint32_t)val name:(NSString *)name tag:(NSArray *)tag {
+    return [self initWithId:val name:name tag:tag template:[Alias defaultTemplate]];
+}
 
-/**
- * Load a List of Aliases from an XML File
- * @param filename Name of the File
- * @return The IAlias Array
- */
-+ (NSArray<id<IAlias>> *)loadFromXml:(NSString *)filename;
+- (instancetype)initWithId:(uint32_t)val name:(NSString *)name template:(NSString *)template {
+    return [self initWithId:val name:name tag:nil template:template];
+}
+
+- (instancetype)initWithId:(uint32_t)val name:(NSString *)name tag:(NSArray *)tag template:(NSString *)template {
+    self = [super initWithId:val name:name tag:tag];
+    if (self) {
+        _template = [template copy];
+    }
+    return self;
+}
+
+- (NSString *)description {
+    NSMutableString *ret = [_template mutableCopy];
+    
+    [ret replaceOccurrencesOfString:@"{name}"
+                         withString:self.name ?: @""
+                            options:0
+                              range:NSMakeRange(0, ret.length)];
+    
+    [ret replaceOccurrencesOfString:@"{id}"
+                         withString:[NSString stringWithFormat:@"%X", self.typeID]
+                            options:0
+                              range:NSMakeRange(0, ret.length)];
+    
+    if (self.tag) {
+        for (NSUInteger i = 0; i < self.tag.count; i++) {
+            id object = self.tag[i];
+            NSString *placeholder = [NSString stringWithFormat:@"{%lu}", (unsigned long)i];
+            NSString *value = object ? [object description] : @"";
+            
+            [ret replaceOccurrencesOfString:placeholder
+                                 withString:value
+                                    options:0
+                                      range:NSMakeRange(0, ret.length)];
+        }
+    }
+    
+    return [ret copy];
+}
+
++ (NSArray<id<IAlias>> *)loadFromXml:(NSString *)filename {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filename]) {
+        return @[];
+    }
+    
+    @try {
+        NSError *error;
+        NSData *xmlData = [NSData dataWithContentsOfFile:filename];
+        if (!xmlData) return @[];
+        
+        NSXMLDocument *xmlDoc = [[NSXMLDocument alloc] initWithData:xmlData options:0 error:&error];
+        if (!xmlDoc) return @[];
+        
+        NSArray *aliasNodes = [xmlDoc nodesForXPath:@"//alias" error:&error];
+        if (!aliasNodes) return @[];
+        
+        NSMutableArray<id<IAlias>> *list = [NSMutableArray array];
+        
+        for (NSXMLElement *aliasNode in aliasNodes) {
+            NSArray *itemNodes = [aliasNode nodesForXPath:@"item" error:&error];
+            
+            for (NSXMLElement *itemNode in itemNodes) {
+                NSXMLNode *valueAttr = [itemNode attributeForName:@"value"];
+                if (!valueAttr) continue;
+                
+                NSString *valueString = [valueAttr stringValue];
+                if (!valueString) continue;
+                
+                valueString = [valueString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                
+                uint32_t val = 0;
+                if ([valueString hasPrefix:@"0x"]) {
+                    NSScanner *scanner = [NSScanner scannerWithString:valueString];
+                    [scanner setScanLocation:2]; // Skip "0x"
+                    unsigned int hexValue;
+                    if ([scanner scanHexInt:&hexValue]) {
+                        val = (uint32_t)hexValue;
+                    }
+                } else {
+                    val = (uint32_t)[valueString integerValue];
+                }
+                
+                NSString *name = [itemNode stringValue];
+                if (name) {
+                    name = [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                    Alias *alias = [[Alias alloc] initWithId:val name:name];
+                    [list addObject:alias];
+                }
+            }
+        }
+        
+        return [list copy];
+        
+    } @catch (NSException *exception) {
+        [Helper exceptionMessageWithString:[NSString stringWithFormat:@"Error loading XML: %@", exception.reason]];
+    }
+    
+    return @[];
+}
 
 @end

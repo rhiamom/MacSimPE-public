@@ -39,6 +39,9 @@
 #import "IPackageHeaderIndex.h"
 #import "ClstWrapper.h"
 #import <Foundation/Foundation.h>
+#import "Registry.h"
+
+const uint32_t FILELIST_TYPE = 0xE86B1EEF;
 
 @interface File () {
     // Private instance variables (matching C# fields)
@@ -68,8 +71,13 @@
 // MARK: - Properties
 - (BinaryReader *)reader {
     if (_reader != nil) {
-        // Check if reader is still valid (equivalent to C# logic)
-        // TODO: Add stream validation
+        if (_reader.baseStream == nil) {
+            _reader = nil;
+        } else {
+            if (![_reader.baseStream canRead]) {
+                _reader = nil;
+            }
+        }
     }
     return _reader;
 }
@@ -79,8 +87,15 @@
 }
 
 - (void)setPersistent:(BOOL)persistent {
+    // The C# implementation is commented out, so we just set the value
     _persistent = persistent;
-    // TODO: Add reader management logic
+    
+    /*
+    // This is the commented-out C# logic:
+    // if (!persistent && value) this.OpenReader();
+    // else if (persistent && !value) this.CloseReader();
+    // persistent = value;
+    */
 }
 
 - (PackageBaseType)pType {
@@ -123,8 +138,8 @@
 
 - (uint32_t)fileGroupHash {
     if (_fhg == 0) {
-        // TODO: Calculate hash from filename
-        // _fhg = (uint32_t)(Hashes.FileGroupHash(Path.GetFileNameWithoutExtension(FileName)) | 0x7f000000);
+        NSString *fileNameWithoutExtension = [self.fileName stringByDeletingPathExtension];
+        _fhg = (uint32_t)([Hashes fileGroupHash:fileNameWithoutExtension] | 0x7f000000);
     }
     return _fhg;
 }
@@ -162,25 +177,24 @@
 }
 
 + (instancetype)loadFromFile:(NSString *)filename {
-    // TODO: Use PackageMaintainer
-    return [[self alloc] initWithFileName:filename];
+    return [PackageMaintainer.maintainer loadPackageFromFile:filename sync:NO];
 }
 
 + (instancetype)loadFromFile:(NSString *)filename sync:(BOOL)sync {
-    // TODO: Use PackageMaintainer with sync parameter
-    return [[self alloc] initWithFileName:filename];
+    return [PackageMaintainer.maintainer loadPackageFromFile:filename sync:sync];
 }
 
 + (instancetype)loadFromStream:(BinaryReader *)br {
-    // TODO: Return GeneratableFile instead
-    return [[self alloc] initWithBinaryReader:br];
+    return [[GeneratableFile alloc] initWithBinaryReader:br];
 }
 
 + (instancetype)createNew {
-    // TODO: Implement new empty package creation
-    return [[self alloc] initWithBinaryReader:nil];
+    GeneratableFile *gf = [GeneratableFile loadFromStream:[[BinaryReader alloc] initWithStream:[[GeneratableFile loadFromStream:nil] build]]];
+    if ([UserVerification haveValidUserId]) {
+        gf.header.created = [UserVerification userId];
+    }
+    return gf;
 }
-
 // MARK: - Basic Methods (stubs for now)
 // Replace the stub methods in File.m with these implementations:
 
@@ -209,17 +223,14 @@
 }
 
 - (void)reloadFromFile:(NSString *)filename {
-    _persistent = NO; // TODO: Get from settings
+    _persistent = [AppPreferences persistent]; // Get from settings
+    StreamItem *si = [StreamFactory useStream:filename access:FileAccessRead];
     
-    NSError *error;
-    NSData *data = [NSData dataWithContentsOfFile:filename options:0 error:&error];
-    
-    if (data != nil) {
+    if (si.streamState != StreamStateRemoved) {
+        [si.fileStream seekToOffset:0 origin:SeekOriginBegin];
         _pType = PackageBaseTypeFilename;
         _flname = filename;
-        
-        MemoryStream *stream = [[MemoryStream alloc] initWithData:data];
-        BinaryReader *br = [[BinaryReader alloc] initWithStream:stream];
+        BinaryReader *br = [[BinaryReader alloc] initWithStream:si.fileStream];
         [self openByStream:br];
     } else {
         _pType = PackageBaseTypeStream;
@@ -307,7 +318,7 @@
     
     [array addObject:item];
     
-    if (item.type == FILELIST_TYPE) {
+    if (item.pfdType == FILELIST_TYPE) {
         _filelist = item;
     }
 }
@@ -355,78 +366,209 @@
         }
     }
     
-    // TODO: Add PackageMaintainer cleanup if needed
+    if ([PackageMaintainer.maintainer.fileIndex containsObject:self.saveFileName]) {
+        [PackageMaintainer.maintainer.fileIndex clear];
+    }
 }
 
 #pragma mark - Missing IPackageFile Protocol Methods
 
 - (id<IPackageFile>)clone {
-    // TODO: Implement clone method
-    return nil;
+    File *fl = (File *)[self newCloneBase];
+    for (id<IPackedFileDescriptor> pfd in self.index) {
+        id<IPackedFileDescriptor> npfd = [pfd clone];
+        npfd.userData = [self readDescriptor:pfd].uncompressedData;
+        
+        [fl addDescriptor:npfd];
+    }
+
+    fl->_header = (HeaderData *)[self.header clone];
+    fl->_lcs = self->_lcs;
+    if (self->_filelist != nil) {
+        fl->_filelist = (PackedFileDescriptor *)[fl findFileWithDescriptor:self->_filelist];
+        fl->_filelistfile = [[CompressedFileList alloc] initWithIndexType:fl.header.indexType];
+    }
+
+    return (id<IPackageFile>)fl;
 }
 
 - (id<IPackedFileDescriptor>)getFileIndex:(uint32_t)index {
-    // TODO: Implement
-    return nil;
+    if ((index >= _fileindex.count) || (index < 0)) return nil;
+    return _fileindex[index];
 }
 
 - (void)remove:(id<IPackedFileDescriptor>)pfd {
-    // TODO: Implement
+    if (_fileindex == nil) return;
+    
+    NSMutableArray *list = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < _fileindex.count; i++) {
+        if (_fileindex[i] != pfd) {
+            [list addObject:_fileindex[i]];
+        }
+    }
+    
+    NSArray *newindex = [list copy];
+    _header.index.count = newindex.count;
+    _fileindex = newindex;
+
+    [self unlinkResourceDescriptor:pfd];
+    
+    [self fireIndexEvent];
+    [self fireRemoveEvent];
 }
 
 - (void)removeMarked {
-    // TODO: Implement
+    NSMutableArray *list = [[NSMutableArray alloc] init];
+    for (id<IPackedFileDescriptor> pfd in _fileindex) {
+        if (![pfd markForDelete]) {
+            [list addObject:pfd];
+        } else {
+            ((PackedFileDescriptor *)pfd).packageInternalUserDataChange = nil;
+            [pfd removeDescriptionChangedTarget:self action:@selector(resourceDescriptionChanged:)];
+        }
+    }
+
+    NSArray *pfds = [list copy];
+
+    BOOL changed = (_fileindex.count != pfds.count);
+    _fileindex = pfds;
+    _header.index.count = _fileindex.count;
+
+    if (changed) {
+        [self fireRemoveEvent];
+        [self fireIndexEvent];
+    }
 }
 
 - (void)addDescriptors:(NSArray<id<IPackedFileDescriptor>> *)pfds {
-    // TODO: Implement
+    for (id<IPackedFileDescriptor> pfd in pfds) {
+        [self addDescriptor:pfd];
+    }
 }
 
-- (id<IPackedFileDescriptor>)addWithType:(uint32_t)type subtype:(uint32_t)subtype group:(uint32_t)group instance:(uint32_t)instance {
-    // TODO: Implement
-    return nil;
+- (id<IPackedFileDescriptor>)addWithType:(uint32_t)pfdType subtype:(uint32_t)subtype group:(uint32_t)group instance:(uint32_t)instance {
+    PackedFileDescriptor *pfd = [[PackedFileDescriptor alloc] init];
+    pfd.pfdType = pfdType;
+    pfd.subType = subtype;
+    pfd.group = group;
+    pfd.instance = instance;
+
+    [self addDescriptor:pfd];
+
+    return pfd;
 }
 
 - (void)addDescriptor:(id<IPackedFileDescriptor>)pfd {
-    // TODO: Implement
+    [self addDescriptor:pfd isNew:NO];
 }
 
 - (void)addDescriptor:(id<IPackedFileDescriptor>)pfd isNew:(BOOL)isNew {
-    // TODO: Implement
+    NSArray<id<IPackedFileDescriptor>> *newindex = nil;
+    if (_fileindex != nil) {
+        NSMutableArray *mutableArray = [_fileindex mutableCopy];
+        [mutableArray addObject:pfd];
+        newindex = [mutableArray copy];
+    } else {
+        newindex = @[pfd];
+    }
+
+    if (isNew) {
+        ((PackedFileDescriptor *)pfd).offset = (uint32_t)_higestoffset;
+    }
+
+    _higestoffset = MAX(_higestoffset, ((PackedFileDescriptor *)pfd).offset + ((PackedFileDescriptor *)pfd).size);
+    _header.index.count = newindex.count;
+    _fileindex = newindex;
+
+    ((PackedFileDescriptor *)pfd).packageInternalUserDataChange = ^(id<IPackedFileDescriptor> sender) {
+        [self resourceChanged:sender];
+    };
+    [pfd addDescriptionChangedTarget:self action:@selector(resourceDescriptionChanged:)];
+    [self fireIndexEvent];
+    [self fireAddEvent];
 }
 
 - (void)copyDescriptors:(id<IPackageFile>)package {
-    // TODO: Implement
+    for (id<IPackedFileDescriptor> pfd in package.index) {
+        id<IPackedFileDescriptor> npfd = [pfd clone];
+        npfd.userData = [package readDescriptor:pfd].uncompressedData;
+        [self addDescriptor:npfd isNew:YES];
+    }
 }
 
-- (id<IPackedFileDescriptor>)newDescriptorWithType:(uint32_t)type subtype:(uint32_t)subtype group:(uint32_t)group instance:(uint32_t)instance {
-    // TODO: Implement
-    return nil;
+- (id<IPackedFileDescriptor>)newDescriptorWithType:(uint32_t)pfdType subtype:(uint32_t)subtype group:(uint32_t)group instance:(uint32_t)instance {
+    PackedFileDescriptor *pfd = [[PackedFileDescriptor alloc] init];
+    pfd.pfdType = pfdType;
+    pfd.subtype = subtype;
+    pfd.group = group;
+    pfd.instance = instance;
+
+    return pfd;
 }
 
 - (NSArray<id<IPackedFileDescriptor>> *)findFile:(NSString *)filename {
-    // TODO: Implement
-    return @[];
+    filename = [Hashes stripHashFromName:filename];
+    uint32_t inst = [Hashes instanceHash:filename];
+    uint32_t st = [Hashes subTypeHash:filename];
+
+    NSArray<id<IPackedFileDescriptor>> *ret = [self findFileWithSubtype:st instance:inst];
+    if (ret.count == 0) {
+        ret = [self findFileWithSubtype:0 instance:inst];
+    }
+    return ret;
 }
 
-- (NSArray<id<IPackedFileDescriptor>> *)findFile:(NSString *)filename type:(uint32_t)type {
-    // TODO: Implement
-    return @[];
+- (NSArray<id<IPackedFileDescriptor>> *)findFile:(NSString *)filename type:(uint32_t)pfdType {
+    filename = [Hashes stripHashFromName:filename];
+    uint32_t inst = [Hashes instanceHash:filename];
+    uint32_t st = [Hashes subTypeHash:filename];
+
+    NSArray<id<IPackedFileDescriptor>> *ret = [self findFileWithType:pfdType subtype:st instance:inst];
+    if (ret.count == 0) {
+        ret = [self findFileWithType:pfdType subtype:0 instance:inst];
+    }
+    return ret;
+}
+- (NSArray<id<IPackedFileDescriptor>> *)findFiles:(uint32_t)pfdType {
+    NSMutableArray *list = [[NSMutableArray alloc] init];
+
+    if (_fileindex != nil) {
+        for (NSInteger i = 0; i < _fileindex.count; i++) {
+            id<IPackedFileDescriptor> pfd = _fileindex[i];
+            if (pfd.pfdType == pfdType) {
+                [list addObject:pfd];
+            }
+        }
+    }
+
+    return [list copy];
 }
 
-- (NSArray<id<IPackedFileDescriptor>> *)findFiles:(uint32_t)type {
-    // TODO: Implement
-    return @[];
-}
 
 - (NSArray<id<IPackedFileDescriptor>> *)findFileWithSubtype:(uint32_t)subtype instance:(uint32_t)instance {
-    // TODO: Implement
-    return @[];
+    NSMutableArray *list = [[NSMutableArray alloc] init];
+
+    for (id<IPackedFileDescriptor> pfd in _fileindex) {
+        if ((pfd.instance == instance) && (pfd.subType == subtype)) {
+            [list addObject:pfd];
+        }
+    }
+
+    return [list copy];
 }
 
-- (NSArray<id<IPackedFileDescriptor>> *)findFileWithType:(uint32_t)type subtype:(uint32_t)subtype instance:(uint32_t)instance {
-    // TODO: Implement
-    return @[];
+- (NSArray<id<IPackedFileDescriptor>> *)findFileWithType:(uint32_t)pfdType subtype:(uint32_t)subtype instance:(uint32_t)instance {
+    NSMutableArray *list = [[NSMutableArray alloc] init];
+
+    if (_fileindex != nil) {
+        for (id<IPackedFileDescriptor> pfd in _fileindex) {
+            if ((pfd.pfdType == pfdType) && (pfd.instance == instance) && (pfd.subType == subtype)) {
+                [list addObject:pfd];
+            }
+        }
+    }
+
+    return [list copy];
 }
 
 - (id<IPackedFileDescriptor>)findFileWithDescriptor:(id<IPackedFileDescriptor>)pfd {

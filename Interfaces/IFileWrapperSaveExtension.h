@@ -1,14 +1,14 @@
 //
-//  IAlias.h
+//  IFileWrapperSaveExtension.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 7/26/25.
+//  Created by Catherine Gramze on 7/27/25.
 //
 /***************************************************************************
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop               *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop         *
  *   rhiamom@mac.com                                                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,31 +22,17 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program, if not, write to the                         *
+ *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
 #import <Foundation/Foundation.h>
+#import "IPackedFileSaveExtension.h"
 
 /**
- * Protocol for Value - Name Aliases
+ * Protocol for File handlers that are able to save their content to a BinaryStream
  */
-@protocol IAlias <NSObject>
-
-/**
- * The id Value
- */
-@property (nonatomic, readonly) uint32_t typeID;
-
-/**
- * The long Name
- */
-@property (nonatomic, readonly, copy) NSString *name;
-
-/**
- * Can be used to Store Meta Informations with an Alias Entry
- */
-@property (nonatomic, strong) NSArray *tag;
+@protocol IFileWrapperSaveExtension <IPackedFileSaveExtension>
 
 @end

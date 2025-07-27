@@ -73,6 +73,8 @@
 		B62437F12E35A35C0052119F /* additionalcareers.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = additionalcareers.xml; sourceTree = "<group>"; };
 		B632A4362E36A3160024810C /* ClstWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClstWrapper.h; sourceTree = "<group>"; };
 		B632A4372E36A3AD0024810C /* ClstWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClstWrapper.m; sourceTree = "<group>"; };
+		B632A4382E36B8AD0024810C /* IFileWrapperSaveExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFileWrapperSaveExtension.h; sourceTree = "<group>"; };
+		B632A4392E36B9120024810C /* IPackedFileSaveExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileSaveExtension.h; sourceTree = "<group>"; };
 		B64E6BA42E353091009AD0A7 /* IAlias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAlias.h; sourceTree = "<group>"; };
 		B64E6BA52E353151009AD0A7 /* Alias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alias.h; sourceTree = "<group>"; };
 		B64E6BA62E3531DF009AD0A7 /* Alias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Alias.m; sourceTree = "<group>"; };
@@ -84,14 +86,14 @@
 		B64E6BB02E353A75009AD0A7 /* GenericWrapperFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GenericWrapperFactory.m; sourceTree = "<group>"; };
 		B64E6BB12E353AE5009AD0A7 /* TreeWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TreeWrapper.h; sourceTree = "<group>"; };
 		B64E6BB22E353B3C009AD0A7 /* TreeWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TreeWrapper.m; sourceTree = "<group>"; };
-		B64E6BB42E353EA7009AD0A7 /* AbstractHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractHandler.h; sourceTree = "<group>"; };
-		B64E6BB52E353F46009AD0A7 /* AbstractHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractHandler.m; sourceTree = "<group>"; };
+		B64E6BB42E353EA7009AD0A7 /* AbstractWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractWrapper.h; sourceTree = "<group>"; };
+		B64E6BB52E353F46009AD0A7 /* AbstractWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractWrapper.m; sourceTree = "<group>"; };
 		B64E6BB62E3540EF009AD0A7 /* AbstractFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractFactory.h; sourceTree = "<group>"; };
 		B64E6BB72E354348009AD0A7 /* AbstractFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractFactory.m; sourceTree = "<group>"; };
 		B64E6BB82E3543BB009AD0A7 /* AbstractWrapperInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractWrapperInfo.h; sourceTree = "<group>"; };
 		B64E6BB92E3543E2009AD0A7 /* AbstractWrapperInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractWrapperInfo.m; sourceTree = "<group>"; };
 		B64E6BBA2E354556009AD0A7 /* IWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapper.h; sourceTree = "<group>"; };
-		B64E6BBC2E354958009AD0A7 /* IPluginFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPluginFileWrapper.h; sourceTree = "<group>"; };
+		B64E6BBC2E354958009AD0A7 /* IFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFileWrapper.h; sourceTree = "<group>"; };
 		B64E6BBD2E354A11009AD0A7 /* IPackedFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileWrapper.h; sourceTree = "<group>"; };
 		B64E6BBE2E354AD1009AD0A7 /* IPackedFileName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileName.h; sourceTree = "<group>"; };
 		B64E6BBF2E3571AF009AD0A7 /* Registry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Registry.h; sourceTree = "<group>"; };
@@ -222,8 +224,8 @@
 		B64E6BB32E353E8B009AD0A7 /* HandlerCommon */ = {
 			isa = PBXGroup;
 			children = (
-				B64E6BB42E353EA7009AD0A7 /* AbstractHandler.h */,
-				B64E6BB52E353F46009AD0A7 /* AbstractHandler.m */,
+				B64E6BB42E353EA7009AD0A7 /* AbstractWrapper.h */,
+				B64E6BB52E353F46009AD0A7 /* AbstractWrapper.m */,
 				B64E6BB62E3540EF009AD0A7 /* AbstractFactory.h */,
 				B64E6BB72E354348009AD0A7 /* AbstractFactory.m */,
 				B64E6BB82E3543BB009AD0A7 /* AbstractWrapperInfo.h */,
@@ -325,8 +327,10 @@
 				B6CDCCBD2E34665C004FDF82 /* IPackageFile.h */,
 				B64E6BA42E353091009AD0A7 /* IAlias.h */,
 				B64E6BBA2E354556009AD0A7 /* IWrapper.h */,
-				B64E6BBC2E354958009AD0A7 /* IPluginFileWrapper.h */,
+				B64E6BBC2E354958009AD0A7 /* IFileWrapper.h */,
 				B64E6BBD2E354A11009AD0A7 /* IPackedFileWrapper.h */,
+				B632A4382E36B8AD0024810C /* IFileWrapperSaveExtension.h */,
+				B632A4392E36B9120024810C /* IPackedFileSaveExtension.h */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
