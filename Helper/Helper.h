@@ -8,7 +8,7 @@
  *   Copyright (C) 2005 by Ambertation                                                                                                    *
  *   quaxi@ambertation.de                                                                                                               *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop                                                              *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop                                                              *
  *   rhiamom@mac.com                                                                                                                          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify                                                 *
@@ -29,7 +29,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class BinaryReader, Registry, Parameters, TGILoader;
+@class BinaryReader, Registry, Parameters, TGILoader, Boolset, MetaData, PathProvider;
 
 /**
  * Determines the Executable that was started
@@ -178,12 +178,29 @@ extern NSString * const HelperNeighborhoodPackage;
 // MARK: - Exception Handling
 + (void)exceptionMessage:(NSError *)error;
 + (void)exceptionMessage:(NSString *)message error:(NSError *)error;
++ (void)exceptionMessageWithString:(NSString *)message;
 
 // MARK: - Plugin Loading
 + (BOOL)canLoadPlugin:(NSString *)flname;
 
 // MARK: - Language Support
 + (NSInteger)getMatchingLanguage;
+
+// MARK: - Key/Shortcut Support
++ (NSString *)toKeys:(NSString *)shortcut;
+
+@end
+
+/**
+ * App Preferences - similar to Windows Registry functionality
+ */
+@interface AppPreferences : NSObject
+
+@property (class, nonatomic, assign) uint8_t languageCode;
+@property (class, nonatomic, assign) BOOL hiddenMode;
+@property (class, nonatomic, assign) BOOL useCache;
+@property (class, nonatomic, copy) NSString *languageCache;
+@property (class, nonatomic, assign) BOOL asynchronLoad;
 
 @end
 
@@ -204,4 +221,9 @@ extern NSString * const HelperNeighborhoodPackage;
 @property (class, nonatomic, readonly, copy) NSString *mruXREGW;
 @property (class, nonatomic, readonly, copy) NSString *mruXREG;
 
+
++ (NSString *)profilePath:(NSString *)s;
++ (NSString *)profilePath:(NSString *)s readOnly:(BOOL)readOnly;
+
 @end
+

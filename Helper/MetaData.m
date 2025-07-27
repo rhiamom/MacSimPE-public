@@ -8,7 +8,7 @@
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop               *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop               *
  *   rhiamom@mac.com                                                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -146,54 +146,53 @@
     // Hard-coded common types until TGI loader is working
     switch (type) {
         case 0x1C4A276C:
-            return [[TypeAlias alloc] initWithContainsFlName:NO
-                                                   shortName:@"TXTR"
-                                                         val:type
-                                                        name:@"Texture"
-                                                   extension:@"txtr"];
+            return [[TypeAlias alloc] initWithContainsFilename:NO
+                                                     shortName:@"TXTR"
+                                                            id:type
+                                                          name:@"Texture"
+                                                     extension:@"txtr"];
         case 0x49596978:
-            return [[TypeAlias alloc] initWithContainsFlName:NO
-                                                   shortName:@"TXMT"
-                                                         val:type
-                                                        name:@"Texture Material"
-                                                   extension:@"txmt"];
+            return [[TypeAlias alloc] initWithContainsFilename:NO
+                                                     shortName:@"TXMT"
+                                                            id:type
+                                                          name:@"Texture Material"
+                                                     extension:@"txmt"];
         case 0x4C697E5A:
-            return [[TypeAlias alloc] initWithContainsFlName:NO
-                                                   shortName:@"MMAT"
-                                                         val:type
-                                                        name:@"Material Definition"
-                                                   extension:@"mmat"];
+            return [[TypeAlias alloc] initWithContainsFilename:NO
+                                                     shortName:@"MMAT"
+                                                            id:type
+                                                          name:@"Material Definition"
+                                                     extension:@"mmat"];
         case 0x7BA3838C:
-                    return [[TypeAlias alloc] initWithContainsFlName:NO
-                                                           shortName:@"GMND"
-                                                                 val:type
-                                                                name:@"Geometric Node"
-                                                           extension:@"gmnd"];
-                case 0x42484156:
-                    return [[TypeAlias alloc] initWithContainsFlName:NO
-                                                           shortName:@"BHAV"
-                                                                 val:type
-                                                                name:@"Behavior"
-                                                           extension:@"bhav"];
-                case 0x4F424A44:
-                    return [[TypeAlias alloc] initWithContainsFlName:NO
-                                                           shortName:@"OBJD"
-                                                                 val:type
-                                                                name:@"Object Definition"
-                                                           extension:@"objd"];
-                case 0xE86B1EEF:
-                    return [[TypeAlias alloc] initWithContainsFlName:NO
-                                                           shortName:@"DIR"
-                                                                 val:type
-                                                                name:@"Directory"
-                                                           extension:@"dir"];
-                default:
-                    return [[TypeAlias alloc] initWithContainsFlName:NO
-                                                           shortName:@"UNK"
-                                                                 val:type
-                                                                name:[NSString stringWithFormat:@"0x%08X", type]
-                                                           extension:@"dat"];
-            }
-        }
-
+            return [[TypeAlias alloc] initWithContainsFilename:NO
+                                                     shortName:@"GMND"
+                                                            id:type
+                                                          name:@"Geometric Node"
+                                                     extension:@"gmnd"];
+        case 0x42484156:
+            return [[TypeAlias alloc] initWithContainsFilename:NO
+                                                     shortName:@"BHAV"
+                                                            id:type
+                                                          name:@"Behavior"
+                                                     extension:@"bhav"];
+        case 0x4F424A44:
+            return [[TypeAlias alloc] initWithContainsFilename:NO
+                                                     shortName:@"OBJD"
+                                                            id:type
+                                                          name:@"Object Definition"
+                                                     extension:@"objd"];
+        case 0xE86B1EEF:
+            return [[TypeAlias alloc] initWithContainsFilename:NO
+                                                     shortName:@"DIR"
+                                                            id:type
+                                                          name:@"Directory"
+                                                     extension:@"dir"];
+        default:
+            return [[TypeAlias alloc] initWithContainsFilename:NO
+                                                     shortName:@"UNK"
+                                                            id:type
+                                                          name:[NSString stringWithFormat:@"0x%08X", type]
+                                                     extension:@"dat"];
+    }
+}
         @end

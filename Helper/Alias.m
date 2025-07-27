@@ -43,7 +43,7 @@
 /**
  * The id Value
  */
-@property (nonatomic, readonly) uint32_t id;
+@property (nonatomic, readonly) uint32_t typeID;
 
 /**
  * The long Name

@@ -4,9 +4,64 @@
 //
 //  Created by Catherine Gramze on 7/26/25.
 //
+/***************************************************************************
+ *   Copyright (C) 2005 by Ambertation                                                                                                    *
+ *   quaxi@ambertation.de                                                                                                               *
+ *                                                                         *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop                                                    *
+ *   rhiamom@mac.com                                                                                                                          *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify                                                 *
+ *   it under the terms of the GNU General Public License as published by                                             *
+ *   the Free Software Foundation; either version 2 of the License, or                                                     *
+ *   (at your option) any later version.                                                                                                        *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,                                                             *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of                                            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                                    *
+ *   GNU General Public License for more details.                                                                                   *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License                                              *
+ *   along with this program, if not, write to the                                                                                        *
+ *   Free Software Foundation, Inc.,                                                                                                         *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.                                                          *
+ *****************************************************************************************************************/
 
-#ifndef TGILoader_h
-#define TGILoader_h
+#import <Foundation/Foundation.h>
 
+@class TypeAlias;
 
-#endif /* TGILoader_h */
+/**
+ * Used to build the List of known TGI Types
+ */
+@interface TGILoader : NSObject
+
+/**
+ * Shared instance
+ */
+@property (class, nonatomic, strong) TGILoader *shared;
+
+/**
+ * Create a new Instance
+ * @param filename The file that contains the TGI definition
+ */
+- (instancetype)initWithFilename:(NSString *)filename;
+
+/**
+ * Create a new Instance from the default File
+ */
+- (instancetype)init;
+
+/**
+ * Returns the Information about the given Type (or nil if the Type is not known!)
+ * @param type The type to look up
+ * @returns TypeAlias for the type, or nil if not found
+ */
+- (TypeAlias *)getByType:(uint32_t)type;
+
+/**
+ * Returns a List of all available FileTypes
+ */
+@property (nonatomic, readonly, copy) NSArray<TypeAlias *> *fileTypes;
+
+@end

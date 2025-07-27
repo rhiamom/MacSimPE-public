@@ -8,7 +8,7 @@
  *   Copyright (C) 2005 by Ambertation                                                                                                    *
  *   quaxi@ambertation.de                                                                                                               *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop                                                              *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop                                                    *
  *   rhiamom@mac.com                                                                                                                          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify                                                 *

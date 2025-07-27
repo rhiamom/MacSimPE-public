@@ -28,10 +28,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  **************************************************************************/
 
-
+#import "TypeAlias.h"
 #import <Foundation/Foundation.h>
 
-@class TypeAlias;
 
 // MARK: - Core Enumerations
 

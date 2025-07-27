@@ -8,7 +8,7 @@
  *   Copyright (C) 2005 by Ambertation                                                                                                    *
  *   quaxi@ambertation.de                                                                                                               *
  *                                                                         *
- *   Swift translation Copyright (C) 2025 by GramzeSweatShop                                                              *
+ *   Objective C translation Copyright (C) 2025 by GramzeSweatShop                                                              *
  *   rhiamom@mac.com                                                                                                                          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify                                                 *
@@ -33,6 +33,11 @@
 #import "Parameters.h"
 #import "TGILoader.h"
 #import "MemoryStream.h"
+
+// Forward declarations
+@interface HoodsXMLDelegate : NSObject <NSXMLParserDelegate>
+@property (nonatomic, strong) NSMutableArray<NSString *> *hoods;
+@end
 
 // Constants
 NSString * const HelperLbr = @"\r\n";
@@ -197,6 +202,7 @@ static BOOL _anyPackage = NO;
 
 + (NSString *)newestGamePath {
     // This would need to be implemented based on your PathProvider class
+    // return [[PathProvider global] newestGamePath];
     return @""; // Placeholder
 }
 
@@ -662,7 +668,19 @@ static BOOL _anyPackage = NO;
         return YES;
     }
     
-    // Additional checks for known neighborhoods would go here
+    // Check against known neighborhoods
+    for (NSString *hood in [self knownHoods]) {
+        NSString *expectedName = [NSString stringWithFormat:@"_%@", hood];
+        NSRange nameRange = [fname rangeOfString:expectedName];
+        if (nameRange.location == 4) {
+            NSString *packageSuffix = @".package";
+            NSRange packageRange = [fname rangeOfString:packageSuffix];
+            if (packageRange.location == 4 + 1 + hood.length + 3) {
+                return YES;
+            }
+        }
+    }
+    
     return NO;
 }
 
@@ -711,7 +729,7 @@ static BOOL _anyPackage = NO;
 }
 
 + (NSString *)getSimPeLanguageCache:(NSString *)prefix {
-    uint8_t languageCode = 1; // Default to English, would get from WindowsRegistry in real implementation
+    uint8_t languageCode = [AppPreferences languageCode];
     return [[self simPeDataPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@.simpepkg", prefix, [self hexStringByte:languageCode]]];
 }
 
@@ -730,6 +748,11 @@ static BOOL _anyPackage = NO;
     // For now, just log to console
 }
 
++ (void)exceptionMessageWithString:(NSString *)message {
+    NSError *error = [NSError errorWithDomain:@"SimPE" code:1 userInfo:@{NSLocalizedDescriptionKey: message}];
+    [self exceptionMessage:@"" error:error];
+}
+
 // MARK: - Plugin Loading
 
 + (BOOL)canLoadPlugin:(NSString *)flname {
@@ -746,29 +769,119 @@ static BOOL _anyPackage = NO;
 
 + (NSInteger)getMatchingLanguage {
     NSString *languageCode = [[NSLocale currentLocale] languageCode];
-    if (!languageCode) return 1; // Default to English
+    if (!languageCode) return MetaDataLanguagesEnglish;
     
     languageCode = [languageCode uppercaseString];
     
-    if ([languageCode isEqualToString:@"DE"]) return 2; // German
-    if ([languageCode isEqualToString:@"ES"]) return 3; // Spanish
-    if ([languageCode isEqualToString:@"FI"]) return 4; // Finnish
-    if ([languageCode isEqualToString:@"ZH"]) return 5; // Chinese
-    if ([languageCode isEqualToString:@"FR"]) return 6; // French
-    if ([languageCode isEqualToString:@"JA"]) return 7; // Japanese
-    if ([languageCode isEqualToString:@"IT"]) return 8; // Italian
-    if ([languageCode isEqualToString:@"NL"]) return 9; // Dutch
-    if ([languageCode isEqualToString:@"DA"]) return 10; // Danish
-    if ([languageCode isEqualToString:@"NO"]) return 11; // Norwegian
-    if ([languageCode isEqualToString:@"HE"]) return 12; // Hebrew
-    if ([languageCode isEqualToString:@"RU"]) return 13; // Russian
-    if ([languageCode isEqualToString:@"PT"]) return 14; // Portuguese
-    if ([languageCode isEqualToString:@"PL"]) return 15; // Polish
-    if ([languageCode isEqualToString:@"TH"]) return 16; // Thai
-    if ([languageCode isEqualToString:@"KO"]) return 17; // Korean
+    if ([languageCode isEqualToString:@"DE"]) return MetaDataLanguagesGerman;
+    if ([languageCode isEqualToString:@"ES"]) return MetaDataLanguagesSpanish;
+    if ([languageCode isEqualToString:@"FI"]) return MetaDataLanguagesFinnish;
+    if ([languageCode isEqualToString:@"ZH"]) return MetaDataLanguagesSimplifiedChinese;
+    if ([languageCode isEqualToString:@"FR"]) return MetaDataLanguagesFrench;
+    if ([languageCode isEqualToString:@"JA"]) return MetaDataLanguagesJapanese;
+    if ([languageCode isEqualToString:@"IT"]) return MetaDataLanguagesItalian;
+    if ([languageCode isEqualToString:@"NL"]) return MetaDataLanguagesDutch;
+    if ([languageCode isEqualToString:@"DA"]) return MetaDataLanguagesDanish;
+    if ([languageCode isEqualToString:@"NO"]) return MetaDataLanguagesNorwegian;
+    if ([languageCode isEqualToString:@"HE"]) return MetaDataLanguagesHebrew;
+    if ([languageCode isEqualToString:@"RU"]) return MetaDataLanguagesRussian;
+    if ([languageCode isEqualToString:@"PT"]) return MetaDataLanguagesPortuguese;
+    if ([languageCode isEqualToString:@"PL"]) return MetaDataLanguagesPolish;
+    if ([languageCode isEqualToString:@"TH"]) return MetaDataLanguagesThai;
+    if ([languageCode isEqualToString:@"KO"]) return MetaDataLanguagesKorean;
     
-    return 1; // Default to English
+    return MetaDataLanguagesEnglish;
 }
+
+// MARK: - Key/Shortcut Support
+
++ (NSString *)toKeys:(NSString *)shortcut {
+    NSMutableString *result = [NSMutableString string];
+    NSString *name = [shortcut lowercaseString];
+    
+    if ([name containsString:@"ctrl"]) [result appendString:@"⌘"];
+    if ([name containsString:@"shift"]) [result appendString:@"⇧"];
+    if ([name containsString:@"alt"]) [result appendString:@"⌥"];
+    
+    // Add key mappings as needed
+    return [result copy];
+}
+
+// MARK: - Private Helper Methods
+
++ (NSArray<NSString *> *)knownHoods {
+    if (!_knownHoods) {
+        [self loadKnownHoods];
+    }
+    return _knownHoods;
+}
+
++ (void)loadKnownHoods {
+    _knownHoods = @[];
+    
+    NSString *hoodsFile = [[self simPeDataPath] stringByAppendingPathComponent:@"hoods.xml"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:hoodsFile]) {
+        return;
+    }
+    
+    NSData *data = [NSData dataWithContentsOfFile:hoodsFile];
+    if (!data) return;
+    
+    NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
+    HoodsXMLDelegate *delegate = [[HoodsXMLDelegate alloc] init];
+    parser.delegate = delegate;
+    [parser parse];
+    _knownHoods = [delegate.hoods copy];
+}
+
+@end
+
+// MARK: - AppPreferences Implementation
+
+@implementation AppPreferences
+
++ (uint8_t)languageCode {
+    NSInteger code = [[NSUserDefaults standardUserDefaults] integerForKey:@"SimPELanguageCode"];
+    return code == 0 ? 1 : (uint8_t)code;
+}
+
++ (void)setLanguageCode:(uint8_t)languageCode {
+    [[NSUserDefaults standardUserDefaults] setInteger:languageCode forKey:@"SimPELanguageCode"];
+}
+
++ (BOOL)hiddenMode {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SimPEHiddenMode"];
+}
+
++ (void)setHiddenMode:(BOOL)hiddenMode {
+    [[NSUserDefaults standardUserDefaults] setBool:hiddenMode forKey:@"SimPEHiddenMode"];
+}
+
++ (BOOL)useCache {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SimPEUseCache"];
+}
+
++ (void)setUseCache:(BOOL)useCache {
+    [[NSUserDefaults standardUserDefaults] setBool:useCache forKey:@"SimPEUseCache"];
+}
+
++ (NSString *)languageCache {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"SimPELanguageCache"] ?: @"";
+}
+
++ (void)setLanguageCache:(NSString *)languageCache {
+    [[NSUserDefaults standardUserDefaults] setObject:languageCache forKey:@"SimPELanguageCache"];
+}
+
++ (BOOL)asynchronLoad {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"SimPEAsynchronLoad"];
+}
+
++ (void)setAsynchronLoad:(BOOL)asynchronLoad {
+    [[NSUserDefaults standardUserDefaults] setBool:asynchronLoad forKey:@"SimPEAsynchronLoad"];
+}
+
 
 @end
 
@@ -838,6 +951,70 @@ static BOOL _anyPackage = NO;
 
 + (NSString *)mruXREG {
     return [self mruXREGW]; // Only one global MRU list
+}
+
+@end
+
+// MARK: - MetaData Implementation
+
+@implementation MetaData
+// Implementation would go here if needed
+@end
+
+// MARK: - Boolset Implementation
+
+@implementation Boolset {
+    uint32_t _value;
+}
+
+- (instancetype)initWithValue:(uint32_t)value {
+    self = [super init];
+    if (self) {
+        _value = value;
+    }
+    return self;
+}
+
+- (BOOL)objectAtIndexedSubscript:(NSInteger)index {
+    if (index < 0 || index >= 32) return NO;
+    return (_value & (1 << index)) != 0;
+}
+
+- (void)setObject:(BOOL)value atIndexedSubscript:(NSInteger)index {
+    if (index < 0 || index >= 32) return;
+    
+    if (value) {
+        _value |= (1 << index);
+    } else {
+        _value &= ~(1 << index);
+    }
+}
+
+@end
+
+// MARK: - HoodsXMLDelegate Implementation
+
+@implementation HoodsXMLDelegate
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _hoods = [NSMutableArray array];
+    }
+    return self;
+}
+
+- (void)parser:(NSXMLParser *)parser
+didStartElement:(NSString *)elementName
+  namespaceURI:(NSString *)namespaceURI
+ qualifiedName:(NSString *)qName
+    attributes:(NSDictionary<NSString *,NSString *> *)attributeDict {
+    if ([elementName isEqualToString:@"hood"]) {
+        NSString *name = attributeDict[@"name"];
+        if (name) {
+            [self.hoods addObject:name];
+        }
+    }
 }
 
 @end

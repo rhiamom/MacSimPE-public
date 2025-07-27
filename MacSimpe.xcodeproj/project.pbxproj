@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B62437DB2E3597690052119F /* Registry.m in Sources */ = {isa = PBXBuildFile; fileRef = B62437DA2E3597690052119F /* Registry.m */; };
+		B62437DE2E35A0950052119F /* Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = B62437DD2E35A0950052119F /* Parameters.m */; };
+		B62437E12E35A15B0052119F /* TGILoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B62437E02E35A15B0052119F /* TGILoader.m */; };
+		B62437E42E35A2990052119F /* tgi.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437E32E35A2990052119F /* tgi.xml */; };
+		B62437E62E35A2C20052119F /* txmtdefinition.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437E52E35A2C20052119F /* txmtdefinition.xml */; };
+		B62437E82E35A2DD0052119F /* semiglobals.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437E72E35A2DD0052119F /* semiglobals.xml */; };
+		B62437EA2E35A2FB0052119F /* objddefinition.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437E92E35A2FB0052119F /* objddefinition.xml */; };
+		B62437EC2E35A3190052119F /* hoods.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437EB2E35A3190052119F /* hoods.xml */; };
+		B62437EE2E35A3350052119F /* additionalschools.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437ED2E35A3350052119F /* additionalschools.xml */; };
+		B62437F02E35A3490052119F /* additionalmajors.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437EF2E35A3490052119F /* additionalmajors.xml */; };
+		B62437F22E35A35C0052119F /* additionalcareers.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437F12E35A35C0052119F /* additionalcareers.xml */; };
 		B64E6BA72E3531DF009AD0A7 /* Alias.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BA62E3531DF009AD0A7 /* Alias.m */; };
 		B64E6BAA2E35335B009AD0A7 /* TypeAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BA92E35335B009AD0A7 /* TypeAlias.m */; };
 		B64E6BAD2E3534BB009AD0A7 /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BAC2E3534BB009AD0A7 /* Helper.m */; };
@@ -47,6 +58,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B62437DA2E3597690052119F /* Registry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Registry.m; sourceTree = "<group>"; };
+		B62437DC2E35A0450052119F /* Parameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Parameters.h; sourceTree = "<group>"; };
+		B62437DD2E35A0950052119F /* Parameters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Parameters.m; sourceTree = "<group>"; };
+		B62437DF2E35A1190052119F /* TGILoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TGILoader.h; sourceTree = "<group>"; };
+		B62437E02E35A15B0052119F /* TGILoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TGILoader.m; sourceTree = "<group>"; };
+		B62437E32E35A2990052119F /* tgi.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = tgi.xml; sourceTree = "<group>"; };
+		B62437E52E35A2C20052119F /* txmtdefinition.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = txmtdefinition.xml; sourceTree = "<group>"; };
+		B62437E72E35A2DD0052119F /* semiglobals.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = semiglobals.xml; sourceTree = "<group>"; };
+		B62437E92E35A2FB0052119F /* objddefinition.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = objddefinition.xml; sourceTree = "<group>"; };
+		B62437EB2E35A3190052119F /* hoods.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = hoods.xml; sourceTree = "<group>"; };
+		B62437ED2E35A3350052119F /* additionalschools.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = additionalschools.xml; sourceTree = "<group>"; };
+		B62437EF2E35A3490052119F /* additionalmajors.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = additionalmajors.xml; sourceTree = "<group>"; };
+		B62437F12E35A35C0052119F /* additionalcareers.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = additionalcareers.xml; sourceTree = "<group>"; };
 		B64E6BA42E353091009AD0A7 /* IAlias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAlias.h; sourceTree = "<group>"; };
 		B64E6BA52E353151009AD0A7 /* Alias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alias.h; sourceTree = "<group>"; };
 		B64E6BA62E3531DF009AD0A7 /* Alias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Alias.m; sourceTree = "<group>"; };
@@ -68,6 +92,7 @@
 		B64E6BBC2E354958009AD0A7 /* IPluginFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPluginFileWrapper.h; sourceTree = "<group>"; };
 		B64E6BBD2E354A11009AD0A7 /* IPackedFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileWrapper.h; sourceTree = "<group>"; };
 		B64E6BBE2E354AD1009AD0A7 /* IPackedFileName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileName.h; sourceTree = "<group>"; };
+		B64E6BBF2E3571AF009AD0A7 /* Registry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Registry.h; sourceTree = "<group>"; };
 		B6CDCC442E33E837004FDF82 /* MacSimpe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacSimpe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CDCC592E33E838004FDF82 /* MacSimpeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacSimpeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CDCC632E33E838004FDF82 /* MacSimpeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacSimpeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -157,6 +182,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B62437E22E35A2470052119F /* XMLResourceFiles */ = {
+			isa = PBXGroup;
+			children = (
+				B62437F12E35A35C0052119F /* additionalcareers.xml */,
+				B62437EF2E35A3490052119F /* additionalmajors.xml */,
+				B62437ED2E35A3350052119F /* additionalschools.xml */,
+				B62437EB2E35A3190052119F /* hoods.xml */,
+				B62437E92E35A2FB0052119F /* objddefinition.xml */,
+				B62437E72E35A2DD0052119F /* semiglobals.xml */,
+				B62437E52E35A2C20052119F /* txmtdefinition.xml */,
+				B62437E32E35A2990052119F /* tgi.xml */,
+			);
+			path = XMLResourceFiles;
+			sourceTree = "<group>";
+		};
 		B64E6BAE2E3539F9009AD0A7 /* GenericHandlers */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +224,7 @@
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
+				B62437E22E35A2470052119F /* XMLResourceFiles */,
 				B64E6BB32E353E8B009AD0A7 /* HandlerCommon */,
 				B64E6BAE2E3539F9009AD0A7 /* GenericHandlers */,
 				B6CDCCB12E3440CA004FDF82 /* Helper */,
@@ -291,6 +332,12 @@
 				B64E6BAB2E353489009AD0A7 /* Helper.h */,
 				B64E6BAC2E3534BB009AD0A7 /* Helper.m */,
 				B64E6BBE2E354AD1009AD0A7 /* IPackedFileName.h */,
+				B64E6BBF2E3571AF009AD0A7 /* Registry.h */,
+				B62437DA2E3597690052119F /* Registry.m */,
+				B62437DC2E35A0450052119F /* Parameters.h */,
+				B62437DD2E35A0950052119F /* Parameters.m */,
+				B62437DF2E35A1190052119F /* TGILoader.h */,
+				B62437E02E35A15B0052119F /* TGILoader.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -414,6 +461,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B62437EE2E35A3350052119F /* additionalschools.xml in Resources */,
+				B62437F02E35A3490052119F /* additionalmajors.xml in Resources */,
+				B62437E82E35A2DD0052119F /* semiglobals.xml in Resources */,
+				B62437E42E35A2990052119F /* tgi.xml in Resources */,
+				B62437E62E35A2C20052119F /* txmtdefinition.xml in Resources */,
+				B62437EA2E35A2FB0052119F /* objddefinition.xml in Resources */,
+				B62437F22E35A35C0052119F /* additionalcareers.xml in Resources */,
+				B62437EC2E35A3190052119F /* hoods.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +493,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B62437DE2E35A0950052119F /* Parameters.m in Sources */,
 				B6CDCC7D2E33EB1F004FDF82 /* ToolTypes.m in Sources */,
 				B6CDCC9D2E34271B004FDF82 /* HeaderIndex.m in Sources */,
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
@@ -450,8 +506,10 @@
 				B6CDCCA32E342902004FDF82 /* HoleIndexItem.m in Sources */,
 				B64E6BAA2E35335B009AD0A7 /* TypeAlias.m in Sources */,
 				B6CDCC8E2E33FE4E004FDF82 /* MemoryStream.m in Sources */,
+				B62437DB2E3597690052119F /* Registry.m in Sources */,
 				B6CDCC862E33F887004FDF82 /* File.m in Sources */,
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
+				B62437E12E35A15B0052119F /* TGILoader.m in Sources */,
 				B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */,
 				B6CDCCA72E342B3D004FDF82 /* PackedFileDescriptorSimple.m in Sources */,
 				B6CDCCBB2E345922004FDF82 /* PackedFileDescriptors.m in Sources */,
