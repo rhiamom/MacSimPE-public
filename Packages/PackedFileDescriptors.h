@@ -58,5 +58,11 @@
 // Convenience methods for uint indexing
 - (id<IPackedFileDescriptor>)objectAtUnsignedIndex:(uint32_t)index;
 - (void)setObject:(id<IPackedFileDescriptor>)object atUnsignedIndex:(uint32_t)index;
+- (void)addRange:(NSArray<id<IPackedFileDescriptor>> *)items;
+- (void)addObjectsFromCollection:(PackedFileDescriptors *)other;
+- (NSArray<id<IPackedFileDescriptor>> *)allObjects;
+// Add this method declaration to your existing PackedFileDescriptors.h
+// Place it in the "Collection methods" section after the existing methods
+
 
 @end

@@ -4,28 +4,28 @@
 //
 //  Created by Catherine Gramze on 7/25/25.
 //
-/***************************************************************************
- *   Copyright (C) 2005 by Ambertation                                     *
- *   quaxi@ambertation.de                                                  *
- *                                                                         *
- *   Objective C translation Copyright (C) 2025 by GramzeSweatShop               *
- *   rhiamom@mac.com                                                       *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program, if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- **************************************************************************/
+// ***************************************************************************
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
+// *                                                                         *
+// *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
+// *   rhiamom@mac.com                                                       *
+// *                                                                         *
+// *   This program is free software; you can redistribute it and/or modify  *
+// *   it under the terms of the GNU General Public License as published by  *
+// *   the Free Software Foundation; either version 2 of the License, or     *
+// *   (at your option) any later version.                                   *
+// *                                                                         *
+// *   This program is distributed in the hope that it will be useful,       *
+// *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+// *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+// *   GNU General Public License for more details.                          *
+// *                                                                         *
+// *   You should have received a copy of the GNU General Public License     *
+// *   along with this program; if not, write to the                         *
+// *   Free Software Foundation, Inc.,                                       *
+// *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+// ***************************************************************************
 
 #import "MetaData.h"
 #import "TypeAlias.h"
@@ -89,6 +89,107 @@
 + (uint32_t)CUSTOM_GROUP { return 0x1C050000; }
 + (uint32_t)GLOBAL_GROUP { return 0x1C0532FA; }
 + (uint32_t)LOCAL_GROUP { return 0xFFFFFFFF; }
+
+// MARK: - CEP String Constants
++ (NSString *)GMND_PACKAGE {
+    NSString *savegameFolder = [@"~/Documents/EA Games/The Sims 2" stringByExpandingTildeInPath];
+    return [savegameFolder stringByAppendingPathComponent:@"Downloads/_EnableColorOptionsGMND.package"];
+}
+
++ (NSString *)MMAT_PACKAGE {
+    return @"/Applications/The Sims 2/TSData/Res/Sims3D/_EnableColorOptionsMMAT.package";
+}
+
++ (NSString *)ZCEP_FOLDER {
+    NSString *savegameFolder = [@"~/Documents/EA Games/The Sims 2" stringByExpandingTildeInPath];
+    return [savegameFolder stringByAppendingPathComponent:@"zCEP-EXTRA"];
+}
+
++ (NSString *)CTLG_FOLDER {
+    return @"/Applications/The Sims 2/TSData/Res/Catalog/zCEP-EXTRA";
+}
+
+// MARK: - Semi-Global Methods
++ (uint32_t)semiGlobalID:(NSString *)sgname {
+    // Known semi-global mappings from SimPE
+    NSDictionary *semiGlobals = @{
+        @"objects": @0x7FD46CD0,
+        @"doors": @0x7FD46CD1,
+        @"windows": @0x7FD46CD2,
+        @"stairs": @0x7FD46CD3,
+        @"tiles": @0x7FD46CD4,
+        @"roofs": @0x7FD46CD5,
+        @"terrain": @0x7FD46CD6,
+        @"sims": @0x7FD46CD7,
+        @"vehicles": @0x7FD46CD8,
+        @"pets": @0x7FD46CD9,
+        @"lighting": @0x7FD46CDA,
+        @"plumbing": @0x7FD46CDB,
+        @"appliances": @0x7FD46CDC,
+        @"electronics": @0x7FD46CDD,
+        @"decorative": @0x7FD46CDE,
+        @"general": @0x7FD46CDF,
+        @"hobbies": @0x7FD46CE0,
+        @"aspiration": @0x7FD46CE1,
+        @"career": @0x7FD46CE2,
+        @"comfort": @0x7FD46CE3,
+        @"seating": @0x7FD46CE4,
+        @"surfaces": @0x7FD46CE5,
+        @"storage": @0x7FD46CE6,
+        @"knowledge": @0x7FD46CE7,
+        @"creativity": @0x7FD46CE8,
+        @"exercise": @0x7FD46CE9,
+        @"miscellaneous": @0x7FD46CEA
+    };
+    
+    NSString *lowercaseName = [sgname lowercaseString];
+    NSNumber *result = semiGlobals[lowercaseName];
+    return result ? [result unsignedIntValue] : 0;
+}
+
++ (NSString *)semiGlobalName:(uint32_t)sgid {
+    // Reverse lookup for semi-global names
+    NSDictionary *semiGlobalNames = @{
+        @0x7FD46CD0: @"objects",
+        @0x7FD46CD1: @"doors",
+        @0x7FD46CD2: @"windows",
+        @0x7FD46CD3: @"stairs",
+        @0x7FD46CD4: @"tiles",
+        @0x7FD46CD5: @"roofs",
+        @0x7FD46CD6: @"terrain",
+        @0x7FD46CD7: @"sims",
+        @0x7FD46CD8: @"vehicles",
+        @0x7FD46CD9: @"pets",
+        @0x7FD46CDA: @"lighting",
+        @0x7FD46CDB: @"plumbing",
+        @0x7FD46CDC: @"appliances",
+        @0x7FD46CDD: @"electronics",
+        @0x7FD46CDE: @"decorative",
+        @0x7FD46CDF: @"general",
+        @0x7FD46CE0: @"hobbies",
+        @0x7FD46CE1: @"aspiration",
+        @0x7FD46CE2: @"career",
+        @0x7FD46CE3: @"comfort",
+        @0x7FD46CE4: @"seating",
+        @0x7FD46CE5: @"surfaces",
+        @0x7FD46CE6: @"storage",
+        @0x7FD46CE7: @"knowledge",
+        @0x7FD46CE8: @"creativity",
+        @0x7FD46CE9: @"exercise",
+        @0x7FD46CEA: @"miscellaneous"
+    };
+    
+    NSString *result = semiGlobalNames[@(sgid)];
+    return result ? result : @"";
+}
+
++ (NSString *)findSemiGlobal:(NSString *)name {
+    uint32_t sgid = [self semiGlobalID:name];
+    if (sgid != 0) {
+        return [NSString stringWithFormat:@"0x%08X", sgid];
+    }
+    return [name lowercaseString];
+}
 
 // MARK: - Static Methods
 

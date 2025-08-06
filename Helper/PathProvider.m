@@ -4,5 +4,175 @@
 //
 //  Created by Catherine Gramze on 7/31/25.
 //
+// ***************************************************************************
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
+// *                                                                         *
+// *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
+// *   rhiamom@mac.com                                                       *
+// *                                                                         *
+// *   This program is free software; you can redistribute it and/or modify  *
+// *   it under the terms of the GNU General Public License as published by  *
+// *   the Free Software Foundation; either version 2 of the License, or     *
+// *   (at your option) any later version.                                   *
+// *                                                                         *
+// *   This program is distributed in the hope that it will be useful,       *
+// *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+// *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+// *   GNU General Public License for more details.                          *
+// *                                                                         *
+// *   You should have received a copy of the GNU General Public License     *
+// *   along with this program; if not, write to the                         *
+// *   Free Software Foundation, Inc.,                                       *
+// *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+// ***************************************************************************
 
-#import <Foundation/Foundation.h>
+#import "PathProvider.h"
+#import "Helper.h"
+
+// MARK: - Static Variables
+
+static PathProvider *globalInstance = nil;
+
+// MARK: - Implementation
+
+@implementation PathProvider
+
+// MARK: - Class Methods
+
++ (PathProvider *)global {
+    if (globalInstance == nil) {
+        globalInstance = [[PathProvider alloc] init];
+    }
+    return globalInstance;
+}
+
++ (NSString *)expansionFile {
+    return [[Helper simPeDataPath] stringByAppendingPathComponent:@"expansions.xreg"];
+}
+
++ (NSString *)personalFolder {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    return [paths firstObject];
+}
+
++ (NSString *)displayedName {
+    return @"The Sims 2";
+}
+
++ (NSString *)simSavegameFolder {
+    @try {
+        // Try to get custom path from preferences first
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *customPath = [defaults stringForKey:@"SavegamePath"];
+        
+        if (customPath && [[NSFileManager defaultManager] fileExistsAtPath:customPath]) {
+            return customPath;
+        }
+        
+        // Use the correct Mac Sims 2 sandbox path
+        NSString *homeDirectory = NSHomeDirectory();
+        NSString *path = [homeDirectory stringByAppendingPathComponent:@"Library/Containers/com.aspyr.sims2.appstore/Data/Library/Application Support/Aspyr/The Sims 2"];
+        
+        return path;
+    } @catch (NSException *exception) {
+        return @"";
+    }
+}
+
++ (NSString *)realSavegamePath {
+    // This should return the same path since it's the actual location
+    NSString *homeDirectory = NSHomeDirectory();
+    return [homeDirectory stringByAppendingPathComponent:@"Library/Containers/com.aspyr.sims2.appstore/Data/Library/Application Support/Aspyr/The Sims 2"];
+}
+
++ (void)setSimSavegameFolder:(NSString *)folder {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:folder forKey:@"SavegamePath"];
+    [defaults synchronize];
+}
+
+// MARK: - Properties (Mac version content through Seasons + Voyage + some SPs)
+
+- (Expansions)lastKnown {
+    return ExpansionsVoyage; // Latest expansion in Mac version
+}
+
+- (int)gameVersion {
+    return 10; // Voyage is version 10
+}
+
+- (int)epInstalled {
+    return 7; // Through Seasons (version 7)
+}
+
+- (int)spInstalled {
+    return 10; // Through Voyage (version 10)
+}
+
+- (int64_t)availableGroups {
+    // Mac version available expansions: Base + University + Nightlife + Business + FamilyFun + Glamour + Pets + Seasons + Voyage + Custom
+    return (ExpansionsBaseGame | ExpansionsUniversity | ExpansionsNightlife |
+            ExpansionsBusiness | ExpansionsFamilyFun | ExpansionsGlamour |
+            ExpansionsPets | ExpansionsSeasons | ExpansionsVoyage | ExpansionsCustom);
+}
+
+- (int)currentGroup {
+    return 10; // Voyage group as the latest content
+}
+
+- (NSString *)neighborhoodFolder {
+    @try {
+        return [[[self class] simSavegameFolder] stringByAppendingPathComponent:@"Neighborhoods"];
+    } @catch (NSException *exception) {
+        return @"";
+    }
+}
+
+- (NSString *)backupFolder {
+    @try {
+        NSString *path = [[[self class] personalFolder] stringByAppendingPathComponent:@"EA Games"];
+        return [path stringByAppendingPathComponent:@"SimPE Backup"];
+    } @catch (NSException *exception) {
+        return @"";
+    }
+}
+
+// MARK: - Initialization
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        // Mac version doesn't need to scan for installations
+        // All content is bundled and available
+    }
+    return self;
+}
+
+// MARK: - Path Management (simplified for Mac)
+
+- (NSArray<NSString *> *)getSaveGamePathForGroup:(int64_t)group {
+    // Mac version: return standard save game paths
+    NSMutableArray<NSString *> *paths = [[NSMutableArray alloc] init];
+    
+    NSString *saveGameFolder = [[self class] simSavegameFolder];
+    if (saveGameFolder && ![@"" isEqualToString:saveGameFolder]) {
+        [paths addObject:saveGameFolder];
+    }
+    
+    return [paths copy];
+}
+
+- (int64_t)saveGamePathProvidedByGroup:(NSString *)path {
+    // Simplified for Mac - most paths are in the base game group
+    return ExpansionsBaseGame;
+}
+
+// MARK: - System Management
+
+- (void)flush {
+    // Mac version uses NSUserDefaults, which auto-syncs
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+@end

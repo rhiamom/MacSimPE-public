@@ -137,6 +137,39 @@
     [self.internalArray removeAllObjects];
 }
 
+// Add this method implementation to your existing PackedFileDescriptors.m
+// (You'll need to see your existing implementation to know where exactly to place this,
+// but it should go with the other collection methods)
+
+- (void)addRange:(NSArray<id<IPackedFileDescriptor>> *)items {
+    if (items != nil) {
+        for (id<IPackedFileDescriptor> item in items) {
+            [self addObject:item];
+        }
+    }
+}
+
+- (void)addObjectsFromCollection:(PackedFileDescriptors *)other {
+    if (other != nil) {
+        for (id<IPackedFileDescriptor> item in other) {
+            [self addObject:item];
+        }
+    }
+}
+
+- (NSArray<id<IPackedFileDescriptor>> *)allObjects {
+    // You'll need to implement this based on your internal storage
+    // If you're using an NSMutableArray internally, return a copy
+    // return [self.internalArray copy];
+    
+    // If you need to build the array from enumeration:
+    NSMutableArray<id<IPackedFileDescriptor>> *result = [[NSMutableArray alloc] init];
+    for (id<IPackedFileDescriptor> item in self) {
+        [result addObject:item];
+    }
+    return [result copy];
+}
+
 #pragma mark - NSFastEnumeration
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
@@ -158,5 +191,7 @@
     }
     return copy;
 }
+
+
 
 @end

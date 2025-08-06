@@ -29,7 +29,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IScenegraphFileIndex.h"
-#import "StoppableThread.h"
+#import "Thread.h"
 
 @class FileTableItem;
 @class FileIndexItem;

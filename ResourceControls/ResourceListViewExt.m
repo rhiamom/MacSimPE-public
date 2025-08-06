@@ -1,8 +1,8 @@
 //
-//  ResourceListView.m
+//  ResourceListViewExt.m
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 7/28/25.
+//  Created by Catherine Gramze on 7/29/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -30,14 +30,12 @@
 #import "ResourceListViewExt.h"
 #import "ResourceViewManager.h"
 #import "NamedPackedFileDescriptor.h"
-#import "ResourceListItemExt.h"
 #import "IResourceViewFilter.h"
 #import "IPackageFile.h"
 #import "IPackedFileDescriptor.h"
 #import "IScenegraphFileIndexItem.h"
 #import "FileTable.h"
-#import "Helper.h"
-#import "WindowsRegistry.h"
+#import "Registry.h"
 
 @interface ResourceListViewExt ()
 @property (nonatomic, strong) id selectionChangedEvent;
@@ -52,7 +50,6 @@
     self = [super init];
     if (self) {
         self.noSelectEvent = 0;
-        self.cache = [[NSMutableDictionary alloc] init];
         self.lastResources = nil;
         self.sortTicket = 0;
         self.sortColumn = SortColumnOffset;
@@ -79,6 +76,8 @@
     [self.tableView setUsesAlternatingRowBackgroundColors:YES];
     [self.tableView setAllowsMultipleSelection:YES];
     [self.tableView setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
+    [self.tableView setTarget:self];
+    [self.tableView setDoubleAction:@selector(tableViewDoubleClicked:)];
     
     // Create scroll view
     self.scrollView = [[NSScrollView alloc] init];
@@ -100,41 +99,47 @@
 }
 
 - (void)setupColumns {
-    // Create table columns
+    // Create table columns with appropriate sizing
     self.typeColumn = [[NSTableColumn alloc] initWithIdentifier:@"Type"];
     [[self.typeColumn headerCell] setStringValue:@"Type"];
-    [self.typeColumn setMinWidth:80];
-    [self.typeColumn setWidth:100];
+    [self.typeColumn setMinWidth:60];
+    [self.typeColumn setMaxWidth:120];
+    [self.typeColumn setResizingMask:NSTableColumnAutoresizingMask];
     
     self.nameColumn = [[NSTableColumn alloc] initWithIdentifier:@"Name"];
     [[self.nameColumn headerCell] setStringValue:@"Name"];
-    [self.nameColumn setMinWidth:120];
-    [self.nameColumn setWidth:200];
+    [self.nameColumn setMinWidth:150];
+    [self.nameColumn setResizingMask:NSTableColumnUserResizingMask];
     
     self.groupColumn = [[NSTableColumn alloc] initWithIdentifier:@"Group"];
     [[self.groupColumn headerCell] setStringValue:@"Group"];
     [self.groupColumn setMinWidth:80];
-    [self.groupColumn setWidth:100];
+    [self.groupColumn setMaxWidth:100];
+    [self.groupColumn setResizingMask:NSTableColumnNoResizing];
     
     self.instanceHiColumn = [[NSTableColumn alloc] initWithIdentifier:@"InstanceHi"];
     [[self.instanceHiColumn headerCell] setStringValue:@"Inst Hi"];
     [self.instanceHiColumn setMinWidth:80];
-    [self.instanceHiColumn setWidth:100];
+    [self.instanceHiColumn setMaxWidth:100];
+    [self.instanceHiColumn setResizingMask:NSTableColumnNoResizing];
     
     self.instanceColumn = [[NSTableColumn alloc] initWithIdentifier:@"Instance"];
     [[self.instanceColumn headerCell] setStringValue:@"Instance"];
     [self.instanceColumn setMinWidth:80];
-    [self.instanceColumn setWidth:100];
+    [self.instanceColumn setMaxWidth:100];
+    [self.instanceColumn setResizingMask:NSTableColumnNoResizing];
     
     self.offsetColumn = [[NSTableColumn alloc] initWithIdentifier:@"Offset"];
     [[self.offsetColumn headerCell] setStringValue:@"Offset"];
     [self.offsetColumn setMinWidth:80];
-    [self.offsetColumn setWidth:100];
+    [self.offsetColumn setMaxWidth:100];
+    [self.offsetColumn setResizingMask:NSTableColumnNoResizing];
     
     self.sizeColumn = [[NSTableColumn alloc] initWithIdentifier:@"Size"];
     [[self.sizeColumn headerCell] setStringValue:@"Size"];
-    [self.sizeColumn setMinWidth:80];
-    [self.sizeColumn setWidth:100];
+    [self.sizeColumn setMinWidth:60];
+    [self.sizeColumn setMaxWidth:80];
+    [self.sizeColumn setResizingMask:NSTableColumnNoResizing];
     
     // Add columns to table view
     [self.tableView addTableColumn:self.typeColumn];
@@ -143,17 +148,29 @@
     [self.tableView addTableColumn:self.instanceHiColumn];
     [self.tableView addTableColumn:self.instanceColumn];
     
-    // Conditionally add hidden mode columns
-    if ([Helper.windowsRegistry hiddenMode]) {
-        [self.tableView addTableColumn:self.offsetColumn];
-        [self.tableView addTableColumn:self.sizeColumn];
-    }
-    
-    // Conditionally remove extension column
-    if (![Helper.windowsRegistry resourceListShowExtensions]) {
+    // Conditionally add debug columns
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"ResourceListShowExtensions"]) {
         [self.tableView removeTableColumn:self.nameColumn];
     }
-}
+    
+    if (![Registry hiddenMode]) {
+        if ([self.tableView.tableColumns containsObject:self.offsetColumn]) {
+            [self.tableView removeTableColumn:self.offsetColumn];
+        }
+        if ([self.tableView.tableColumns containsObject:self.sizeColumn]) {
+            [self.tableView removeTableColumn:self.sizeColumn];
+        }
+    }
+    
+    // Conditionally hide type extension column
+    if (![Registry.windowsRegistry resourceListShowExtensions]) {
+        [self.tableView removeTableColumn:self.nameColumn];
+    }
+    
+    // Set up automatic column sizing - Name column gets remaining space
+    [self.tableView setColumnAutoresizingStyle:NSTableViewLastColumnOnlyAutoresizingStyle];
+    [self.tableView sizeToFit];
+    }
 
 - (void)setupTimer {
     // Selection timer setup
@@ -179,21 +196,7 @@
     [self cancelThreads];
     
     @synchronized (self.names) {
-        // Remove event handlers from old resources
-        for (NamedPackedFileDescriptor *pfd in self.names) {
-            // TODO: Remove event handlers
-            // pfd.descriptor.changedUserData -= descriptorChangedUserData
-            // pfd.descriptor.descriptionChanged -= descriptorDescriptionChanged
-            // pfd.descriptor.changedData -= descriptorChangedData
-        }
-        
         [self.names removeAllObjects];
-        
-        // Set image list if available
-        if ([FileTable wrapperRegistry] != nil) {
-            // TODO: Set up image list
-            // self.tableView.imageList = FileTable.wrapperRegistry.wrapperImageList;
-        }
         
         [self clear];
         
@@ -205,10 +208,6 @@
             
             if (add) {
                 [self.names addObject:pfd];
-                // TODO: Add event handlers
-                // pfd.descriptor.changedData += descriptorChangedData
-                // pfd.descriptor.descriptionChanged += descriptorDescriptionChanged
-                // pfd.descriptor.changedUserData += descriptorChangedUserData
             }
         }
         
@@ -247,7 +246,6 @@
     self.noSelectEvent++;
     self.selectionChangedEvent = nil;
     self.selectedResourceEvent = nil;
-    // TODO: Equivalent of lv.BeginUpdate()
 }
 
 - (void)endUpdate {
@@ -268,8 +266,6 @@
         self.selectionChangedEvent = nil;
         self.selectedResourceEvent = nil;
     }
-    
-    // TODO: Equivalent of lv.EndUpdate()
 }
 
 - (void)refresh {
@@ -281,19 +277,12 @@
 - (void)clear {
     // Clear table selection
     [self.tableView deselectAll:nil];
-    
-    // Clear cache
-    for (ResourceListItemExt *item in [self.cache allValues]) {
-        [item freeResources];
-    }
-    [self.cache removeAllObjects];
 }
 
 - (void)sortResources {
     self.sortTicket++;
     
-    if ([Helper.windowsRegistry asynchronSort]) {
-        // TODO: Implement async sorting
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"AsynchronSort"]) {
         [self performSelectorInBackground:@selector(doAsyncSorting) withObject:nil];
     } else {
         [self doTheSorting];
@@ -341,13 +330,16 @@
 - (void)setFilter:(id<IResourceViewFilter>)filter {
     if (_filter != filter) {
         if (_filter != nil) {
-            // TODO: Remove old filter event handlers
-            // curfilter.ChangedFilter -= curfilterChangedFilter
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:IResourceViewFilterChangedFilterNotification
+                                                          object:_filter];
         }
         _filter = filter;
         if (_filter != nil) {
-            // TODO: Add new filter event handlers
-            // curfilter.ChangedFilter += curfilterChangedFilter
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(filterChangedFilter)
+                                                         name:IResourceViewFilterChangedFilterNotification
+                                                       object:_filter];
         }
     }
 }
@@ -394,40 +386,63 @@
     }
 }
 
-// MARK: - Layout Management
+- (void)tableViewDoubleClicked:(id)sender {
+    NSInteger selectedRow = [self.tableView selectedRow];
+    if (selectedRow >= 0 && selectedRow < [self.names count]) {
+        NamedPackedFileDescriptor *namedResource = [self.names objectAtIndex:selectedRow];
+        if (self.selectedResourceBlock) {
+            self.selectedResourceBlock(namedResource);
+        }
+    }
+}
+
+// MARK: - Layout Management (Simplified for macOS)
 
 - (void)storeLayout {
-    // Store column widths in registry
-    [Helper.windowsRegistry.layout setTypeColumnWidth:(NSInteger)[self.typeColumn width]];
-    [Helper.windowsRegistry.layout setGroupColumnWidth:(NSInteger)[self.groupColumn width]];
-    [Helper.windowsRegistry.layout setInstanceHighColumnWidth:(NSInteger)[self.instanceHiColumn width]];
-    [Helper.windowsRegistry.layout setInstanceColumnWidth:(NSInteger)[self.instanceColumn width]];
-    [Helper.windowsRegistry.layout setOffsetColumnWidth:(NSInteger)[self.offsetColumn width]];
-    [Helper.windowsRegistry.layout setSizeColumnWidth:(NSInteger)[self.sizeColumn width]];
+    // On macOS, column layouts are typically handled automatically
+    // or stored in user defaults by the system if needed
+    // We only store the visibility preferences
     
-    // TODO: Store column order
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:[Registry.windowsRegistry resourceListShowExtensions] forKey:@"ResourceListShowExtensions"];
+    [defaults setBool:[Registry.windowsRegistry hiddenMode] forKey:@"ResourceListHiddenMode"];
 }
 
 - (void)restoreLayout {
-    // Restore column widths from registry
-    [self.typeColumn setWidth:[Helper.windowsRegistry.layout typeColumnWidth]];
-    [self.groupColumn setWidth:[Helper.windowsRegistry.layout groupColumnWidth]];
-    [self.instanceHiColumn setWidth:[Helper.windowsRegistry.layout instanceHighColumnWidth]];
-    [self.instanceColumn setWidth:[Helper.windowsRegistry.layout instanceColumnWidth]];
-    [self.offsetColumn setWidth:[Helper.windowsRegistry.layout offsetColumnWidth]];
-    [self.sizeColumn setWidth:[Helper.windowsRegistry.layout sizeColumnWidth]];
+    // Restore visibility settings and let NSTableView handle sizing
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    // TODO: Restore column order
+    BOOL showExtensions = [[NSUserDefaults standardUserDefaults] boolForKey:@"ResourceListShowExtensions"];
+    BOOL hiddenMode = [Helper hiddenMode];  // Keep as Helper, not NSUserDefaults
     
     // Apply visibility settings
-    if (![Helper.windowsRegistry resourceListShowExtensions]) {
+    if (!showExtensions && [self.tableView.tableColumns containsObject:self.nameColumn]) {
         [self.tableView removeTableColumn:self.nameColumn];
+    } else if (showExtensions && ![self.tableView.tableColumns containsObject:self.nameColumn]) {
+        [self.tableView addTableColumn:self.nameColumn];
     }
-    if (![Helper.windowsRegistry hiddenMode]) {
-        [self.tableView removeTableColumn:self.sizeColumn];
-        [self.tableView removeTableColumn:self.offsetColumn];
+    
+    if (!hiddenMode) {
+        if ([self.tableView.tableColumns containsObject:self.sizeColumn]) {
+            [self.tableView removeTableColumn:self.sizeColumn];
+        }
+        if ([self.tableView.tableColumns containsObject:self.offsetColumn]) {
+            [self.tableView removeTableColumn:self.offsetColumn];
+        }
+    } else {
+        if (![self.tableView.tableColumns containsObject:self.offsetColumn]) {
+            [self.tableView addTableColumn:self.offsetColumn];
+        }
+        if (![self.tableView.tableColumns containsObject:self.sizeColumn]) {
+            [self.tableView addTableColumn:self.sizeColumn];
+        }
     }
+    
+    // Let the table view handle column sizing automatically
+    [self.tableView sizeToFit];
 }
+
+// MARK: - NSTableViewDataSource
 
 // MARK: - NSTableViewDataSource
 
@@ -435,31 +450,78 @@
     return [self.names count];
 }
 
-- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+// MARK: - NSTableViewDelegate (View-Based)
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     if (row >= 0 && row < [self.names count]) {
         NamedPackedFileDescriptor *namedResource = [self.names objectAtIndex:row];
         
-        if (tableColumn == self.typeColumn) {
-            return [[namedResource descriptor] typeName];
-        } else if (tableColumn == self.nameColumn) {
-            return [namedResource getRealName];
-        } else if (tableColumn == self.groupColumn) {
-            return [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] group]];
-        } else if (tableColumn == self.instanceHiColumn) {
-            return [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] subType]];
-        } else if (tableColumn == self.instanceColumn) {
-            return [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] instance]];
-        } else if (tableColumn == self.offsetColumn) {
-            return [NSString stringWithFormat:@"0x%08lX", (long)[[namedResource descriptor] offset]];
-        } else if (tableColumn == self.sizeColumn) {
-            return [NSString stringWithFormat:@"%ld", (long)[[namedResource descriptor] size]];
+        // Get or create cell view
+        NSTableCellView *cellView = [tableView makeViewWithIdentifier:[tableColumn identifier] owner:self];
+        if (cellView == nil) {
+            cellView = [[NSTableCellView alloc] init];
+            [cellView setIdentifier:[tableColumn identifier]];
+            
+            NSTextField *textField = [[NSTextField alloc] init];
+            [textField setBezeled:NO];
+            [textField setDrawsBackground:NO];
+            [textField setEditable:NO];
+            [textField setSelectable:NO];
+            [cellView addSubview:textField];
+            [cellView setTextField:textField];
+            
+            // Set up constraints for text field
+            [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+            [NSLayoutConstraint activateConstraints:@[
+                [textField.leadingAnchor constraintEqualToAnchor:cellView.leadingAnchor constant:2],
+                [textField.trailingAnchor constraintEqualToAnchor:cellView.trailingAnchor constant:-2],
+                [textField.centerYAnchor constraintEqualToAnchor:cellView.centerYAnchor]
+            ]];
         }
+        
+        // Set cell content based on column
+        NSString *content = @"";
+        if (tableColumn == self.typeColumn) {
+            content = [[[namedResource descriptor] typeName] shortName];
+        } else if (tableColumn == self.nameColumn) {
+            content = [namedResource getRealName];
+        } else if (tableColumn == self.groupColumn) {
+            content = [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] group]];
+        } else if (tableColumn == self.instanceHiColumn) {
+            content = [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] subType]];
+        } else if (tableColumn == self.instanceColumn) {
+            content = [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] instance]];
+        } else if (tableColumn == self.offsetColumn) {
+            content = [NSString stringWithFormat:@"0x%08lX", (long)[[namedResource descriptor] offset]];
+        } else if (tableColumn == self.sizeColumn) {
+            content = [NSString stringWithFormat:@"%ld", (long)[[namedResource descriptor] size]];
+        }
+        
+        [[cellView textField] setStringValue:content];
+        
+        // Apply styling based on resource state
+        NSFont *font = [NSFont systemFontOfSize:[NSFont systemFontSize]];
+        NSColor *textColor = [NSColor controlTextColor];
+        
+        if ([[namedResource descriptor] markForDelete]) {
+            textColor = [NSColor secondaryLabelColor];
+            NSFontDescriptor *descriptor = [font.fontDescriptor fontDescriptorWithSymbolicTraits:NSFontDescriptorTraitBold];
+            font = [NSFont fontWithDescriptor:descriptor size:font.pointSize];
+        }
+        
+        if ([[namedResource descriptor] changed]) {
+            NSFontDescriptor *descriptor = [font.fontDescriptor fontDescriptorWithSymbolicTraits:NSFontDescriptorTraitItalic];
+            font = [NSFont fontWithDescriptor:descriptor size:font.pointSize];
+        }
+        
+        [[cellView textField] setFont:font];
+        [[cellView textField] setTextColor:textColor];
+        
+        return cellView;
     }
     
-    return @"";
+    return nil;
 }
-
-// MARK: - NSTableViewDelegate
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
     if (self.noSelectEvent > 0) return;

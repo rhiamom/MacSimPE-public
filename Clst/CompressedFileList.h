@@ -72,7 +72,7 @@
  * @param pfd The PackedFileDescriptor
  * @param package The Package File
  */
-- (instancetype)initWithFileList:(id<IPackedFileDescriptor>)pfd package:(id<IPackageFile>)package;
+- (instancetype)initWithDescriptor:(id<IPackedFileDescriptor>)pfd package:(id<IPackageFile>)package;
 
 // MARK: - Methods
 

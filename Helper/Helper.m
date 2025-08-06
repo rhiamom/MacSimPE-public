@@ -379,6 +379,23 @@ static BOOL _anyPackage = NO;
     return [text copy];
 }
 
++ (NSString *)integerToString:(NSInteger)value {
+    return [NSString stringWithFormat:@"%ld", (long)value];
+}
+
++ (NSString *)unsignedIntegerToString:(NSUInteger)value {
+    return [NSString stringWithFormat:@"%lu", (unsigned long)value];
+}
+
++ (NSString *)hexToString:(NSUInteger)value {
+    return [NSString stringWithFormat:@"%lX", (unsigned long)value];
+}
+
++ (NSString *)hexStringWithPadding:(NSUInteger)value padding:(NSInteger)padding {
+    return [NSString stringWithFormat:@"%0*lX", (int)padding, (unsigned long)value];
+}
+
+
 // MARK: - Data Conversion
 
 + (NSData *)stringToBytes:(NSString *)str {

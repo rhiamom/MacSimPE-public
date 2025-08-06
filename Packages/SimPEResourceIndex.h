@@ -43,7 +43,7 @@
  * This class contains an Index of all found Files
  * Hashtable (FileType) contains a Hashtable (Group) of Hashtables (Instance) of ArrayLists (colliding Files)
  */
-@interface ResourceIndex : NSObject
+@interface SimPEResourceIndex : NSObject
 
 // MARK: - Properties
 
@@ -82,7 +82,7 @@
 /**
  * Creates a clone of this Object
  */
-- (ResourceIndex *)clone;
+- (SimPEResourceIndex *)clone;
 
 /**
  * Return a flat list of all stored pfds
@@ -109,24 +109,24 @@
 /**
  * Returns all matching FileIndexItems for the passed type
  */
-- (PackedFileDescriptors *)findFileByType:(uint32_t)type;
+- (PackedFileDescriptors *)findFileByType:(uint32_t)pfdType;
 
 /**
  * Returns all matching FileIndexItems for type and group
  */
-- (PackedFileDescriptors *)findFileByType:(uint32_t)type group:(uint32_t)group;
+- (PackedFileDescriptors *)findFileByType:(uint32_t)pfdType group:(uint32_t)group;
 
 /**
  * Returns all matching FileIndexItems for type, group, and instance
  */
-- (PackedFileDescriptors *)findFileByType:(uint32_t)type
+- (PackedFileDescriptors *)findFileByType:(uint32_t)pfdType
                                     group:(uint32_t)group
                                  instance:(uint64_t)instance;
 
 /**
  * Returns all matching FileIndexItems for type, group, subtype, and instance
  */
-- (PackedFileDescriptors *)findFileByType:(uint32_t)type
+- (PackedFileDescriptors *)findFileByType:(uint32_t)pfdType
                                     group:(uint32_t)group
                                   subtype:(uint32_t)subtype
                                  instance:(uint32_t)instance;
@@ -139,7 +139,7 @@
 /**
  * Returns all matching FileIndexItems while ignoring the Group
  */
-- (PackedFileDescriptors *)findFileDiscardingGroupByType:(uint32_t)type
+- (PackedFileDescriptors *)findFileDiscardingGroupByType:(uint32_t)pfdType
                                                 instance:(uint64_t)instance;
 
 /**
@@ -156,13 +156,13 @@
 /**
  * Return all matching FileIndexItems by type and instance
  */
-- (PackedFileDescriptors *)findFileByType:(uint32_t)type
+- (PackedFileDescriptors *)findFileByType:(uint32_t)pfdType
                                  instance:(uint64_t)instance;
 
 /**
  * Return all matching FileIndexItems by type, subtype, and instance
  */
-- (PackedFileDescriptors *)findFileByType:(uint32_t)type
+- (PackedFileDescriptors *)findFileByType:(uint32_t)pfdType
                                   subtype:(uint32_t)subtype
                                  instance:(uint32_t)instance;
 

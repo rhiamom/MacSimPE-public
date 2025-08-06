@@ -28,8 +28,9 @@
  *****************************************************************************************************************/
 
 #import <Foundation/Foundation.h>
+#import "Registry.h"
 
-@class BinaryReader, Registry, Parameters, TGILoader, Boolset, MetaData, PathProvider;
+@class BinaryReader, Parameters, TGILoader, Boolset, MetaData, PathProvider;
 
 /**
  * Determines the Executable that was started
@@ -183,6 +184,12 @@ extern NSString * const HelperNeighborhoodPackage;
 
 // MARK: - Key/Shortcut Support
 + (NSString *)toKeys:(NSString *)shortcut;
+
+//  MARK: Integer to String conversions
++ (NSString *)integerToString:(NSInteger)value;
++ (NSString *)unsignedIntegerToString:(NSUInteger)value;
++ (NSString *)hexToString:(NSUInteger)value;
++ (NSString *)hexStringWithPadding:(NSUInteger)value padding:(NSInteger)padding;
 
 @end
 

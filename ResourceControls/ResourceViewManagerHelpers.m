@@ -1,8 +1,8 @@
 //
-//  ResourceViewManagerHelperClasses.m
-//  MacSimpe
+//  ResourceViewManagerHelpers.m
+//  SimPE for Mac
 //
-//  Created by Catherine Gramze on 7/28/25.
+//  Created by Catherine Gramze on 6/7/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,206 +27,52 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************/
 
-#import "ResourceViewManagerHelpers.h"
-#import "NamedPackedFileDescriptor.h"
-#import "IPackedFileDescriptor.h"
-#import 
+#import <Foundation/Foundation.h>
 
-// MARK: - Resource List Implementation
+// Forward declarations only in header
+@class NamedPackedFileDescriptor;
+@protocol IPackedFileDescriptor;
 
-@implementation ResourceList
+// MARK: - Sort Column Enum
 
-// ResourceList inherits all functionality from NSMutableArray
-// No additional implementation needed for basic list operations
+typedef NS_ENUM(NSInteger, SortColumn) {
+    SortColumnName = 0,
+    SortColumnGroup = 1,
+    SortColumnInstanceHi = 2,
+    SortColumnInstanceLo = 3,
+    SortColumnOffset = 4,
+    SortColumnSize = 5,
+    SortColumnType = 6,
+    SortColumnInstance = 7,
+    SortColumnExtension = 8
+};
+
+// MARK: - Resource List
+
+@interface ResourceList : NSMutableArray<id<IPackedFileDescriptor>>
 
 @end
 
-// MARK: - Descriptor Sort Implementation
+// MARK: - Descriptor Sort Helper
 
-@implementation DescriptorSort
+@interface DescriptorSort : NSObject
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _column = SortColumnOffset;
-        _ascending = YES;
-    }
-    return self;
-}
+@property (nonatomic, assign) SortColumn column;
+@property (nonatomic, assign) BOOL ascending;
 
+- (instancetype)init;
 - (NSComparisonResult)compare:(NamedPackedFileDescriptor *)x
-                         with:(NamedPackedFileDescriptor *)y {
-    
-    NSComparisonResult result = NSOrderedSame;
-    
-    if (self.ascending) {
-        switch (self.column) {
-            case SortColumnName:
-                result = [[x getRealName] compare:[y getRealName]];
-                break;
-                
-            case SortColumnType:
-            case SortColumnExtension: {
-                uint32_t xType = [[x descriptor] type];
-                uint32_t yType = [[y descriptor] type];
-                if (xType < yType) result = NSOrderedAscending;
-                else if (xType > yType) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnGroup: {
-                uint32_t xGroup = [[x descriptor] group];
-                uint32_t yGroup = [[y descriptor] group];
-                if (xGroup < yGroup) result = NSOrderedAscending;
-                else if (xGroup > yGroup) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnInstanceHi: {
-                uint32_t xSubType = [[x descriptor] subType];
-                uint32_t ySubType = [[y descriptor] subType];
-                if (xSubType < ySubType) result = NSOrderedAscending;
-                else if (xSubType > ySubType) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnInstanceLo: {
-                uint32_t xInstance = [[x descriptor] instance];
-                uint32_t yInstance = [[y descriptor] instance];
-                if (xInstance < yInstance) result = NSOrderedAscending;
-                else if (xInstance > yInstance) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnInstance: {
-                uint64_t xLongInstance = [[x descriptor] longInstance];
-                uint64_t yLongInstance = [[y descriptor] longInstance];
-                if (xLongInstance < yLongInstance) result = NSOrderedAscending;
-                else if (xLongInstance > yLongInstance) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnOffset: {
-                NSInteger xOffset = [[x descriptor] offset];
-                NSInteger yOffset = [[y descriptor] offset];
-                if (xOffset < yOffset) result = NSOrderedAscending;
-                else if (xOffset > yOffset) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnSize: {
-                NSInteger xSize = [[x descriptor] size];
-                NSInteger ySize = [[y descriptor] size];
-                if (xSize < ySize) result = NSOrderedAscending;
-                else if (xSize > ySize) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-        }
-    } else {
-        // Descending order - reverse the comparison
-        switch (self.column) {
-            case SortColumnName:
-                result = [[y getRealName] compare:[x getRealName]];
-                break;
-                
-            case SortColumnType:
-            case SortColumnExtension: {
-                uint32_t xType = [[x descriptor] type];
-                uint32_t yType = [[y descriptor] type];
-                if (yType < xType) result = NSOrderedAscending;
-                else if (yType > xType) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnGroup: {
-                uint32_t xGroup = [[x descriptor] group];
-                uint32_t yGroup = [[y descriptor] group];
-                if (yGroup < xGroup) result = NSOrderedAscending;
-                else if (yGroup > xGroup) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnInstanceHi: {
-                uint32_t xSubType = [[x descriptor] subType];
-                uint32_t ySubType = [[y descriptor] subType];
-                if (ySubType < xSubType) result = NSOrderedAscending;
-                else if (ySubType > xSubType) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnInstanceLo: {
-                uint32_t xInstance = [[x descriptor] instance];
-                uint32_t yInstance = [[y descriptor] instance];
-                if (yInstance < xInstance) result = NSOrderedAscending;
-                else if (yInstance > xInstance) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnInstance: {
-                uint64_t xLongInstance = [[x descriptor] longInstance];
-                uint64_t yLongInstance = [[y descriptor] longInstance];
-                if (yLongInstance < xLongInstance) result = NSOrderedAscending;
-                else if (yLongInstance > xLongInstance) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnOffset: {
-                NSInteger xOffset = [[x descriptor] offset];
-                NSInteger yOffset = [[y descriptor] offset];
-                if (yOffset < xOffset) result = NSOrderedAscending;
-                else if (yOffset > xOffset) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-            
-            case SortColumnSize: {
-                NSInteger xSize = [[x descriptor] size];
-                NSInteger ySize = [[y descriptor] size];
-                if (ySize < xSize) result = NSOrderedAscending;
-                else if (ySize > xSize) result = NSOrderedDescending;
-                else result = NSOrderedSame;
-                break;
-            }
-        }
-    }
-    
-    return result;
-}
+                         with:(NamedPackedFileDescriptor *)y;
 
 @end
 
-// MARK: - Resource Name List Implementation
+// MARK: - Resource Name List
 
-@implementation ResourceNameList
+@interface ResourceNameList : NSMutableArray<NamedPackedFileDescriptor *>
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _sorter = [[DescriptorSort alloc] init];
-    }
-    return self;
-}
+@property (nonatomic, strong, readonly) DescriptorSort *sorter;
 
-- (void)sortByColumn:(SortColumn)column ascending:(BOOL)ascending {
-    self.sorter.column = column;
-    self.sorter.ascending = ascending;
-    
-    [self sortUsingComparator:^NSComparisonResult(NamedPackedFileDescriptor *obj1,
-                                                  NamedPackedFileDescriptor *obj2) {
-        return [self.sorter compare:obj1 with:obj2];
-    }];
-}
+- (instancetype)init;
+- (void)sortByColumn:(SortColumn)column ascending:(BOOL)ascending;
 
 @end

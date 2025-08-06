@@ -58,7 +58,7 @@
 /**
  * Returns the Type of the referenced File
  */
-@property (nonatomic, assign) uint32_t pfdType;
+@property (nonatomic, assign) uint32_t type;
 
 /**
  * Returns the Name of the represented Type
@@ -85,7 +85,7 @@
  * Returns an yet unknown Type
  * @remarks Only in Version 1.1 of package Files
  */
-@property (nonatomic, assign) uint32_t subType;
+@property (nonatomic, assign) uint32_t subtype;
 
 /**
  * Returns or Sets the Filename

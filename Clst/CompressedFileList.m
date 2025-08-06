@@ -27,8 +27,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#import "ClstWrapper.h"
+#import "CompressedFileList.h"
 #import "ClstItem.h"
+#import "ClstForm.h"
 #import "IPackedFileDescriptor.h"
 #import "IPackageFile.h"
 #import "IPackageHeader.h"
@@ -105,13 +106,15 @@
 }
 
 - (id<IPackedFileUI>)createDefaultUIHandler {
-    // TODO: Implement ClstForm UI handler
-    return nil;
+    return [[ClstForm alloc] init];
 }
 
 - (id<IWrapperInfo>)createWrapperInfo {
-    // TODO: Implement WrapperInfo
-    return nil;
+    return [[AbstractWrapperInfo alloc] initWithName:@"Compressed File Directory Wrapper"
+                                              author:@"Quaxi"
+                                         description:@"This File contains a List of all compressed Files that are stored within this Package."
+                                             version:2
+                                               image:[NSImage imageNamed:@"clst"]];
 }
 
 // MARK: - Serialization
