@@ -38,6 +38,10 @@
 		B64EEF7B2E39862F0008E7CA /* ResourceTreeNodesByInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = B64EEF7A2E39862F0008E7CA /* ResourceTreeNodesByInstance.m */; };
 		B64EEF7E2E3986BB0008E7CA /* ResourceTreeNodesByType.m in Sources */ = {isa = PBXBuildFile; fileRef = B64EEF7D2E3986BB0008E7CA /* ResourceTreeNodesByType.m */; };
 		B64EEF812E3987F20008E7CA /* ResourceTreeTypeNodeExt.m in Sources */ = {isa = PBXBuildFile; fileRef = B64EEF802E3987F20008E7CA /* ResourceTreeTypeNodeExt.m */; };
+		B64F1C9B2E43FEC3001C0DEC /* XmlPackageReaderBase.m in Sources */ = {isa = PBXBuildFile; fileRef = B64F1C9A2E43FEC3001C0DEC /* XmlPackageReaderBase.m */; };
+		B64F1C9E2E44011C001C0DEC /* FileTableItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B64F1C9D2E44011C001C0DEC /* FileTableItem.m */; };
+		B64F1CA12E44041A001C0DEC /* FileTableItemType.m in Sources */ = {isa = PBXBuildFile; fileRef = B64F1CA02E44041A001C0DEC /* FileTableItemType.m */; };
+		B64F1CA42E4404F9001C0DEC /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = B64F1CA32E4404F9001C0DEC /* Settings.m */; };
 		B66C34642E3BC2D900B4B9B8 /* PathProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B66C34632E3BC2D900B4B9B8 /* PathProvider.m */; };
 		B66C34672E3BC60900B4B9B8 /* PathSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B66C34662E3BC60900B4B9B8 /* PathSettings.m */; };
 		B6819E582E3E734000E37434 /* FileIndexItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6819E572E3E734000E37434 /* FileIndexItem.m */; };
@@ -105,6 +109,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B61C4CF92E456A1F00BC38B4 /* FileTableItemType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTableItemType.h; sourceTree = "<group>"; };
 		B61CE5682E3A84A200547C40 /* ResourceNameSorter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResourceNameSorter.m; sourceTree = "<group>"; };
 		B61CE56A2E3A858300547C40 /* ViewFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewFilter.h; sourceTree = "<group>"; };
 		B61CE56B2E3A85A800547C40 /* ViewFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewFilter.m; sourceTree = "<group>"; };
@@ -183,6 +188,15 @@
 		B64EEF7F2E3987A90008E7CA /* ResourceTreeTypeNodeExt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceTreeTypeNodeExt.h; sourceTree = "<group>"; };
 		B64EEF802E3987F20008E7CA /* ResourceTreeTypeNodeExt.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResourceTreeTypeNodeExt.m; sourceTree = "<group>"; };
 		B64EEF822E3988680008E7CA /* ResourceNameSorter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceNameSorter.h; sourceTree = "<group>"; };
+		B64F1C972E43FC63001C0DEC /* GenericRcolWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenericRcolWrapper.h; sourceTree = "<group>"; };
+		B64F1C982E43FCBC001C0DEC /* GenericRcolWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GenericRcolWrapper.m; sourceTree = "<group>"; };
+		B64F1C992E43FE91001C0DEC /* XmlPackageReaderBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XmlPackageReaderBase.h; sourceTree = "<group>"; };
+		B64F1C9A2E43FEC3001C0DEC /* XmlPackageReaderBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XmlPackageReaderBase.m; sourceTree = "<group>"; };
+		B64F1C9C2E4400E0001C0DEC /* FileTableItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTableItem.h; sourceTree = "<group>"; };
+		B64F1C9D2E44011C001C0DEC /* FileTableItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileTableItem.m; sourceTree = "<group>"; };
+		B64F1CA02E44041A001C0DEC /* FileTableItemType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileTableItemType.m; sourceTree = "<group>"; };
+		B64F1CA22E4404C5001C0DEC /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		B64F1CA32E4404F9001C0DEC /* Settings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		B66C34612E3BC15100B4B9B8 /* IProviderRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IProviderRegistry.h; sourceTree = "<group>"; };
 		B66C34622E3BC28400B4B9B8 /* PathProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathProvider.h; sourceTree = "<group>"; };
 		B66C34632E3BC2D900B4B9B8 /* PathProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathProvider.m; sourceTree = "<group>"; };
@@ -430,6 +444,15 @@
 			path = HandlerCommon;
 			sourceTree = "<group>";
 		};
+		B64F1C962E43FC49001C0DEC /* Rcol */ = {
+			isa = PBXGroup;
+			children = (
+				B64F1C972E43FC63001C0DEC /* GenericRcolWrapper.h */,
+				B64F1C982E43FCBC001C0DEC /* GenericRcolWrapper.m */,
+			);
+			path = Rcol;
+			sourceTree = "<group>";
+		};
 		B6819E552E3D651F00E37434 /* NameProvider */ = {
 			isa = PBXGroup;
 			children = (
@@ -496,6 +519,7 @@
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
+				B64F1C962E43FC49001C0DEC /* Rcol */,
 				B6819E592E3E758B00E37434 /* Scenegraph */,
 				B6819E552E3D651F00E37434 /* NameProvider */,
 				B61CE59B2E3ADF2300547C40 /* WorkspaceHelper */,
@@ -546,6 +570,8 @@
 				B69F34E82E37F37C007EEA89 /* ExtractableFile.m */,
 				B6CDCC842E33F2EB004FDF82 /* File.h */,
 				B6CDCC852E33F358004FDF82 /* File.m */,
+				B6819E562E3E72FF00E37434 /* FileIndexItem.h */,
+				B6819E572E3E734000E37434 /* FileIndexItem.m */,
 				B61CE59E2E3AE0A600547C40 /* FileTableBase.h */,
 				B61CE59F2E3AE10A00547C40 /* FileTableBase.m */,
 				B69F34EA2E37F3CA007EEA89 /* GeneratableFile.h */,
@@ -560,6 +586,8 @@
 				B6CDCCA22E342902004FDF82 /* HoleIndexItem.m */,
 				B69F34E42E37F2F3007EEA89 /* PackageMaintainer.h */,
 				B69F34E52E37F319007EEA89 /* PackageMaintainer.m */,
+				B61CE5A12E3AE64500547C40 /* PackageRepair.h */,
+				B61CE5A22E3AE68400547C40 /* PackageRepair.m */,
 				B69F34ED2E37F49A007EEA89 /* PackedFile.h */,
 				B69F34EE2E37F4D6007EEA89 /* PackedFile.m */,
 				B6CDCCA82E342B75004FDF82 /* PackedFileDescriptor.h */,
@@ -568,14 +596,18 @@
 				B6CDCCBA2E345922004FDF82 /* PackedFileDescriptors.m */,
 				B6CDCCA52E342AF5004FDF82 /* PackedFileDescriptorSimple.h */,
 				B6CDCCA62E342B3D004FDF82 /* PackedFileDescriptorSimple.m */,
-				B61CE5A12E3AE64500547C40 /* PackageRepair.h */,
-				B61CE5A22E3AE68400547C40 /* PackageRepair.m */,
 				B61CE5A42E3AE6D700547C40 /* SimPEResourceIndex.h */,
 				B61CE5A52E3AE72300547C40 /* SimPEResourceIndex.m */,
-				B6819E562E3E72FF00E37434 /* FileIndexItem.h */,
-				B6819E572E3E734000E37434 /* FileIndexItem.m */,
 				B6FDC59A2E3FE139004E8AA6 /* StreamMaintainer.h */,
 				B6FDC59B2E3FE170004E8AA6 /* StreamMaintainer.m */,
+				B64F1C992E43FE91001C0DEC /* XmlPackageReaderBase.h */,
+				B64F1C9A2E43FEC3001C0DEC /* XmlPackageReaderBase.m */,
+				B64F1C9C2E4400E0001C0DEC /* FileTableItem.h */,
+				B64F1C9D2E44011C001C0DEC /* FileTableItem.m */,
+				B64F1CA02E44041A001C0DEC /* FileTableItemType.m */,
+				B64F1CA22E4404C5001C0DEC /* Settings.h */,
+				B64F1CA32E4404F9001C0DEC /* Settings.m */,
+				B61C4CF92E456A1F00BC38B4 /* FileTableItemType.h */,
 			);
 			path = Packages;
 			sourceTree = "<group>";
@@ -858,6 +890,7 @@
 				B6CDCC9D2E34271B004FDF82 /* HeaderIndex.m in Sources */,
 				B69F34E02E37EF74007EEA89 /* CRCParameters.m in Sources */,
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
+				B64F1C9B2E43FEC3001C0DEC /* XmlPackageReaderBase.m in Sources */,
 				B69F34EC2E37F3F3007EEA89 /* GeneratableFile.m in Sources */,
 				B61CE5A32E3AE68400547C40 /* PackageRepair.m in Sources */,
 				B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */,
@@ -882,6 +915,7 @@
 				B6CDCC942E340521004FDF82 /* BinaryReader.m in Sources */,
 				B69F35182E385E4F007EEA89 /* NamedPackedFileDescriptor.m in Sources */,
 				B69C5A2D2E3EC83B00794FC7 /* WarningException.m in Sources */,
+				B64F1CA12E44041A001C0DEC /* FileTableItemType.m in Sources */,
 				B61CE5A02E3AE10A00547C40 /* FileTableBase.m in Sources */,
 				B6FDC59C2E3FE170004E8AA6 /* StreamMaintainer.m in Sources */,
 				B6CDCC972E340622004FDF82 /* BinaryWriter.m in Sources */,
@@ -900,11 +934,13 @@
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
 				B69C5A2A2E3EC5E300794FC7 /* XmlRegistryKey.m in Sources */,
 				B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */,
+				B64F1C9E2E44011C001C0DEC /* FileTableItem.m in Sources */,
 				B62437E12E35A15B0052119F /* TGILoader.m in Sources */,
 				B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */,
 				B6CDCCA72E342B3D004FDF82 /* PackedFileDescriptorSimple.m in Sources */,
 				B6CDCCBB2E345922004FDF82 /* PackedFileDescriptors.m in Sources */,
 				B64EEF482E3939610008E7CA /* ResourceListItemExt.m in Sources */,
+				B64F1CA42E4404F9001C0DEC /* Settings.m in Sources */,
 				B64E6BA72E3531DF009AD0A7 /* Alias.m in Sources */,
 				B6CDCC8B2E33FC6B004FDF82 /* Stream.m in Sources */,
 				B69C5A382E3ED3E200794FC7 /* Thread.m in Sources */,

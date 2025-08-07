@@ -29,10 +29,12 @@
 
 #import "PathProvider.h"
 #import "Helper.h"
+#import "ExpansionItem.h"
 
 // MARK: - Static Variables
 
 static PathProvider *globalInstance = nil;
+static ExpansionItem *nilExpansionItem = nil;
 
 // MARK: - Implementation
 
@@ -92,6 +94,58 @@ static PathProvider *globalInstance = nil;
     [defaults synchronize];
 }
 
++ (ExpansionItem *)nilExpansion {
+    if (nilExpansionItem == nil) {
+        nilExpansionItem = [[ExpansionItem alloc] initWithXmlRegistryKey:nil];
+    }
+    return nilExpansionItem;
+}
+
+// MARK: - Expansion Management (matching C# implementation exactly)
+
+- (ExpansionItem *)getExpansionName:(Expansions)expansion {
+    // C# version: if (!map.ContainsKey(exp)) return Nil;
+    NSNumber *key = @(expansion);
+    if (![self.expansionMap.allKeys containsObject:key]) {
+        return [PathProvider nilExpansion];
+    }
+    // C# version: return map[exp];
+    return [self.expansionMap objectForKey:key];
+}
+
+- (ExpansionItem *)getExpansion:(int)version {
+    // C# version: Expansions exp = (Expansions)Math.Pow(2, version);
+    Expansions exp = (Expansions)pow(2, version);
+    return [self getExpansion:exp];
+}
+
+- (ExpansionItem *)getLatestExpansion {
+    return [self getExpansion:[self gameVersion]];
+}
+
+- (ExpansionItem *)getHighestAvailableExpansion:(int)minver maxver:(int)maxver {
+    ExpansionItem *exp = nil;
+    ExpansionItem *t = nil;
+    int v = minver;
+    while (v < maxver) {
+        t = [self getExpansion:v++];
+        if (t != nil) {
+            if ([t exists]) {
+                exp = t;
+            }
+        }
+    }
+    return exp;
+}
+
+// MARK: - Subscript-like access (matching C# indexers)
+- (ExpansionItem *)expansionForEnum:(Expansions)expansion {
+    return [self getExpansion:expansion];
+}
+
+- (ExpansionItem *)expansionForVersion:(int)version {
+    return [self getExpansion:version];
+}
 // MARK: - Properties (Mac version content through Seasons + Voyage + some SPs)
 
 - (Expansions)lastKnown {

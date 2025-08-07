@@ -29,6 +29,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class ExpansionItem;
+
 // MARK: - Expansions Enum (simplified for Mac)
 
 typedef NS_OPTIONS(uint32_t, Expansions) {
@@ -63,9 +65,15 @@ typedef NS_OPTIONS(uint32_t, Expansions) {
 @property (nonatomic, readonly) int spInstalled;
 @property (nonatomic, readonly) int64_t availableGroups;
 @property (nonatomic, readonly) int currentGroup;
+@property (nonatomic, strong, readonly) NSMutableArray<ExpansionItem *> *expansions;
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, ExpansionItem *> *expansionMap;
+
+
+// MARK: - Static Properties
++ (ExpansionItem *)nilExpansion;
++ (PathProvider *)global;
 
 // MARK: - Class Methods
-+ (PathProvider *)global;
 + (NSString *)expansionFile;
 + (NSString *)personalFolder;
 + (NSString *)displayedName;
@@ -86,4 +94,13 @@ typedef NS_OPTIONS(uint32_t, Expansions) {
 // MARK: - System Management
 - (void)flush;
 
+// MARK: - Expansion Management
+- (ExpansionItem *)getExpansionName:(Expansions)expansion;
+- (ExpansionItem *)getExpansion:(int)version;
+- (ExpansionItem *)getLatestExpansion;
+- (ExpansionItem *)getHighestAvailableExpansion:(int)minver maxver:(int)maxver;
+
+// MARK: - Subscript-like access (matching C# indexers)
+- (ExpansionItem *)expansionForEnum:(Expansions)expansion;
+- (ExpansionItem *)expansionForVersion:(int)version;
 @end

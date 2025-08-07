@@ -28,41 +28,14 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
+#import "FileTable.h"
+
+@class FileTableItem;
 
 @protocol IScenegraphFileIndex;
 @protocol IWrapperRegistry;
 @protocol IProviderRegistry;
 @protocol IGroupCache;
-
-// MARK: - File Table Item Types
-
-typedef NS_ENUM(NSInteger, FileTableItemType) {
-    FileTablePathsAbsolute,
-    FileTablePathsSaveGameFolder,
-    FileTablePathsSimPEFolder,
-    FileTablePathsSimPEDataFolder,
-    FileTablePathsSimPEPluginFolder
-};
-
-// MARK: - File Table Item
-
-@interface FileTableItem : NSObject
-
-@property (nonatomic, strong, readonly) NSString *relativePath;
-@property (nonatomic, assign, readonly) FileTableItemType type;
-@property (nonatomic, assign, readonly) BOOL isRecursive;
-@property (nonatomic, assign, readonly) BOOL isFile;
-@property (nonatomic, assign, readonly) NSInteger epVersion;
-@property (nonatomic, assign, readonly) BOOL ignore;
-
-- (instancetype)initWithRelativePath:(NSString *)relativePath
-                                type:(FileTableItemType)type
-                         isRecursive:(BOOL)isRecursive
-                              isFile:(BOOL)isFile
-                           epVersion:(NSInteger)epVersion
-                              ignore:(BOOL)ignore;
-
-@end
 
 // MARK: - FileTableBase
 
@@ -78,6 +51,8 @@ typedef NS_ENUM(NSInteger, FileTableItemType) {
  * Returns the FileIndex
  * This will be initialized by the RCOL Factory
  */
+@property (class, nonatomic, strong, readonly) NSArray<FileTableItem *> *defaultFolders;
+
 @property (class, nonatomic, strong) id<IScenegraphFileIndex> fileIndex;
 
 /**
@@ -94,13 +69,6 @@ typedef NS_ENUM(NSInteger, FileTableItemType) {
  * Returns the Group Cache used to determine local Groups
  */
 @property (class, nonatomic, strong) id<IGroupCache> groupCache;
-
-// MARK: - Folder Management
-
-/**
- * Returns a list of all folders the user wants to scan for content
- */
-@property (class, nonatomic, strong, readonly) NSArray<FileTableItem *> *defaultFolders;
 
 // MARK: - Configuration Methods
 

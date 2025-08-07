@@ -31,39 +31,7 @@
 #import "FileTableBase.h"
 #import "PathProvider.h"
 #import "Helper.h"
-
-// MARK: - FileTableItem Implementation
-
-@interface FileTableItem ()
-@property (nonatomic, strong, readwrite) NSString *relativePath;
-@property (nonatomic, assign, readwrite) FileTableItemType type;
-@property (nonatomic, assign, readwrite) BOOL isRecursive;
-@property (nonatomic, assign, readwrite) BOOL isFile;
-@property (nonatomic, assign, readwrite) NSInteger epVersion;
-@property (nonatomic, assign, readwrite) BOOL ignore;
-@end
-
-@implementation FileTableItem
-
-- (instancetype)initWithRelativePath:(NSString *)relativePath
-                                type:(FileTableItemType)type
-                         isRecursive:(BOOL)isRecursive
-                              isFile:(BOOL)isFile
-                           epVersion:(NSInteger)epVersion
-                              ignore:(BOOL)ignore {
-    self = [super init];
-    if (self) {
-        _relativePath = relativePath;
-        _type = type;
-        _isRecursive = isRecursive;
-        _isFile = isFile;
-        _epVersion = epVersion;
-        _ignore = ignore;
-    }
-    return self;
-}
-
-@end
+#import "FileTableItem.h"
 
 // MARK: - FileTableBase Implementation
 
@@ -134,34 +102,34 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
         // Build default configuration (simplified from C# XML approach)
         
         // CEP enabling files
-        [folders addObject:[[FileTableItem alloc] initWithRelativePath:@"Downloads/_EnableColorOptionsGMND.package"
-                                                                  type:FileTablePathsSaveGameFolder
-                                                           isRecursive:NO
-                                                                isFile:YES
-                                                             epVersion:-1
-                                                                ignore:NO]];
+        [[FileTableItem alloc] initWithRelativePath:@"Downloads/_EnableColorOptionsGMND.package"
+                                                                  type:FileTableItemTypeSaveGameFolder
+                                                           recursive:NO
+                                                                file:YES
+                                                             version:-1
+                                                                ignore:NO];
         
-        [folders addObject:[[FileTableItem alloc] initWithRelativePath:@"TSData/Res/Sims3D/_EnableColorOptionsMMAT.package"
-                                                                  type:FileTablePathsAbsolute
-                                                           isRecursive:NO
-                                                                isFile:YES
-                                                             epVersion:-1
-                                                                ignore:NO]];
+        [[FileTableItem alloc] initWithRelativePath:@"TSData/Res/Sims3D/_EnableColorOptionsMMAT.package"
+                                                                  type:FileTableItemTypeAbsolute
+                                                            recursive:NO
+                                                                 file:YES
+                                                              version:-1
+                                                               ignore:NO];
         
         // CEP folders
-        [folders addObject:[[FileTableItem alloc] initWithRelativePath:@"zCEP-EXTRA"
-                                                                  type:FileTablePathsSaveGameFolder
-                                                           isRecursive:YES
-                                                                isFile:NO
-                                                             epVersion:-1
-                                                                ignore:NO]];
+        [[FileTableItem alloc] initWithRelativePath:@"zCEP-EXTRA"
+                                                                  type:FileTableItemTypeSaveGameFolder
+                                                             recursive:YES
+                                                                  file:NO
+                                                               version:-1
+                                                                ignore:NO];
         
-        [folders addObject:[[FileTableItem alloc] initWithRelativePath:@"TSData/Res/Catalog/zCEP-EXTRA"
-                                                                  type:FileTablePathsAbsolute
-                                                           isRecursive:YES
-                                                                isFile:NO
-                                                             epVersion:-1
-                                                                ignore:NO]];
+        [[FileTableItem alloc] initWithRelativePath:@"TSData/Res/Catalog/zCEP-EXTRA"
+                                                                  type:FileTableItemTypeAbsolute
+                                                             recursive:YES
+                                                                  file:NO
+                                                               version:-1
+                                                                ignore:NO];
         
         // Base game folders - simplified approach
         NSArray *baseGameFolders = @[
@@ -177,12 +145,12 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
         
         for (NSString *folder in baseGameFolders) {
             BOOL isPreObject = [folder containsString:@"Bins"];
-            [folders addObject:[[FileTableItem alloc] initWithRelativePath:folder
-                                                                      type:FileTablePathsAbsolute
-                                                               isRecursive:YES
-                                                                    isFile:NO
-                                                                 epVersion:-1
-                                                                    ignore:isPreObject]]; // Pre-object folders are often ignored
+            [[FileTableItem alloc] initWithRelativePath:folder
+                                                                      type:FileTableItemTypeAbsolute
+                                                                 recursive:YES
+                                                                      file:NO
+                                                                   version:-1
+                                                                    ignore:isPreObject]; // Pre-object folders are often ignored
         }
         
         // Expansion pack folders - simplified
@@ -198,12 +166,12 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
         ];
         
         for (NSString *folder in expansionFolders) {
-            [folders addObject:[[FileTableItem alloc] initWithRelativePath:folder
-                                                                      type:FileTablePathsAbsolute
-                                                               isRecursive:YES
-                                                                    isFile:NO
-                                                                 epVersion:-1
-                                                                    ignore:NO]];
+            [[FileTableItem alloc] initWithRelativePath:folder
+                                                   type:FileTableItemTypeAbsolute
+                                              recursive:YES
+                                                   file:NO
+                                                version:-1
+                                                 ignore:NO];
         }
         
         s_defaultFolders = [folders copy];
@@ -220,12 +188,12 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
 + (NSArray<FileTableItem *> *)loadFolderConfiguration {
     @try {
         // Try to load from folders.xreg XML file (matching C# behavior)
-        NSString *foldersPath = [[Helper dataFolder] stringByAppendingPathComponent:@"folders.xreg"];
+        NSString *foldersPath = [DataFolder foldersXREG];
         
         if (![[NSFileManager defaultManager] fileExistsAtPath:foldersPath]) {
             // Build default XML if it doesn't exist
             [self buildFolderXml];
-            foldersPath = [[Helper dataFolder] stringByAppendingPathComponent:@"folders.xreg"];
+            foldersPath = [DataFolder foldersXREG];
         }
         
         if (![[NSFileManager defaultManager] fileExistsAtPath:foldersPath]) {
@@ -280,7 +248,7 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
             BOOL isRecursive = NO;
             BOOL ignore = NO;
             NSInteger epVersion = -1;
-            FileTableItemType type = FileTablePathsAbsolute;
+            FileTableItemType type = FileTableItemTypeAbsolute;
             
             NSXMLNode *recursiveAttr = [element attributeForName:@"recursive"];
             if (recursiveAttr && ![[recursiveAttr stringValue] isEqualToString:@"0"]) {
@@ -305,13 +273,13 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
                 NSString *rootValue = [[rootAttr stringValue] lowercaseString];
                 
                 if ([rootValue isEqualToString:@"save"]) {
-                    type = FileTablePathsSaveGameFolder;
+                    type = FileTableItemTypeSaveGameFolder;
                 } else if ([rootValue isEqualToString:@"simpe"]) {
-                    type = FileTablePathsSimPEFolder;
+                    type = FileTableItemTypeSimPEFolder;
                 } else if ([rootValue isEqualToString:@"simpedata"]) {
-                    type = FileTablePathsSimPEDataFolder;
+                    type = FileTableItemTypeSimPEDataFolder;
                 } else if ([rootValue isEqualToString:@"simpeplugin"]) {
-                    type = FileTablePathsSimPEPluginFolder;
+                    type = FileTableItemTypeSimPEPluginFolder;
                 }
                 // Note: Expansion pack handling would need ExpansionItem lookup here
             }
@@ -321,9 +289,9 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
             
             FileTableItem *item = [[FileTableItem alloc] initWithRelativePath:relativePath
                                                                           type:type
-                                                                   isRecursive:isRecursive
-                                                                        isFile:isFile
-                                                                     epVersion:epVersion
+                                                                     recursive:isRecursive
+                                                                          file:isFile
+                                                                       version:epVersion
                                                                         ignore:ignore];
             [folders addObject:item];
         }
@@ -338,7 +306,7 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
 
 + (void)buildFolderXml {
     @try {
-        NSString *foldersPath = [[Helper dataFolder] stringByAppendingPathComponent:@"folders.xreg"];
+        NSString *foldersPath = [DataFolder foldersXREG];
         
         // Create XML document
         NSXMLElement *foldersElement = [[NSXMLElement alloc] initWithName:@"folders"];
@@ -437,7 +405,7 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
 
 + (void)storeFolderConfiguration:(NSArray<FileTableItem *> *)folders {
     @try {
-        NSString *foldersPath = [[Helper dataFolder] stringByAppendingPathComponent:@"folders.xreg"];
+        NSString *foldersPath = [DataFolder foldersXREG];
         
         // Create XML document
         NSXMLElement *foldersElement = [[NSXMLElement alloc] initWithName:@"folders"];
@@ -450,19 +418,19 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
             // Add root attribute based on type
             NSString *rootValue = nil;
             switch (folder.type) {
-                case FileTablePathsAbsolute:
+                case FileTableItemTypeAbsolute:
                     rootValue = @"game"; // Default to game folder
                     break;
-                case FileTablePathsSaveGameFolder:
+                case FileTableItemTypeSaveGameFolder:
                     rootValue = @"save";
                     break;
-                case FileTablePathsSimPEFolder:
+                case FileTableItemTypeSimPEFolder:
                     rootValue = @"simpe";
                     break;
-                case FileTablePathsSimPEDataFolder:
+                case FileTableItemTypeSimPEDataFolder:
                     rootValue = @"simpeData";
                     break;
-                case FileTablePathsSimPEPluginFolder:
+                case FileTableItemTypeSimPEPluginFolder:
                     rootValue = @"simpePlugin";
                     break;
             }

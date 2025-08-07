@@ -242,7 +242,7 @@ extern const uint32_t FILELIST_TYPE;
 /**
  * Reads a File specified by a FileIndexItem
  */
-- (id<IPackedFile>)read:(id<IPackedFileDescriptor>)pfd;
+- (id<IPackedFile>)readDescriptor:(id<IPackedFileDescriptor>)pfd;
 
 /**
  * Returns the Stream that holds the given Resource

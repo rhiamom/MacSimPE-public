@@ -29,7 +29,7 @@
 #import "IPackedFileDescriptor.h"
 #import "TGILoader.h"
 #import "TypeRegistry.h"
-#import "GenericRcol.h"
+#import "GenericRcolWrapper.h"
 #import "Txtr.h"
 #import "FileTableBase.h"
 #import "PackageMaintainer.h"

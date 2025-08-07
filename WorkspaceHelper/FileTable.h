@@ -54,7 +54,16 @@ typedef NS_ENUM(NSInteger, Expansions) {
     ExpansionsGlamour,
     ExpansionsPets,
     ExpansionsSeasons,
-    ExpansionsVoyage
+    ExpansionsVoyage,
+    ExpansionsCustom
+};
+
+typedef NS_ENUM(uint32_t, FileTableItemType) {
+    FileTableItemTypeAbsolute = 0x8FFF0000,
+    FileTableItemTypeSaveGameFolder = 0x8FFF0001,
+    FileTableItemTypeSimPEFolder = 0x8FFE0000,
+    FileTableItemTypeSimPEDataFolder = 0x8FFE0001,
+    FileTableItemTypeSimPEPluginFolder = 0x8FFE0002
 };
 
 // MARK: - FileTablePath
@@ -76,6 +85,23 @@ typedef NS_ENUM(NSInteger, Expansions) {
 - (NSString *)fullPath;
 - (BOOL)exists;
 - (NSString *)basePath;
+// MARK: - Factory Methods
++ (FileTableItemType)fromExpansion:(Expansions)expansion;
++ (FileTableItemType)fromInteger:(NSInteger)value;
++ (FileTableItemType)fromUnsignedInteger:(uint32_t)value;
+
+// MARK: - Conversion Methods
++ (Expansions)asExpansion:(FileTableItemType)type;
++ (uint32_t)asUnsignedInteger:(FileTableItemType)type;
+
+// MARK: - Utility Methods
++ (NSString *)getRootForType:(FileTableItemType)type;
++ (NSInteger)getEPVersionForType:(FileTableItemType)type;
++ (NSString *)stringForType:(FileTableItemType)type;
+
+// MARK: - Comparison Methods
++ (NSComparisonResult)compare:(FileTableItemType)typeA with:(FileTableItemType)typeB;
++ (BOOL)isEqual:(FileTableItemType)typeA to:(FileTableItemType)typeB;
 
 @end
 

@@ -27,28 +27,29 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import "File.h"
 #import "BinaryReader.h"
-#import "Stream.h"
+#import "ClstItem.h"
+#import "CompressedFileList.h"
+#import "File.h"
+#import "FileIndex.h"
+#import "FileStream.h"
+#import "GeneratableFile.h"
+#import "Hashes.h"
 #import "HeaderData.h"
 #import "HeaderIndex.h"
-#import "PackedFileDescriptor.h"
+#import "Helper.h"
 #import "HoleIndexItem.h"
-#import "CompressedFileList.h"
-#import "PackedFile.h"
 #import "IPackageFile.h"
 #import "IPackedFileDescriptor.h"
-#import "StreamMaintainer.h"
-#import "GeneratableFile.h"
-#import "PackageMaintainer.h"
-#import "Hashes.h"
+#import "MemoryStream.h"
 #import "MetaData.h"
-#import "ClstItem.h"
+#import "PackageMaintainer.h"
+#import "PackedFile.h"
+#import "PackedFileDescriptor.h"
 #import "PackedFileDescriptors.h"
 #import "Registry.h"
-#import "Helper.h"
-#import "FileStream.h"
-#import "FileIndex.h"
+#import "Stream.h"
+#import "StreamMaintainer.h"
 
 @interface File ()
 
@@ -404,10 +405,10 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
 
 - (id<IPackedFile>)readAtIndex:(uint32_t)item {
     id<IPackedFileDescriptor> pfd = [self.fileindex objectAtUnsignedIndex:item];
-    return [self read:pfd];
+    return [self readDescriptor:pfd];
 }
 
-- (id<IPackedFile>)read:(id<IPackedFileDescriptor>)pfd {
+- (id<IPackedFile>)readDescriptor:(id<IPackedFileDescriptor>)pfd {
     if ([pfd hasUserdata]) {
         // Deliver user-defined data
         id<IPackedFile> pf = [[PackedFile alloc] initWithData:[pfd userData]];
@@ -592,7 +593,7 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
 - (void)copyDescriptors:(id<IPackageFile>)package {
     for (id<IPackedFileDescriptor> pfd in [package index]) {
         id<IPackedFileDescriptor> npfd = [pfd clone];
-        [npfd setUserData:[[package read:pfd] uncompressedData] fire:NO];
+        [npfd setUserData:[[package readDescriptor:pfd] uncompressedData] fire:NO];
         [self addDescriptor:npfd isNew:YES];
     }
 }
@@ -788,7 +789,7 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
     
     for (id<IPackedFileDescriptor> pfd in self.index) {
         id<IPackedFileDescriptor> npfd = [pfd clone];
-        [npfd setUserData:[[self read:pfd] uncompressedData] fire:NO];
+        [npfd setUserData:[[self readDescriptor:pfd] uncompressedData] fire:NO];
         [fl addDescriptor:npfd];
     }
     
@@ -975,10 +976,6 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
     return [self findFileWithType:pfd.type subtype:pfd.subtype group:pfd.group instance:pfd.instance];
 }
 
-- (id<IPackedFile>)readDescriptor:(id<IPackedFileDescriptor>)pfd {
-    return [self read:pfd];
-}
-
 - (void)saveToFile:(NSString *)filename {
     @throw [NSException exceptionWithName:@"NotImplementedException"
                                    reason:[NSString stringWithFormat:@"Can't save a object of Type %@.%@",
@@ -1045,15 +1042,39 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
 }
 
 + (GeneratableFile *)createNew {
-    GeneratableFile *gf = [GeneratableFile loadFromStream:
-                          [[BinaryReader alloc] initWithStream:
-                           [[GeneratableFile loadFromStream:nil] build]]];
+    GeneratableFile *tempFile = [GeneratableFile loadFromStream:nil];
+    NSData *buildData = [tempFile build];
+    Stream *stream = [[MemoryStream alloc] initWithData:buildData];
+    BinaryReader *reader = [[BinaryReader alloc] initWithStream:stream];
+    GeneratableFile *gf = [GeneratableFile loadFromStream:reader];
     
-    if ([UserVerification haveValidUserId]) {
-        gf.header.created = [UserVerification userId];
-    }
+    //if ([UserVerification haveValidUserId]) {
+        //gf.header.created = [UserVerification userId];
+    //}
     
     return gf;
 }
 
+// MARK: - Missing IPackageFile Protocol Methods
+
+- (void)resourceChanged:(id<IPackedFileDescriptor>)descriptor {
+    // Handle resource change - this is called by PackedFileDescriptor when data changes
+    [self fireIndexEvent];
+}
+
+- (void)remove:(id<IPackedFileDescriptor>)pfd {
+    [self removeDescriptor:pfd];
+}
+
+- (void)add:(id<IPackedFileDescriptor>)pfd {
+    [self addDescriptor:pfd];
+}
+
+- (id<IPackedFile>)read:(uint32_t)item {
+    return [self readAtIndex:item];
+}
+
+- (void)saveWithFilename:(NSString *)filename {
+    [self saveToFile:filename];
+}
 @end
