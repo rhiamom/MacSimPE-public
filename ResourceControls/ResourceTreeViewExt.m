@@ -337,5 +337,37 @@
         }
     }
 }
+// MARK: - Drag & Drop Support
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView writeItems:(NSArray *)items toPasteboard:(NSPasteboard *)pboard {
+    if ([items count] == 0) return NO;
+    
+    id item = [items firstObject];
+    
+    // Handle different item types
+    NSString *description = nil;
+    if ([item isKindOfClass:[NamedPackedFileDescriptor class]]) {
+        NamedPackedFileDescriptor *namedResource = (NamedPackedFileDescriptor *)item;
+        description = [namedResource getRealName];
+        if (description == nil || [description length] == 0) {
+            description = [NSString stringWithFormat:@"Resource %08X", [[namedResource descriptor] type]];
+        }
+    } else if ([item isKindOfClass:[ResourceGroup class]]) {
+        ResourceGroup *group = (ResourceGroup *)item;
+        description = [NSString stringWithFormat:@"Resource Group %08X (%ld items)",
+                      [group type], (long)[group count]];
+    } else {
+        description = [item description];
+    }
+    
+    [pboard declareTypes:@[NSPasteboardTypeString] owner:self];
+    [pboard setString:description forType:NSPasteboardTypeString];
+    
+    return YES;
+}
+
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView draggingSession:(NSDraggingSession *)session sourceOperationMaskForDraggingContext:(NSDraggingContext)context {
+    return NSDragOperationCopy | NSDragOperationLink;
+}
 
 @end

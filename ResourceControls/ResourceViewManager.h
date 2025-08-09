@@ -80,6 +80,11 @@
 - (void)storeLayout;
 - (void)restoreLayout;
 
+// MARK: - Drag & Drop Support (PackageSelectorForm functionality)
+- (void)enableDragDropForPackage:(id<IPackageFile>)package;
+- (void)configureDragDropForListView;
+- (void)configureDragDropForTreeView;
+
 // MARK: - Selection
 
 - (BOOL)selectResource:(id<IScenegraphFileIndexItem>)resource;

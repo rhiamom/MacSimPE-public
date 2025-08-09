@@ -422,11 +422,9 @@
     self.group = [reader readUInt32];
     self.instance = [reader readUInt32];
     
-    if (header.isVersion0101 && header.hole.itemSize >= 24) {
+    if (header.isVersion0101 && header.hole.itemSize >= 24)
         self.subtype = [reader readUInt32];
-    }
-        self.subtype = [reader readUInt32];    
-    
+        
     _offset = [reader readUInt32];
     _size = [reader readInt32];
 }

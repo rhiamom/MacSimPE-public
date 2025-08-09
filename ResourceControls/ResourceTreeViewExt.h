@@ -55,6 +55,7 @@
 @property (nonatomic, strong) IBOutlet NSToolbarItem *tbType;
 @property (nonatomic, strong) IBOutlet NSToolbarItem *tbGroup;
 @property (nonatomic, strong) IBOutlet NSToolbarItem *tbInst;
+@property (nonatomic, strong) IBOutlet NSOutlineView *outlineView;
 
 // MARK: - Node Builders
 @property (nonatomic, strong) ResourceTreeNodesByType *typeBuilder;
@@ -83,5 +84,14 @@
 
 // MARK: - Toolbar Actions
 - (IBAction)selectTreeBuilder:(id)sender;
+
+// MARK: - Drag & Drop Support
+- (BOOL)outlineView:(NSOutlineView *)outlineView
+         writeItems:(NSArray *)items
+       toPasteboard:(NSPasteboard *)pboard;
+
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView
+                draggingSession:(NSDraggingSession *)session
+sourceOperationMaskForDraggingContext:(NSDraggingContext)context;
 
 @end

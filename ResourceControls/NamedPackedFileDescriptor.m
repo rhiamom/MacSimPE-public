@@ -46,6 +46,10 @@
 
 @implementation NamedPackedFileDescriptor
 
+@synthesize descriptor = _descriptor;
+@synthesize package = _package;
+@synthesize resource = _resource;
+
 // MARK: - Initialization
 
 - (instancetype)initWithDescriptor:(id<IPackedFileDescriptor>)descriptor
@@ -75,7 +79,7 @@
 - (NSString *)getRealName {
     if (self.realName == nil) {
         if ([Registry.windowsRegistry decodeFilenamesState]) {
-            id<IPackedFileWrapper> wrapper = [TypeRegistry findHandler:[self.descriptor type]];
+            id<IPackedFileWrapper> wrapper = [FileTableBase.wrapperRegistry findHandler:[self.descriptor type]];
             
             if (wrapper != nil) {
                 @synchronized (wrapper) {
@@ -100,11 +104,8 @@
                         self.realName = [wrapper resourceName];
                     }
                     @catch (NSException *exception) {
-#ifdef DEBUG
                         self.realName = [exception reason];
-#else
                         self.realName = [self.descriptor toResListString];
-#endif
                     }
                     @finally {
                         // Restore original state

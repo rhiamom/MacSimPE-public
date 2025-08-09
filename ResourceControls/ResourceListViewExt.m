@@ -36,6 +36,9 @@
 #import "IScenegraphFileIndexItem.h"
 #import "FileTable.h"
 #import "Registry.h"
+#import "ExpansionItem.h"
+#import "TypeAlias.h"
+
 
 @interface ResourceListViewExt ()
 @property (nonatomic, strong) id selectionChangedEvent;
@@ -153,7 +156,7 @@
         [self.tableView removeTableColumn:self.nameColumn];
     }
     
-    if (![Registry hiddenMode]) {
+    if (![AppPreferences hiddenMode]) {
         if ([self.tableView.tableColumns containsObject:self.offsetColumn]) {
             [self.tableView removeTableColumn:self.offsetColumn];
         }
@@ -240,6 +243,31 @@
     [self setResources:namedList];
 }
 
+// MARK: - Drag & Drop Support
+
+- (BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)rowIndexes toPasteboard:(NSPasteboard *)pboard {
+    if ([rowIndexes count] == 0) return NO;
+    
+    NSInteger row = [rowIndexes firstIndex];
+    if (row >= [self.names count]) return NO;
+    NamedPackedFileDescriptor *namedResource = [self.names objectAtIndex:row];
+    id<IPackedFileDescriptor> pfd = [namedResource descriptor];
+    
+    // Create pasteboard representation
+    NSString *description = [namedResource getRealName];
+    if (description == nil || [description length] == 0) {
+        description = [NSString stringWithFormat:@"Resource %08X", [pfd type]];
+    }
+    
+    [pboard declareTypes:@[NSPasteboardTypeString] owner:self];
+    [pboard setString:description forType:NSPasteboardTypeString];
+    
+    return YES;
+}
+
+- (NSDragOperation)tableView:(NSTableView *)tableView draggingSession:(NSDraggingSession *)session sourceOperationMaskForDraggingContext:(NSDraggingContext)context {
+    return NSDragOperationCopy | NSDragOperationLink;
+}
 // MARK: - Update Management
 
 - (void)beginUpdate {
@@ -366,7 +394,9 @@
 - (BOOL)selectResource:(id<IScenegraphFileIndexItem>)resource {
     for (NSInteger i = 0; i < [self.names count]; i++) {
         NamedPackedFileDescriptor *namedResource = [self.names objectAtIndex:i];
-        if ([[namedResource descriptor] fileDescriptor] == [resource fileDescriptor]) {
+        
+        // Compare the descriptor directly with the resource's fileDescriptor
+        if ([namedResource descriptor] == [resource fileDescriptor]) {
             [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:i]
                         byExtendingSelection:NO];
             [self.tableView scrollRowToVisible:i];
@@ -413,7 +443,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     BOOL showExtensions = [[NSUserDefaults standardUserDefaults] boolForKey:@"ResourceListShowExtensions"];
-    BOOL hiddenMode = [Helper hiddenMode];  // Keep as Helper, not NSUserDefaults
+    BOOL hiddenMode = [AppPreferences hiddenMode];  // Keep as Helper, not NSUserDefaults
     
     // Apply visibility settings
     if (!showExtensions && [self.tableView.tableColumns containsObject:self.nameColumn]) {
@@ -482,13 +512,13 @@
         // Set cell content based on column
         NSString *content = @"";
         if (tableColumn == self.typeColumn) {
-            content = [[[namedResource descriptor] typeName] shortName];
+            content = [[[namedResource descriptor] pfdTypeName] shortName];
         } else if (tableColumn == self.nameColumn) {
             content = [namedResource getRealName];
         } else if (tableColumn == self.groupColumn) {
             content = [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] group]];
         } else if (tableColumn == self.instanceHiColumn) {
-            content = [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] subType]];
+            content = [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] subtype]];
         } else if (tableColumn == self.instanceColumn) {
             content = [NSString stringWithFormat:@"0x%08X", [[namedResource descriptor] instance]];
         } else if (tableColumn == self.offsetColumn) {

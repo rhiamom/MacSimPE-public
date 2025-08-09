@@ -59,6 +59,15 @@
 @property (nonatomic, strong) IBOutlet NSTableView *tableView;
 @property (nonatomic, strong) IBOutlet NSScrollView *scrollView;
 
+// MARK: - Drag & Drop Support
+- (BOOL)tableView:(NSTableView *)tableView
+writeRowsWithIndexes:(NSIndexSet *)rowIndexes
+     toPasteboard:(NSPasteboard *)pboard;
+
+- (NSDragOperation)tableView:(NSTableView *)tableView
+               draggingSession:(NSDraggingSession *)session
+sourceOperationMaskForDraggingContext:(NSDraggingContext)context;
+
 // MARK: - Table Columns
 @property (nonatomic, strong) NSTableColumn *typeColumn;
 @property (nonatomic, strong) NSTableColumn *nameColumn;

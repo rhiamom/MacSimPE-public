@@ -28,7 +28,7 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import "Rcol.h"
+#import "RcolWrapper.h"
 #import "IScenegraphItem.h"
 
 @protocol IProviderRegistry;

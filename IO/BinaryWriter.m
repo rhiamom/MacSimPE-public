@@ -5,8 +5,6 @@
 //  Properly translated from BinaryWriter.swift
 //
 // ***************************************************************************
-// *   Copyright (C) 2005 by Ambertation                                     *
-// *   quaxi@ambertation.de                                                  *
 // *                                                                         *
 // *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
 // *   rhiamom@mac.com                                                       *

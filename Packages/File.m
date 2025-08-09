@@ -264,6 +264,46 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
         if ([br.baseStream length] > 0) {
             [self lockStream];
             [(HeaderData *)self.header loadFromReader:br];
+
+            // ---- BEGIN: Repair index count (fallback when header is bogus) ----
+            // Determine index entry size from header.indexType
+            // Short: T(4) G(4) I32(4) Off(4) Size(4)  => 20 bytes
+            // Long : T(4) G(4) I32(4) Sub(4) Off(4) Size(4) => 24 bytes
+            const NSUInteger entrySize =
+                (self.header.indexType == ptLongFileIndex) ? 24 : 20;
+
+            uint64_t idxOff  = (uint64_t)self.header.index.offset;
+            int64_t  idxSize = (int64_t) self.header.index.size;
+            uint64_t fileLen = (uint64_t)br.baseStream.length;
+
+            BOOL offsetOK = (idxOff > 0 && idxOff < fileLen);
+
+            // Prefer header size if sane (fits in file and divides evenly)
+            NSUInteger countFromHeader = 0;
+            if (offsetOK &&
+                idxSize > 0 &&
+                (idxOff + (uint64_t)idxSize) <= fileLen &&
+                (idxSize % (int64_t)entrySize) == 0) {
+                countFromHeader = (NSUInteger)(idxSize / (int64_t)entrySize);
+            }
+
+            // Fallback: derive from EOF if header size is zero/bad
+            NSUInteger countFromEOF = 0;
+            if (offsetOK) {
+                countFromEOF = (NSUInteger)((fileLen - idxOff) / (uint64_t)entrySize);
+            }
+
+            NSUInteger repairedCount = countFromHeader ? countFromHeader : countFromEOF;
+            if (repairedCount == 0) {
+                @throw [NSException exceptionWithName:@"DBPFIndexError"
+                                               reason:@"Unable to determine DBPF index count (bad header or unsupported variant)."
+                                             userInfo:nil];
+            }
+
+            // NOTE: self.header is typed as id<IPackageHeader>, so cast to HeaderData
+            ((HeaderData *)self.header).headerIndex.count = (int32_t)repairedCount;
+            // ---- END: Repair index count ----
+
             [self loadFileIndex];
             [self loadHoleIndex];
             [self unlockStream];
@@ -272,6 +312,7 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
     
     [self closeReader];
 }
+
 
 - (void)reloadFromFile:(NSString *)filename {
     self.persistent = [[NSUserDefaults standardUserDefaults] boolForKey:@"Persistent"];

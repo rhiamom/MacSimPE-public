@@ -259,6 +259,41 @@
     [self onChangedPackage:self.pkg newPackage:self.pkg letTreeViewSelect:YES];
 }
 
+// MARK: - Drag & Drop Support (PackageSelectorForm functionality)
+
+- (void)enableDragDropForPackage:(id<IPackageFile>)package {
+    if (package == nil) return;
+    
+    // Configure both views for drag and drop
+    [self configureDragDropForListView];
+    [self configureDragDropForTreeView];
+    
+    // Update the views with current package content
+    [self onChangedPackage:self.pkg newPackage:package letTreeViewSelect:YES];
+}
+
+- (void)configureDragDropForListView {
+    if (self.listView == nil) return;
+    
+    // Enable drag operations on the list view
+    NSTableView *tableView = [self.listView tableView]; // Assuming ResourceListViewExt has a tableView property
+    if (tableView != nil) {
+        [tableView setDraggingSourceOperationMask:NSDragOperationCopy | NSDragOperationLink forLocal:NO];
+        [tableView setDraggingSourceOperationMask:NSDragOperationCopy | NSDragOperationLink forLocal:YES];
+    }
+}
+
+- (void)configureDragDropForTreeView {
+    if (self.treeView == nil) return;
+    
+    // Enable drag operations on the tree view
+    NSOutlineView *outlineView = [self.treeView outlineView]; // Assuming ResourceTreeViewExt has an outlineView property
+    if (outlineView != nil) {
+        [outlineView setDraggingSourceOperationMask:NSDragOperationCopy | NSDragOperationLink forLocal:NO];
+        [outlineView setDraggingSourceOperationMask:NSDragOperationCopy | NSDragOperationLink forLocal:YES];
+    }
+}
+
 // MARK: - Resource Management
 
 - (void)addResourceToMaps:(NamedPackedFileDescriptor *)namedDescriptor {
