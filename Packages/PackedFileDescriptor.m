@@ -35,6 +35,7 @@
 #import "Registry.h"
 #import "MetaData.h"
 #import "TypeAlias.h"
+#import "HeaderIndex.h"
 
 @interface PackedFileDescriptor () {
     // Instance variables for properties that need manual synthesis
@@ -418,15 +419,18 @@
 // MARK: - Loading
 
 - (void)loadFromStream:(id<IPackageHeader>)header reader:(BinaryReader *)reader {
-    self.type = [reader readUInt32];
-    self.group = [reader readUInt32];
+    self.type     = [reader readUInt32];
+    self.group    = [reader readUInt32];
     self.instance = [reader readUInt32];
-    
-    if (header.isVersion0101 && header.hole.itemSize >= 24)
+
+    // Cast header.index to HeaderIndex to reach itemSize
+    if (header.isVersion0101 &&
+        [(HeaderIndex *)header.index itemSize] >= 24) {
         self.subtype = [reader readUInt32];
-        
+    }
+
     _offset = [reader readUInt32];
-    _size = [reader readInt32];
+    _size   = [reader readInt32];
 }
 
 // MARK: - Event Handling

@@ -30,10 +30,11 @@
 #import "TGILoader.h"
 #import "TypeRegistry.h"
 #import "GenericRcolWrapper.h"
-#import "Txtr.h"
+//#import "Txtr.h"
 #import "FileTableBase.h"
 #import "PackageMaintainer.h"
 #import "RemoteControl.h"
+#import <objc/message.h>
 
 // Notification names
 NSString * const AppStatePackageChangedNotification = @"AppStatePackageChanged";
@@ -77,8 +78,18 @@ NSString * const AppStateUnsavedChangesNotification = @"AppStateUnsavedChanges";
     [registry registerWrapper:rcolWrapper];
     
     // Register the Txtr wrapper
-    Txtr *txtrWrapper = [[Txtr alloc] init];
-    [registry registerWrapper:txtrWrapper];
+    //Txtr *txtrWrapper = [[Txtr alloc] init];
+    //[registry registerWrapper:txtrWrapper];
+    
+    
+    Class TxtrCls = NSClassFromString(@"Txtr");
+    if (TxtrCls) {
+        id txtrWrapper = [[TxtrCls alloc] init];
+        [registry registerWrapper:txtrWrapper];
+    } else {
+        NSLog(@"[AppState] Txtr wrapper not available yet (skipping).");
+    }
+    
     
     // Set it globally so other parts can use it
     [FileTableBase setWrapperRegistry:registry];

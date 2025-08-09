@@ -210,6 +210,8 @@
 		B64F1CA32E4404F9001C0DEC /* Settings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		B65044652E46C3BE0014569E /* DBPFIndexUtility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBPFIndexUtility.h; sourceTree = "<group>"; };
 		B65044662E46C40F0014569E /* DBPFIndexUtility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBPFIndexUtility.m; sourceTree = "<group>"; };
+		B65044692E46D1F10014569E /* RemoteControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteControl.h; sourceTree = "<group>"; };
+		B650446A2E46D2160014569E /* RemoteControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RemoteControl.m; sourceTree = "<group>"; };
 		B66C34612E3BC15100B4B9B8 /* IProviderRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IProviderRegistry.h; sourceTree = "<group>"; };
 		B66C34622E3BC28400B4B9B8 /* PathProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathProvider.h; sourceTree = "<group>"; };
 		B66C34632E3BC2D900B4B9B8 /* PathProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathProvider.m; sourceTree = "<group>"; };
@@ -487,6 +489,15 @@
 			path = Rcol;
 			sourceTree = "<group>";
 		};
+		B65044682E46D1DA0014569E /* Temp */ = {
+			isa = PBXGroup;
+			children = (
+				B65044692E46D1F10014569E /* RemoteControl.h */,
+				B650446A2E46D2160014569E /* RemoteControl.m */,
+			);
+			path = Temp;
+			sourceTree = "<group>";
+		};
 		B6819E552E3D651F00E37434 /* NameProvider */ = {
 			isa = PBXGroup;
 			children = (
@@ -553,6 +564,7 @@
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
+				B65044682E46D1DA0014569E /* Temp */,
 				B632A4352E36A2FD0024810C /* Clst */,
 				B64E6BAE2E3539F9009AD0A7 /* GenericHandlers */,
 				B6CDCC822E33F0F3004FDF82 /* GUI */,

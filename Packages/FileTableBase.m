@@ -32,6 +32,7 @@
 #import "PathProvider.h"
 #import "Helper.h"
 #import "FileTableItem.h"
+#import "IScenegraphFileIndex.h"
 
 // MARK: - FileTableBase Implementation
 
@@ -465,6 +466,27 @@ static NSArray<FileTableItem *> *s_defaultFolders = nil;
     } @catch (NSException *exception) {
         NSLog(@"Error storing folder configuration: %@", [exception reason]);
     }
+}
+
++ (void)loadPackageFiles
+{
+    // Get the index (must already be created/assigned elsewhere)
+    id<IScenegraphFileIndex> idx = [self fileIndex];
+    if (!idx) {
+        NSLog(@"[FileTableBase] No FileIndex set; skipping loadPackageFiles.");
+        return;
+    }
+
+    // Ensure we have default folders
+    NSArray<FileTableItem *> *defaults = [self defaultFolders];
+    if (!defaults || defaults.count == 0) {
+        [self buildDefaultFolders];
+        defaults = [self defaultFolders];
+    }
+
+    // Apply folders and force a reload (C# FileTable.Reload() equivalent)
+    idx.baseFolders = [defaults mutableCopy];
+    [idx forceReload];
 }
 
 @end

@@ -87,4 +87,6 @@
  */
 + (void)storeFolderConfiguration:(NSArray<FileTableItem *> *)folders;
 
++ (void)loadPackageFiles;
+
 @end

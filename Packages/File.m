@@ -27,10 +27,10 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
+#import "File.h"
 #import "BinaryReader.h"
 #import "ClstItem.h"
 #import "CompressedFileList.h"
-#import "File.h"
 #import "FileIndex.h"
 #import "FileStream.h"
 #import "GeneratableFile.h"
@@ -39,7 +39,6 @@
 #import "HeaderIndex.h"
 #import "Helper.h"
 #import "HoleIndexItem.h"
-#import "IPackageFile.h"
 #import "IPackedFileDescriptor.h"
 #import "MemoryStream.h"
 #import "MetaData.h"
@@ -265,10 +264,16 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
             [self lockStream];
             [(HeaderData *)self.header loadFromReader:br];
 
-            // ---- BEGIN: Repair index count (fallback when header is bogus) ----
-            // Determine index entry size from header.indexType
-            // Short: T(4) G(4) I32(4) Off(4) Size(4)  => 20 bytes
-            // Long : T(4) G(4) I32(4) Sub(4) Off(4) Size(4) => 24 bytes
+            // --- sanity log (optional, remove later)
+            NSLog(@"IndexType=%u  off=%u  size=%d  holeItemSize=%d",
+                  (unsigned)self.header.indexType,
+                  self.header.index.offset,
+                  self.header.index.size,
+                  (int)((HeaderData *)self.header).hole.itemSize);
+
+            // --- Repair index count (fallback for bogus header fields) ---
+            // Short index: T(4) G(4) I32(4) Off(4) Size(4)  => 20 bytes
+            // Long  index: T(4) G(4) I32(4) Sub(4) Off(4) Size(4) => 24 bytes
             const NSUInteger entrySize =
                 (self.header.indexType == ptLongFileIndex) ? 24 : 20;
 
@@ -300,9 +305,9 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
                                              userInfo:nil];
             }
 
-            // NOTE: self.header is typed as id<IPackageHeader>, so cast to HeaderData
+            // self.header is typed as id<IPackageHeader>, so cast to HeaderData here
             ((HeaderData *)self.header).headerIndex.count = (int32_t)repairedCount;
-            // ---- END: Repair index count ----
+            // --- end repair ---
 
             [self loadFileIndex];
             [self loadHoleIndex];
