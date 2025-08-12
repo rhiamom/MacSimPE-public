@@ -34,6 +34,7 @@
 #import "Helper.h"
 #import "TypeAlias.h"
 #import <objc/runtime.h>
+#import "ExceptionForm.h"
 
 @implementation AbstractSerializer
 
@@ -91,7 +92,7 @@
             if (property == NULL) continue;
             
             // Get property attributes to check if it's readable
-            char *attrs = property_getAttributes(property);
+            const char *attrs = property_getAttributes(property);
             NSString *attributeString = [NSString stringWithUTF8String:attrs];
             if ([attributeString containsString:@",R"]) continue; // Read-only check
             
@@ -119,7 +120,7 @@
             }
         }
         @catch (NSException *exception) {
-            [Helper exceptionMessage:exception];
+            [ExceptionForm executeWithMessage:[exception reason] exception:exception];
         }
     }
     
@@ -138,7 +139,7 @@
             if (property == NULL) continue;
             
             // Get property attributes to check if it's readable
-            char *attrs = property_getAttributes(property);
+            const char *attrs = property_getAttributes(property);
             NSString *attributeString = [NSString stringWithUTF8String:attrs];
             if ([attributeString containsString:@",R"]) continue; // Read-only check
             
@@ -159,7 +160,7 @@
             }
         }
         @catch (NSException *exception) {
-            [Helper exceptionMessage:exception];
+            [ExceptionForm executeWithMessage:[exception reason] exception:exception];
         }
     }
     
@@ -209,6 +210,28 @@
 
 - (NSString *)concatHeader:(NSArray<NSString *> *)properties {
     return [self concat:properties];
+}
+
+- (NSString *)saveStr:(NSString *)val {
+    // If val is nil, store an empty string
+    return val ?: @"";
+}
+
+- (NSString *)serialize:(id)object
+                   class:(Class)objectClass
+          propertyNames:(NSArray<NSString *> *)propertyNames {
+    // Minimal stub: just return the class name and property count
+    return [NSString stringWithFormat:@"<%@ with %lu properties>",
+            NSStringFromClass(objectClass),
+            (unsigned long)propertyNames.count];
+}
+
+- (NSString *)serializeHeader:(id)object
+                        class:(Class)objectClass
+               propertyNames:(NSArray<NSString *> *)propertyNames {
+    // Minimal stub: header info only
+    return [NSString stringWithFormat:@"Header for %@",
+            NSStringFromClass(objectClass)];
 }
 
 @end

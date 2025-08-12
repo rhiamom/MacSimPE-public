@@ -46,7 +46,7 @@
 @property (class, nonatomic, strong) NSImage *image;
 @property (class, nonatomic, assign) NSInteger progress;
 @property (class, nonatomic, assign) NSInteger maxProgress;
-@property (class, nonatomic, readonly) NSInteger timeout;
+@property (class, nonatomic, readonly) NSTimeInterval timeout;
 
 // MARK: - Static Methods
 + (void)start;

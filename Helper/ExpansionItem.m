@@ -32,7 +32,11 @@
 // ***************************************************************************/
 
 #import "ExpansionItem.h"
-#import "Registry.h"
+#import "PathProvider.h"
+#import "CaseInvariantArrayList.h"
+#import "ExceptionForm.h"
+
+
 
 @interface ExpansionItem ()
 @property (nonatomic, strong) IniRegistry *profilesIni;
@@ -71,14 +75,9 @@
     return ![self getBit:5];
 }
 
-- (BOOL)hasNgbhProfiles {
-    return [self getBit:6];
-}
-
 - (ExpansionClasses)expansionClass {
     if (self.regularExpansion) return ExpansionClassesExpansionPack;
     if (self.stuffPack) return ExpansionClassesStuffPack;
-    if (self.simStory) return ExpansionClassesStory;
     return ExpansionClassesBaseGame;
 }
 
@@ -144,10 +143,10 @@
             
             // Get localized registry key
             NSString *currentLanguage = [[NSLocale currentLocale] localeIdentifier];
-            XmlRegistryKey *lang = [key openSubKey:[currentLanguage lowercaseString] writable:NO];
+            XmlRegistryKey *lang = [key openSubKey:[currentLanguage lowercaseString] create:NO];
             if (lang == nil) {
                 NSString *twoLetterCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
-                lang = [key openSubKey:[twoLetterCode lowercaseString] writable:NO];
+                lang = [key openSubKey:[twoLetterCode lowercaseString] create:NO];
             }
             
             _version = (NSInteger)[key getValue:@"Version" defaultValue:@(0)];
@@ -161,12 +160,10 @@
                 _registryKey = @{@"path": regKeyValue};
             } else if ([regKeyValue isKindOfClass:[CaseInvariantArrayList class]]) {
                 CaseInvariantArrayList *regKeys = (CaseInvariantArrayList *)regKeyValue;
-                for (NSUInteger i = 0; i < [regKeys count]; i++) {
-                    NSString *regPath = [regKeys objectAtIndex:i];
-                    // Check if this registry path exists (adapt for macOS)
+                if (regKeys.count > 0) {
+                    NSString *regPath = [regKeys objectAtIndex:0];
                     _registryKey = @{@"path": regPath};
-                    registryIndex = (NSInteger)i;
-                    break;
+                    registryIndex = 0;
                 }
             }
             
@@ -229,7 +226,7 @@
             } else {
                 // Check resource files, then try default language, then set to defaults
                 if (lang == nil) {
-                    lang = [key openSubKey:@"en" writable:NO];
+                    lang = [key openSubKey:@"en" create:NO];
                 }
                 
                 _shortName = [Localization getString:[NSString stringWithFormat:@"EP SNAME %ld", (long)_version]];
@@ -362,55 +359,16 @@
 - (void)addNeighborhoodPaths:(NeighborhoodPaths *)neighborhoods {
     for (NSString *saveGamePath in self.saveGames) {
         NSString *neighborhoodsPath = [[self getRealPath:saveGamePath] stringByAppendingPathComponent:@"Neighborhoods"];
-        
+
         if ([[NSFileManager defaultManager] fileExistsAtPath:neighborhoodsPath]) {
-            if (self.flag.hasNgbhProfiles) {
-                NSString *profilesPath = [neighborhoodsPath stringByAppendingPathComponent:@"Profiles.ini"];
-                @try {
-                    if ([[NSFileManager defaultManager] fileExistsAtPath:profilesPath]) {
-                        self.profilesIni = [[IniRegistry alloc] initWithFileName:profilesPath readOnly:YES];
-                        NSString *defaultNeighborhood = [self.profilesIni getValue:@"LastSaved"
-                                                                          inSection:@"State"
-                                                                       defaultValue:@""];
-                        defaultNeighborhood = [[defaultNeighborhood uppercaseString]
-                                             stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                        
-                        NSDictionary *profilesSection = [self.profilesIni getSection:@"Profiles"];
-                        for (NSString *key in profilesSection) {
-                            NSString *neighborhood = profilesSection[key];
-                            if (neighborhood == nil) continue;
-                            
-                            neighborhood = [[neighborhood uppercaseString]
-                                          stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                            NSString *neighborhoodPath = [neighborhoodsPath stringByAppendingPathComponent:
-                                                         [neighborhood stringByReplacingOccurrencesOfString:@"0X" withString:@""]];
-                            
-                            if ([[NSFileManager defaultManager] fileExistsAtPath:neighborhoodPath]) {
-                                NeighborhoodPath *neighborhoodPathObj = [[NeighborhoodPath alloc]
-                                                                        initWithName:key
-                                                                                path:neighborhoodPath
-                                                                           expansion:self
-                                                                           isDefault:[neighborhood isEqualToString:defaultNeighborhood]];
-                                if (![neighborhoods containsObject:neighborhoodPathObj]) {
-                                    [neighborhoods addObject:neighborhoodPathObj];
-                                }
-                            }
-                        }
-                    }
-                } @catch (NSException *exception) {
-                    if ([Helper debugMode]) {
-                        [Helper exceptionMessage:[exception reason] exception:exception];
-                    }
-                }
-            } else {
-                NeighborhoodPath *neighborhoodPathObj = [[NeighborhoodPath alloc]
-                                                        initWithName:@""
-                                                                path:neighborhoodsPath
-                                                           expansion:self
-                                                           isDefault:YES];
-                if (![neighborhoods containsObject:neighborhoodPathObj]) {
-                    [neighborhoods addObject:neighborhoodPathObj];
-                }
+            NeighborhoodPath *neighborhoodPathObj = [[NeighborhoodPath alloc]
+                initWithName:@""
+                        path:neighborhoodsPath
+                   expansion:self
+                   isDefault:YES];
+
+            if (![neighborhoods containsObject:neighborhoodPathObj]) {
+                [neighborhoods addObject:neighborhoodPathObj];
             }
         }
     }
@@ -435,7 +393,7 @@
 // MARK: - Computed Properties
 
 - (NSString *)displayName {
-    return [PathProvider getDisplayedNameForExpansion:self];
+    return [PathProvider displayedName];
 }
 
 - (NSString *)censorFile {
@@ -498,26 +456,11 @@
 }
 
 - (NSString *)installFolder {
-    @try {
-        XmlRegistryKey *settingsKey = [[Registry windowsRegistry] createSubKey:@"Settings"];
-        NSString *customPath = [settingsKey getValue:[self.idKey stringByAppendingString:@"Path"] defaultValue:nil];
-        
-        if (customPath == nil) {
-            return self.realInstallFolder;
-        } else {
-            if (![[NSFileManager defaultManager] fileExistsAtPath:customPath]) {
-                return self.realInstallFolder;
-            }
-            return customPath;
-        }
-    } @catch (NSException *exception) {
-        return self.realInstallFolder;
-    }
+    return self.realInstallFolder;
 }
 
 - (void)setInstallFolder:(NSString *)installFolder {
-    XmlRegistryKey *settingsKey = [[Registry windowsRegistry] createSubKey:@"Settings"];
-    [settingsKey setValue:installFolder forKey:[self.idKey stringByAppendingString:@"Path"]];
+    // no-op on macOS; install location is fixed
 }
 
 // MARK: - Private Methods

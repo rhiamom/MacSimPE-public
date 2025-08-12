@@ -28,7 +28,7 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import "FileTable.h"
+
 
 @class FileTableItem;
 

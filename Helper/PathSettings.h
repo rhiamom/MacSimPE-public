@@ -31,7 +31,7 @@
 #import "GlobalizedObject.h"
 
 @class Registry;
-
+@class ExpansionItem;
 /**
  * This is used to display Paths in the Options Dialog
  * Simplified for Mac version with fixed expansion content

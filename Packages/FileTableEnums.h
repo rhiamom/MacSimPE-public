@@ -1,8 +1,8 @@
 //
-//  XmlPackageReaderBase.m
+//  FileTableEnums.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/6/25.
+//  Created by Catherine Gramze on 8/11/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,22 +27,51 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import "XmlPackageReaderBase.h"
-#import "GeneratableFile.h"
-#import "PackedFileDescriptor.h"
-#import "IPackedFileDescriptor.h"
-#import "File.h"
+#pragma once
+#import <Foundation/Foundation.h>
 
-@implementation XmlPackageReaderBase
+// Matches the C# Expansions bitmask enum
+typedef NS_OPTIONS(uint32_t, Expansions) {
+    ExpansionsNone =              0x0,
+    ExpansionsBaseGame =          0x1,
+    ExpansionsUniversity =        0x2,
+    ExpansionsNightlife =         0x4,
+    ExpansionsBusiness =          0x8,
+    ExpansionsFamilyFun =         0x10,
+    ExpansionsGlamour =           0x20,
+    ExpansionsPets =              0x40,
+    ExpansionsSeasons =           0x80,
+    //ExpansionsCelebrations =      0x100,
+    //ExpansionsFashion =           0x200,
+    ExpansionsVoyage =            0x400,
+    //ExpansionsTeen =              0x800,
+    //ExpansionsStore =             0x1000,
+    //ExpansionsFreeTime =          0x2000,
+    //ExpansionsApartments =        0x00010000,
+    //ExpansionsMansions =          0x00020000,
+    //ExpansionsCustom =            0x80000000
+};
 
-// MARK: - Protected Methods
+// Matches the C# FileTablePaths enum
+typedef NS_ENUM(uint32_t, FileTablePaths) {
+    FileTablePathsAbsolute         = 0x8FFF0000,
+    FileTablePathsSaveGameFolder   = 0x8FFF0001,
 
-- (void)clearFileIndex:(GeneratableFile *)file {
-    [(File *)file clearFileIndex];
-}
+    FileTablePathsSimPEFolder      = 0x8FFE0000,
+    FileTablePathsSimPEDataFolder  = 0x8FFE0001,
+    FileTablePathsSimPEPluginFolder= 0x8FFE0002
+};
 
-- (void)addToFileIndex:(GeneratableFile *)file packedFileDescriptor:(PackedFileDescriptor *)pfd {
-    [(File *)file addDescriptor:(id<IPackedFileDescriptor>)pfd];
-}
+typedef NS_ENUM(NSInteger, FTFileLocation) {
+    FileLocationBaseGame,
+    FileLocationExpansionPack,
+    FileLocationDownloads
+};
 
-@end
+typedef NS_ENUM(uint32_t, FileTableItemTypePaths) {
+    FileTableItemTypeAbsolute = 0x8FFF0000,
+    FileTableItemTypeSaveGameFolder = 0x8FFF0001,
+    FileTableItemTypeSimPEFolder = 0x8FFE0000,
+    FileTableItemTypeSimPEDataFolder = 0x8FFE0001,
+    FileTableItemTypeSimPEPluginFolder = 0x8FFE0002
+};

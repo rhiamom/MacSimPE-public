@@ -29,6 +29,94 @@
 #import "GlobalizedObject.h"
 #import <objc/runtime.h>
 
+// MARK: - Helpers to mirror C# PropertyDescriptor info
+static Class GOClassFromEncoding(const char *encoding) {
+    if (!encoding || !*encoding) return [NSObject class];
+    // Object type: T@"ClassName"
+    if (encoding[0] == '@') {
+        // @"ClassName" or @
+        if (encoding[1] == '"') {
+            const char *start = encoding + 2; // skip @"
+            const char *end = strchr(start, '"');
+            if (end && end > start) {
+                size_t len = (size_t)(end - start);
+                NSString *name = [[NSString alloc] initWithBytes:start length:len encoding:NSUTF8StringEncoding];
+                Class c = NSClassFromString(name);
+                return c ?: [NSObject class];
+            }
+            return [NSObject class]; // id
+        }
+        return [NSObject class]; // id
+    }
+    // Scalar mappings → NSNumber stand-in (closest analogue to C# value types)
+    switch (encoding[0]) {
+        case 'c': case 'C': // char / unsigned char
+        case 'i': case 'I': // int / unsigned int
+        case 's': case 'S': // short / unsigned short
+        case 'l': case 'L': // long / unsigned long
+        case 'q': case 'Q': // long long / unsigned long long
+        case 'f':           // float
+        case 'd':           // double
+        case 'B':           // C++ bool / _Bool
+            return [NSNumber class];
+        default:
+            return [NSObject class];
+    }
+}
+
+static void GOParsePropertyAttributes(objc_property_t prop, NSMutableDictionary *dict) {
+    if (!prop || !dict) return;
+    const char *attrs = property_getAttributes(prop); // e.g., T@"NSString",C,N,V_name
+    if (!attrs) {
+        dict[@"propertyType"] = NSStringFromClass([NSObject class]);
+        dict[@"isReadOnly"] = @NO;
+        return;
+    }
+
+    // 1) Type (T...)
+    const char *typeEnc = NULL;
+    const char *p = attrs;
+    while (*p) {
+        if (*p == 'T') { typeEnc = ++p; break; }
+        // advance to next comma
+        while (*p && *p != ',') p++;
+        if (*p == ',') p++;
+    }
+    Class typeClass = GOClassFromEncoding(typeEnc);
+    dict[@"propertyType"] = NSStringFromClass(typeClass);
+
+    // 2) Flags
+    BOOL readOnly = NO;
+    BOOL hasCustomGetter = NO;
+    BOOL hasCustomSetter = NO;
+
+    p = attrs;
+    while (*p) {
+        char flag = *p;
+        if (flag == '\0') break;
+        if (flag == ',') { p++; continue; }
+        switch (flag) {
+            case 'R': readOnly = YES; break;                   // readonly
+            case 'G': hasCustomGetter = YES; break;            // custom getter follows
+            case 'S': hasCustomSetter = YES; break;            // custom setter follows
+            default: break;
+        }
+        // skip token (may have value after flag)
+        p++;
+        if (flag == 'G' || flag == 'S' || flag == 'V') {
+            // skip until next comma
+            while (*p && *p != ',') p++;
+        } else {
+            // skip to next comma
+            while (*p && *p != ',') p++;
+        }
+        if (*p == ',') p++;
+    }
+
+    // If no setter token discovered, and there is a 'R', it's read-only
+    dict[@"isReadOnly"] = @(readOnly && !hasCustomSetter);
+}
+
 // MARK: - GlobalizedPropertyAttribute Implementation
 
 @implementation GlobalizedPropertyAttribute
@@ -327,24 +415,24 @@
         for (unsigned int i = 0; i < count; i++) {
             objc_property_t property = properties[i];
             const char *propertyName = property_getName(property);
-            const char *propertyAttributes = property_getAttributes(property);
             
             NSMutableDictionary *propertyDict = [[NSMutableDictionary alloc] init];
             propertyDict[@"name"] = [NSString stringWithUTF8String:propertyName];
             propertyDict[@"displayName"] = [NSString stringWithUTF8String:propertyName];
-            propertyDict[@"attributes"] = @[]; // Would need to extract actual attributes
+            propertyDict[@"attributes"] = @[]; // Placeholder: no Obj-C custom attributes
             propertyDict[@"componentType"] = NSStringFromClass([self class]);
-            propertyDict[@"isReadOnly"] = @NO; // Would need to parse property attributes
-            propertyDict[@"category"] = @""; // Default empty category
-            
-            // Parse property type from attributes string
-            if (propertyAttributes) {
-                NSString *attrs = [NSString stringWithUTF8String:propertyAttributes];
-                // This is a simplified parser - full implementation would be more robust
-                propertyDict[@"propertyType"] = @"NSObject";
+            propertyDict[@"category"] = @""; // No category metadata available by default
+
+            // Parse property attributes string into type/readOnly like the C# reflection did
+            GOParsePropertyAttributes(property, propertyDict);
+
+            // Fallbacks if parser didn’t set values
+            if (!propertyDict[@"propertyType"]) {
+                propertyDict[@"propertyType"] = NSStringFromClass([NSObject class]);
             }
-            
-            [baseProps addObject:propertyDict];
+            if (!propertyDict[@"isReadOnly"]) {
+                propertyDict[@"isReadOnly"] = @NO;
+            }
         }
         
         free(properties);

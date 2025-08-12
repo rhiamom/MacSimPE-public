@@ -29,6 +29,9 @@
 
 #import <Foundation/Foundation.h>
 #import "FileTableBase.h"
+#import "PathProvider.h"
+#import "FileTableEnums.h"
+#import "FileTableItemType.h"
 
 @protocol IToolRegistry;
 @protocol IHelpRegistry;
@@ -37,47 +40,19 @@
 
 // MARK: - File Location Types
 
-typedef NS_ENUM(NSInteger, FileLocation) {
-    FileLocationBaseGame,
-    FileLocationExpansionPack,
-    FileLocationDownloads
-};
-
-// MARK: - Expansions enum (from Swift)
-
-typedef NS_ENUM(NSInteger, Expansions) {
-    ExpansionsBaseGame,
-    ExpansionsUniversity,
-    ExpansionsNightlife,
-    ExpansionsBusiness,
-    ExpansionsFamilyFun,
-    ExpansionsGlamour,
-    ExpansionsPets,
-    ExpansionsSeasons,
-    ExpansionsVoyage,
-    ExpansionsCustom
-};
-
-typedef NS_ENUM(uint32_t, FileTableItemType) {
-    FileTableItemTypeAbsolute = 0x8FFF0000,
-    FileTableItemTypeSaveGameFolder = 0x8FFF0001,
-    FileTableItemTypeSimPEFolder = 0x8FFE0000,
-    FileTableItemTypeSimPEDataFolder = 0x8FFE0001,
-    FileTableItemTypeSimPEPluginFolder = 0x8FFE0002
-};
 
 // MARK: - FileTablePath
 
 @interface FileTablePath : NSObject
 
 @property (nonatomic, strong, readonly) NSString *name;
-@property (nonatomic, assign, readonly) FileLocation location;
+@property (nonatomic, assign, readonly) FTFileLocation location;
 @property (nonatomic, strong, readonly) NSString *expansionName; // For expansion pack locations
 @property (nonatomic, assign, readonly) Expansions expansion;
 @property (nonatomic, assign, readonly) BOOL isPreObject;
 
 - (instancetype)initWithName:(NSString *)name
-                    location:(FileLocation)location
+                    location:(FTFileLocation)location
                expansionName:(NSString *)expansionName
                    expansion:(Expansions)expansion
                  isPreObject:(BOOL)isPreObject;
@@ -85,23 +60,26 @@ typedef NS_ENUM(uint32_t, FileTableItemType) {
 - (NSString *)fullPath;
 - (BOOL)exists;
 - (NSString *)basePath;
+
+
 // MARK: - Factory Methods
-+ (FileTableItemType)fromExpansion:(Expansions)expansion;
-+ (FileTableItemType)fromInteger:(NSInteger)value;
-+ (FileTableItemType)fromUnsignedInteger:(uint32_t)value;
++ (FileTableItemType *)fromExpansion:(Expansions)expansion;
++ (FileTableItemType *)fromInteger:(NSInteger)value;
++ (FileTableItemType *)fromUnsignedInteger:(uint32_t)value;
 
 // MARK: - Conversion Methods
-+ (Expansions)asExpansion:(FileTableItemType)type;
-+ (uint32_t)asUnsignedInteger:(FileTableItemType)type;
++ (Expansions)asExpansion:(FileTableItemType *)type;
++ (uint32_t)asUnsignedInteger:(FileTableItemType *)type;
 
 // MARK: - Utility Methods
-+ (NSString *)getRootForType:(FileTableItemType)type;
-+ (NSInteger)getEPVersionForType:(FileTableItemType)type;
-+ (NSString *)stringForType:(FileTableItemType)type;
++ (NSString *)getRootForType:(FileTableItemType *)type;
++ (NSInteger)getEPVersionForType:(FileTableItemType *)type;
++ (NSString *)stringForType:(FileTableItemType *)type;
 
 // MARK: - Comparison Methods
-+ (NSComparisonResult)compare:(FileTableItemType)typeA with:(FileTableItemType)typeB;
-+ (BOOL)isEqual:(FileTableItemType)typeA to:(FileTableItemType)typeB;
++ (NSComparisonResult)compare:(FileTableItemType *)typeA
+                         with:(FileTableItemType *)typeB;
++ (BOOL)isEqual:(FileTableItemType *)typeA to:(FileTableItemType *)typeB;
 
 @end
 

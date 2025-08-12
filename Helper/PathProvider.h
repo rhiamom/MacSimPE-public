@@ -28,33 +28,12 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
+#import "FileTableEnums.h"
 
 @class ExpansionItem;
 
-// MARK: - Expansions Enum (simplified for Mac)
-
-typedef NS_OPTIONS(uint32_t, Expansions) {
-    ExpansionsNone =              0x0,
-    ExpansionsBaseGame =          0x1,
-    ExpansionsUniversity =        0x2,
-    ExpansionsNightlife =         0x4,
-    ExpansionsBusiness =          0x8,
-    ExpansionsFamilyFun =         0x10,
-    ExpansionsGlamour =           0x20,
-    ExpansionsPets =              0x40,
-    ExpansionsSeasons =           0x80,
-    //ExpansionsCelebrations =      0x100,
-    //ExpansionsFashion =           0x200,
-    ExpansionsVoyage =            0x400,
-    //ExpansionsTeen =              0x800,
-    //ExpansionsStore =             0x1000,
-    //ExpansionsFreeTime =          0x2000,
-    //ExpansionsApartments =        0x00010000,
-    //ExpansionsMansions =          0x00020000,
-    ExpansionsCustom =            0x80000000
-};
-
 // MARK: - PathProvider Interface
+NS_ASSUME_NONNULL_BEGIN
 
 @interface PathProvider : NSObject
 
@@ -72,6 +51,7 @@ typedef NS_OPTIONS(uint32_t, Expansions) {
 // MARK: - Static Properties
 + (ExpansionItem *)nilExpansion;
 + (PathProvider *)global;
++ (NSInteger)groupCount;
 
 // MARK: - Class Methods
 + (NSString *)expansionFile;
@@ -81,6 +61,11 @@ typedef NS_OPTIONS(uint32_t, Expansions) {
 // MARK: - Path Properties (Mac-specific paths)
 + (NSString *)simSavegameFolder;
 + (void)setSimSavegameFolder:(NSString *)folder;
++ (NSString *)realSavegamePath;
++ (NSArray<NSString *> *)allPathsForPath:(NSString *)path;
++ (NSString *)expandPath:(NSString *)path;
++ (nullable NSString *)expansionFolderNameForExpansion:(Expansions)exp;
+
 @property (nonatomic, readonly) NSString *neighborhoodFolder;
 @property (nonatomic, readonly) NSString *backupFolder;
 
@@ -103,4 +88,7 @@ typedef NS_OPTIONS(uint32_t, Expansions) {
 // MARK: - Subscript-like access (matching C# indexers)
 - (ExpansionItem *)expansionForEnum:(Expansions)expansion;
 - (ExpansionItem *)expansionForVersion:(int)version;
+
 @end
+
+NS_ASSUME_NONNULL_END

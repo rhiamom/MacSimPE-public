@@ -89,6 +89,14 @@ static BOOL _anyPackage = NO;
 
 // MARK: - Path Properties
 
++ (NSString *)pathSeparator {
+#if TARGET_OS_WIN32
+    return @"\\";
+#else
+    return @"/";
+#endif
+}
+
 + (NSString *)simPePath {
     return [[NSBundle mainBundle] bundlePath];
 }

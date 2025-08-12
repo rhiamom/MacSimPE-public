@@ -99,6 +99,7 @@ extern NSString * const HelperNeighborhoodPackage;
 + (NSString *)minStrLength:(NSString *)input length:(NSInteger)length;
 + (NSString *)strLength:(NSString *)input length:(NSInteger)length;
 + (NSString *)strLength:(NSString *)input length:(NSInteger)length left:(BOOL)left;
++ (NSString *)pathSeparator;
 
 // MARK: - Hex String Functions
 + (NSString *)hexString:(int64_t)input;

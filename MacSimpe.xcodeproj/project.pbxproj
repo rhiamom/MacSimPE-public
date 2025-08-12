@@ -222,6 +222,7 @@
 		B6819E572E3E734000E37434 /* FileIndexItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileIndexItem.m; sourceTree = "<group>"; };
 		B6819E5A2E3E75A000E37434 /* FileIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileIndex.h; sourceTree = "<group>"; };
 		B6819E5B2E3E76EF00E37434 /* FileIndex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileIndex.m; sourceTree = "<group>"; };
+		B690E6F12E4A4FF400A75815 /* FileTableEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTableEnums.h; sourceTree = "<group>"; };
 		B69C59F02E3E7FBA00794FC7 /* IWrapperRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperRegistry.h; sourceTree = "<group>"; };
 		B69C59F12E3E803F00794FC7 /* IWrapperInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperInfo.h; sourceTree = "<group>"; };
 		B69C59F22E3E807C00794FC7 /* IWrapperFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperFactory.h; sourceTree = "<group>"; };
@@ -658,6 +659,7 @@
 				B61C4CFB2E456EF300BC38B4 /* PackageFiles.m */,
 				B65044652E46C3BE0014569E /* DBPFIndexUtility.h */,
 				B65044662E46C40F0014569E /* DBPFIndexUtility.m */,
+				B690E6F12E4A4FF400A75815 /* FileTableEnums.h */,
 			);
 			path = Packages;
 			sourceTree = "<group>";

@@ -56,7 +56,7 @@
         if (pfd != nil) {
             self.type = [pfd type];
             self.instance = [pfd instance];
-            self.subType = [pfd subType];
+            self.subType = [pfd subtype];
             self.group = [pfd group];
         }
     }
@@ -76,7 +76,7 @@
     self.group = [reader readUInt32];
     self.instance = [reader readUInt32];
     
-    if (self.format == IndexTypesLongFileIndex) {
+    if (self.format == ptLongFileIndex) {
         self.subType = [reader readUInt32];
     } else {
         self.subType = 0;
@@ -92,7 +92,7 @@
     [writer writeUInt32:self.group];
     [writer writeUInt32:self.instance];
     
-    if (format == IndexTypesLongFileIndex) {
+    if (format == ptLongFileIndex) {
         [writer writeUInt32:self.subType];
     }
     
@@ -114,8 +114,8 @@
         ClstItem *ci = (ClstItem *)object;
         
         BOOL subTypeMatches = (ci.subType == self.subType ||
-                              ci.format == IndexTypesShortFileIndex ||
-                              self.format == IndexTypesShortFileIndex);
+                              ci.format == ptShortFileIndex ||
+                              self.format == ptShortFileIndex);
         
         return (ci.group == self.group &&
                 ci.instance == self.instance &&
@@ -125,8 +125,8 @@
     else if ([object conformsToProtocol:@protocol(IPackedFileDescriptor)]) {
         id<IPackedFileDescriptor> ci = (id<IPackedFileDescriptor>)object;
         
-        BOOL subTypeMatches = ([ci subType] == self.subType ||
-                              self.format == IndexTypesShortFileIndex);
+        BOOL subTypeMatches = ([ci subtype] == self.subType ||
+                              self.format == ptShortFileIndex);
         
         return ([ci group] == self.group &&
                 [ci instance] == self.instance &&
@@ -145,7 +145,7 @@
     
     [name appendFormat:@"%@: 0x%@", self.typeName, [Helper hexString:self.type]];
     
-    if (self.format == IndexTypesLongFileIndex) {
+    if (self.format == ptLongFileIndex) {
         [name appendFormat:@" - 0x%@", [Helper hexString:self.subType]];
     }
     

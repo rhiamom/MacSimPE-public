@@ -34,17 +34,17 @@
  */
 @interface CaseInvariantArrayList : NSMutableArray
 
-/**
- * Checks whether or not the object is already stored in the List
- * @param item The Object you are looking for
- * @returns true, if it was found
- */
+
+ //Checks whether or not the object is already stored in the List
+ //@param item The Object you are looking for
+ //@returns true, if it was found
+ 
 - (BOOL)containsObject:(id)object;
 
-/**
- * Remove object from the list (case insensitive for strings)
- * @param obj The object to remove
- */
+
+  //Remove object from the list (case insensitive for strings)
+  //@param obj The object to remove
+
 - (void)removeObject:(id)obj;
 
 @end

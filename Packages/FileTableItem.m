@@ -32,6 +32,9 @@
 #import "PathProvider.h"
 #import "FileTable.h"
 #import "ExpansionItem.h"
+#import "FileTableEnums.h"
+#import "ExceptionForm.h"
+#import "FileTableItemType.h"
 
 @interface FileTableItem ()
 @property (nonatomic, strong) NSString *path;
@@ -61,7 +64,7 @@
         _path = path;
         _relpath = path;
         _epVersion = -1;
-        _type = (FileTableItemType)FileTableItemTypeAbsolute;
+        _type = [[FileTableItemType alloc] initWithFileTablePath:FileTablePathsAbsolute];
         _ignore = NO;
     }
     return self;
@@ -76,11 +79,16 @@
 }
 
 - (instancetype)initWithPath:(NSString *)path recursive:(BOOL)recursive file:(BOOL)file version:(NSInteger)version ignore:(BOOL)ignore {
-    return [self initWithRelativePath:path type:FileTableItemTypeAbsolute recursive:recursive file:file version:version ignore:ignore];
+    return [self initWithRelativePath:path
+                                 type:[[FileTableItemType alloc] initWithFileTablePath:FileTablePathsAbsolute] // or FileTableItemTypePathsAbsolute if that’s your renamed enum
+                            recursive:recursive
+                                 file:file
+                              version:version
+                               ignore:ignore];
 }
 
 - (instancetype)initWithRelativePath:(NSString *)relativePath
-                                type:(FileTableItemType)type
+                                type:(FileTableItemType *)type
                            recursive:(BOOL)recursive
                                 file:(BOOL)file
                              version:(NSInteger)version
@@ -99,23 +107,22 @@
 
 // MARK: - Static Methods
 
-+ (NSString *)getRootForType:(FileTableItemType)type {
-    NSString *ret = [FileTablePaths getRootForType:type];
-    
++ (NSString *)getRootForType:(FileTableItemType *)type {
+    NSString *ret = [type getRoot];   // was: [FileTablePaths getRootForType:type]
+
     if (ret != nil) {
-        if (![ret hasSuffix:[Helper PATH_SEP]]) {
-            ret = [ret stringByAppendingString:[Helper PATH_SEP]];
+        if (![ret hasSuffix:HelperPathSep]) {
+            ret = [ret stringByAppendingString:HelperPathSep];
         }
-    }
-    
-    if ([ret isEqualToString:[Helper PATH_SEP]]) {
-        ret = nil;
+        if ([ret isEqualToString:HelperPathSep]) {
+            ret = nil;
+        }
     }
     return ret;
 }
 
-+ (NSInteger)getEPVersionForType:(FileTableItemType)type {
-    return [FileTablePaths getEPVersionForType:type];
++ (NSInteger)getEPVersionForType:(FileTableItemType *)type {
+    return [type getEpVersion];
 }
 
 // MARK: - Properties
@@ -148,13 +155,13 @@
     if (root == nil) return self.path;
     
     NSString *trimmedPath = [self.path stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if ([trimmedPath hasPrefix:[Helper PATH_SEP]]) {
+    if ([trimmedPath hasPrefix:HelperPathSep]) {
         trimmedPath = [trimmedPath substringFromIndex:1];
     }
     NSString *ret = [root stringByAppendingPathComponent:trimmedPath];
     
     if (self.isFile) {
-        if ([ret hasSuffix:[Helper PATH_SEP]]) {
+        if ([ret hasSuffix:HelperPathSep]) {
             ret = [ret substringToIndex:ret.length - 1];
         }
     }
@@ -168,7 +175,7 @@
 - (NSString *)relativePath {
     NSString *currentPath = self.path;
     if (self.isFile) {
-        if ([currentPath hasSuffix:[Helper PATH_SEP]]) {
+        if ([currentPath hasSuffix:HelperPathSep]) {
             currentPath = [currentPath substringToIndex:currentPath.length - 1];
         }
     }
@@ -177,7 +184,7 @@
 
 // MARK: - Internal Methods
 
-- (BOOL)cutName:(NSString *)name type:(FileTableItemType)type {
+- (BOOL)cutName:(NSString *)name type:(FileTableItemType *)type {
     @try {
         BOOL isDirectory;
         if ([[NSFileManager defaultManager] fileExistsAtPath:name isDirectory:&isDirectory] && isDirectory) {
@@ -185,31 +192,31 @@
         }
     } @catch (NSException *exception) {
 #ifdef DEBUG
-        [Helper exceptionMessage:exception];
+    [ExceptionForm executeWithMessage:@"Error in cutName" exception:exception];
 #endif
     }
     
     NSString *root = [[self class] getRootForType:type];
-    if (root == nil || [root isEqualToString:@""] || [root isEqualToString:[Helper PATH_SEP]]) {
+    if (root == nil || [root isEqualToString:@""] || [root isEqualToString:HelperPathSep]) {
         return NO;
     }
     
     root = [Helper compareableFileName:[Helper toLongPathName:root]];
-    if (![root hasSuffix:[Helper PATH_SEP]]) {
-        root = [root stringByAppendingString:[Helper PATH_SEP]];
+    if (![root hasSuffix:HelperPathSep]) {
+        root = [root stringByAppendingString:HelperPathSep];
     }
     
     NSString *ename = [Helper compareableFileName:name];
     name = [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (![ename hasSuffix:[Helper PATH_SEP]]) {
-        ename = [ename stringByAppendingString:[Helper PATH_SEP]];
-        name = [name stringByAppendingString:[Helper PATH_SEP]];
+    if (![ename hasSuffix:HelperPathSep]) {
+        ename = [ename stringByAppendingString:HelperPathSep];
+        name = [name stringByAppendingString:HelperPathSep];
     }
     
     if ([ename hasPrefix:root]) {
         self.path = [name substringFromIndex:root.length];
         if (!self.isFile) {
-            if ([self.path hasPrefix:[Helper PATH_SEP]]) {
+            if ([self.path hasPrefix:HelperPathSep]) {
                 self.path = [self.path substringFromIndex:1];
             }
         }
@@ -226,13 +233,14 @@
     // Check expansions
     NSArray<ExpansionItem *> *expansions = [PathProvider global].expansions;
     for (ExpansionItem *ei in expansions) {
-        if ([self cutName:n type:ei.expansion]) return;
+        FileTableItemType *t = [[FileTableItemType alloc] initWithExpansion:ei.expansion];
+        if ([self cutName:n type:t]) return;
     }
     
-    if ([self cutName:n type:FileTableItemTypeSaveGameFolder]) return;
-    if ([self cutName:n type:FileTableItemTypeSimPEDataFolder]) return;
-    if ([self cutName:n type:FileTableItemTypeSimPEFolder]) return;
-    if ([self cutName:n type:FileTableItemTypeSimPEPluginFolder]) return;
+    if ([self cutName:n type:[[FileTableItemType alloc] initWithFileTablePath:FileTablePathsSaveGameFolder]]) return;
+    if ([self cutName:n type:[[FileTableItemType alloc] initWithFileTablePath:FileTablePathsSimPEDataFolder]]) return;
+    if ([self cutName:n type:[[FileTableItemType alloc] initWithFileTablePath:FileTablePathsSimPEFolder]]) return;
+    if ([self cutName:n type:[[FileTableItemType alloc] initWithFileTablePath:FileTablePathsSimPEPluginFolder]]) return;
     
     self.path = name;
 }
@@ -287,7 +295,7 @@
         n = [[@"(Missing) " stringByAppendingString:n] mutableCopy];
     }
     
-    [n appendFormat:@"{%@}%@", [FileTablePaths stringForType:self.type], self.path];
+    [n appendFormat:@"{%@}%@", [FileTableItemType stringForType:self.type], self.path];
     
     if (self.epVersion != -1) {
         [n appendFormat:@" (Only when GameVersion=%ld)", (long)self.epVersion];

@@ -37,7 +37,7 @@
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *category;
-@property (nonatomic, strong) NSString *description;
+@property (nonatomic, copy) NSString *propertyDescription;
 @property (nonatomic, assign) BOOL readOnly;
 @property (nonatomic, strong) id defaultValue;
 @property (nonatomic, assign) Class propertyType;
@@ -85,14 +85,14 @@
  * @param name Name of the property
  * @param targetClass The class to add the property to
  * @param defaultValue Default value for the property
- * @param description Description for the property
+ * @param propertyDescription Description for the property
  * @param category Category the property belongs to
  * @param readOnly Whether the property should be read-only
  */
 + (void)addPropertyWithName:(NSString *)name
                 toClass:(Class)targetClass
                defaultValue:(id)defaultValue
-                description:(NSString *)description
+        propertyDescription:(NSString *)propertyDescription
                    category:(NSString *)category
                    readOnly:(BOOL)readOnly;
 

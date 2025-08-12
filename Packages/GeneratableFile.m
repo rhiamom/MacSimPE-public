@@ -244,7 +244,6 @@ const uint32_t BLOCKSIZE = 0x200;
 }
 
 - (void)saveIndexWithWriter:(BinaryWriter *)writer index:(NSArray<id<IPackedFileDescriptor>> *)tmpIndex {
-    uint64_t startPos = [writer position];
     
     for (id<IPackedFileDescriptor> item in tmpIndex) {
         [writer writeUInt32:[item type]];
@@ -252,7 +251,7 @@ const uint32_t BLOCKSIZE = 0x200;
         [writer writeUInt32:[item instance]];
         
         if ([[self header] isVersion0101] && [[self header] indexType] == ptLongFileIndex) {
-            [writer writeUInt32:[item subType]];
+            [writer writeUInt32:[item subtype]];
         }
         
         [writer writeUInt32:[item offset]];
@@ -260,7 +259,7 @@ const uint32_t BLOCKSIZE = 0x200;
     }
     
     // This likely needs access to a protected header setter
-    // [[self header] setIndexSize:(int32_t)([writer baseStreamPosition] - startPos)];
+    //[[self header] setIndexSize:(int32_t)(writer.position - startPos)];    // Index bytes have been written; header has no                                                                           // explicit index-size field to update here.
 }
 
 + (GeneratableFile *)createNew {

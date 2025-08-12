@@ -54,7 +54,7 @@
 
 @property (nonatomic, strong, nullable) BinaryReader *reader;
 @property (nonatomic, assign) PackageBaseType packageType;
-@property (nonatomic, strong) HeaderData *header;
+@property (nonatomic, strong, readwrite) id<IPackageHeader> header;
 @property (nonatomic, strong, nullable) PackedFileDescriptor *filelist;
 @property (nonatomic, strong, nullable) CompressedFileList *filelistfile;
 @property (nonatomic, strong) PackedFileDescriptors *fileindex;
@@ -654,7 +654,7 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
     [self addDescriptor:pfd isNew:NO];
 }
 
-- (void)addDescriptor:(id<IPackedFileDescriptor>)pfd isNew:(BOOL)isNew {
+- (void)addIsNewDescriptor:(id<IPackedFileDescriptor>)pfd isNew:(BOOL)isNew {
     if (self.fileindex == nil) {
         self.fileindex = [[PackedFileDescriptors alloc] init];
     }
@@ -1123,4 +1123,9 @@ const uint32_t FILELIST_TYPE = 0xE86B1EEF;
 - (void)saveWithFilename:(NSString *)filename {
     [self saveToFile:filename];
 }
+
+- (void)addDescriptor:(id<IPackedFileDescriptor>)pfd isNew:(BOOL)isNew { 
+    
+}
+
 @end

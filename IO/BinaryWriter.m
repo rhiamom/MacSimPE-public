@@ -209,6 +209,9 @@
     [self writeUInt8:0]; // null terminator
 }
 
+- (void)writeByte:(uint8_t)byte {
+    [self writeBytes:&byte length:1];
+}
 // MARK: - Stream Control
 
 - (void)seekToPosition:(NSInteger)position {

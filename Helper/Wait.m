@@ -31,6 +31,8 @@
 #import "IWaitingBarControl.h"
 #import "Helper.h"
 
+static NSTimeInterval _timeout = 0; // default value
+
 @implementation SessionData
 @end
 
@@ -44,6 +46,15 @@ static NSMutableArray<SessionData *> *_sessionStack = nil;
         _sessionStack = [[NSMutableArray alloc] init];
     }
 }
+
++ (NSTimeInterval)timeout {
+    return _timeout;
+}
+
++ (void)setTimeout:(NSTimeInterval)value {
+    _timeout = value;
+}
+
 
 // MARK: - Class Properties
 

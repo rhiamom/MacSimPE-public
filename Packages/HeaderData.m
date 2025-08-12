@@ -193,7 +193,7 @@
 - (void)saveToWriter:(BinaryWriter *)writer {
     // Write ID
     for (int i = 0; i < 4; i++) {
-        [writer writeChar:_id[i]];
+        [writer writeByte:(uint8_t)_id[i]];
     }
     
     [writer writeInt32:_majorVersion];

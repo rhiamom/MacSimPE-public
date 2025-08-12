@@ -29,6 +29,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FileTable.h"
+#import "FileTableItemType.h"
 
 /**
  * The type and location of a Folder/file
@@ -41,9 +42,10 @@
 @property (nonatomic, assign) BOOL isRecursive;
 @property (nonatomic, assign) BOOL isFile;
 @property (nonatomic, assign) NSInteger epVersion;
-@property (nonatomic, assign) FileTableItemType type;
+@property (nonatomic, strong) FileTableItemType *type;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, readonly) NSString *relativePath;
+
 
 // MARK: - Computed Properties
 
@@ -59,7 +61,7 @@
 - (instancetype)initWithPath:(NSString *)path recursive:(BOOL)recursive file:(BOOL)file version:(NSInteger)version;
 - (instancetype)initWithPath:(NSString *)path recursive:(BOOL)recursive file:(BOOL)file version:(NSInteger)version ignore:(BOOL)ignore;
 - (instancetype)initWithRelativePath:(NSString *)relativePath
-                                type:(FileTableItemType)type
+                                type:(FileTableItemType *)type
                            recursive:(BOOL)recursive
                                 file:(BOOL)file
                              version:(NSInteger)version
@@ -67,8 +69,8 @@
 
 // MARK: - Static Methods
 
-+ (NSString *)getRootForType:(FileTableItemType)type;
-+ (NSInteger)getEPVersionForType:(FileTableItemType)type;
++ (NSString *)getRootForType:(FileTableItemType *)type;
++ (NSInteger)getEPVersionForType:(FileTableItemType *)type;
 
 // MARK: - Instance Methods
 

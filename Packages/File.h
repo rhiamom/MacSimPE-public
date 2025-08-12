@@ -66,7 +66,6 @@ typedef NS_ENUM(uint8_t, PackageBaseType) {
 extern const uint32_t FILELIST_TYPE;
 
 // MARK: - Properties
-
 /**
  * The Binary reader that has opened the .Package file
  */
@@ -80,8 +79,7 @@ extern const uint32_t FILELIST_TYPE;
 /**
  * The Structural Data of the Header
  */
-@property (nonatomic, readonly) id<IPackageHeader> header;
-
+@property (nonatomic, strong, readonly) id<IPackageHeader> header;
 /**
  * True if the User has changed a PackedFile
  */
@@ -167,6 +165,8 @@ extern const uint32_t FILELIST_TYPE;
 
 - (void)reload;
 
+- (void)clearFileIndex;
+
 // MARK: - Stream Locking
 
 - (void)lockStream;
@@ -198,7 +198,7 @@ extern const uint32_t FILELIST_TYPE;
 /**
  * Adds a new Descriptor to the Index
  */
-- (void)addDescriptor:(id<IPackedFileDescriptor>)pfd isNew:(BOOL)isNew;
+- (void)addIsNewDescriptor:(id<IPackedFileDescriptor>)pfd isNew:(BOOL)isNew;
 
 /**
  * Adds a list of Descriptors to the Index

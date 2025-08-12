@@ -107,12 +107,12 @@
 // MARK: - Adding to Index
 
 - (void)addIndexFromPfds:(PackedFileDescriptors *)pfds {
-    for (id<IPackedFileDescriptorSimple> pfd in pfds) {
+    for (id<IPackedFileDescriptor> pfd in pfds) {
         [self addIndexFromPfd:pfd];
     }
 }
 
-- (void)addIndexFromPfd:(id<IPackedFileDescriptorSimple>)pfd {
+- (void)addIndexFromPfd:(id<IPackedFileDescriptor>)pfd {
     // Set up event handling if not flat
     if (!self.flat) {
         // Note: Event handling would need to be implemented when IPackedFileDescriptor protocol is defined
@@ -126,7 +126,7 @@
     
     // Add to hierarchical index if not flat
     if (!self.flat) {
-        NSNumber *typeKey     = @((uint32_t)[pfd pfdType]);
+        NSNumber *typeKey     = @((uint32_t)[pfd type]);
         NSNumber *groupKey    = @((uint32_t)[pfd group]);
         NSNumber *instanceKey = @((unsigned long long)[pfd longInstance]);
         
@@ -171,7 +171,7 @@
     }
 }
 
-- (void)removeChanged:(id<IPackedFileDescriptorSimple>)pfd {
+- (void)removeChanged:(id<IPackedFileDescriptor>)pfd {
     if (!self.flat) {
         for (NSNumber *typeKey in [self.index allKeys]) {
             NSMutableDictionary *groups = self.index[typeKey];
@@ -193,9 +193,9 @@
     }
 }
 
-- (void)removeItem:(id<IPackedFileDescriptorSimple>)pfd {
+- (void)removeItem:(id<IPackedFileDescriptor>)pfd {
     if (!self.flat) {
-        NSNumber *typeKey     = @((uint32_t)[pfd pfdType]);
+        NSNumber *typeKey     = @((uint32_t)[pfd type]);
         NSNumber *groupKey    = @((uint32_t)[pfd group]);
         NSNumber *instanceKey = @((unsigned long long)[pfd longInstance]);
         
@@ -252,7 +252,7 @@
 
 - (PackedFileDescriptors *)findFile:(id<IPackedFileDescriptor>)pfd {
     if (!self.flat) {
-        NSNumber *typeKey     = @((uint32_t)[pfd pfdType]);
+        NSNumber *typeKey     = @((uint32_t)[pfd type]);
         NSNumber *groupKey    = @((uint32_t)[pfd group]);
         NSNumber *instanceKey = @((unsigned long long)[pfd longInstance]);
         
@@ -279,11 +279,11 @@
     }
 }
 
-- (PackedFileDescriptors *)findFileByType:(uint32_t)pfdType {
+- (PackedFileDescriptors *)findFileByType:(uint32_t)type {
     PackedFileDescriptors *result = [[PackedFileDescriptors alloc] init];
     
     if (!self.flat) {
-        NSNumber *typeKey = @(pfdType);
+        NSNumber *typeKey = @(type);
         NSMutableDictionary *groups = self.index[typeKey];
         if (groups) {
             for (NSNumber *groupKey in [groups allKeys]) {
@@ -298,7 +298,7 @@
         }
     } else {
         for (id<IPackedFileDescriptor> descriptor in self.pfds) {
-            if ([descriptor pfdType] == pfdType) {
+            if ([descriptor type] == type) {
                 [result addObject:descriptor];
             }
         }
@@ -327,13 +327,13 @@
             }
         }
     } else {
-        for (id<IPackedFileDescriptor> descriptor in self.pfds) {
+        for (id<IPackedFileDescriptorSimple> descriptor in self.pfds) {
             if ([descriptor pfdType] == type && [descriptor group] == group) {
-                [result addObject:descriptor];
+                // cast up to the full protocol for the result container
+                [result addObject:(id<IPackedFileDescriptor>)descriptor];
             }
         }
     }
-    
     return result;
 }
 
@@ -362,20 +362,24 @@
 }
 
 - (PackedFileDescriptors *)findFileDiscardingGroup:(id<IPackedFileDescriptor>)pfd {
-    return [self findFileDiscardingGroupByType:[pfd pfdType] instance:[pfd longInstance]];
+    return [self findFileDiscardingGroupByType:[pfd type] instance:[pfd longInstance]];
 }
 
-- (PackedFileDescriptors *)findFileDiscardingGroupByType:(uint32_t)pfdType instance:(uint64_t)instance {
+- (PackedFileDescriptors *)findFileDiscardingGroupByType:(uint32_t)pfdType
+                                                 instance:(uint64_t)instance
+{
     PackedFileDescriptors *result = [[PackedFileDescriptors alloc] init];
-    
+
     if (!self.flat) {
-        NSNumber *typeKey = @(pfdType);
+        NSNumber *typeKey     = @(pfdType);
         NSNumber *instanceKey = @(instance);
-        
-        NSMutableDictionary *groups = self.index[typeKey];
+
+        // index[typeKey] -> groups dictionary
+        NSDictionary *groups = self.index[typeKey];
         if (groups) {
-            for (NSNumber *groupKey in [groups allKeys]) {
-                NSMutableDictionary *instances = groups[groupKey];
+            // groups[groupKey] -> instances dictionary
+            for (NSDictionary *instances in [groups allValues]) {
+                // instances[instanceKey] -> PackedFileDescriptors*
                 PackedFileDescriptors *files = instances[instanceKey];
                 if (files) {
                     for (id<IPackedFileDescriptor> fileDesc in files) {
@@ -385,16 +389,20 @@
             }
         }
     } else {
-        for (id<IPackedFileDescriptor> descriptor in self.pfds) {
-            if ([descriptor pfdType] == pfdType && [descriptor longInstance] == instance) {
-                [result addObject:descriptor];
+        // self.pfds is a PackedFileDescriptors*
+        for (id obj in self.pfds) {
+            id<IPackedFileDescriptor> d = (id<IPackedFileDescriptor>)obj;
+            uint32_t t      = (uint32_t)[d type];
+            uint64_t inst64 = (uint64_t)[d longInstance];
+
+            if (t == pfdType && inst64 == instance) {
+                [result addObject:d];
             }
         }
     }
-    
+
     return result;
 }
-
 - (PackedFileDescriptors *)findFileByInstance:(uint64_t)instance {
     if (!self.flat) {
         PackedFileDescriptors *result = [[PackedFileDescriptors alloc] init];

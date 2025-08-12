@@ -61,14 +61,23 @@
 - (NSString *)basePath {
     switch (self.location) {
         case FileLocationBaseGame:
-            return @"/Applications/The Sims 2.app/Contents/Assets/TSData";
-            
-        case FileLocationExpansionPack:
-            return [NSString stringWithFormat:@"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData/Expansion Packs/%@", self.expansionName];
-            
-        case FileLocationDownloads:
-            return [[[PathProvider global] simSavegameFolder] stringByAppendingPathComponent:@"Downloads"];
+            // /Applications/The Sims 2.app/Contents/Assets
+            return @"/Applications/The Sims 2.app/Contents/Assets";
+
+        case FileLocationExpansionPack: {
+            // /Applications/The Sims 2.app/Contents/Assets/Expansion Packs/<Expansion Name>
+            NSString *expName = self.expansionName ?: @"";
+            NSString *expRoot = @"/Applications/The Sims 2.app/Contents/Assets/Expansion Packs";
+            return [expRoot stringByAppendingPathComponent:expName];
+        }
+
+        case FileLocationDownloads: {
+            // ~/Documents/EA Games/The Sims 2/Downloads (via PathProvider)
+            NSString *save = [PathProvider simSavegameFolder];
+            return [save stringByAppendingPathComponent:@"Downloads"];
+        }
     }
+    return nil;
 }
 
 - (NSString *)fullPath {

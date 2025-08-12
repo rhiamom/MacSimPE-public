@@ -4,28 +4,28 @@
 //
 //  Created by Catherine Gramze on 7/28/25.
 //
-/***************************************************************************
- *   Copyright (C) 2005 by Ambertation                                     *
- *   quaxi@ambertation.de                                                  *
- *                                                                         *
- *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop        *
- *   rhiamom@mac.com                                                       *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+// ***************************************************************************
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
+// *                                                                         *
+// *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
+// *   rhiamom@mac.com                                                       *
+// *                                                                         *
+// *   This program is free software; you can redistribute it and/or modify  *
+// *   it under the terms of the GNU General Public License as published by  *
+// *   the Free Software Foundation; either version 2 of the License, or     *
+// *   (at your option) any later version.                                   *
+// *                                                                         *
+// *   This program is distributed in the hope that it will be useful,       *
+// *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+// *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+// *   GNU General Public License for more details.                          *
+// *                                                                         *
+// *   You should have received a copy of the GNU General Public License     *
+// *   along with this program; if not, write to the                         *
+// *   Free Software Foundation, Inc.,                                       *
+// *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+// ***************************************************************************
 
 #import "ExtractableFile.h"
 #import "PackedFileDescriptor.h"
@@ -34,6 +34,11 @@
 #import "IPackageHeader.h"
 #import "StreamMaintainer.h"
 #import "Helper.h"
+#import "PackedFileDescriptors.h"
+
+@interface File (HeaderVisibility)
+@property (nonatomic, strong, readwrite) id<IPackageHeader> header;
+@end
 
 @implementation ExtractableFile
 
@@ -73,28 +78,27 @@
 }
 
 - (void)savePackedFileData:(NSString *)filename data:(NSData *)data {
-    StreamItem *si = [StreamFactory getStreamItem:filename create:NO];
-    
-    NSFileHandle *fileHandle = nil;
     NSString *filePath = filename;
-    
-    if (si == nil) {
-        // Create new file
+
+    // Ensure the file exists
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         [[NSFileManager defaultManager] createFileAtPath:filePath contents:nil attributes:nil];
-        fileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
-    } else {
-        [si setFileAccess:NSFileHandleWriteAccess];
-        fileHandle = [si fileHandle];
     }
-    
+
+    // Open for read/write
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForUpdatingAtPath:filePath];
+    if (fileHandle == nil) {
+        // Fallback: just write atomically if handle couldn't be opened
+        [data writeToFile:filePath atomically:YES];
+        return;
+    }
+
     @try {
+        [fileHandle truncateFileAtOffset:0];  // avoid stale tail bytes
         [fileHandle writeData:data];
+        [fileHandle synchronizeFile];
     } @finally {
-        if (si != nil) {
-            [si close];
-        } else {
-            [fileHandle closeFile];
-        }
+        [fileHandle closeFile];
     }
 }
 
@@ -125,20 +129,20 @@
     NSMutableString *xml = [NSMutableString string];
     
     if (includeHeader) {
-        [xml appendFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>%@", [Helper lineBreak]];
+        [xml appendFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>%@", [NSString stringWithFormat:@"\n"]];
     }
     
-    [xml appendFormat:@"<package type=\"%u\">%@", (uint32_t)[[self header] indexType], [Helper lineBreak]];
+    [xml appendFormat:@"<package type=\"%u\">%@", (uint32_t)[[self header] indexType], [NSString stringWithFormat:@"\n"]];
     
-    NSArray<id<IPackedFileDescriptor>> *fileIndex = [self index];
+    PackedFileDescriptors *fileIndex = [self index];
     for (id<IPackedFileDescriptor> pfd in fileIndex) {
         if ([pfd respondsToSelector:@selector(generateXmlMetaInfo)]) {
             PackedFileDescriptor *descriptor = (PackedFileDescriptor *)pfd;
-            [xml appendFormat:@"%@%@", [descriptor generateXmlMetaInfo], [Helper lineBreak]];
+            [xml appendFormat:@"%@%@", [descriptor generateXmlMetaInfo], [NSString stringWithFormat:@"\n"]];
         }
     }
     
-    [xml appendFormat:@"</package>%@", [Helper lineBreak]];
+    [xml appendFormat:@"</package>%@", [NSString stringWithFormat:@"\n"]];
     
     return [xml copy];
 }

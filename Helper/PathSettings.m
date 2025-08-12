@@ -47,7 +47,7 @@ static PathSettings *globalInstance = nil;
 
 + (PathSettings *)global {
     if (globalInstance == nil) {
-        globalInstance = [[PathSettings alloc] initWithRegistry:[Helper windowsRegistry]];
+        globalInstance = [[PathSettings alloc] initWithRegistry:[Registry windowsRegistry]];
     }
     return globalInstance;
 }

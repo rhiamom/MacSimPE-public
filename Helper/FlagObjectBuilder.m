@@ -107,7 +107,7 @@ static NSMutableDictionary<NSString *, NSDictionary<NSString *, NSNumber *> *> *
         FlagPropertyDescriptor *descriptor = [[FlagPropertyDescriptor alloc] init];
         descriptor.name = flagName;
         descriptor.category = category;
-        descriptor.description = @"";
+        descriptor.propertyDescription = @"";
         descriptor.readOnly = NO;
         descriptor.defaultValue = @(NO); // Boolean flag properties default to NO
         descriptor.propertyType = [NSNumber class];
@@ -225,7 +225,7 @@ static NSMutableDictionary<NSString *, NSDictionary<NSString *, NSNumber *> *> *
 + (void)addPropertyWithName:(NSString *)name
                     toClass:(Class)targetClass
                defaultValue:(id)defaultValue
-                description:(NSString *)description
+        propertyDescription:(NSString *)propertyDescription
                    category:(NSString *)category
                    readOnly:(BOOL)readOnly {
     

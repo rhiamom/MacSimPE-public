@@ -42,6 +42,11 @@ static ExpansionItem *nilExpansionItem = nil;
 
 // MARK: - Class Methods
 
++ (NSInteger)groupCount {
+    // number of bits available in the groups bitmask
+    return (NSInteger)(sizeof(int64_t) * 8); // 64
+}
+
 + (PathProvider *)global {
     if (globalInstance == nil) {
         globalInstance = [[PathProvider alloc] init];
@@ -53,13 +58,16 @@ static ExpansionItem *nilExpansionItem = nil;
     return [[Helper simPeDataPath] stringByAppendingPathComponent:@"expansions.xreg"];
 }
 
-+ (NSString *)personalFolder {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    return [paths firstObject];
++ (NSString *)displayedName {
+    // Mac path: C# returned "The Sims 2" unconditionally on MAC
+    return @"The Sims 2";
 }
 
-+ (NSString *)displayedName {
-    return @"The Sims 2";
++ (NSString *)personalFolder {
+    // Mirrors Environment.GetFolderPath(Environment.SpecialFolder.Personal)
+    NSArray<NSString *> *paths =
+        NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    return paths.firstObject ?: NSHomeDirectory(); // fallback, just in case
 }
 
 + (NSString *)simSavegameFolder {
@@ -165,10 +173,10 @@ static ExpansionItem *nilExpansionItem = nil;
 }
 
 - (int64_t)availableGroups {
-    // Mac version available expansions: Base + University + Nightlife + Business + FamilyFun + Glamour + Pets + Seasons + Voyage + Custom
+    // Mac version available expansions: Base + University + Nightlife + Business + FamilyFun + Glamour + Pets + Seasons + Voyage
     return (ExpansionsBaseGame | ExpansionsUniversity | ExpansionsNightlife |
             ExpansionsBusiness | ExpansionsFamilyFun | ExpansionsGlamour |
-            ExpansionsPets | ExpansionsSeasons | ExpansionsVoyage | ExpansionsCustom);
+            ExpansionsPets | ExpansionsSeasons | ExpansionsVoyage);
 }
 
 - (int)currentGroup {
@@ -227,6 +235,118 @@ static ExpansionItem *nilExpansionItem = nil;
 - (void)flush {
     // Mac version uses NSUserDefaults, which auto-syncs
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSArray<NSString *> *)allPathsForPath:(NSString *)path
+{
+    if (path == nil || path.length == 0) {
+        return @[];
+    }
+    NSMutableArray<NSString *> *result = [NSMutableArray array];
+    NSArray<NSString *> *parts = [path componentsSeparatedByString:@";"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+
+    for (NSString *rawPart in parts) {
+        NSString *expanded = [PathProvider expandPath:[rawPart stringByTrimmingCharactersInSet:
+                                               [NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+        if (expanded.length == 0) continue;
+
+        NSRange starRange = [expanded rangeOfString:@"*"];
+        if (starRange.location != NSNotFound) {
+            NSString *basePath = [expanded substringToIndex:starRange.location];
+            NSString *rest = [expanded substringFromIndex:(starRange.location + 1)];
+
+            NSString *parentDir = [basePath stringByDeletingLastPathComponent];
+            NSString *baseName = [basePath lastPathComponent];
+
+            BOOL isDir = NO;
+            if ([fm fileExistsAtPath:parentDir isDirectory:&isDir] && isDir) {
+                NSError *error = nil;
+                NSArray<NSString *> *entries = [fm contentsOfDirectoryAtPath:parentDir error:&error];
+                for (NSString *entry in entries) {
+                    if (![entry hasPrefix:baseName]) continue;
+
+                    NSString *entryPath = [parentDir stringByAppendingPathComponent:entry];
+
+                    // Only consider directories, matching C# Directory.GetDirectories(...)
+                    BOOL entryIsDir = NO;
+                    if (![fm fileExistsAtPath:entryPath isDirectory:&entryIsDir] || !entryIsDir) continue;
+
+                    NSString *finalPath = [entryPath stringByAppendingString:rest];
+
+                    BOOL finalIsDir = NO;
+                    if ([fm fileExistsAtPath:finalPath isDirectory:&finalIsDir] && finalIsDir) {
+                        [result addObject:finalPath];
+                    }
+                }
+            }
+        } else {
+            BOOL isDir = NO;
+            if ([fm fileExistsAtPath:expanded isDirectory:&isDir] && isDir) {
+                [result addObject:expanded];
+            }
+        }
+    }
+
+    return [result copy];
+}
+
++ (NSString *)expandPath:(NSString *)path
+{
+    if (path == nil) return @"";
+
+    // 1) Normalize backslashes to forward slashes
+    NSString *ret = [path stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
+
+    // 2) Replace variables using our dictionary
+    NSDictionary<NSString *, NSString *> *vars = [PathProvider defaultPathVars];
+
+    for (NSString *key in vars) {
+        NSString *val = vars[key];
+        if (val.length == 0) continue;
+
+        NSString *needle = [NSString stringWithFormat:@"$(%@)", key];
+        ret = [ret stringByReplacingOccurrencesOfString:needle withString:val];
+        ret = [ret stringByReplacingOccurrencesOfString:key withString:val];
+    }
+
+    // 3) Collapse duplicate slashes
+    while ([ret containsString:@"//"]) {
+        ret = [ret stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
+    }
+    return ret;
+}
+
+// Class helper lives OUTSIDE the method:
++ (NSDictionary<NSString *, NSString *> *)defaultPathVars
+{
+    NSString *assets    = @"/Applications/The Sims 2.app/Contents/Assets";
+    NSString *epRoot    = [assets stringByAppendingPathComponent:@"Expansion Packs"];
+    NSString *downloads = [[self simSavegameFolder] stringByAppendingPathComponent:@"Downloads"];
+
+    return @{
+        @"TS2_Base": assets,
+        @"TS2_EP_Root": epRoot,
+        @"TS2_Downloads": downloads
+    };
+}
+
++ (nullable NSString *)expansionFolderNameForExpansion:(Expansions)exp {
+    switch (exp) {
+        case ExpansionsNone:            return nil;
+        case ExpansionsBaseGame:        return @"Basegame";
+        case ExpansionsUniversity:      return @"University";
+        case ExpansionsNightlife:       return @"Nightlife";
+        case ExpansionsBusiness:        return @"Open for Business";
+        case ExpansionsFamilyFun:       return @"Family Fun Stuff";
+        case ExpansionsGlamour:         return @"Glamour Life Stuff";
+        case ExpansionsPets:            return @"Pets";
+        case ExpansionsSeasons:         return @"Seasons";
+        case ExpansionsVoyage:          return @"Bon Voyage";
+      //case ExpansionsFreeTime:        return @"FreeTime";
+      //case ExpansionsApartmentLife:   return @"Apartment Life";
+      // Add any SPs if you model them; use the exact folder names in Contents/Assets/Expansion Packs
+    }
 }
 
 @end

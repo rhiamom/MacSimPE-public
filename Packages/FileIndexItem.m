@@ -90,7 +90,7 @@
 // MARK: - Properties
 
 - (uint32_t)localGroup {
-    if ([self.fileDescriptor group] == [MetaData localGroup]) {
+    if ([self.fileDescriptor group] == [MetaData LOCAL_GROUP]) {
         return self.localGr;
     } else {
         return [self.fileDescriptor group];
@@ -131,7 +131,7 @@
         return NO;
     }
     
-    BOOL descriptorEqual = [self.fileDescriptor isEqualTo:other.fileDescriptor];
+    BOOL descriptorEqual = [self.fileDescriptor isEqual:other.fileDescriptor];
     BOOL packageEqual = (self.package == other.package);
     
     return descriptorEqual && packageEqual;

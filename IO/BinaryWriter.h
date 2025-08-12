@@ -67,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)writeBytes:(const uint8_t *)bytes length:(NSInteger)length;
 - (void)writeByteArray:(NSArray<NSNumber *> *)bytes;
 - (void)writeString:(NSString *)string;
+- (void)writeByte:(uint8_t)byte;
 
 // MARK: - Stream Control
 - (void)seekToPosition:(NSInteger)position;
