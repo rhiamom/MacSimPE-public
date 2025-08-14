@@ -79,7 +79,7 @@ static NSFont *strikeFont = nil;
     subitems[0] = self.visible ? [self.pfd getRealName] : [[self.pfd descriptor] toResListString]; // Name
     subitems[1] = [self getExtText]; // Type
     subitems[2] = [NSString stringWithFormat:@"0x%@", [Helper hexString:[[self.pfd descriptor] group]]]; // Group
-    subitems[3] = [NSString stringWithFormat:@"0x%@", [Helper hexString:[[self.pfd descriptor] subType]]]; // InstHi
+    subitems[3] = [NSString stringWithFormat:@"0x%@", [Helper hexString:[[self.pfd descriptor] subtype]]]; // InstHi
     
     // Inst
     if ([Registry.windowsRegistry resourceListInstanceFormatHexOnly]) {
@@ -144,7 +144,7 @@ static NSFont *strikeFont = nil;
         }
         
         mutableSubItems[2] = [NSString stringWithFormat:@"0x%@", [Helper hexString:[[self.pfd descriptor] group]]];
-        mutableSubItems[3] = [NSString stringWithFormat:@"0x%@", [Helper hexString:[[self.pfd descriptor] subType]]];
+        mutableSubItems[3] = [NSString stringWithFormat:@"0x%@", [Helper hexString:[[self.pfd descriptor] subtype]]];
         
         if ([Registry.windowsRegistry resourceListInstanceFormatHexOnly]) {
             mutableSubItems[4] = [NSString stringWithFormat:@"0x%@", [Helper hexString:[[self.pfd descriptor] instance]]];

@@ -346,14 +346,28 @@ static void GOParsePropertyAttributes(objc_property_t prop, NSMutableDictionary 
 
 // MARK: - GlobalizedObject Implementation
 
+@interface GlobalizedObject ()
+@property (nonatomic, strong, readwrite) NSBundle *bundle;
+@property (nonatomic, copy, readwrite) NSString *tableName;
+@end
+
 @implementation GlobalizedObject
+
+- (instancetype)initWithBundle:(NSBundle *)bundle tableName:(NSString *)tableName {
+    self = [super init];
+    if (self) {
+        _bundle = bundle ?: [NSBundle mainBundle];
+        _tableName = [tableName copy] ?: @"Localization";
+    }
+    return self;
+}
 
 - (instancetype)init {
     return [self initWithResourceManager:[Localization bundle]];
 }
 
 - (instancetype)initWithResourceManager:(NSBundle *)resourceManager {
-    self = [super init];
+    self = [self initWithBundle:resourceManager tableName:@"Localization"];
     if (self) {
         _resourceManager = resourceManager;
         _globalizedProperties = nil;

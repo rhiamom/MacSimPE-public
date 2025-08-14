@@ -35,7 +35,47 @@
 #import "Helper.h"
 #import "Wait.h"
 
+@interface ResourceListViewExt (Sorting)
+- (void)signalFinishedSortExt:(NSInteger)ticket;
+@end
+
+// MARK: - ResourceNameSorter Implementation
+
 @implementation ResourceNameSorter
+
+- (instancetype)initWithListView:(ResourceListViewExt *)listView
+                           names:(ResourceNameList *)names
+                          ticket:(NSInteger)ticket {
+    self = [super init];
+    if (self) {
+        _listView = listView;
+        _names = names;
+        _ticket = ticket;
+        _cancelled = NO;
+    }
+return self;
+}
+
+- (void)start {
+dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+[self performSorting];
+});
+}
+
+- (void)performSorting {
+if (self.cancelled) return;
+    
+// Pre-load all resource names
+for (NamedPackedFileDescriptor *pfd in self.names) {
+if (self.cancelled) return;
+[pfd getRealName]; // This loads the name if not already loaded
+}
+    
+if (!self.cancelled) {
+    [self.listView signalFinishedSortExt:self.ticket];
+    }
+}
+
 
 - (instancetype)initWithParent:(ResourceListViewExt *)parent
                          names:(ResourceNameList *)names
@@ -47,8 +87,8 @@
         _ticket = ticket;
         _cancelled = NO;
         
-        // Convert to mutable array (acts as stack)
-        _names = [[NSMutableArray alloc] init];
+        
+        _names = [[ResourceNameList alloc] init];
         for (NamedPackedFileDescriptor *pfd in names) {
             [_names addObject:pfd];
         }
@@ -59,7 +99,7 @@
             _started = numberOfThreads;
             for (NSInteger i = 0; i < numberOfThreads; i++) {
                 NSString *threadName = [NSString stringWithFormat:@"Resource Sorting Thread %ld.%@",
-                                      (long)i, [Helper hexStringUInt32:(uint32_t)ticket]];
+                                      (long)i, [Helper hexStringUInt:(uint32_t)ticket]];
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     [self readNames];
@@ -105,7 +145,7 @@
     @synchronized (self.names) {
         self.started--;
         if (self.started == 0 && !self.cancelled) {
-            [self.parent signalFinishedSort:self.ticket];
+            [self.parent signalFinishedSortExt:self.ticket];
         }
     }
 }

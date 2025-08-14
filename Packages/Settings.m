@@ -60,7 +60,7 @@ static Settings *sharedSettings = nil;
     NSBundle *bundle = [NSBundle mainBundle];
     self = [super initWithBundle:bundle tableName:@"Localization"];
     if (self) {
-        _xmlRegistryKey = [Helper windowsRegistry].registryKey;
+        _xmlRegistryKey = [Registry windowsRegistry].registryKey;
     }
     return self;
 }

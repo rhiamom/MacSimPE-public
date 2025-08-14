@@ -55,7 +55,7 @@ static PathSettings *globalInstance = nil;
 // MARK: - Initialization
 
 - (instancetype)initWithRegistry:(Registry *)registry {
-    self = [super init];
+    self = [self initWithBundle:[NSBundle mainBundle] tableName:@"Localization"];
     if (self) {
         _registry = registry;
     }
@@ -89,7 +89,7 @@ static PathSettings *globalInstance = nil;
 }
 
 - (NSString *)baseGamePath {
-    return @"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData";
+    return @"/Applications/The Sims 2.app/Contents/Assets";
 }
 
 - (void)setBaseGamePath:(NSString *)baseGamePath {
@@ -98,7 +98,7 @@ static PathSettings *globalInstance = nil;
 }
 
 - (NSString *)universityPath {
-    return @"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData/Expansion Packs/University";
+    return @"/Applications/The Sims 2.app/Contents/Resources/Assets/Expansion Packs/University";
 }
 
 - (void)setUniversityPath:(NSString *)universityPath {
@@ -107,7 +107,7 @@ static PathSettings *globalInstance = nil;
 }
 
 - (NSString *)nightlifePath {
-    return @"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData/Expansion Packs/Nightlife";
+    return @"/Applications/The Sims 2.app/Contents/Assets/Expansion Packs/Nightlife";
 }
 
 - (void)setNightlifePath:(NSString *)nightlifePath {
@@ -115,7 +115,7 @@ static PathSettings *globalInstance = nil;
 }
 
 - (NSString *)businessPath {
-    return @"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData/Expansion Packs/Open for Business";
+    return @"/Applications/The Sims 2.app/Contents/Assets/Expansion Packs/Open for Business";
 }
 
 - (void)setBusinessPath:(NSString *)businessPath {
@@ -123,7 +123,7 @@ static PathSettings *globalInstance = nil;
 }
 
 - (NSString *)familyFunPath {
-    return @"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData/Expansion Packs/Family Fun Stuff";
+    return @"/Applications/The Sims 2.app/Contents/Assets/Expansion Packs/Family Fun Stuff";
 }
 
 - (void)setFamilyFunPath:(NSString *)familyFunPath {
@@ -131,7 +131,7 @@ static PathSettings *globalInstance = nil;
 }
 
 - (NSString *)glamourPath {
-    return @"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData/Expansion Packs/Glamour Life Stuff";
+    return @"/Applications/The Sims 2.app/Contents/Assets/Expansion Packs/Glamour Life Stuff";
 }
 
 - (void)setGlamourPath:(NSString *)glamourPath {
@@ -139,7 +139,7 @@ static PathSettings *globalInstance = nil;
 }
 
 - (NSString *)petsPath {
-    return @"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData/Expansion Packs/Pets";
+    return @"/Applications/The Sims 2.app/Contents/Assets/Expansion Packs/Pets";
 }
 
 - (void)setPetsPath:(NSString *)petsPath {
@@ -147,7 +147,7 @@ static PathSettings *globalInstance = nil;
 }
 
 - (NSString *)seasonsPath {
-    return @"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData/Expansion Packs/Seasons";
+    return @"/Applications/The Sims 2.app/Contents/Assets/Expansion Packs/Seasons";
 }
 
 - (void)setSeasonsPath:(NSString *)seasonsPath {
@@ -155,7 +155,7 @@ static PathSettings *globalInstance = nil;
 }
 
 - (NSString *)bonVoyagePath {
-    return @"/Applications/The Sims 2.app/Contents/Resources/TranslationDictionary/GameData/Expansion Packs/Bon Voyage";
+    return @"/Applications/The Sims 2.app/Contents/Assets/Expansion Packs/Bon Voyage";
 }
 
 - (void)setBonVoyagePath:(NSString *)bonVoyagePath {

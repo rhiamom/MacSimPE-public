@@ -29,9 +29,10 @@
 
 #import <Foundation/Foundation.h>
 #import "AResourceTreeNodeBuilder.h"
+#import "ResourceMaps.h"
 
 @class ResourceTreeNodeExt;
-@class ResourceMaps;
+
 
 /**
  * Tree node builder that organizes resources by instance

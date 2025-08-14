@@ -79,7 +79,7 @@
 /// provide Infoformations from the Main Application to the Plugins, you have to use the
 /// TypeRegistry!
 /// </remarks>
-@interface TypeRegistry : NSObject <IWrapperRegistry, IProviderRegistry, IToolRegistry, IHelpRegistry, ISettingsRegistry, ICommandLineRegistry>
+@interface TypeRegistry : NSObject <IWrapperRegistry, IProviderRegistry, IToolRegistry, IHelpRegistry, ISettingsRegistry, ICommandLineFactory>
 
 // MARK: - Properties
 
@@ -123,7 +123,7 @@
 /// <summary>
 /// Contains all available Listeners
 /// </summary>
-@property (nonatomic, strong) InternalListeners *listeners;
+@property (nonatomic, strong, readonly) Listeners *listeners;
 
 /// <summary>
 /// Used to access the Windows Registry
@@ -142,7 +142,7 @@
 
 // MARK: - Providers
 
-@property (nonatomic, strong) LotProvider *lotProvider;
+@property (nonatomic, strong) id<ILotProvider> lotProvider;
 @property (nonatomic, strong) id<ISimNames> simNameProvider;
 @property (nonatomic, strong) id<ISimFamilyNames> simFamilynameProvider;
 @property (nonatomic, strong) id<ISimDescriptions> simDescriptionProvider;
@@ -202,15 +202,5 @@
 // MARK: - Private Methods
 
 - (void)addUpdatablePlugin:(id)factory;
-
-@end
-
-// MARK: - Internal Listeners
-
-@interface InternalListeners : Listeners
-
-- (instancetype)init;
-- (void)addListener:(id<IListener>)listener;
-- (void)clear;
 
 @end

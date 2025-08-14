@@ -107,4 +107,10 @@
 - (NSArray<GlobalizedPropertyDescriptor *> *)getProperties;
 - (id)getPropertyOwner:(GlobalizedPropertyDescriptor *)propertyDescriptor;
 
+- (instancetype)initWithBundle:(NSBundle *)bundle
+                     tableName:(NSString *)tableName NS_DESIGNATED_INITIALIZER;
+
+
+@property (nonatomic, strong, readonly) NSBundle *bundle;
+@property (nonatomic, copy, readonly) NSString *tableName;
 @end

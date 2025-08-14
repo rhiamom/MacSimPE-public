@@ -35,17 +35,28 @@
 
 @interface ResourceNameSorter : NSObject
 
-@property (nonatomic, strong) NSMutableArray<NamedPackedFileDescriptor *> *names;
+@property (nonatomic, weak) ResourceListViewExt *listView;
+@property (nonatomic, strong) ResourceNameList *names;
+@property (nonatomic, assign) NSInteger ticket;
+@property (nonatomic, assign) BOOL cancelled;
 @property (nonatomic, assign) NSInteger started;
 @property (nonatomic, assign) NSInteger counter;
 @property (nonatomic, weak) ResourceListViewExt *parent;
-@property (nonatomic, assign) NSInteger ticket;
-@property (nonatomic, assign) BOOL cancelled;
+
+
+- (instancetype)initWithListView:(ResourceListViewExt *)listView
+                           names:(ResourceNameList *)names
+                          ticket:(NSInteger)ticket;
+
+- (void)start;
+- (void)cancel;
+
+
+
 
 - (instancetype)initWithParent:(ResourceListViewExt *)parent
                          names:(ResourceNameList *)names
                         ticket:(NSInteger)ticket;
 
-- (void)cancel;
 
 @end

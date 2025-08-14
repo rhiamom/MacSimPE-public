@@ -29,6 +29,7 @@
 
 #import "Registry.h"
 #import "Helper.h"
+#import "XmlRegistryKey.h"
 
 const uint8_t RegistryRecentCount = 15;
 
@@ -44,7 +45,20 @@ static Registry *_windowsRegistry = nil;
 
 + (Registry *)windowsRegistry {
     if (!_windowsRegistry) {
-        _windowsRegistry = [[Registry alloc] init];
+        _windowsRegistry = [[self alloc] init];
+
+        // macOS: point it at a plist/XML file under Application Support
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSURL *appSupport = [fm URLsForDirectory:NSApplicationSupportDirectory
+                                        inDomains:NSUserDomainMask].firstObject;
+        NSURL *dir = [appSupport URLByAppendingPathComponent:@"MacSimPE" isDirectory:YES];
+        [fm createDirectoryAtURL:dir withIntermediateDirectories:YES attributes:nil error:nil];
+
+        NSURL *registryFile = [dir URLByAppendingPathComponent:@"registry.xml"];
+        XmlRegistry *xmlReg = [[XmlRegistry alloc] initWithInputFile:registryFile.path
+                                                          outputFile:registryFile.path
+                                                              create:YES];
+        _windowsRegistry.registryKey = xmlReg.currentUser;
     }
     return _windowsRegistry;
 }
@@ -52,6 +66,7 @@ static Registry *_windowsRegistry = nil;
 + (void)setWindowsRegistry:(Registry *)registry {
     _windowsRegistry = registry;
 }
+
 
 // MARK: - Initialization
 
@@ -650,7 +665,6 @@ static Registry *_windowsRegistry = nil;
 }
 
 @end
-
 // MARK: - AppPreferences Implementation
 
 @implementation AppPreferences

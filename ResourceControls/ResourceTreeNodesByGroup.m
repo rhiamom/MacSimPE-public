@@ -35,6 +35,9 @@
 #import "NamedPackedFileDescriptor.h"
 #import "Helper.h"
 #import "Localization.h"
+#import "IPackedFileDescriptorSimple.h"
+#import "IPackedFileDescriptorBasic.h"
+
 
 @implementation ResourceTreeNodesByGroup
 
@@ -111,7 +114,8 @@
     
     // Group resources by type
     for (NamedPackedFileDescriptor *pfd in resources) {
-        uint32_t type = [[pfd descriptor] type];
+        id<IPackedFileDescriptorSimple> d = (id<IPackedFileDescriptorSimple>)[pfd descriptor];
+        uint32_t type = d.pfdType;
         NSNumber *typeKey = @(type);
         
         ResourceNameList *typeList = [typeMap objectForKey:typeKey];
@@ -134,7 +138,8 @@
     
     // Group resources by long instance
     for (NamedPackedFileDescriptor *pfd in resources) {
-        uint64_t longInstance = [[pfd descriptor] longInstance];
+        id<IPackedFileDescriptorBasic> d = (id<IPackedFileDescriptorBasic>)[pfd descriptor];
+        uint64_t longInstance = d.longInstance;
         NSNumber *instanceKey = @(longInstance);
         
         ResourceNameList *instanceList = [instanceMap objectForKey:instanceKey];
@@ -150,7 +155,7 @@
     [ResourceTreeNodesByInstance addInstances:instanceMap
                                        toNode:node
                                     showTypes:NO
-                                showInstances:NO];
+                                   showGroups:NO];
 }
 
 @end

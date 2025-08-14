@@ -31,6 +31,7 @@
 
 // Forward declarations
 @class Registry;
+@class XmlRegistryKey;
 
 // MARK: - MetaData Languages (moved from MetaData class)
 typedef NS_ENUM(NSInteger, MetaDataLanguages) {
@@ -104,6 +105,7 @@ typedef NS_ENUM(NSInteger, ReportFormats) {
 
 // MARK: - Class Properties
 @property (class, nonatomic, strong) Registry *windowsRegistry;
+@property (nonatomic, strong) XmlRegistryKey *registryKey;
 
 // MARK: - SimPE Directory Management
 - (void)updateSimPeDirectory;
@@ -193,6 +195,10 @@ typedef NS_ENUM(NSInteger, ReportFormats) {
 - (void)clearRecentFileList;
 - (NSArray<NSString *> *)getRecentFiles;
 - (void)addRecentFile:(NSString *)filename;
+
+//   MARK: - Windows Registry Alternative Application Level Settings
+
++ (Registry *)windowsRegistry;
 
 @end
 

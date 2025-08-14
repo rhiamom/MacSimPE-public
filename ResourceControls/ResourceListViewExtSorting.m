@@ -32,11 +32,12 @@
 #import "Wait.h"
 #import "Localization.h"
 #import <objc/runtime.h>
+#import "ResourceNameSorter.h"
 
 // MARK: - Associated Objects for Category Properties
 
 static const char kSortedColumnKey[] = "sortedColumn";
-static const char kSortingThreadKey[] = "sortingThread";
+static const char kSortingSorterKey[] = "sortingSorter";
 
 // MARK: - ResourceListViewExt Sorting Implementation
 
@@ -53,50 +54,49 @@ static const char kSortingThreadKey[] = "sortingThread";
     objc_setAssociatedObject(self, kSortedColumnKey, @(sortedColumn), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     @synchronized (self.names) {
-        [self sortResources];
+        [self sortResourcesExt];
         [self refresh];
     }
 }
 
-- (ResourceNameSorter *)sortingThread {
-    return objc_getAssociatedObject(self, kSortingThreadKey);
+- (ResourceNameSorter *)sortingSorter {
+    return (ResourceNameSorter *)objc_getAssociatedObject(self, kSortingSorterKey);
 }
 
-- (void)setSortingThread:(ResourceNameSorter *)sortingThread {
-    objc_setAssociatedObject(self, kSortingThreadKey, sortingThread, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setSortingSorter:(ResourceNameSorter *)sortingSorter {
+    objc_setAssociatedObject(self, kSortingSorterKey, sortingSorter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-
-// MARK: - Sorting Management
-
-- (void)sortResources {
+        // MARK: - Sorting Management
+        
+- (void)sortResourcesExt {
     self.sortTicket++;
-    [self cancelThreads];
-    
+    [self cancelSortThreadsExt];
+            
     if (self.sortedColumn == SortColumnName) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"AsynchronSort"]) {
-            [[Wait shared] subStartWithCount:[self.names count]];
+            [Wait subStartWithCount:[self.names count]];
+            [Wait setMessage:[Localization getString:@"Loading embedded resource names..."]];
         }
-        
-        [[Wait shared] setMessage:[[Localization shared] getString:@"Loading embedded resource names..."]];
-        
+                
         ResourceNameSorter *sorter = [[ResourceNameSorter alloc] initWithListView:self
                                                                             names:self.names
-                                                                           ticket:self.sortTicket];
-        self.sortingThread = sorter;
+                                                                            ticket:self.sortTicket];
+        self.sortingSorter = sorter;
         [sorter start];
     } else {
-        [self signalFinishedSort:self.sortTicket];
+        [self signalFinishedSortExt:self.sortTicket];
     }
 }
 
+        
 - (void)doTheSorting {
     [self beginUpdate];
-    
+            
     ResourceNameList *oldSelection = [self selectedItems];
-    
+            
     [self.tableView deselectAll:nil];
     [self.names sortByColumn:self.sortedColumn ascending:self.ascending];
-    
+            
     BOOL first = YES;
     for (NamedPackedFileDescriptor *pfd in oldSelection) {
         NSUInteger index = [self.names indexOfObject:pfd];
@@ -106,39 +106,39 @@ static const char kSortingThreadKey[] = "sortingThread";
                 first = NO;
             }
             [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index]
-                        byExtendingSelection:YES];
+                                byExtendingSelection:YES];
         }
     }
-    
+            
     [self endUpdateWithFireEvents:NO];
 }
-
-- (void)cancelThreads {
-    if (self.sortingThread != nil) {
-        [self.sortingThread cancel];
-        self.sortingThread = nil;
-    }
-}
-
-- (void)signalFinishedSort:(NSInteger)ticket {
+        
+- (void)cancelSortThreadsExt {
+            if (self.sortingSorter != nil) {
+                [self.sortingSorter cancel];
+                self.sortingSorter = nil;
+            }
+        }
+        
+- (void)signalFinishedSortExt:(NSInteger)ticket {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (ticket == self.sortTicket) {
-            self.sortingThread = nil;
+            self.sortingSorter = nil;
             [self doTheSorting];
             [self refresh];
-            
+                    
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"AsynchronSort"]) {
-                [[Wait shared] subStop];
+                [Wait subStop];
             }
         }
     });
 }
-
-// MARK: - Column Click Handling
-
+        
+        // MARK: - Column Click Handling
+        
 - (void)handleColumnClick:(NSTableColumn *)column {
     SortColumn newSortColumn = SortColumnOffset; // Default
-    
+            
     if (column == self.typeColumn) {
         newSortColumn = SortColumnName;
     } else if (column == self.nameColumn) {
@@ -154,55 +154,13 @@ static const char kSortingThreadKey[] = "sortingThread";
     } else if (column == self.offsetColumn) {
         newSortColumn = SortColumnOffset;
     }
-    
+            
     if (newSortColumn == self.sortedColumn) {
         self.ascending = !self.ascending;
     }
-    
+            
     self.sortedColumn = newSortColumn;
 }
-
+        
 @end
-
-// MARK: - ResourceNameSorter Implementation
-
-@implementation ResourceNameSorter
-
-- (instancetype)initWithListView:(ResourceListViewExt *)listView
-                           names:(ResourceNameList *)names
-                          ticket:(NSInteger)ticket {
-    self = [super init];
-    if (self) {
-        _listView = listView;
-        _names = names;
-        _ticket = ticket;
-        _cancelled = NO;
-    }
-    return self;
-}
-
-- (void)start {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self performSorting];
-    });
-}
-
-- (void)cancel {
-    self.cancelled = YES;
-}
-
-- (void)performSorting {
-    if (self.cancelled) return;
-    
-    // Pre-load all resource names
-    for (NamedPackedFileDescriptor *pfd in self.names) {
-        if (self.cancelled) return;
-        [pfd getRealName]; // This loads the name if not already loaded
-    }
-    
-    if (!self.cancelled) {
-        [self.listView signalFinishedSort:self.ticket];
-    }
-}
-
-@end
+        

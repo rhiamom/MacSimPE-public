@@ -44,13 +44,10 @@
 /**
  * Holds a reference to the Registry this Plugin was last registered to (can be nil!)
  */
-@property (nonatomic, weak) id<IWrapperRegistry> linkedRegistry;
+@property (nonatomic, strong) id<IWrapperRegistry> linkedRegistry;
 
-/**
- * Holds a reference to available Providers (i.e. for Sim Names or Images)
- */
-@property (nonatomic, weak) id<IProviderRegistry> linkedProvider;
 
+@property (nonatomic, strong) id<IProviderRegistry> linkedProvider;
 /**
  * Returns a List of all available Plugins in this Package
  * @return A List of all provided Plugins (=FileType Wrappers)

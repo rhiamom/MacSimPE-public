@@ -53,7 +53,7 @@
         self.selectedImageIndex = self.imageIndex;
         
         // Find type alias and format display text
-        TypeAlias *typeAlias = [[MetaData shared] findTypeAlias:type];
+        TypeAlias *typeAlias = [MetaData findTypeAlias:type];
         
         if (typeAlias != nil) {
             self.text = [NSString stringWithFormat:@"%@ (%@) (%ld)",
