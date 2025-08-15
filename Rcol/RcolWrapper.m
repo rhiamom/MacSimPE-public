@@ -27,7 +27,7 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************/
 
-#import "Rcol.h"
+#import "RcolWrapper.h"
 #import "IPackedFileDescriptor.h"
 #import "IRcolBlock.h"
 #import "IProviderRegistry.h"

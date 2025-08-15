@@ -34,6 +34,7 @@
 #import "NamedPackedFileDescriptor.h"
 #import "Helper.h"
 #import "Localization.h"
+#import "PackedFileDescriptorSimple.h"
 
 @implementation ResourceTreeNodesByInstance
 
@@ -110,7 +111,7 @@
     
     // Group resources by group
     for (NamedPackedFileDescriptor *pfd in resources) {
-        uint32_t group = [[pfd descriptor] group];
+        uint32_t group = [(PackedFileDescriptorSimple *)[pfd descriptor] group];
         NSNumber *groupKey = @(group);
         
         ResourceNameList *groupList = [groupMap objectForKey:groupKey];

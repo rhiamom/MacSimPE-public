@@ -71,6 +71,17 @@
 		B69F350F2E3848E1007EEA89 /* ResourceTreeViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = B69F350E2E3848E1007EEA89 /* ResourceTreeViewExt.m */; };
 		B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = B69F35142E385D41007EEA89 /* ResourceListViewExt.m */; };
 		B69F35182E385E4F007EEA89 /* NamedPackedFileDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B69F35172E385E4F007EEA89 /* NamedPackedFileDescriptor.m */; };
+		B6B02CCE2E4EB2B8009240FD /* AbstractWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BB52E353F46009AD0A7 /* AbstractWrapper.m */; };
+		B6B02CCF2E4EB2C8009240FD /* AbstractFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BB72E354348009AD0A7 /* AbstractFactory.m */; };
+		B6B02CD02E4EB2E5009240FD /* CompressedFileList.m in Sources */ = {isa = PBXBuildFile; fileRef = B632A4372E36A3AD0024810C /* CompressedFileList.m */; };
+		B6B02CD12E4EB2FC009240FD /* FileTable.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE59D2E3ADF9D00547C40 /* FileTable.m */; };
+		B6B02CD22E4EB32A009240FD /* RcolWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F4409D2E4656B400870564 /* RcolWrapper.m */; };
+		B6B02CD32E4EB331009240FD /* GenericRcolWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64F1C982E43FCBC001C0DEC /* GenericRcolWrapper.m */; };
+		B6B02CD42E4EB38D009240FD /* RemoteControl.m in Sources */ = {isa = PBXBuildFile; fileRef = B650446A2E46D2160014569E /* RemoteControl.m */; };
+		B6B02CD82E4EBA34009240FD /* RcolUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CD72E4EBA34009240FD /* RcolUI.m */; };
+		B6B02CDB2E4EBADF009240FD /* RcolForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CDA2E4EBADF009240FD /* RcolForm.m */; };
+		B6B02CDE2E4EBF3B009240FD /* WrapperBaseControl.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CDD2E4EBF3B009240FD /* WrapperBaseControl.m */; };
+		B6B02CE12E4EC0E7009240FD /* ScenegraphHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CE02E4EC0E7009240FD /* ScenegraphHelper.m */; };
 		B6CDCC772E33E8C7004FDF82 /* SharedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC762E33E8B1004FDF82 /* SharedTypes.m */; };
 		B6CDCC7D2E33EB1F004FDF82 /* ToolTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC7C2E33EB1F004FDF82 /* ToolTypes.m */; };
 		B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC802E33EBD2004FDF82 /* SidebarView.m */; };
@@ -283,6 +294,16 @@
 		B69F35142E385D41007EEA89 /* ResourceListViewExt.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResourceListViewExt.m; sourceTree = "<group>"; };
 		B69F35162E385E0E007EEA89 /* NamedPackedFileDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NamedPackedFileDescriptor.h; sourceTree = "<group>"; };
 		B69F35172E385E4F007EEA89 /* NamedPackedFileDescriptor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NamedPackedFileDescriptor.m; sourceTree = "<group>"; };
+		B6B02CD52E4EB567009240FD /* IPackedFileUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileUI.h; sourceTree = "<group>"; };
+		B6B02CD62E4EB9FB009240FD /* RcolUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolUI.h; sourceTree = "<group>"; };
+		B6B02CD72E4EBA34009240FD /* RcolUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolUI.m; sourceTree = "<group>"; };
+		B6B02CD92E4EBA69009240FD /* RcolForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolForm.h; sourceTree = "<group>"; };
+		B6B02CDA2E4EBADF009240FD /* RcolForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolForm.m; sourceTree = "<group>"; };
+		B6B02CDC2E4EBEEB009240FD /* WrapperBaseControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WrapperBaseControl.h; sourceTree = "<group>"; };
+		B6B02CDD2E4EBF3B009240FD /* WrapperBaseControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WrapperBaseControl.m; sourceTree = "<group>"; };
+		B6B02CDF2E4EC0AA009240FD /* ScenegraphHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScenegraphHelper.h; sourceTree = "<group>"; };
+		B6B02CE02E4EC0E7009240FD /* ScenegraphHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScenegraphHelper.m; sourceTree = "<group>"; };
+		B6B02CE22E4EC150009240FD /* IScenegraphBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphBlock.h; sourceTree = "<group>"; };
 		B6BBE6F82E40F17D003D5BCC /* ISettingsRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISettingsRegistry.h; sourceTree = "<group>"; };
 		B6BBE6F92E40F228003D5BCC /* ICommandLIne.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLIne.h; sourceTree = "<group>"; };
 		B6BBE6FA2E40F289003D5BCC /* ICommandLineFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLineFactory.h; sourceTree = "<group>"; };
@@ -428,6 +449,10 @@
 				B6BBE6FB2E40F314003D5BCC /* ICommandLineRegistry.h */,
 				B646E9102E4E6BE400A92D70 /* IListener.h */,
 				B646E9112E4E6CE700A92D70 /* IListener.m */,
+				B6B02CDC2E4EBEEB009240FD /* WrapperBaseControl.h */,
+				B6B02CDD2E4EBF3B009240FD /* WrapperBaseControl.m */,
+				B6B02CDF2E4EC0AA009240FD /* ScenegraphHelper.h */,
+				B6B02CE02E4EC0E7009240FD /* ScenegraphHelper.m */,
 			);
 			path = WorkspaceHelper;
 			sourceTree = "<group>";
@@ -490,6 +515,10 @@
 				B6F4409B2E4655B000870564 /* IRcolBlock.h */,
 				B6F4409C2E46567200870564 /* RcolWrapper.h */,
 				B6F4409D2E4656B400870564 /* RcolWrapper.m */,
+				B6B02CD62E4EB9FB009240FD /* RcolUI.h */,
+				B6B02CD72E4EBA34009240FD /* RcolUI.m */,
+				B6B02CD92E4EBA69009240FD /* RcolForm.h */,
+				B6B02CDA2E4EBADF009240FD /* RcolForm.m */,
 			);
 			path = Rcol;
 			sourceTree = "<group>";
@@ -713,6 +742,8 @@
 				B6BBE6F92E40F228003D5BCC /* ICommandLIne.h */,
 				B6BBE6FA2E40F289003D5BCC /* ICommandLineFactory.h */,
 				B6F4409E2E4657A000870564 /* IScenegraphItem.h */,
+				B6B02CD52E4EB567009240FD /* IPackedFileUI.h */,
+				B6B02CE22E4EC150009240FD /* IScenegraphBlock.h */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -960,16 +991,20 @@
 				B6CDCC7D2E33EB1F004FDF82 /* ToolTypes.m in Sources */,
 				B69F34F42E3835A1007EEA89 /* ResourceViewManager.m in Sources */,
 				B6CDCC9D2E34271B004FDF82 /* HeaderIndex.m in Sources */,
+				B6B02CCE2E4EB2B8009240FD /* AbstractWrapper.m in Sources */,
+				B6B02CD82E4EBA34009240FD /* RcolUI.m in Sources */,
 				B69F34E02E37EF74007EEA89 /* CRCParameters.m in Sources */,
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
 				B64F1C9B2E43FEC3001C0DEC /* XmlPackageReaderBase.m in Sources */,
 				B69F34EC2E37F3F3007EEA89 /* GeneratableFile.m in Sources */,
+				B6B02CE12E4EC0E7009240FD /* ScenegraphHelper.m in Sources */,
 				B61CE5A32E3AE68400547C40 /* PackageRepair.m in Sources */,
 				B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */,
 				B64EEF782E3985AC0008E7CA /* ResourceTreeNodesByGroup.m in Sources */,
 				B6819E582E3E734000E37434 /* FileIndexItem.m in Sources */,
 				B69C59FD2E3E907000794FC7 /* FlagBase.m in Sources */,
 				B6CDCC772E33E8C7004FDF82 /* SharedTypes.m in Sources */,
+				B6B02CDE2E4EBF3B009240FD /* WrapperBaseControl.m in Sources */,
 				B6CDCC902E340297004FDF82 /* FileStream.m in Sources */,
 				B69F34DA2E37ECDD007EEA89 /* Hashes.m in Sources */,
 				B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */,
@@ -981,6 +1016,7 @@
 				B69C59F72E3E8CC900794FC7 /* GlobalizedObject.m in Sources */,
 				B69C59FA2E3E8DF000794FC7 /* ExpansionItem.m in Sources */,
 				B64EEF4B2E3974800008E7CA /* ResourceListViewExtSelection.m in Sources */,
+				B6B02CD42E4EB38D009240FD /* RemoteControl.m in Sources */,
 				B69C5A352E3ED1E600794FC7 /* DescriptiveSerializer.m in Sources */,
 				B64E6BAD2E3534BB009AD0A7 /* Helper.m in Sources */,
 				B69C5A302E3ECEF200794FC7 /* Serializer.m in Sources */,
@@ -991,6 +1027,7 @@
 				B64F1CA12E44041A001C0DEC /* FileTableItemType.m in Sources */,
 				B61CE5A02E3AE10A00547C40 /* FileTableBase.m in Sources */,
 				B6FDC59C2E3FE170004E8AA6 /* StreamMaintainer.m in Sources */,
+				B6B02CCF2E4EB2C8009240FD /* AbstractFactory.m in Sources */,
 				B6F440B02E46643B00870564 /* FlagBaseConverter.m in Sources */,
 				B6CDCC972E340622004FDF82 /* BinaryWriter.m in Sources */,
 				B6CDCCA32E342902004FDF82 /* HoleIndexItem.m in Sources */,
@@ -1007,23 +1044,28 @@
 				B62437DB2E3597690052119F /* Registry.m in Sources */,
 				B6CDCC862E33F887004FDF82 /* File.m in Sources */,
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
+				B6B02CD12E4EB2FC009240FD /* FileTable.m in Sources */,
 				B69C5A2A2E3EC5E300794FC7 /* XmlRegistryKey.m in Sources */,
 				B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */,
 				B64F1C9E2E44011C001C0DEC /* FileTableItem.m in Sources */,
 				B62437E12E35A15B0052119F /* TGILoader.m in Sources */,
 				B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */,
 				B6CDCCA72E342B3D004FDF82 /* PackedFileDescriptorSimple.m in Sources */,
+				B6B02CD02E4EB2E5009240FD /* CompressedFileList.m in Sources */,
 				B6CDCCBB2E345922004FDF82 /* PackedFileDescriptors.m in Sources */,
 				B64EEF482E3939610008E7CA /* ResourceListItemExt.m in Sources */,
 				B64F1CA42E4404F9001C0DEC /* Settings.m in Sources */,
 				B64E6BA72E3531DF009AD0A7 /* Alias.m in Sources */,
 				B6CDCC8B2E33FC6B004FDF82 /* Stream.m in Sources */,
+				B6B02CDB2E4EBADF009240FD /* RcolForm.m in Sources */,
 				B69C5A382E3ED3E200794FC7 /* Thread.m in Sources */,
+				B6B02CD32E4EB331009240FD /* GenericRcolWrapper.m in Sources */,
 				B6F440AA2E465FDF00870564 /* ArgParser.m in Sources */,
 				B6F440B32E4665BD00870564 /* FlagObjectBuilder.m in Sources */,
 				B6F440A42E465EB300870564 /* Containers.m in Sources */,
 				B69F34FD2E383AE6007EEA89 /* ResourceMaps.m in Sources */,
 				B61CE56F2E3A863800547C40 /* WaitControl.m in Sources */,
+				B6B02CD22E4EB32A009240FD /* RcolWrapper.m in Sources */,
 				B6F440A72E465F2500870564 /* CountedListItem.m in Sources */,
 				B69F34E62E37F319007EEA89 /* PackageMaintainer.m in Sources */,
 				B64EEF812E3987F20008E7CA /* ResourceTreeTypeNodeExt.m in Sources */,

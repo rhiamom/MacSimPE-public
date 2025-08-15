@@ -27,7 +27,7 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import "GenericRcol.h"
+#import "GenericRcolWrapper.h"
 #import "RcolUI.h"
 #import "ScenegraphHelper.h"
 #import "MetaData.h"
@@ -38,6 +38,9 @@
 #import "IScenegraphBlock.h"
 #import "IScenegraphFileIndexItem.h"
 #import "FileTable.h"
+#import "FileIndex.h"
+#import "File.h"
+
 
 @implementation GenericRcol
 
@@ -93,12 +96,12 @@
 
 - (NSArray<NSNumber *> *)assignableTypes {
     return @[
-        @([ScenegraphHelper TXMT]),
-        @([ScenegraphHelper CRES]),
-        @([ScenegraphHelper GMND]),
-        @([ScenegraphHelper GMDC]),
-        @([ScenegraphHelper SHPE]),
-        @([MetaData ANIM]),      // ANIM
+        @(SCENEGRAPH_TXMT),
+        @(SCENEGRAPH_CRES),
+        @(SCENEGRAPH_GMND),
+        @(SCENEGRAPH_GMDC),
+        @(SCENEGRAPH_SHPE),
+        @(SCENEGRAPH_ANIM),      // ANIM
         @(0x4D51F042),           // CINE
         @([MetaData LDIR]),
         @([MetaData LAMB]),
@@ -125,7 +128,7 @@
     for (id<IRcolBlock> irb in self.blocks) {
         if ([irb conformsToProtocol:@protocol(IScenegraphBlock)]) {
             id<IScenegraphBlock> sgb = (id<IScenegraphBlock>)irb;
-            [sgb referencedItems:refmap group:self.fileDescriptor.group];
+            [sgb referencedItems:refmap parentGroup:self.fileDescriptor.group];
         }
     }
 }
@@ -139,7 +142,13 @@
         for (id obj in list) {
             id<IPackedFileDescriptor> opfd = (id<IPackedFileDescriptor>)obj;
             if (opfd.type == type) {
-                id<IPackedFileDescriptor> pfd = [self.package findFileWithDescriptor:opfd];
+                id<IPackageFile> pkg = self.package;
+                id<IPackedFileDescriptor> pfd = nil;  // Declare pfd here outside the if block
+                
+                if ([pkg isKindOfClass:[File class]]) {
+                    pfd = [(File *)pkg findFileWithDescriptor:opfd];
+                }
+                
                 if (pfd == nil) {
                     opfd.group = self.fileDescriptor.group;
                     pfd = [self.package findFileWithDescriptor:opfd];
@@ -151,11 +160,13 @@
                 
                 id<IScenegraphFileIndexItem> item = nil;
                 if (pfd == nil) {
-                    [[FileTable fileIndex] load];
-                    NSArray<id<IScenegraphFileIndexItem>> *items = [[FileTable fileIndex] findFile:obj package:nil];
+                    FileIndex *fileIndex = (FileIndex *)[FileTable fileIndex];
+                    [fileIndex load];  // Call load on the FileIndex instance
+                    NSArray<id<IScenegraphFileIndexItem>> *items = [fileIndex findFile:(id<IPackedFileDescriptor>)obj package:nil];
                     if (items.count > 0) {
                         item = items[0];
                     }
+                
                 } else {
                     item = [[FileTable fileIndex] createFileIndexItem:pfd package:self.package];
                 }

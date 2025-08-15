@@ -32,7 +32,7 @@
 #import "IPackedFileDescriptor.h"
 #import "PackedFileDescriptors.h"
 
-@interface PackageSelectorForm () <NSTableViewDataSource, NSTableViewDelegate>
+@interface PackageSelectorForm () <NSTableViewDataSource, NSTableViewDelegate, NSDraggingSource>
 @end
 
 @implementation PackageSelectorForm
@@ -163,4 +163,8 @@
     return NSDragOperationCopy | NSDragOperationLink;
 }
 
+// Optional but commonly implemented
+- (void)draggingSession:(NSDraggingSession *)session endedAtPoint:(NSPoint)screenPoint operation:(NSDragOperation)operation {
+    // Handle drag end if needed
+}
 @end

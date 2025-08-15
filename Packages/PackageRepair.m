@@ -40,6 +40,7 @@
 #import "TypeAlias.h"
 #import "WaitingScreen.h"
 #import "HeaderData.h"
+#import "HeaderIndex.h"
 
 // MARK: - IndexDetails Implementation
 
@@ -96,7 +97,7 @@
 }
 
 - (NSString *)indexVersion {
-    return [NSString stringWithFormat:@"0x%@", [Helper hexString:[[self.packageHeader index] type]]];
+    return [NSString stringWithFormat:@"0x%@", [Helper hexString:[(HeaderIndex *)[self.packageHeader index] iType]]];
 }
 
 - (NSString *)indexItemSize {
@@ -140,7 +141,7 @@
     NSArray<TypeAlias *> *fileTypes = [[Helper tgiLoader] fileTypes];
     
     for (TypeAlias *typeAlias in fileTypes) {
-        [types addObject:@([typeAlias id])];
+        [types addObject:@([typeAlias typeID])];
     }
     
     self.validTypes = [types copy];
@@ -156,10 +157,10 @@
     }
     
     for (NSInteger i = 0; i < 4; i++) {
-        [binaryReader seekToPosition:position + (i * step)];
+        [binaryReader.baseStream setPosition:position + (i * step)];
         
         PackedFileDescriptor *pfd = [[PackedFileDescriptor alloc] init];
-        [pfd loadFromStream:[self.packageFile header] binaryReader:binaryReader];
+        [pfd loadFromStream:[self.packageFile header] reader:binaryReader];
         
         NSNumber *typeNumber = @([pfd type]);
         if (![self.validTypes containsObject:typeNumber]) {
@@ -170,7 +171,7 @@
             return NO;
         }
         
-        if ([pfd offset] <= 0 || [pfd offset] >= [binaryReader length]) {
+        if ([pfd offset] <= 0 || [pfd offset] >= [binaryReader.baseStream length]) {
             return NO;
         }
         
@@ -188,7 +189,7 @@
 }
 
 - (HeaderIndex *)findIndexOffset {
-    HeaderIndex *headerIndex = [[HeaderIndex alloc] initWithPackageHeader:[self.packageFile header]];
+    HeaderIndex *headerIndex = [[HeaderIndex alloc] initWithHeader:[self.packageFile header]];
     
     // Reload reader if this is a File instance
     if ([self.packageFile isKindOfClass:[File class]]) {
@@ -198,11 +199,11 @@
     BinaryReader *binaryReader = [self.packageFile reader];
     NSInteger step = 0x18;
     
-    if ([[self.packageFile header] indexType] == IndexTypesShortFileIndex) {
+    if ([[self.packageFile header] indexType] == ptShortFileIndex) {
         step = 0x14;
     }
     
-    long long position = [binaryReader length] - (4 * step + 1);
+    long long position = [binaryReader.baseStream length] - (4 * step + 1);
     long long lastItem = -1;
     long long firstItem = -1;
     
@@ -212,7 +213,7 @@
         while (position > 0x04) {
             NSString *message = [NSString stringWithFormat:@"0x%@ / 0x%@",
                                [Helper hexString:(uint32_t)position],
-                               [Helper hexString:(uint32_t)[binaryReader length]]];
+                               [Helper hexString:(uint32_t) [binaryReader.baseStream length]]];
             [WaitingScreen updateMessage:message];
             
             BOOL hit = [self couldBeIndexItem:binaryReader
@@ -221,7 +222,7 @@
                                        strict:(lastItem == -1)];
             
             if (hit && lastItem == -1) {
-                lastItem = [binaryReader position];
+                lastItem = [binaryReader.baseStream position];
             }
             
             if (!hit && lastItem != -1) {
@@ -251,12 +252,10 @@
 }
 
 - (void)useIndexData:(HeaderIndex *)headerIndex {
-    if ([headerIndex parent] == [self.packageFile header] && [self package] != nil) {
-        [headerIndex useInParent];
-        [(HeaderData *)[headerIndex parent] setLockIndexDuringLoad:YES];
-        [[self package] reload];
-        [(HeaderData *)[headerIndex parent] setLockIndexDuringLoad:NO];
-    }
+   if ([headerIndex parent] == [self.packageFile header] && [self package] != nil) {
+       [headerIndex useInParent];
+       [[self package] reload];
+   }
 }
 
 - (IndexDetails *)indexDetails {

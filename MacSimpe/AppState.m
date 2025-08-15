@@ -35,6 +35,7 @@
 #import "PackageMaintainer.h"
 #import "RemoteControl.h"
 #import <objc/message.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 // Notification names
 NSString * const AppStatePackageChangedNotification = @"AppStatePackageChanged";
@@ -156,7 +157,7 @@ NSString * const AppStateUnsavedChangesNotification = @"AppStateUnsavedChanges";
     
     NSLog(@"🔍 Opening file dialog");
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    [panel setAllowedFileTypes:@[@"package"]];
+    panel.allowedContentTypes = @[[UTType typeWithFilenameExtension:@"package"]];
     [panel setAllowsMultipleSelection:NO];
     
     NSModalResponse result = [panel runModal];
@@ -175,8 +176,7 @@ NSString * const AppStateUnsavedChangesNotification = @"AppStateUnsavedChanges";
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         @try {
-            id<IPackageFile> package = [[PackageMaintainer maintainer] loadPackageFromFile:path
-                                                                                      sync:YES];
+            id<IPackageFile> package = (id<IPackageFile>)[[PackageMaintainer maintainer] loadPackageFromFile:path sync:YES];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.currentPackage = package;

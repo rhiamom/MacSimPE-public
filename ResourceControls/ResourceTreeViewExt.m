@@ -38,6 +38,9 @@
 #import "Helper.h"
 #import "Registry.h"
 #import "ResourceListViewExt.h"
+#import "NamedPackedFileDescriptor.h"
+#import "PackedFileDescriptorSimple.h"
+#import "ResourceRowViews.h"
 
 @implementation ResourceTreeViewExt
 
@@ -128,6 +131,7 @@
     }
 }
 
+// Convenience method with default noSave value
 - (BOOL)setResourceMaps:(ResourceMaps *)maps
       letTreeViewSelect:(BOOL)selectEvent
             doNotSelect:(BOOL)dontSelect {
@@ -137,6 +141,7 @@
                            noSave:NO];
 }
 
+// Full method with all parameters
 - (BOOL)setResourceMaps:(ResourceMaps *)maps
       letTreeViewSelect:(BOOL)selectEvent
             doNotSelect:(BOOL)dontSelect
@@ -145,7 +150,7 @@
     self.last = maps;
     
     // Set up image list if available
-    if ([FileTable.wrapperRegistry] != nil) {
+    if ([FileTable wrapperRegistry] != nil) {
         // TODO: Set up image list equivalent
         // tv.ImageList = FileTable.WrapperRegistry.WrapperImageList;
     }
@@ -350,7 +355,7 @@
         NamedPackedFileDescriptor *namedResource = (NamedPackedFileDescriptor *)item;
         description = [namedResource getRealName];
         if (description == nil || [description length] == 0) {
-            description = [NSString stringWithFormat:@"Resource %08X", [[namedResource descriptor] type]];
+            description = [NSString stringWithFormat:@"Resource %08X", [(PackedFileDescriptorSimple *)[namedResource descriptor] pfdType]];
         }
     } else if ([item isKindOfClass:[ResourceGroup class]]) {
         ResourceGroup *group = (ResourceGroup *)item;

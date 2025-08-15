@@ -63,7 +63,6 @@
 @protocol ISkinProvider;
 @class Registry;
 @class Listeners;
-@class InternalListeners;
 @class OpcodeProvider;
 @class SimFamilyNamesProvider;
 @class SimNamesProvider;
