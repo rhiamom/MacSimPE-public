@@ -4,13 +4,6 @@
 //
 //  Created by Catherine Gramze on 8/2/25.
 //
-
-//
-//  ExpansionItem.m
-//  MacSimpe
-//
-//  Created by Catherine Gramze on 7/28/25.
-//
 // ***************************************************************************
 // *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
 // *   rhiamom@mac.com                                                       *

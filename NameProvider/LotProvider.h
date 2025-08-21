@@ -49,7 +49,7 @@
 /**
  * The lot's name
  */
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, copy) NSString *name;
 
 /**
  * The lot's image/thumbnail

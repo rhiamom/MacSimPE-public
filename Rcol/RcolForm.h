@@ -4,7 +4,6 @@
 //
 //  Created by Catherine Gramze on 8/14/25.
 //
-
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
 // *   quaxi@ambertation.de                                                  *

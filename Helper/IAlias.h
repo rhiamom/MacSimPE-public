@@ -1,8 +1,8 @@
 //
-//  CRC.h
+//  IAlias.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 7/28/25.
+//  Created by Catherine Gramze on 7/26/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,48 +27,27 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************/
 
-/* ***** BEGIN LICENSE BLOCK *****
- * Version: MPL 1.1
- *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
- *
- * The Original Code is Classless.Hasher - C#/.NET Hash and Checksum Algorithm Library.
- *
- * The Initial Developer of the Original Code is Classless.net.
- * Portions created by the Initial Developer are Copyright (C) 2004 the Initial
- * Developer. All Rights Reserved.
- *
- * Contributor(s):
- *        Jason Simeone (jay@classless.net)
- *
- * ***** END LICENSE BLOCK ***** */
 
 #import <Foundation/Foundation.h>
-#import "CRCParameters.h"
 
-@interface CRC : NSObject
+/**
+ * Protocol for Value - Name Aliases
+ */
+@protocol IAlias <NSObject>
 
-@property (nonatomic, readonly) CRCParameters *parameters;
-@property (nonatomic, readonly) NSInteger hashSizeValue;
-@property (nonatomic, readonly) NSInteger state;
+/**
+ * The id Value
+ */
+@property (nonatomic, readonly) uint32_t typeID;
 
-- (instancetype)initWithParameters:(CRCParameters *)param;
-- (void)initialize;
-- (NSData *)computeHash:(NSData *)data;
-- (void)hashCore:(const uint8_t *)array start:(NSInteger)ibStart size:(NSInteger)cbSize;
-- (NSData *)hashFinal;
+/**
+ * The long Name
+ */
+@property (nonatomic, readonly, copy) NSString *name;
+
+/**
+ * Can be used to Store Meta Informations with an Alias Entry
+ */
+@property (nonatomic, strong) NSArray *tag;
 
 @end
-#ifndef CRC_h
-#define CRC_h
-
-
-#endif /* CRC_h */

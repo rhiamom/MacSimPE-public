@@ -5,7 +5,10 @@
 //  Created by Catherine Gramze on 8/8/25.
 //
 // ***************************************************************************
-// *   Copyright (C) 2025 by GramzeSweatShop                                  *
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
+// *                                                                         *
+// *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
 // *   rhiamom@mac.com                                                       *
 // *                                                                         *
 // *   This program is free software; you can redistribute it and/or modify  *
@@ -23,6 +26,7 @@
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************/
+
 
 #import <Foundation/Foundation.h>
 
