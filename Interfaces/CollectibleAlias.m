@@ -1,8 +1,8 @@
 //
-//  IDockableTool.h
+//  CollectibleAlias.m
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/19/25.
+//  Created by Catherine Gramze on 8/21/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,41 +25,50 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
+#import "CollectibleAlias.h"
+#import "Helper.h"
 
-#import <Foundation/Foundation.h>
-#import <Cocoa/Cocoa.h>
-#import "ITool.h"
-#import "IToolExt.h"
+@implementation CollectibleAlias
 
-@class ResourceEventArgs;
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
+// MARK: - Initialization
 
-/**
- * Defines an Object that can be put into Dock of the Main Form
- */
-@protocol IDockableTool <IToolPlugin, IToolExt>
+- (instancetype)initWithId:(uint64_t)itemId
+                        nr:(NSInteger)nr
+                      name:(NSString *)name
+                     image:(NSImage *)image {
+    self = [super init];
+    if (self) {
+        _itemId = itemId;
+        _nr = nr;
+        _name = [name copy];
+        
+        if (image == nil) {
+            // Create a default 32x32 image when none is provided
+            _image = [[NSImage alloc] initWithSize:NSMakeSize(32, 32)];
+            [_image lockFocus];
+            [[NSColor clearColor] setFill];
+            NSRectFill(NSMakeRect(0, 0, 32, 32));
+            [_image unlockFocus];
+        } else {
+            _image = image;
+        }
+    }
+    return self;
+}
 
-/**
- * Fired, when a new Resource should be displayed
- */
-@property (nonatomic, copy) void (^showNewResource)(id sender, ResourceEventArgs *args);
+// MARK: - NSObject Overrides
 
-
- // Starts the Tool Window
- //@param package The currently opened Package
- //@param pfd The currently selected File
- //@returns The dockable control (NSView subclass for macOS)
-
-- (NSView *)getDockableControl;
-
- //This EventHandler will be connected to the ChangeResource Event of the Caller, you can set
- // the Enabled State here
- //@param sender The sender
-//@param e The resource event arguments
-
-- (void)refreshDock:(id)sender resourceEventArgs:(ResourceEventArgs *)e;
+- (NSString *)description {
+#ifdef DEBUG
+    return [NSString stringWithFormat:@"%@ (0x%@, %ld)",
+            self.name,
+            [Helper hexStringWithPadding:self.itemId padding:0],
+            (long)self.nr];
+#else
+    return self.name;
+#endif
+}
 
 @end

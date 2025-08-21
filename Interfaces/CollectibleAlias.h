@@ -1,8 +1,14 @@
 //
-//  IDockableTool.h
+//  CollectibleAlias.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/19/25.
+//  Created by Catherine Gramze on 8/21/25.
+//
+//
+//  CollectibleAlias.h
+//  MacSimpe
+//
+//  Created by Catherine Gramze on 8/21/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,41 +31,50 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
-
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import <Cocoa/Cocoa.h>
-#import "ITool.h"
-#import "IToolExt.h"
-
-@class ResourceEventArgs;
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
+#import <AppKit/AppKit.h>
 
 /**
- * Defines an Object that can be put into Dock of the Main Form
+ * Represents a collectible item alias with name, ID, number and image
  */
-@protocol IDockableTool <IToolPlugin, IToolExt>
+@interface CollectibleAlias : NSObject
+
+// MARK: - Properties
 
 /**
- * Fired, when a new Resource should be displayed
+ * The name of the collectible
  */
-@property (nonatomic, copy) void (^showNewResource)(id sender, ResourceEventArgs *args);
+@property (nonatomic, readonly, copy) NSString *name;
 
+/**
+ * The unique identifier of the collectible
+ */
+@property (nonatomic, readonly, assign) uint64_t itemId;
 
- // Starts the Tool Window
- //@param package The currently opened Package
- //@param pfd The currently selected File
- //@returns The dockable control (NSView subclass for macOS)
+/**
+ * The number/index of the collectible
+ */
+@property (nonatomic, readonly, assign) NSInteger nr;
 
-- (NSView *)getDockableControl;
+/**
+ * The image associated with the collectible
+ */
+@property (nonatomic, readonly, strong) NSImage *image;
 
- //This EventHandler will be connected to the ChangeResource Event of the Caller, you can set
- // the Enabled State here
- //@param sender The sender
-//@param e The resource event arguments
+// MARK: - Initialization
 
-- (void)refreshDock:(id)sender resourceEventArgs:(ResourceEventArgs *)e;
+/**
+ * Creates a new CollectibleAlias instance
+ * @param itemId The unique identifier
+ * @param nr The number/index
+ * @param name The name of the collectible
+ * @param image The associated image (if nil, a default 32x32 image will be created)
+ */
+- (instancetype)initWithId:(uint64_t)itemId
+                        nr:(NSInteger)nr
+                      name:(NSString *)name
+                     image:(NSImage *)image;
 
 @end

@@ -1,8 +1,8 @@
 //
-//  IDockableTool.h
+//  ICacheFileTest.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/19/25.
+//  Created by Catherine Gramze on 8/21/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,39 +27,17 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************/
 
-
 #import <Foundation/Foundation.h>
-#import <Cocoa/Cocoa.h>
-#import "ITool.h"
-#import "IToolExt.h"
-
-@class ResourceEventArgs;
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
 
 /**
- * Defines an Object that can be put into Dock of the Main Form
+ * Protocol for Cache File Testing
  */
-@protocol IDockableTool <IToolPlugin, IToolExt>
+@protocol ICacheFileTest <NSObject>
 
 /**
- * Fired, when a new Resource should be displayed
+ * Load a cache file for testing
+ * @param fileName The filename to load
  */
-@property (nonatomic, copy) void (^showNewResource)(id sender, ResourceEventArgs *args);
-
-
- // Starts the Tool Window
- //@param package The currently opened Package
- //@param pfd The currently selected File
- //@returns The dockable control (NSView subclass for macOS)
-
-- (NSView *)getDockableControl;
-
- //This EventHandler will be connected to the ChangeResource Event of the Caller, you can set
- // the Enabled State here
- //@param sender The sender
-//@param e The resource event arguments
-
-- (void)refreshDock:(id)sender resourceEventArgs:(ResourceEventArgs *)e;
+- (void)load:(NSString *)fileName;
 
 @end

@@ -1,8 +1,8 @@
 //
-//  IDockableTool.h
+//  IGroupCacheItem.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/19/25.
+//  Created by Catherine Gramze on 8/21/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,41 +25,24 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
-
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import <Cocoa/Cocoa.h>
-#import "ITool.h"
-#import "IToolExt.h"
-
-@class ResourceEventArgs;
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
 
 /**
- * Defines an Object that can be put into Dock of the Main Form
+ * Protocol for Group Cache Items
+ * @remarks Represents individual cache entries that associate filenames with group information
  */
-@protocol IDockableTool <IToolPlugin, IToolExt>
+@protocol IGroupCacheItem <NSObject>
 
 /**
- * Fired, when a new Resource should be displayed
+ * Returns the FileName for this Item
  */
-@property (nonatomic, copy) void (^showNewResource)(id sender, ResourceEventArgs *args);
+@property (nonatomic, readonly, copy) NSString *fileName;
 
-
- // Starts the Tool Window
- //@param package The currently opened Package
- //@param pfd The currently selected File
- //@returns The dockable control (NSView subclass for macOS)
-
-- (NSView *)getDockableControl;
-
- //This EventHandler will be connected to the ChangeResource Event of the Caller, you can set
- // the Enabled State here
- //@param sender The sender
-//@param e The resource event arguments
-
-- (void)refreshDock:(id)sender resourceEventArgs:(ResourceEventArgs *)e;
+/**
+ * Returns the Group that was assigned by the Game
+ */
+@property (nonatomic, readonly, assign) uint32_t localGroup;
 
 @end
