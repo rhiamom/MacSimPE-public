@@ -101,15 +101,19 @@ if (!self.cancelled) {
                 NSString *threadName = [NSString stringWithFormat:@"Resource Sorting Thread %ld.%@",
                                       (long)i, [Helper hexStringUInt:(uint32_t)ticket]];
                 
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [self readNames];
-                });
+                // Use the threadName when creating/starting the thread
+                NSThread *thread = [[NSThread alloc] initWithTarget:self
+                                                           selector:@selector(readNames)
+                                                             object:nil];
+                thread.name = threadName;
+                [thread start];
             }
+        }
         } else {
             _started = 1;
             [self readNames];
         }
-    }
+    
     return self;
 }
 

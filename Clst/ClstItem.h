@@ -63,6 +63,8 @@
 - (instancetype)initWithPackedFileDescriptor:(id<IPackedFileDescriptor>)pfd
                                       format:(IndexTypes)format;
 
+- (instancetype)initWithIndexType:(IndexTypes)indexType;
+
 // MARK: - Serialization
 
 /**
@@ -74,6 +76,7 @@
  * Serializes the attributes of this instance to a BinaryWriter
  */
 - (void)serialize:(BinaryWriter *)writer withFormat:(IndexTypes)format;
+
 
 // MARK: - Equality and Comparison
 

@@ -32,14 +32,13 @@
 #import "IPackedFileUI.h"
 
 @protocol IFileWrapper;
-@class ThemeManager;
 
 // MARK: - WrapperChangedEventArgs
 
 @interface WrapperChangedEventArgs : NSObject
 
 @property (nonatomic, strong, readonly) id<IFileWrapper> oldWrapper;
-@property (nonatomic, strong, readonly) id<IFileWrapper> newWrapper;
+@property (nonatomic, strong, readonly) id<IFileWrapper> updatedWrapper;
 
 - (instancetype)initWithOldWrapper:(id<IFileWrapper>)oldWrapper
                         newWrapper:(id<IFileWrapper>)newWrapper;

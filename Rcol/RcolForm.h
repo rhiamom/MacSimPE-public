@@ -38,8 +38,9 @@
 
 @interface RcolForm : WrapperBaseControl
 
+
 // MARK: - Properties
-@property (nonatomic, strong) Rcol *wrapper;
+
 
 // MARK: - UI Components
 @property (nonatomic, strong) IBOutlet NSTabView *tbResource;
@@ -81,8 +82,10 @@
 // MARK: - Data Sources
 @property (nonatomic, strong) NSMutableArray *referencesDataSource;
 @property (nonatomic, strong) NSMutableArray *blocksDataSource;
+@property (nonatomic, strong) NSMutableArray *rootItems;
 
 // MARK: - Initialization
+- (Rcol *)rcol;
 - (instancetype)init;
 
 // MARK: - UI Management

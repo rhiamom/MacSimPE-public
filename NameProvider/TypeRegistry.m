@@ -32,31 +32,30 @@
 #import "TypeRegistry.h"
 #import "Helper.h"
 #import "Registry.h"
-#import "Listeners.h"
+#import "IListener.h"
 #import "IWrapper.h"
 #import "IPackedFileWrapper.h"
 #import "IWrapperFactory.h"
-#import "IToolPlugin.h"
+#import "ITool.h"
 #import "IToolFactory.h"
 #import "IHelpFactory.h"
 #import "ISettingsFactory.h"
 #import "ICommandLineFactory.h"
 #import "ITool.h"
-#import "IToolPlus.h"
 #import "IDockableTool.h"
 #import "IToolAction.h"
 #import "IHelp.h"
 #import "ISettings.h"
 #import "ICommandLine.h"
-#import "IListener.h"
+#import "InternalListeners.h"
 #import "IUpdatablePlugin.h"
 #import "AbstractWrapper.h"
 #import "AbstractWrapperInfo.h"
 #import "OpcodeProvider.h"
-#import "SimFamilyNamesProvider.h"
-#import "SimNamesProvider.h"
-#import "SimDescriptionsProvider.h"
-#import "SkinsProvider.h"
+#import "SimFamilyNames.h"
+#import "SimNames.h"
+#import "SimDescriptions.h"
+#import "SkinProvider.h"
 #import "LotProvider.h"
 #import "Localization.h"
 
@@ -68,16 +67,16 @@
     self = [super init];
     if (self) {
         _updatablePlugins = [[NSMutableArray alloc] init];
-        _registry = [Helper windowsRegistry];
+        _registry = [Registry windowsRegistry];
         _handlers = [[NSMutableArray alloc] init];
         
         // Initialize providers
         _opcodeProvider = [[OpcodeProvider alloc] init];
-        _simFamilynameProvider = [[SimFamilyNamesProvider alloc] init];
-        _simNameProvider = [[SimNamesProvider alloc] initWithOpcodeProvider:nil];
-        _simDescriptionProvider = [[SimDescriptionsProvider alloc] initWithSimNames:_simNameProvider
+        _simFamilynameProvider = [[SimFamilyNames alloc] init];
+        _simNameProvider = [[SimNames alloc] initWithOpcodes:nil];
+        _simDescriptionProvider = [[SimDescriptions alloc] initWithNames:_simNameProvider
                                                                           familyNames:_simFamilynameProvider];
-        _skinProvider = [[SkinsProvider alloc] init];
+        _skinProvider = [[SkinProvider alloc] init];
         _lotProvider = [[LotProvider alloc] init];
         
         // Set up provider connections
@@ -454,21 +453,4 @@
 
 @end
 
-// MARK: - InternalListeners Implementation
 
-@implementation InternalListeners
-
-- (instancetype)init {
-    self = [super init];
-    return self;
-}
-
-- (void)addListener:(id<IListener>)listener {
-    [self.list addObject:listener];
-}
-
-- (void)clear {
-    [self.list removeAllObjects];
-}
-
-@end

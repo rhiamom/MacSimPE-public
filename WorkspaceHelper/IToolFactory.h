@@ -33,6 +33,7 @@
 @protocol IWrapperRegistry;
 @protocol IProviderRegistry;
 
+NS_ASSUME_NONNULL_BEGIN
 // MARK: - IToolFactory Protocol
 
 /// If you create a Plugin for SimPE your bundle must implement this interface
@@ -57,3 +58,5 @@
 @property (nonatomic, strong, readonly) NSString *fileName;
 
 @end
+NS_ASSUME_NONNULL_END
+

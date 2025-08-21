@@ -442,8 +442,8 @@
     // Restore visibility settings and let NSTableView handle sizing
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    BOOL showExtensions = [[NSUserDefaults standardUserDefaults] boolForKey:@"ResourceListShowExtensions"];
-    BOOL hiddenMode = [AppPreferences hiddenMode];  // Keep as Helper, not NSUserDefaults
+    BOOL showExtensions = [defaults boolForKey:@"ResourceListShowExtensions"];
+    BOOL hiddenMode = [AppPreferences hiddenMode];
     
     // Apply visibility settings
     if (!showExtensions && [self.tableView.tableColumns containsObject:self.nameColumn]) {

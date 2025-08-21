@@ -43,27 +43,89 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _form = [[RcolForm alloc] init];
+        // Form will be created in viewDidLoad
     }
     return self;
+}
+
+- (instancetype)initWithWrapper:(id<IFileWrapper>)wrapper {
+    self = [self init];
+    if (self) {
+        _wrapper = wrapper;
+    }
+    return self;
+}
+
+- (instancetype)initWithResource:(id<IPackedFileDescriptor>)resource {
+    self = [self init];
+    if (self) {
+        _resource = resource;
+    }
+    return self;
+}
+
+// MARK: - ViewController Lifecycle
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    // Create the RcolForm
+    self.form = [[RcolForm alloc] init];
+    
+    // Set the form's view as our main view
+    self.view = self.form.view;
+    
+    // If we have a wrapper, update the GUI
+    if (self.wrapper != nil) {
+        [self updateGUI:self.wrapper];
+    }
+}
+
+- (void)viewWillAppear {
+    [super viewWillAppear];
+    
+    // Refresh the GUI if needed
+    if (self.wrapper != nil) {
+        [self updateGUI:self.wrapper];
+    }
 }
 
 // MARK: - IPackedFileUI Protocol
 
 - (NSView *)guiHandle {
-    if (self.form == nil) {
-        return nil;
+    // If view is loaded, return it directly
+    if (self.isViewLoaded) {
+        return self.view;
     }
-    return self.form.view;
+    
+    // If form exists, return its view
+    if (self.form != nil) {
+        return self.form.view;
+    }
+    
+    // Otherwise return nil - view will be available after viewDidLoad
+    return nil;
 }
 
 - (void)updateGUI:(id<IFileWrapper>)wrapper {
+    // Store the wrapper
+    self.wrapper = wrapper;
+    
+    // Cast to Rcol wrapper
     Rcol *wrp = (Rcol *)wrapper;
+    
+    // If view isn't loaded yet, the update will happen in viewDidLoad
+    if (!self.isViewLoaded || self.form == nil) {
+        return;
+    }
+    
+    // Set the wrapper on the form
     self.form.wrapper = wrp;
     
+    // Update the combo box with blocks
     [self.form.cbitem removeAllItems];
     for (id<IRcolBlock> rb in wrp.blocks) {
-        [CountedListItem addHex:self.form.cbitem object:rb];
+        [CountedListItem addHexToComboBox:self.form.cbitem object:rb];
     }
     
     if ([self.form.cbitem numberOfItems] > 0) {
@@ -72,17 +134,21 @@
         [self.form buildChildTabControl:nil];
     }
     
-    [self.form.lbref removeAllObjects];
+    // Update the referenced files list
+    [self.form.referencesDataSource removeAllObjects];
+    [self.form.lbref reloadData];
     for (id<IPackedFileDescriptor> pfd in wrp.referencedFiles) {
-        [self.form.lbref addObject:pfd];
+        [self.form.referencesDataSource addObject:pfd];
     }
     
-    if ([self.form.lbref count] > 0) {
+    if ([self.form.referencesDataSource count] > 0) {
         [self.form.lbref selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
     }
     
+    // Manage the reference tab
     [self.form.tbResource removeTabViewItem:self.form.tpref];
-    [self.form.tv removeAllChildren];
+    [self.form.rootItems removeAllObjects];
+    [self.form.tv reloadData];
     
     // Check if wrapper implements IScenegraphItem
     if ([wrp conformsToProtocol:@protocol(IScenegraphItem)]) {
@@ -103,18 +169,22 @@
                 [[node mutableChildNodes] addObject:child];
             }
             
-            [[self.form.tv rootNode] insertChildNode:node atIndex:[[self.form.tv rootNode] countOfChildNodes]];
+            [self.form.rootItems addObject:node];
+            [self.form.tv reloadData];
         }
     }
     
+    // Select the first tab
     [self.form.tbResource selectTabViewItemAtIndex:0];
     
+    // Add the first block to the resource tab control
     if ([wrp.blocks count] > 0) {
         AbstractRcolBlock *firstBlock = (AbstractRcolBlock *)wrp.blocks[0];
         [firstBlock addToResourceTabControl:self.form.tbResource comboBox:self.form.cbitem];
     }
     
-    [self.form.view setEnabled:![wrp duff]];
+    // Enable/disable based on wrapper state
+    self.form.view.alphaValue = [wrp duff] ? 0.5 : 1.0;
 }
 
 @end

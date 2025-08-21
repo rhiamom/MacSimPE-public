@@ -32,8 +32,11 @@
 #import "IWrapper.h"
 #import "IPackedFileWrapper.h"
 #import "IPackedFileSaveExtension.h"
+#import "IFileWrapper.h"
 
 // Forward declarations
+@protocol IWrapperReferencedResources;
+@protocol IFileWrapper;
 @protocol IPackedFileDescriptor;
 @protocol IPackageFile;
 @protocol IPackedFileUI;
@@ -48,7 +51,7 @@
  * IPackedFileWrapper and IPackedFileSaveExtension protocols.
  * This is the easiest Way to Implement a Plugin.
  */
-@interface AbstractWrapper : NSObject <IWrapper, IPackedFileWrapper, IPackedFileSaveExtension>
+@interface AbstractWrapper : NSObject <IWrapper, IPackedFileWrapper, IPackedFileSaveExtension, IFileWrapper>
 
 // MARK: - Properties
 
@@ -140,7 +143,7 @@
 /**
  * This is used to initialize single Gui Wrappers
  */
-@property (nonatomic, weak) id<IFileWrapper> singleGuiWrapper;
+@property (nonatomic, strong) id<IFileWrapper> singleGuiWrapper;
 
 // MARK: - Initialization
 
@@ -187,6 +190,9 @@
 
 // MARK: - Data Processing Methods
 
+- (void)processData:(id<IPackedFileDescriptor>)fileDescriptor
+            package:(id<IPackageFile>)package
+               sync:(BOOL)sync;
 /**
  * Process data with file descriptor, package, and file
  */

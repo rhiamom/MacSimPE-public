@@ -29,12 +29,15 @@
 
 #import "FileTable.h"
 #import "PathProvider.h"
+#import "FileTableItem.h"
+#import "IScenegraphFileIndex.h"
+
 
 // MARK: - FileTablePath Implementation
 
 @interface FileTablePath ()
 @property (nonatomic, strong, readwrite) NSString *name;
-@property (nonatomic, assign, readwrite) FileLocation location;
+@property (nonatomic, assign, readwrite) FTFileLocation location;
 @property (nonatomic, strong, readwrite) NSString *expansionName;
 @property (nonatomic, assign, readwrite) Expansions expansion;
 @property (nonatomic, assign, readwrite) BOOL isPreObject;
@@ -43,7 +46,7 @@
 @implementation FileTablePath
 
 - (instancetype)initWithName:(NSString *)name
-                    location:(FileLocation)location
+                    location:(FTFileLocation)location
                expansionName:(NSString *)expansionName
                    expansion:(Expansions)expansion
                  isPreObject:(BOOL)isPreObject {
@@ -86,6 +89,50 @@
 
 - (BOOL)exists {
     return [[NSFileManager defaultManager] fileExistsAtPath:[self fullPath]];
+}
+
++ (Expansions)asExpansion:(FileTableItemType *)type {
+    return [type asExpansions];
+}
+
++ (uint32_t)asUnsignedInteger:(FileTableItemType *)type {
+    return [type asUint];
+}
+
++ (NSComparisonResult)compare:(FileTableItemType *)type1 with:(FileTableItemType *)type2 {
+    uint32_t val1 = [type1 asUint];
+    uint32_t val2 = [type2 asUint];
+    if (val1 < val2) return NSOrderedAscending;
+    if (val1 > val2) return NSOrderedDescending;
+    return NSOrderedSame;
+}
+
++ (FileTableItemType *)fromExpansion:(Expansions)expansion {
+    return [[FileTableItemType alloc] initWithExpansion:expansion];
+}
+
++ (FileTableItemType *)fromInteger:(int32_t)value {
+    return [[FileTableItemType alloc] initWithInt:value];
+}
+
++ (FileTableItemType *)fromUnsignedInteger:(uint32_t)value {
+    return [[FileTableItemType alloc] initWithUInt:value];
+}
+
++ (NSInteger)getEPVersionForType:(FileTableItemType *)type {
+    return [FileTableItem getEPVersionForType:type];
+}
+
++ (NSString *)getRootForType:(FileTableItemType *)type {
+    return [FileTableItem getRootForType:type];
+}
+
++ (BOOL)isEqual:(FileTableItemType *)type1 to:(FileTableItemType *)type2 {
+    return [type1 asUint] == [type2 asUint];
+}
+
++ (NSString *)stringForType:(FileTableItemType *)type {
+    return [FileTableItemType stringForType:type];
 }
 
 @end
@@ -157,10 +204,17 @@ static NSMutableArray<FileTablePath *> *s_fileTable = nil;
 // MARK: - Methods
 
 + (void)reload {
-    // From C# FileTable.cs - reload file index
-    [[[self class] fileIndex] baseFolders].clear;
-    [[self class] fileIndex].baseFolders = [[self class] defaultFolders];
-    [[[self class] fileIndex] forceReload];
+    id<IScenegraphFileIndex> fileIndex = [[self class] fileIndex];
+    
+    // Clear base folders on the file index, not file table item
+    [[fileIndex baseFolders] removeAllObjects];
+    
+    // Set base folders on the file index
+    NSMutableArray *mutableFolders = [[[self class] defaultFolders] mutableCopy];
+        [fileIndex setBaseFolders:mutableFolders];
+    
+    // Force reload on the file index
+    [fileIndex forceReload];
 }
 
 + (void)detectStuffPacks {
@@ -283,7 +337,7 @@ static NSMutableArray<FileTablePath *> *s_fileTable = nil;
     
     for (NSArray *expansionMapping in expansionMappings) {
         NSString *epName = expansionMapping[0];
-        Expansions expansion = [expansionMapping[1] integerValue];
+        Expansions expansion = (Expansions)[expansionMapping[1] integerValue];
         
         // Objects folder - main content (exactly from Swift)
         [s_fileTable addObject:[[FileTablePath alloc] initWithName:@"TSData/Res/3D"

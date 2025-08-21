@@ -46,6 +46,10 @@
 		B65044672E46C40F0014569E /* DBPFIndexUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = B65044662E46C40F0014569E /* DBPFIndexUtility.m */; };
 		B66C34642E3BC2D900B4B9B8 /* PathProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B66C34632E3BC2D900B4B9B8 /* PathProvider.m */; };
 		B66C34672E3BC60900B4B9B8 /* PathSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B66C34662E3BC60900B4B9B8 /* PathSettings.m */; };
+		B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B4832E4F959E004559C3 /* AbstractRcolBlock.m */; };
+		B671B4872E4F95FF004559C3 /* cSGResource.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B4862E4F95FF004559C3 /* cSGResource.m */; };
+		B671B48A2E4F9930004559C3 /* LoadFileWrappers.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B4892E4F9930004559C3 /* LoadFileWrappers.m */; };
+		B671B48D2E4FC38A004559C3 /* IWrapperReferencedResources.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B48C2E4FC38A004559C3 /* IWrapperReferencedResources.m */; };
 		B6819E582E3E734000E37434 /* FileIndexItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6819E572E3E734000E37434 /* FileIndexItem.m */; };
 		B69C59F72E3E8CC900794FC7 /* GlobalizedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = B69C59F62E3E8CC900794FC7 /* GlobalizedObject.m */; };
 		B69C59FA2E3E8DF000794FC7 /* ExpansionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B69C59F92E3E8DF000794FC7 /* ExpansionItem.m */; };
@@ -82,6 +86,11 @@
 		B6B02CDB2E4EBADF009240FD /* RcolForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CDA2E4EBADF009240FD /* RcolForm.m */; };
 		B6B02CDE2E4EBF3B009240FD /* WrapperBaseControl.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CDD2E4EBF3B009240FD /* WrapperBaseControl.m */; };
 		B6B02CE12E4EC0E7009240FD /* ScenegraphHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CE02E4EC0E7009240FD /* ScenegraphHelper.m */; };
+		B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BB92E3543E2009AD0A7 /* AbstractWrapperInfo.m */; };
+		B6C3F0652E54DC4E0073156B /* TypeRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = B69C59F42E3E894900794FC7 /* TypeRegistry.m */; };
+		B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F0672E54E0890073156B /* InternalListeners.m */; };
+		B6C3F0722E54E4DE0073156B /* OpcodeProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F0712E54E4DE0073156B /* OpcodeProvider.m */; };
+		B6C3F0752E54E6450073156B /* SimCommonPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F0742E54E6450073156B /* SimCommonPackage.m */; };
 		B6CDCC772E33E8C7004FDF82 /* SharedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC762E33E8B1004FDF82 /* SharedTypes.m */; };
 		B6CDCC7D2E33EB1F004FDF82 /* ToolTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC7C2E33EB1F004FDF82 /* ToolTypes.m */; };
 		B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCC802E33EBD2004FDF82 /* SidebarView.m */; };
@@ -99,6 +108,11 @@
 		B6CDCCAA2E342B97004FDF82 /* PackedFileDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCA92E342B97004FDF82 /* PackedFileDescriptor.m */; };
 		B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCB32E34416F004FDF82 /* MetaData.m */; };
 		B6CDCCBB2E345922004FDF82 /* PackedFileDescriptors.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCBA2E345922004FDF82 /* PackedFileDescriptors.m */; };
+		B6E24B232E561CE1003E2A3E /* SimFamilyNames.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B222E561CE1003E2A3E /* SimFamilyNames.m */; };
+		B6E24B282E561E63003E2A3E /* SimNames.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B272E561E63003E2A3E /* SimNames.m */; };
+		B6E24B2C2E561F98003E2A3E /* SimDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B2B2E561F98003E2A3E /* SimDescriptions.m */; };
+		B6E24B302E5620E4003E2A3E /* SkinProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B2F2E5620E4003E2A3E /* SkinProvider.m */; };
+		B6E24B342E562218003E2A3E /* LotProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B332E562218003E2A3E /* LotProvider.m */; };
 		B6F440A12E46589400870564 /* ASerializeFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440A02E46589400870564 /* ASerializeFormater.m */; };
 		B6F440A42E465EB300870564 /* Containers.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440A32E465EB300870564 /* Containers.m */; };
 		B6F440A72E465F2500870564 /* CountedListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440A62E465F2500870564 /* CountedListItem.m */; };
@@ -106,6 +120,9 @@
 		B6F440AD2E4661D800870564 /* ExceptionForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440AC2E4661D800870564 /* ExceptionForm.m */; };
 		B6F440B02E46643B00870564 /* FlagBaseConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440AF2E46643B00870564 /* FlagBaseConverter.m */; };
 		B6F440B32E4665BD00870564 /* FlagObjectBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440B22E4665BD00870564 /* FlagObjectBuilder.m */; };
+		B6FBA7F62E5286A10000F0D5 /* ErrorWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FBA7F52E5286A10000F0D5 /* ErrorWrapper.m */; };
+		B6FBA7F92E528FDE0000F0D5 /* ClstForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FBA7F82E528FDE0000F0D5 /* ClstForm.m */; };
+		B6FBA7FC2E529DD30000F0D5 /* HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FBA7FB2E529DD30000F0D5 /* HeaderView.m */; };
 		B6FDC58D2E3FD9D7004E8AA6 /* WaitingScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FDC58C2E3FD9D7004E8AA6 /* WaitingScreen.m */; };
 		B6FDC5902E3FDAA4004E8AA6 /* WaitingForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FDC58F2E3FDAA4004E8AA6 /* WaitingForm.m */; };
 		B6FDC59C2E3FE170004E8AA6 /* StreamMaintainer.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FDC59B2E3FE170004E8AA6 /* StreamMaintainer.m */; };
@@ -230,6 +247,14 @@
 		B66C34632E3BC2D900B4B9B8 /* PathProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathProvider.m; sourceTree = "<group>"; };
 		B66C34652E3BC5E900B4B9B8 /* PathSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathSettings.h; sourceTree = "<group>"; };
 		B66C34662E3BC60900B4B9B8 /* PathSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathSettings.m; sourceTree = "<group>"; };
+		B671B4822E4F9432004559C3 /* AbstractRcolBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractRcolBlock.h; sourceTree = "<group>"; };
+		B671B4832E4F959E004559C3 /* AbstractRcolBlock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractRcolBlock.m; sourceTree = "<group>"; };
+		B671B4852E4F95D1004559C3 /* cSGResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cSGResource.h; sourceTree = "<group>"; };
+		B671B4862E4F95FF004559C3 /* cSGResource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cSGResource.m; sourceTree = "<group>"; };
+		B671B4882E4F98C3004559C3 /* LoadFileWrappers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadFileWrappers.h; sourceTree = "<group>"; };
+		B671B4892E4F9930004559C3 /* LoadFileWrappers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadFileWrappers.m; sourceTree = "<group>"; };
+		B671B48B2E4FC354004559C3 /* IWrapperReferencedResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperReferencedResources.h; sourceTree = "<group>"; };
+		B671B48C2E4FC38A004559C3 /* IWrapperReferencedResources.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IWrapperReferencedResources.m; sourceTree = "<group>"; };
 		B6819DE82E3C078F00E37434 /* IScenegraphFileIndexItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphFileIndexItem.h; sourceTree = "<group>"; };
 		B6819E562E3E72FF00E37434 /* FileIndexItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileIndexItem.h; sourceTree = "<group>"; };
 		B6819E572E3E734000E37434 /* FileIndexItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileIndexItem.m; sourceTree = "<group>"; };
@@ -308,6 +333,16 @@
 		B6BBE6F92E40F228003D5BCC /* ICommandLIne.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLIne.h; sourceTree = "<group>"; };
 		B6BBE6FA2E40F289003D5BCC /* ICommandLineFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLineFactory.h; sourceTree = "<group>"; };
 		B6BBE6FB2E40F314003D5BCC /* ICommandLineRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLineRegistry.h; sourceTree = "<group>"; };
+		B6C3F0662E54E0720073156B /* InternalListeners.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InternalListeners.h; sourceTree = "<group>"; };
+		B6C3F0672E54E0890073156B /* InternalListeners.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InternalListeners.m; sourceTree = "<group>"; };
+		B6C3F0692E54E2280073156B /* IDockableTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDockableTool.h; sourceTree = "<group>"; };
+		B6C3F06C2E54E3550073156B /* IUpdatablePlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IUpdatablePlugin.h; sourceTree = "<group>"; };
+		B6C3F06F2E54E4780073156B /* IOpcodeProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOpcodeProvider.h; sourceTree = "<group>"; };
+		B6C3F0702E54E4B50073156B /* OpcodeProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpcodeProvider.h; sourceTree = "<group>"; };
+		B6C3F0712E54E4DE0073156B /* OpcodeProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpcodeProvider.m; sourceTree = "<group>"; };
+		B6C3F0732E54E5FC0073156B /* SimCommonPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimCommonPackage.h; sourceTree = "<group>"; };
+		B6C3F0742E54E6450073156B /* SimCommonPackage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimCommonPackage.m; sourceTree = "<group>"; };
+		B6C3F0762E54E6B50073156B /* ICommonPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommonPackage.h; sourceTree = "<group>"; };
 		B6CDCC442E33E837004FDF82 /* MacSimpe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacSimpe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CDCC592E33E838004FDF82 /* MacSimpeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacSimpeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CDCC632E33E838004FDF82 /* MacSimpeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacSimpeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -352,6 +387,21 @@
 		B6CDCCB92E3458C2004FDF82 /* PackedFileDescriptors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileDescriptors.h; sourceTree = "<group>"; };
 		B6CDCCBA2E345922004FDF82 /* PackedFileDescriptors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileDescriptors.m; sourceTree = "<group>"; };
 		B6CDCCBD2E34665C004FDF82 /* IPackageFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageFile.h; sourceTree = "<group>"; };
+		B6E24B212E561C2A003E2A3E /* SimFamilyNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimFamilyNames.h; sourceTree = "<group>"; };
+		B6E24B222E561CE1003E2A3E /* SimFamilyNames.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimFamilyNames.m; sourceTree = "<group>"; };
+		B6E24B242E561D4B003E2A3E /* ISimFamilyNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimFamilyNames.h; sourceTree = "<group>"; };
+		B6E24B252E561DB8003E2A3E /* ISimNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimNames.h; sourceTree = "<group>"; };
+		B6E24B262E561E1A003E2A3E /* SimNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimNames.h; sourceTree = "<group>"; };
+		B6E24B272E561E63003E2A3E /* SimNames.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimNames.m; sourceTree = "<group>"; };
+		B6E24B292E561EEB003E2A3E /* ISimDescriptionProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimDescriptionProvider.h; sourceTree = "<group>"; };
+		B6E24B2A2E561F4F003E2A3E /* SimDescriptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimDescriptions.h; sourceTree = "<group>"; };
+		B6E24B2B2E561F98003E2A3E /* SimDescriptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimDescriptions.m; sourceTree = "<group>"; };
+		B6E24B2D2E562052003E2A3E /* ISkinProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISkinProvider.h; sourceTree = "<group>"; };
+		B6E24B2E2E56209F003E2A3E /* SkinProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkinProvider.h; sourceTree = "<group>"; };
+		B6E24B2F2E5620E4003E2A3E /* SkinProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SkinProvider.m; sourceTree = "<group>"; };
+		B6E24B312E56216A003E2A3E /* ILotProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILotProvider.h; sourceTree = "<group>"; };
+		B6E24B322E5621C5003E2A3E /* LotProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LotProvider.h; sourceTree = "<group>"; };
+		B6E24B332E562218003E2A3E /* LotProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LotProvider.m; sourceTree = "<group>"; };
 		B6F4409B2E4655B000870564 /* IRcolBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRcolBlock.h; sourceTree = "<group>"; };
 		B6F4409C2E46567200870564 /* RcolWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolWrapper.h; sourceTree = "<group>"; };
 		B6F4409D2E4656B400870564 /* RcolWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolWrapper.m; sourceTree = "<group>"; };
@@ -370,6 +420,12 @@
 		B6F440AF2E46643B00870564 /* FlagBaseConverter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlagBaseConverter.m; sourceTree = "<group>"; };
 		B6F440B12E46657F00870564 /* FlagObjectBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlagObjectBuilder.h; sourceTree = "<group>"; };
 		B6F440B22E4665BD00870564 /* FlagObjectBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlagObjectBuilder.m; sourceTree = "<group>"; };
+		B6FBA7F42E52865B0000F0D5 /* ErrorWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorWrapper.h; sourceTree = "<group>"; };
+		B6FBA7F52E5286A10000F0D5 /* ErrorWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorWrapper.m; sourceTree = "<group>"; };
+		B6FBA7F72E528F9B0000F0D5 /* ClstForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClstForm.h; sourceTree = "<group>"; };
+		B6FBA7F82E528FDE0000F0D5 /* ClstForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClstForm.m; sourceTree = "<group>"; };
+		B6FBA7FA2E529DA30000F0D5 /* HeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderView.h; sourceTree = "<group>"; };
+		B6FBA7FB2E529DD30000F0D5 /* HeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeaderView.m; sourceTree = "<group>"; };
 		B6FDC58B2E3FD993004E8AA6 /* WaitingScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaitingScreen.h; sourceTree = "<group>"; };
 		B6FDC58C2E3FD9D7004E8AA6 /* WaitingScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WaitingScreen.m; sourceTree = "<group>"; };
 		B6FDC58E2E3FDA2F004E8AA6 /* WaitingForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaitingForm.h; sourceTree = "<group>"; };
@@ -437,22 +493,27 @@
 			children = (
 				B61CE59C2E3ADF3E00547C40 /* FileTable.h */,
 				B61CE59D2E3ADF9D00547C40 /* FileTable.m */,
-				B6FDC5912E3FDDF4004E8AA6 /* IToolRegistry.h */,
+				B6BBE6FB2E40F314003D5BCC /* ICommandLineRegistry.h */,
+				B6FDC5992E3FE031004E8AA6 /* IHelp.h */,
+				B6FDC5982E3FE009004E8AA6 /* IHelpFactory.h */,
+				B6FDC5972E3FDFD6004E8AA6 /* IHelpRegistry.h */,
+				B646E9102E4E6BE400A92D70 /* IListener.h */,
+				B646E9112E4E6CE700A92D70 /* IListener.m */,
 				B6FDC5922E3FDE4C004E8AA6 /* ITool.h */,
 				B6FDC5932E3FDE85004E8AA6 /* IToolAction.h */,
 				B6FDC5942E3FDED0004E8AA6 /* IToolExt.h */,
 				B6FDC5952E3FDF2C004E8AA6 /* IToolFactory.h */,
+				B6FDC5912E3FDDF4004E8AA6 /* IToolRegistry.h */,
 				B6FDC5962E3FDF73004E8AA6 /* IToolResult.h */,
-				B6FDC5972E3FDFD6004E8AA6 /* IHelpRegistry.h */,
-				B6FDC5982E3FE009004E8AA6 /* IHelpFactory.h */,
-				B6FDC5992E3FE031004E8AA6 /* IHelp.h */,
-				B6BBE6FB2E40F314003D5BCC /* ICommandLineRegistry.h */,
-				B646E9102E4E6BE400A92D70 /* IListener.h */,
-				B646E9112E4E6CE700A92D70 /* IListener.m */,
-				B6B02CDC2E4EBEEB009240FD /* WrapperBaseControl.h */,
-				B6B02CDD2E4EBF3B009240FD /* WrapperBaseControl.m */,
+				B671B4882E4F98C3004559C3 /* LoadFileWrappers.h */,
+				B671B4892E4F9930004559C3 /* LoadFileWrappers.m */,
 				B6B02CDF2E4EC0AA009240FD /* ScenegraphHelper.h */,
 				B6B02CE02E4EC0E7009240FD /* ScenegraphHelper.m */,
+				B6B02CDC2E4EBEEB009240FD /* WrapperBaseControl.h */,
+				B6B02CDD2E4EBF3B009240FD /* WrapperBaseControl.m */,
+				B6FBA7F42E52865B0000F0D5 /* ErrorWrapper.h */,
+				B6FBA7F52E5286A10000F0D5 /* ErrorWrapper.m */,
+				B6C3F0692E54E2280073156B /* IDockableTool.h */,
 			);
 			path = WorkspaceHelper;
 			sourceTree = "<group>";
@@ -479,6 +540,8 @@
 				B632A4372E36A3AD0024810C /* CompressedFileList.m */,
 				B69F34F82E38398A007EEA89 /* ClstItem.h */,
 				B69F34F92E3839E7007EEA89 /* ClstItem.m */,
+				B6FBA7F72E528F9B0000F0D5 /* ClstForm.h */,
+				B6FBA7F82E528FDE0000F0D5 /* ClstForm.m */,
 			);
 			path = Clst;
 			sourceTree = "<group>";
@@ -519,6 +582,10 @@
 				B6B02CD72E4EBA34009240FD /* RcolUI.m */,
 				B6B02CD92E4EBA69009240FD /* RcolForm.h */,
 				B6B02CDA2E4EBADF009240FD /* RcolForm.m */,
+				B671B4822E4F9432004559C3 /* AbstractRcolBlock.h */,
+				B671B4832E4F959E004559C3 /* AbstractRcolBlock.m */,
+				B671B4852E4F95D1004559C3 /* cSGResource.h */,
+				B671B4862E4F95FF004559C3 /* cSGResource.m */,
 			);
 			path = Rcol;
 			sourceTree = "<group>";
@@ -535,8 +602,24 @@
 		B6819E552E3D651F00E37434 /* NameProvider */ = {
 			isa = PBXGroup;
 			children = (
+				B6C3F0662E54E0720073156B /* InternalListeners.h */,
+				B6C3F0672E54E0890073156B /* InternalListeners.m */,
+				B6C3F0702E54E4B50073156B /* OpcodeProvider.h */,
+				B6C3F0712E54E4DE0073156B /* OpcodeProvider.m */,
+				B6C3F0732E54E5FC0073156B /* SimCommonPackage.h */,
+				B6C3F0742E54E6450073156B /* SimCommonPackage.m */,
+				B6E24B2A2E561F4F003E2A3E /* SimDescriptions.h */,
+				B6E24B2B2E561F98003E2A3E /* SimDescriptions.m */,
+				B6E24B212E561C2A003E2A3E /* SimFamilyNames.h */,
+				B6E24B222E561CE1003E2A3E /* SimFamilyNames.m */,
+				B6E24B262E561E1A003E2A3E /* SimNames.h */,
+				B6E24B272E561E63003E2A3E /* SimNames.m */,
+				B6E24B2E2E56209F003E2A3E /* SkinProvider.h */,
+				B6E24B2F2E5620E4003E2A3E /* SkinProvider.m */,
 				B69C59F32E3E82F200794FC7 /* TypeRegistry.h */,
 				B69C59F42E3E894900794FC7 /* TypeRegistry.m */,
+				B6E24B322E5621C5003E2A3E /* LotProvider.h */,
+				B6E24B332E562218003E2A3E /* LotProvider.m */,
 			);
 			path = NameProvider;
 			sourceTree = "<group>";
@@ -639,6 +722,8 @@
 				B6CDCC802E33EBD2004FDF82 /* SidebarView.m */,
 				B6CDCC792E33EA2F004FDF82 /* ToolTypes.h */,
 				B6CDCC7C2E33EB1F004FDF82 /* ToolTypes.m */,
+				B6FBA7FA2E529DA30000F0D5 /* HeaderView.h */,
+				B6FBA7FB2E529DD30000F0D5 /* HeaderView.m */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -717,33 +802,42 @@
 		B6CDCCAB2E342C69004FDF82 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				B64E6BA42E353091009AD0A7 /* IAlias.h */,
+				B6BBE6F92E40F228003D5BCC /* ICommandLIne.h */,
+				B6BBE6FA2E40F289003D5BCC /* ICommandLineFactory.h */,
+				B6C3F0762E54E6B50073156B /* ICommonPackage.h */,
+				B64E6BBC2E354958009AD0A7 /* IFileWrapper.h */,
+				B632A4382E36B8AD0024810C /* IFileWrapperSaveExtension.h */,
+				B6E24B312E56216A003E2A3E /* ILotProvider.h */,
+				B6C3F06F2E54E4780073156B /* IOpcodeProvider.h */,
+				B6CDCCBD2E34665C004FDF82 /* IPackageFile.h */,
 				B6CDCCAC2E342CAA004FDF82 /* IPackageHeader.h */,
 				B6CDCCAF2E342D63004FDF82 /* IPackageHeaderHole.h */,
 				B6CDCCB02E3438A4004FDF82 /* IPackageHeaderIndex.h */,
-				B6CDCCB52E3447B2004FDF82 /* IPackedFileDescriptorSimple.h */,
-				B6CDCCB62E344A43004FDF82 /* IPackedFileDescriptor.h */,
-				B6CDCCBD2E34665C004FDF82 /* IPackageFile.h */,
-				B64E6BA42E353091009AD0A7 /* IAlias.h */,
-				B64E6BBA2E354556009AD0A7 /* IWrapper.h */,
-				B64E6BBC2E354958009AD0A7 /* IFileWrapper.h */,
-				B64E6BBD2E354A11009AD0A7 /* IPackedFileWrapper.h */,
-				B632A4382E36B8AD0024810C /* IFileWrapperSaveExtension.h */,
-				B632A4392E36B9120024810C /* IPackedFileSaveExtension.h */,
 				B69F34F02E37F564007EEA89 /* IPackedFile.h */,
+				B6CDCCB62E344A43004FDF82 /* IPackedFileDescriptor.h */,
+				B6CDCCB52E3447B2004FDF82 /* IPackedFileDescriptorSimple.h */,
+				B632A4392E36B9120024810C /* IPackedFileSaveExtension.h */,
+				B6B02CD52E4EB567009240FD /* IPackedFileUI.h */,
+				B64E6BBD2E354A11009AD0A7 /* IPackedFileWrapper.h */,
 				B66C34612E3BC15100B4B9B8 /* IProviderRegistry.h */,
-				B6819DE82E3C078F00E37434 /* IScenegraphFileIndexItem.h */,
-				B69C59F02E3E7FBA00794FC7 /* IWrapperRegistry.h */,
-				B69C59F12E3E803F00794FC7 /* IWrapperInfo.h */,
-				B69C59F22E3E807C00794FC7 /* IWrapperFactory.h */,
+				B6B02CE22E4EC150009240FD /* IScenegraphBlock.h */,
 				B69C5A392E3ED55D00794FC7 /* IScenegraphFileIndex.h */,
+				B6819DE82E3C078F00E37434 /* IScenegraphFileIndexItem.h */,
+				B6F4409E2E4657A000870564 /* IScenegraphItem.h */,
 				B6FDC59D2E402907004E8AA6 /* ISettings.h */,
 				B6FDC59E2E402956004E8AA6 /* ISettingsFactory.h */,
 				B6BBE6F82E40F17D003D5BCC /* ISettingsRegistry.h */,
-				B6BBE6F92E40F228003D5BCC /* ICommandLIne.h */,
-				B6BBE6FA2E40F289003D5BCC /* ICommandLineFactory.h */,
-				B6F4409E2E4657A000870564 /* IScenegraphItem.h */,
-				B6B02CD52E4EB567009240FD /* IPackedFileUI.h */,
-				B6B02CE22E4EC150009240FD /* IScenegraphBlock.h */,
+				B6E24B292E561EEB003E2A3E /* ISimDescriptionProvider.h */,
+				B6E24B242E561D4B003E2A3E /* ISimFamilyNames.h */,
+				B6E24B252E561DB8003E2A3E /* ISimNames.h */,
+				B6E24B2D2E562052003E2A3E /* ISkinProvider.h */,
+				B64E6BBA2E354556009AD0A7 /* IWrapper.h */,
+				B69C59F22E3E807C00794FC7 /* IWrapperFactory.h */,
+				B69C59F12E3E803F00794FC7 /* IWrapperInfo.h */,
+				B671B48B2E4FC354004559C3 /* IWrapperReferencedResources.h */,
+				B671B48C2E4FC38A004559C3 /* IWrapperReferencedResources.m */,
+				B69C59F02E3E7FBA00794FC7 /* IWrapperRegistry.h */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -823,6 +917,7 @@
 				B69C5A2C2E3EC83B00794FC7 /* WarningException.m */,
 				B69C5A282E3EC5B700794FC7 /* XmlRegistryKey.h */,
 				B69C5A292E3EC5E300794FC7 /* XmlRegistryKey.m */,
+				B6C3F06C2E54E3550073156B /* IUpdatablePlugin.h */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -978,6 +1073,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6C3F0652E54DC4E0073156B /* TypeRegistry.m in Sources */,
 				B69F34DD2E37EEA9007EEA89 /* CRC.m in Sources */,
 				B64EEF752E39851A0008E7CA /* ResourceTreeNodeExt.m in Sources */,
 				B69F34F72E383644007EEA89 /* ResourceViewManagerHelpers.m in Sources */,
@@ -995,6 +1091,7 @@
 				B6B02CD82E4EBA34009240FD /* RcolUI.m in Sources */,
 				B69F34E02E37EF74007EEA89 /* CRCParameters.m in Sources */,
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
+				B6FBA7FC2E529DD30000F0D5 /* HeaderView.m in Sources */,
 				B64F1C9B2E43FEC3001C0DEC /* XmlPackageReaderBase.m in Sources */,
 				B69F34EC2E37F3F3007EEA89 /* GeneratableFile.m in Sources */,
 				B6B02CE12E4EC0E7009240FD /* ScenegraphHelper.m in Sources */,
@@ -1007,18 +1104,22 @@
 				B6B02CDE2E4EBF3B009240FD /* WrapperBaseControl.m in Sources */,
 				B6CDCC902E340297004FDF82 /* FileStream.m in Sources */,
 				B69F34DA2E37ECDD007EEA89 /* Hashes.m in Sources */,
+				B671B48A2E4F9930004559C3 /* LoadFileWrappers.m in Sources */,
 				B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */,
 				B69F34E92E37F37C007EEA89 /* ExtractableFile.m in Sources */,
 				B6FDC58D2E3FD9D7004E8AA6 /* WaitingScreen.m in Sources */,
 				B6CDCCAA2E342B97004FDF82 /* PackedFileDescriptor.m in Sources */,
 				B6F440AD2E4661D800870564 /* ExceptionForm.m in Sources */,
+				B6FBA7F92E528FDE0000F0D5 /* ClstForm.m in Sources */,
 				B61CE59A2E3ADAB200547C40 /* Localization.m in Sources */,
 				B69C59F72E3E8CC900794FC7 /* GlobalizedObject.m in Sources */,
 				B69C59FA2E3E8DF000794FC7 /* ExpansionItem.m in Sources */,
 				B64EEF4B2E3974800008E7CA /* ResourceListViewExtSelection.m in Sources */,
 				B6B02CD42E4EB38D009240FD /* RemoteControl.m in Sources */,
 				B69C5A352E3ED1E600794FC7 /* DescriptiveSerializer.m in Sources */,
+				B6E24B342E562218003E2A3E /* LotProvider.m in Sources */,
 				B64E6BAD2E3534BB009AD0A7 /* Helper.m in Sources */,
+				B6E24B302E5620E4003E2A3E /* SkinProvider.m in Sources */,
 				B69C5A302E3ECEF200794FC7 /* Serializer.m in Sources */,
 				B61CE5A62E3AE72300547C40 /* SimPEResourceIndex.m in Sources */,
 				B6CDCC942E340521004FDF82 /* BinaryReader.m in Sources */,
@@ -1029,18 +1130,23 @@
 				B6FDC59C2E3FE170004E8AA6 /* StreamMaintainer.m in Sources */,
 				B6B02CCF2E4EB2C8009240FD /* AbstractFactory.m in Sources */,
 				B6F440B02E46643B00870564 /* FlagBaseConverter.m in Sources */,
+				B6FBA7F62E5286A10000F0D5 /* ErrorWrapper.m in Sources */,
 				B6CDCC972E340622004FDF82 /* BinaryWriter.m in Sources */,
 				B6CDCCA32E342902004FDF82 /* HoleIndexItem.m in Sources */,
+				B671B4872E4F95FF004559C3 /* cSGResource.m in Sources */,
 				B61C4CFC2E456EF300BC38B4 /* PackageFiles.m in Sources */,
 				B64E6BAA2E35335B009AD0A7 /* TypeAlias.m in Sources */,
 				B64EEF722E3981A00008E7CA /* ResourceListViewExtSorting.m in Sources */,
+				B6E24B2C2E561F98003E2A3E /* SimDescriptions.m in Sources */,
 				B6FDC5902E3FDAA4004E8AA6 /* WaitingForm.m in Sources */,
 				B69C5A002E3E918100794FC7 /* IniRegistry.m in Sources */,
 				B64EEF7B2E39862F0008E7CA /* ResourceTreeNodesByInstance.m in Sources */,
 				B69F350F2E3848E1007EEA89 /* ResourceTreeViewExt.m in Sources */,
 				B69F34FA2E3839E7007EEA89 /* ClstItem.m in Sources */,
 				B64EEF452E3938AE0008E7CA /* AResourceTreeNodeBuilder.m in Sources */,
+				B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */,
 				B6CDCC8E2E33FE4E004FDF82 /* MemoryStream.m in Sources */,
+				B6C3F0722E54E4DE0073156B /* OpcodeProvider.m in Sources */,
 				B62437DB2E3597690052119F /* Registry.m in Sources */,
 				B6CDCC862E33F887004FDF82 /* File.m in Sources */,
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
@@ -1049,6 +1155,7 @@
 				B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */,
 				B64F1C9E2E44011C001C0DEC /* FileTableItem.m in Sources */,
 				B62437E12E35A15B0052119F /* TGILoader.m in Sources */,
+				B6C3F0752E54E6450073156B /* SimCommonPackage.m in Sources */,
 				B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */,
 				B6CDCCA72E342B3D004FDF82 /* PackedFileDescriptorSimple.m in Sources */,
 				B6B02CD02E4EB2E5009240FD /* CompressedFileList.m in Sources */,
@@ -1058,13 +1165,18 @@
 				B64E6BA72E3531DF009AD0A7 /* Alias.m in Sources */,
 				B6CDCC8B2E33FC6B004FDF82 /* Stream.m in Sources */,
 				B6B02CDB2E4EBADF009240FD /* RcolForm.m in Sources */,
+				B671B48D2E4FC38A004559C3 /* IWrapperReferencedResources.m in Sources */,
 				B69C5A382E3ED3E200794FC7 /* Thread.m in Sources */,
 				B6B02CD32E4EB331009240FD /* GenericRcolWrapper.m in Sources */,
 				B6F440AA2E465FDF00870564 /* ArgParser.m in Sources */,
 				B6F440B32E4665BD00870564 /* FlagObjectBuilder.m in Sources */,
+				B6E24B232E561CE1003E2A3E /* SimFamilyNames.m in Sources */,
+				B6E24B282E561E63003E2A3E /* SimNames.m in Sources */,
 				B6F440A42E465EB300870564 /* Containers.m in Sources */,
+				B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */,
 				B69F34FD2E383AE6007EEA89 /* ResourceMaps.m in Sources */,
 				B61CE56F2E3A863800547C40 /* WaitControl.m in Sources */,
+				B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */,
 				B6B02CD22E4EB32A009240FD /* RcolWrapper.m in Sources */,
 				B6F440A72E465F2500870564 /* CountedListItem.m in Sources */,
 				B69F34E62E37F319007EEA89 /* PackageMaintainer.m in Sources */,

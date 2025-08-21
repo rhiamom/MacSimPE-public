@@ -29,18 +29,18 @@
 
 #import "WrapperBaseControl.h"
 #import "IFileWrapper.h"
-
+#import "HeaderView.h"
 
 // MARK: - WrapperChangedEventArgs Implementation
 
 @implementation WrapperChangedEventArgs
 
 - (instancetype)initWithOldWrapper:(id<IFileWrapper>)oldWrapper
-                        newWrapper:(id<IFileWrapper>)newWrapper {
+                        newWrapper:(id<IFileWrapper>)updatedWrapper {
     self = [super init];
     if (self) {
         _oldWrapper = oldWrapper;
-        _newWrapper = newWrapper;
+        _updatedWrapper = updatedWrapper;
     }
     return self;
 }
@@ -84,7 +84,6 @@
 }
 
 - (void)setupUI {
-    // Create main view
     self.view = [[NSView alloc] init];
     [self.view setWantsLayer:YES];
     
@@ -92,6 +91,13 @@
     self.headerView = [[HeaderView alloc] initWithController:self];
     [self.headerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.headerView];
+    
+    // Add constraints for header at top
+    [NSLayoutConstraint activateConstraints:@[
+        [self.headerView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+        [self.headerView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+        [self.headerView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+    ]];
     
     // Create content view
     self.contentView = [[NSView alloc] init];
@@ -184,6 +190,8 @@
     [self.btCommit setHidden:!self.canCommit];
 }
 
+
+
 // MARK: - IPackedFileUI Protocol
 
 - (NSView *)guiHandle {
@@ -235,53 +243,3 @@
 
 @end
 
-// MARK: - HeaderView Custom Drawing
-
-@interface HeaderView : NSView
-@property (nonatomic, weak) WrapperBaseControl *controller;
-- (instancetype)initWithController:(WrapperBaseControl *)controller;
-@end
-
-@implementation HeaderView
-
-- (instancetype)initWithController:(WrapperBaseControl *)controller {
-    self = [super init];
-    if (self) {
-        _controller = controller;
-        [self setWantsLayer:YES];
-    }
-    return self;
-}
-
-- (void)drawRect:(NSRect)dirtyRect {
-    [super drawRect:dirtyRect];
-    
-    if (!self.controller) return;
-    
-    NSRect bounds = self.bounds;
-    
-    // Draw gradient background
-    NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:[NSColor controlBackgroundColor]
-                                                         endingColor:self.controller.gradientColor];
-    [gradient drawInRect:bounds angle:45.0]; // ForwardDiagonal equivalent
-    
-    // Draw header background
-    [self.controller.headBackColor setFill];
-    NSRectFill(bounds);
-    
-    // Draw header text
-    if (self.controller.headerText && [self.controller.headerText length] > 0) {
-        NSDictionary *attributes = @{
-            NSFontAttributeName: self.controller.headFont,
-            NSForegroundColorAttributeName: self.controller.headForeColor
-        };
-        
-        NSSize textSize = [self.controller.headerText sizeWithAttributes:attributes];
-        CGFloat verticalOffset = (bounds.size.height - textSize.height) / 2.0;
-        NSPoint textPoint = NSMakePoint(verticalOffset, verticalOffset);
-        
-        [self.controller.headerText drawAtPoint:textPoint withAttributes:attributes];
-    }
-}
-
-@end

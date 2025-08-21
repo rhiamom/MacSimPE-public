@@ -45,12 +45,12 @@
 #import "Hashes.h"
 #import "Localization.h"
 #import "LoadFileWrappers.h"
+#import "AbstractWrapper.h"
+#import "IPackageFile.h"
 
 @interface Rcol ()
 @property (nonatomic, strong) NSData *oversize;
 @property (nonatomic, strong) NSArray<NSNumber *> *index;
-@property (nonatomic, strong, readwrite) NSArray<id<IPackedFileDescriptor>> *referencedFiles;
-@property (nonatomic, strong, readwrite) NSArray<id<IRcolBlock>> *blocks;
 @property (nonatomic, assign) uint32_t internalCount;
 @property (nonatomic, assign, readwrite) BOOL duff;
 @property (nonatomic, strong) NSException *lastException;
@@ -89,9 +89,9 @@ static NSMutableArray *_fixList = nil;
     if (self) {
         _fast = fast;
         _provider = provider;
-        _referencedFiles = @[];
+        self.referencedFiles = @[];    // ✅ Property accessor
         _index = @[];
-        _blocks = @[];
+        self.blocks = @[];             // ✅ Property accessor
         _oversize = [NSData data];
         _duff = NO;
         _lastException = nil;
@@ -110,21 +110,21 @@ static NSMutableArray *_fixList = nil;
 }
 
 - (NSArray<id<IPackedFileDescriptor>> *)referencedFiles {
-    return self.duff ? @[] : _referencedFiles;
+    return self.duff ? @[] : self.referencedFiles;
 }
 
 - (void)setReferencedFiles:(NSArray<id<IPackedFileDescriptor>> *)referencedFiles {
     if (self.duff) return;
-    _referencedFiles = referencedFiles;
+    self.referencedFiles = referencedFiles;
 }
 
 - (NSArray<id<IRcolBlock>> *)blocks {
-    return self.duff ? @[] : _blocks;
+    return self.duff ? @[] : self.blocks;
 }
 
 - (void)setBlocks:(NSArray<id<IRcolBlock>> *)blocks {
     if (self.duff) return;
-    _blocks = blocks;
+    self.blocks = blocks;
 }
 
 - (NSString *)fileName {
@@ -194,7 +194,7 @@ static NSMutableArray *_fixList = nil;
     return [[RcolUI alloc] init];
 }
 
-- (IWrapperInfo *)createWrapperInfo {
+- (id<IWrapperInfo>)createWrapperInfo {
     NSImage *icon = [NSImage imageNamed:@"resource"];
     return [[AbstractWrapperInfo alloc] initWithName:@"RCOL Wrapper"
                                               author:@"Quaxi"
@@ -206,7 +206,7 @@ static NSMutableArray *_fixList = nil;
 // MARK: - Block Operations
 
 - (id<IRcolBlock>)readBlockWithId:(uint32_t)blockId reader:(BinaryReader *)reader {
-    long position = [reader position];
+    long position = [[reader baseStream] position];
     NSString *blockName = [reader readString];
     
     Class blockClass = [[self class] tokens][blockName];
@@ -221,7 +221,7 @@ static NSMutableArray *_fixList = nil;
                                      userInfo:@{NSUnderlyingErrorKey: innerException}];
     }
     
-    position = [reader position];
+    position = [[reader baseStream] position];
     uint32_t readId = [reader readUInt32];
     if (readId == 0xffffffff) return nil;
     
@@ -238,9 +238,9 @@ static NSMutableArray *_fixList = nil;
                                      userInfo:@{NSUnderlyingErrorKey: innerException}];
     }
     
-    id<IRcolBlock> block = [AbstractRcolBlock createWithClass:blockClass
-                                                        parent:self
-                                                       blockId:readId];
+    id<IRcolBlock> block = [AbstractRcolBlock createWithType:blockClass
+                                                      parent:self
+                                                     blockId:readId];
     [block unserialize:reader];
     return block;
 }
@@ -296,7 +296,7 @@ static NSMutableArray *_fixList = nil;
         
         // Read oversize data if not in fast mode
         if (!self.fast) {
-            long remainingSize = [reader length] - [reader position];
+            long remainingSize = [[reader baseStream] length] - [[reader baseStream] position];
             if (remainingSize > 0) {
                 self.oversize = [reader readBytes:(int)remainingSize];
             } else {
@@ -377,36 +377,39 @@ static NSMutableArray *_fixList = nil;
     
     // Fix all referenced files
     for (id<IPackedFileDescriptor> localDescriptor in self.referencedFiles) {
-        id<IPackedFileDescriptor> packageDescriptor = [self.package findFile:localDescriptor];
+        id<IPackedFileDescriptor> packageDescriptor = [self.package findExactFile:localDescriptor];
         if (packageDescriptor != nil) {
             // Prevent endless loops
             if ([_fixList containsObject:packageDescriptor]) continue;
             
             [_fixList addObject:packageDescriptor];
-            id<IFileWrapper> wrapper = [registry findHandler:[packageDescriptor type]];
+            id<IPackedFileWrapper> wrapper = [registry findHandler:[packageDescriptor type]];
             if (wrapper != nil) {
-                [wrapper processData:packageDescriptor package:self.package sync:YES];
-                [wrapper fix:registry];
-                [localDescriptor setSubtype:[[wrapper fileDescriptor] subtype]];
-                [localDescriptor setGroup:[[wrapper fileDescriptor] group]];
-                [localDescriptor setInstance:[[wrapper fileDescriptor] instance]];
+                if ([wrapper isKindOfClass:[AbstractWrapper class]]) {
+                    [(AbstractWrapper *)wrapper processData:packageDescriptor package:self.package sync:YES];
+                    [(AbstractWrapper *)wrapper fix:registry];
+                    [localDescriptor setSubtype:[[(AbstractWrapper *)wrapper fileDescriptor] subtype]];
+                    [localDescriptor setGroup:[[(AbstractWrapper *)wrapper fileDescriptor] group]];
+                    [localDescriptor setInstance:[[(AbstractWrapper *)wrapper fileDescriptor] instance]];
+                }
+                [_fixList removeObject:packageDescriptor];
             }
-            [_fixList removeObject:packageDescriptor];
         }
+        
+        // Fix instances
+        [[self fileDescriptor] setSubtype:[Hashes subTypeHash:[Hashes stripHashFromName:self.fileName]]];
+        [[self fileDescriptor] setInstance:[Hashes instanceHash:[Hashes stripHashFromName:self.fileName]]];
+        
+        // Commit changes
+        [self synchronizeUserData];
     }
-    
-    // Fix instances
-    [[self fileDescriptor] setSubtype:[Hashes subTypeHash:[Hashes stripHashFromName:self.fileName]]];
-    [[self fileDescriptor] setInstance:[Hashes instanceHash:[Hashes stripHashFromName:self.fileName]]];
-    
-    // Commit changes
-    [self synchronizeUserData];
 }
 
 // MARK: - IMultiplePackedFileWrapper
 
 - (NSArray *)constructorArguments {
-    return @[self.provider ?: [NSNull null], @(self.fast)];
+    id providerValue = self.provider ? (id)self.provider : [NSNull null];
+    return @[providerValue, @(self.fast)];
 }
 
 // MARK: - Disposal
@@ -415,6 +418,7 @@ static NSMutableArray *_fixList = nil;
     for (id<IRcolBlock> block in self.blocks) {
         // Objective-C handles disposal automatically
         // If blocks need special cleanup, they should implement dealloc
+        (void)block; // Suppress unused variable warning
     }
 }
 

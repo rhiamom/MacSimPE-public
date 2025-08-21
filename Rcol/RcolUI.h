@@ -34,20 +34,29 @@
 @class RcolForm;
 @class Rcol;
 @protocol IFileWrapper;
+@protocol IPackedFileDescriptor;
 
 /// <summary>
 /// This class is used to fill the UI for this FileType with Data
 /// </summary>
-@interface RcolUI : NSObject <IPackedFileUI>
+@interface RcolUI : NSViewController <IPackedFileUI>
 
 // MARK: - Properties
 @property (nonatomic, strong) RcolForm *form;
+@property (nonatomic, strong) id<IFileWrapper> wrapper;
+@property (nonatomic, strong) id<IPackedFileDescriptor> resource;
 
 // MARK: - Initialization
 - (instancetype)init;
+- (instancetype)initWithWrapper:(id<IFileWrapper>)wrapper;
+- (instancetype)initWithResource:(id<IPackedFileDescriptor>)resource;
 
 // MARK: - IPackedFileUI Protocol
 @property (nonatomic, strong, readonly) NSView *guiHandle;
 - (void)updateGUI:(id<IFileWrapper>)wrapper;
+
+// MARK: - ViewController Lifecycle
+- (void)viewDidLoad;
+- (void)viewWillAppear;
 
 @end

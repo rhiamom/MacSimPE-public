@@ -55,7 +55,7 @@
 /// Registers all Tools supported by the Factory
 /// @param factory The Factory Elements you want to register
 /// @discussion The tool must only be added if the Registry doesn't already contain it
-- (void)registerFactory:(id<IToolFactory>)factory;
+- (void)registerToolFactory:(id<IToolFactory>)factory;
 
 // MARK: - Properties
 

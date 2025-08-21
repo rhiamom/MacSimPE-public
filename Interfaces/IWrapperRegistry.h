@@ -65,7 +65,7 @@
  * @param factory The Factory Elements you want to register
  * @remarks The wrapper must only be added if the Registry doesn't already contain it
  */
-- (void)registerFactory:(id<IWrapperFactory>)factory;
+- (void)registerWrapperFactory:(id<IWrapperFactory>)factory;
 
 // MARK: - Properties
 

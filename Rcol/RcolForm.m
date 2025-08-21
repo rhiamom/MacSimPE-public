@@ -43,13 +43,18 @@
 #import "Localization.h"
 #import "IPackedFileDescriptor.h"
 #import "PackedFileDescriptor.h"
+#import "IPackageFile.h"
 #import "TypeAlias.h"
 #import "IAlias.h"
 #import "TGILoader.h"
 #import "WaitingScreen.h"
 #import "FileTable.h"
 #import "IScenegraphFileIndexItem.h"
-#import "PackageSelectorForm.h"
+#import "ExceptionForm.h"
+#import "cSGResource.h"
+#import "FileIndex.h"
+#import <Cocoa/Cocoa.h>
+#import <UniformTypeIdentifiers/UTType.h>
 
 @interface RcolForm () <NSTabViewDelegate, NSComboBoxDelegate, NSTableViewDataSource, NSTableViewDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate>
 @property (nonatomic, assign) BOOL updatingSelection;
@@ -57,7 +62,13 @@
 
 @implementation RcolForm
 
+@dynamic wrapper;
+
 // MARK: - Initialization
+
+- (Rcol *)rcol {
+    return (Rcol *)self.wrapper;
+}
 
 - (instancetype)init {
     self = [super init];
@@ -94,28 +105,45 @@
     [self.tbResource setDelegate:self];
 }
 
-// MARK: - UI Management
-
 - (void)buildChildTabControl:(AbstractRcolBlock *)rb {
-    [self.childtc removeAllTabViewItems];
+    // Remove all existing tab view items
+    NSArray *tabItems = [self.childtc.tabViewItems copy];
+    for (NSTabViewItem *item in tabItems) {
+        [self.childtc removeTabViewItem:item];
+    }
     
-    if (rb == nil) return;
-    
+    // Check if the block has a tab page (matching C# logic)
     NSTabViewItem *tabPage = [rb tabPage];
     if (tabPage != nil) {
         [rb addToTabControl:self.childtc];
     }
 }
+// MARK: - UI Management
 
 - (void)updateComboBox {
+    // Clear the combo box
     [self.cbitem removeAllItems];
-    self.tbflname.stringValue = @"";
-    [self.childtc removeAllTabViewItems];
     
-    for (id item in self.blocksDataSource) {
-        [self.cbitem addItemWithObjectValue:item];
+    // Clear filename and child tab control
+    [self.tbflname setStringValue:@""];
+    
+    // Remove all existing tab view items from child tab control
+    NSArray *tabItems = [self.childtc.tabViewItems copy];
+    for (NSTabViewItem *item in tabItems) {
+        [self.childtc removeTabViewItem:item];
     }
     
+    // Add all items from lbblocks to cbitem
+    NSInteger rowCount = [self.lbblocks numberOfRows];
+    for (NSInteger i = 0; i < rowCount; i++) {
+        // Get the item from your data source array instead
+        if (i < [self.blocksDataSource count]) {
+            id item = [self.blocksDataSource objectAtIndex:i];
+            [self.cbitem addItemWithObjectValue:item];
+        }
+    }
+    
+    // Select first item if available
     if ([self.cbitem numberOfItems] > 0) {
         [self.cbitem selectItemAtIndex:0];
     }
@@ -151,7 +179,7 @@
         
         [self buildChildTabControl:rb];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
+        [ExceptionForm executeWithMessage:@"" exception:ex];
     } @finally {
         self.updatingSelection = NO;
     }
@@ -172,7 +200,7 @@
             [self.cbitem reloadData];
         }
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:[Localization getString:@"erropenfile"] exception:ex];
+        [ExceptionForm executeWithMessage:[Localization getString:@"erropenfile"] exception:ex];
     } @finally {
         self.updatingSelection = NO;
     }
@@ -180,7 +208,7 @@
 
 - (IBAction)buildFilename:(id)sender {
     NSString *fl = [Hashes stripHashFromName:self.tbflname.stringValue];
-    self.tbflname.stringValue = [Hashes assembleHashedFileName:[self.wrapper.package fileGroupHash] filename:fl];
+    self.tbflname.stringValue = [Hashes assembleHashedFileName:self.wrapper.package.fileGroupHash filename:fl];
 }
 
 - (IBAction)fixTGI:(id)sender {
@@ -188,7 +216,7 @@
     if (self.wrapper != nil) {
         if ([self.wrapper fileDescriptor] != nil) {
             [[self.wrapper fileDescriptor] setInstance:[Hashes instanceHash:fl]];
-            [[self.wrapper fileDescriptor] setSubType:[Hashes subTypeHash:fl]];
+            [[self.wrapper fileDescriptor] setSubtype:[Hashes subTypeHash:fl]];
         }
     }
 }
@@ -209,11 +237,11 @@
         
         id<IPackedFileDescriptor> pfd = self.referencesDataSource[[self.lbref selectedRow]];
         self.tbtype.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexString:[pfd type]]];
-        self.tbsubtype.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexString:[pfd subType]]];
+        self.tbsubtype.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexString:[pfd subtype]]];
         self.tbgroup.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexString:[pfd group]]];
         self.tbinstance.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexString:[pfd instance]]];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
+        [ExceptionForm executeWithMessage:@"" exception:ex];
     } @finally {
         self.updatingSelection = NO;
     }
@@ -233,7 +261,7 @@
         id<IPackedFileDescriptor> pfd = self.referencesDataSource[[self.lbref selectedRow]];
         
         [pfd setType:[Helper hexStringToUInt:self.tbtype.stringValue]];
-        [pfd setSubType:[Helper hexStringToUInt:self.tbsubtype.stringValue]];
+        [pfd setSubtype:[Helper hexStringToUInt:self.tbsubtype.stringValue]];
         [pfd setGroup:[Helper hexStringToUInt:self.tbgroup.stringValue]];
         [pfd setInstance:[Helper hexStringToUInt:self.tbinstance.stringValue]];
         
@@ -250,20 +278,20 @@
         id<IPackedFileDescriptor> pfd = [[PackedFileDescriptor alloc] init];
         
         [pfd setType:[Helper hexStringToUInt:self.tbtype.stringValue]];
-        [pfd setSubType:[Helper hexStringToUInt:self.tbsubtype.stringValue]];
+        [pfd setSubtype:[Helper hexStringToUInt:self.tbsubtype.stringValue]];
         [pfd setGroup:[Helper hexStringToUInt:self.tbgroup.stringValue]];
         [pfd setInstance:[Helper hexStringToUInt:self.tbinstance.stringValue]];
         
-        NSMutableArray *newReferences = [self.wrapper.referencedFiles mutableCopy];
+        NSMutableArray *newReferences = [self.rcol.referencedFiles mutableCopy];
         [newReferences addObject:pfd];
-        self.wrapper.referencedFiles = [newReferences copy];
+        self.rcol.referencedFiles = [newReferences copy];
         
         [self.referencesDataSource addObject:pfd];
         [self.lbref reloadData];
         
-        [self.wrapper setChanged:YES];
+        [self.rcol setChanged:YES];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
+        [ExceptionForm executeWithMessage:@"" exception:ex];
     }
 }
 
@@ -273,36 +301,50 @@
     @try {
         id<IPackedFileDescriptor> pfd = self.referencesDataSource[[self.lbref selectedRow]];
         
-        NSMutableArray *newReferences = [self.wrapper.referencedFiles mutableCopy];
+        NSMutableArray *newReferences = [self.rcol.referencedFiles mutableCopy];
         [newReferences removeObject:pfd];
-        self.wrapper.referencedFiles = [newReferences copy];
+        self.rcol.referencedFiles = [newReferences copy];
         
         [self.referencesDataSource removeObject:pfd];
         [self.lbref reloadData];
         
-        [self.wrapper setChanged:YES];
+        [self.rcol setChanged:YES];
         
         [self.btup setEnabled:NO];
         [self.btdown setEnabled:NO];
         [self.btdel setEnabled:NO];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
+        [ExceptionForm executeWithMessage:@"" exception:ex];
     }
 }
 
-- (IBAction)showPackageSelector:(id)sender {
-    PackageSelectorForm *form = [[PackageSelectorForm alloc] init];
-    [form execute:[self.wrapper package]];
+- (void)showPackageSelector:(id)sender {
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    // Use the modern API for macOS 12.0+
+    UTType *packageType = [UTType typeWithFilenameExtension:@"package"];
+    [openPanel setAllowedContentTypes:@[packageType]];
+    
+    [openPanel setAllowsMultipleSelection:NO];
+    [openPanel setCanChooseDirectories:NO];
+    [openPanel setCanChooseFiles:YES];
+    
+    [openPanel beginWithCompletionHandler:^(NSInteger result) {
+        if (result == NSModalResponseOK) {
+            NSURL *selectedURL = [[openPanel URLs] firstObject];
+            // Handle the selected package file
+            NSLog(@"Selected package: %@", [selectedURL path]);
+        }
+    }];
 }
 
 - (IBAction)commit:(id)sender {
     @try {
-        [self.wrapper synchronizeUserData];
+        [self.rcol synchronizeUserData];
         NSAlert *alert = [[NSAlert alloc] init];
         [alert setMessageText:[Localization getString:@"commited"]];
         [alert runModal];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:[Localization getString:@"errwritingfile"] exception:ex];
+        [ExceptionForm executeWithMessage:[Localization getString:@"errwritingfile"] exception:ex];
     }
 }
 
@@ -315,9 +357,8 @@
     if ([selectedItem.identifier isEqualToString:@"EditBlocks"]) {
         [self.blocksDataSource removeAllObjects];
         
-        for (id<IRcolBlock> irb in self.wrapper.blocks) {
-            CountedListItem *item = [CountedListItem createHex:irb];
-            [self.blocksDataSource addObject:item];
+        for (id<IRcolBlock> irb in self.rcol.blocks) {
+            [CountedListItem addHexToArray:self.blocksDataSource object:irb];
         }
         [self.lbblocks reloadData];
         
@@ -326,18 +367,18 @@
         for (NSString *key in tokens.allKeys) {
             @try {
                 Class blockClass = tokens[key];
-                id<IRcolBlock> irb = [AbstractRcolBlock create:blockClass parent:nil];
+                id<IRcolBlock> irb = [AbstractRcolBlock createWithType:blockClass parent:nil];
                 [self.cbblocks addItemWithObjectValue:irb];
             } @catch (NSException *ex) {
-                [Helper exceptionMessage:[NSString stringWithFormat:@"Error in Block %@", key] exception:ex];
+                [ExceptionForm executeWithMessage:[NSString stringWithFormat:@"Error in Block %@", key] exception:ex];
+                }
+            }
+            
+            if ([self.cbblocks numberOfItems] > 0) {
+                [self.cbblocks selectItemAtIndex:0];
             }
         }
-        
-        if ([self.cbblocks numberOfItems] > 0) {
-            [self.cbblocks selectItemAtIndex:0];
-        }
     }
-}
 
 // MARK: - Block Management Actions
 
@@ -350,16 +391,16 @@
         [self.blocksDataSource exchangeObjectAtIndex:selectedRow withObjectAtIndex:selectedRow - 1];
         
         // Swap in wrapper
-        NSMutableArray *blocks = [self.wrapper.blocks mutableCopy];
+        NSMutableArray *blocks = [self.rcol.blocks mutableCopy];
         [blocks exchangeObjectAtIndex:selectedRow withObjectAtIndex:selectedRow - 1];
-        self.wrapper.blocks = [blocks copy];
+        self.rcol.blocks = [blocks copy];
         
         [self.lbblocks reloadData];
         [self.lbblocks selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow - 1] byExtendingSelection:NO];
         
         [self updateComboBox];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
+        [ExceptionForm executeWithMessage:@"" exception:ex];
     }
 }
 
@@ -372,37 +413,36 @@
         [self.blocksDataSource exchangeObjectAtIndex:selectedRow withObjectAtIndex:selectedRow + 1];
         
         // Swap in wrapper
-        NSMutableArray *blocks = [self.wrapper.blocks mutableCopy];
+        NSMutableArray *blocks = [self.rcol.blocks mutableCopy];
         [blocks exchangeObjectAtIndex:selectedRow withObjectAtIndex:selectedRow + 1];
-        self.wrapper.blocks = [blocks copy];
+        self.rcol.blocks = [blocks copy];
         
         [self.lbblocks reloadData];
         [self.lbblocks selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow + 1] byExtendingSelection:NO];
         
         [self updateComboBox];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
+        [ExceptionForm executeWithMessage:@"" exception:ex];
     }
 }
 
 - (IBAction)btaddClick:(id)sender {
     @try {
         id<IRcolBlock> irb = [[self.cbblocks objectValueOfSelectedItem] create];
-        if ([irb conformsToProtocol:@protocol(AbstractRcolBlock)]) {
-            [(AbstractRcolBlock *)irb setParent:self.wrapper];
+        if ([irb isKindOfClass:[AbstractRcolBlock class]]) {
+            [(AbstractRcolBlock *)irb setParent:self.rcol];
         }
         
-        CountedListItem *item = [CountedListItem createHex:irb];
-        [self.blocksDataSource addObject:item];
+        [CountedListItem addHexToArray:self.blocksDataSource object:irb];
         
-        NSMutableArray *blocks = [self.wrapper.blocks mutableCopy];
+        NSMutableArray *blocks = [self.rcol.blocks mutableCopy];
         [blocks addObject:irb];
-        self.wrapper.blocks = [blocks copy];
+        self.rcol.blocks = [blocks copy];
         
         [self.lbblocks reloadData];
         [self updateComboBox];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
+        [ExceptionForm executeWithMessage:@"" exception:ex];
     }
 }
 
@@ -416,14 +456,14 @@
         
         [self.blocksDataSource removeObjectAtIndex:selectedRow];
         
-        NSMutableArray *blocks = [self.wrapper.blocks mutableCopy];
+        NSMutableArray *blocks = [self.rcol.blocks mutableCopy];
         [blocks removeObject:irb];
-        self.wrapper.blocks = [blocks copy];
+        self.rcol.blocks = [blocks copy];
         
         [self.lbblocks reloadData];
         [self updateComboBox];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
+        [ExceptionForm executeWithMessage:@"" exception:ex];
     }
 }
 
@@ -453,17 +493,24 @@
             
             if ([items count] == 0) {
                 id<IScenegraphFileIndexItem> item = [[FileTable fileIndex] findFileByName:[pfd filename]
-                                                                                      type:[pfd type]
-                                                                                     group:[pfd group]
-                                                                                 recursive:YES];
+                                                                         type:[pfd type]
+                                                                     defGroup:[pfd group]
+                                                                   beTolerant:YES];
                 if (item != nil) {
                     items = @[item];
                 }
             }
             
             if ([items count] == 0) {
-                id<IPackedFileDescriptor> npfd = [pfd copy];
-                [npfd setSubType:0];
+                uint64_t originalInstance = [pfd instance]; // assuming instance returns uint64_t
+                uint32_t instanceHi = (uint32_t)(originalInstance >> 32);
+                uint32_t instanceLo = (uint32_t)(originalInstance & 0xFFFFFFFF);
+
+                id<IPackedFileDescriptor> npfd = [[PackedFileDescriptor alloc] initWithType:[pfd type]
+                                                                                     group:[pfd group]
+                                                                                instanceHi:instanceHi
+                                                                                instanceLo:instanceLo];
+                [npfd setSubtype:0];
                 items = [[FileTable fileIndex] findFile:npfd package:nil];
             }
             
@@ -486,7 +533,7 @@
 }
 
 - (IBAction)childTabPageChanged:(id)sender {
-    [self.wrapper childTabPageChanged:self event:nil];
+    [self.rcol childTabPageChanged:self];
 }
 
 // MARK: - NSTableViewDataSource
@@ -527,27 +574,29 @@
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
     if (item == nil) {
-        return [[self.tv rootNode] countOfChildNodes];
+        return [self.rcol.referencedFiles count];
     }
     
     NSTreeNode *node = (NSTreeNode *)item;
-    return [node countOfChildNodes];
+    return node.childNodes.count;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
     if (item == nil) {
-        return [[self.tv rootNode] childNodes][index];
+        // For the root level, return items from your data source
+        // You need to replace this with your actual root data source
+        return self.rootItems[index]; // or whatever your root data array is
     }
     
     NSTreeNode *node = (NSTreeNode *)item;
-    return [node childNodes][index];
+    return node.childNodes[index];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
     if (item == nil) return YES;
     
     NSTreeNode *node = (NSTreeNode *)item;
-    return [node countOfChildNodes] > 0;
+    return [[node childNodes] count] > 0;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
@@ -599,30 +648,48 @@
         @try {
             self.updatingSelection = YES;
             
-            // This would need to be adapted based on your drag/drop data format
-            // The original code expected PackedFileDescriptor objects
             NSPasteboard *pasteboard = [info draggingPasteboard];
-            NSString *draggedString = [pasteboard stringForType:NSPasteboardTypeString];
             
-            // You would need to convert the dragged data to a PackedFileDescriptor
-            // This is a placeholder implementation
-            id<IPackedFileDescriptor> pfd = [[PackedFileDescriptor alloc] init];
+            if ([pasteboard canReadItemWithDataConformingToTypes:@[@"PackedFileDescriptorType"]]) {
+                NSData *data = [pasteboard dataForType:@"PackedFileDescriptorType"];
+                
+                NSError *error = nil;
+                id<IPackedFileDescriptor> pfd = [NSKeyedUnarchiver unarchivedObjectOfClass:[PackedFileDescriptor class]
+                                                                                  fromData:data
+                                                                                     error:&error];
+                if (error != nil || pfd == nil) {
+                    return NO;
+                }
+                
+                if (![self.wrapper isKindOfClass:[Rcol class]]) {
+                    return NO;
+                }
+                
+                Rcol *rcol = (Rcol *)self.wrapper;
+                NSMutableArray *mutableRefs = [rcol.referencedFiles mutableCopy];
+                if (mutableRefs == nil) {
+                    mutableRefs = [[NSMutableArray alloc] init];
+                }
+                [mutableRefs addObject:pfd];
+                rcol.referencedFiles = [mutableRefs copy];
+                
+                [self.referencesDataSource addObject:pfd];
+                [tableView reloadData];
+                
+                rcol.changed = YES;
+                
+                return YES;
+            }
             
-            NSMutableArray *newReferences = [self.wrapper.referencedFiles mutableCopy];
-            [newReferences addObject:pfd];
-            self.wrapper.referencedFiles = [newReferences copy];
-            
-            [self.referencesDataSource addObject:pfd];
-            [self.lbref reloadData];
-            
-            [self.wrapper setChanged:YES];
-            return YES;
-        } @catch (NSException *ex) {
-            [Helper exceptionMessage:@"" exception:ex];
+            return NO;
+        } @catch (NSException *exception) {
+            [ExceptionForm executeWithMessage: @"" exception:exception];
+            return NO;
         } @finally {
             self.updatingSelection = NO;
         }
     }
+    
     return NO;
 }
 

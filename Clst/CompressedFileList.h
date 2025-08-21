@@ -53,7 +53,7 @@
 /**
  * Contains all available Items
  */
-@property (nonatomic, strong) NSArray<ClstItem *> *items;
+@property (nonatomic, strong) NSMutableArray<ClstItem *> *items;
 
 // MARK: - Initialization
 

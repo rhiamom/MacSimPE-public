@@ -64,7 +64,7 @@
 
 // MARK: - Factory Methods
 + (FileTableItemType *)fromExpansion:(Expansions)expansion;
-+ (FileTableItemType *)fromInteger:(NSInteger)value;
++ (FileTableItemType *)fromInteger:(int32_t)value;
 + (FileTableItemType *)fromUnsignedInteger:(uint32_t)value;
 
 // MARK: - Conversion Methods

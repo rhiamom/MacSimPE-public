@@ -35,6 +35,7 @@
 #import "IPackageHeader.h"
 #import "BinaryReader.h"
 #import "BinaryWriter.h"
+#import "AbstractWrapperInfo.h"
 
 @implementation CompressedFileList
 
@@ -43,8 +44,8 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _indexType = IndexTypesShortFileIndex;
-        _items = @[];
+        _indexType = ptShortFileIndex;
+        _items = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -53,7 +54,7 @@
     self = [super init];
     if (self) {
         _indexType = type;
-        _items = @[];
+        _items = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -62,7 +63,16 @@
     self = [super init];
     if (self) {
         _indexType = package.header.indexType;
-        _items = @[];
+        _items = [[NSMutableArray alloc] init];
+        [self processData:pfd package:package];
+    }
+    return self;
+}
+
+- (instancetype)initWithDescriptor:(id<IPackedFileDescriptor>)pfd package:(id<IPackageFile>)package {
+    if (self = [super init]) {
+        self.indexType = package.header.indexType;
+        self.items = [[NSMutableArray alloc] init];
         [self processData:pfd package:package];
     }
     return self;
@@ -80,7 +90,7 @@
         
         if ((lfi.group == pfd.group) &&
             (lfi.instance == pfd.instance) &&
-            ((lfi.subType == pfd.subType) || (self.indexType == IndexTypesShortFileIndex)) &&
+            ((lfi.subType == pfd.subtype) || (self.indexType == ptShortFileIndex)) &&
             (lfi.type == pfd.type)) {
             return i;
         }
@@ -90,7 +100,7 @@
 }
 
 - (void)clear {
-    self.items = @[];
+    self.items = [[NSMutableArray alloc] init];
 }
 
 - (void)add:(ClstItem *)item {
@@ -114,7 +124,7 @@
                                               author:@"Quaxi"
                                          description:@"This File contains a List of all compressed Files that are stored within this Package."
                                              version:2
-                                               image:[NSImage imageNamed:@"clst"]];
+                                               icon:[NSImage imageNamed:@"clst"]];
 }
 
 // MARK: - Serialization
@@ -122,51 +132,44 @@
 - (void)unserialize:(BinaryReader *)reader {
     self.indexType = self.package.header.indexType;
     
-    NSInteger count = 0;
-    if (self.indexType == IndexTypesLongFileIndex) {
-        count = reader.baseStream.length / 0x14;
-    } else {
-        count = reader.baseStream.length / 0x10;
-    }
+    NSInteger itemSize = (self.indexType == ptLongFileIndex) ? 0x14 : 0x10;
+    NSInteger count = reader.baseStream.length / itemSize;
+    self.items = [[NSMutableArray alloc] initWithCapacity:count];
     
-    NSMutableArray<ClstItem *> *newItems = [[NSMutableArray alloc] initWithCapacity:count];
-    
-    int64_t pos = reader.baseStream.position;
-    BOOL switchType = NO;
+    long long pos = reader.baseStream.position;
+    BOOL hasTriedSwitch = NO;
     
     for (NSInteger i = 0; i < count; i++) {
         ClstItem *item = [[ClstItem alloc] initWithIndexType:self.indexType];
         [item unserialize:reader];
         
-        if ((i == 2) && (!switchType)) {
-            switchType = YES;
-            id<IPackedFileDescriptor> foundFile = [self.package findFile:item.type
-                                                                 subType:item.subType
-                                                                   group:item.group
-                                                                instance:item.instance];
+        // Test format validity at item 2
+        if (i == 2 && !hasTriedSwitch) {
+            hasTriedSwitch = YES;
+            id<IPackedFileDescriptor> foundFile = [self.package findFileWithType:item.type
+                                                                         subtype:item.subType
+                                                                           group:item.group
+                                                                        instance:item.instance];
             if (foundFile == nil) {
-                i = 0;
-                if (self.indexType == IndexTypesLongFileIndex) {
-                    self.indexType = IndexTypesShortFileIndex;
-                } else {
-                    self.indexType = IndexTypesLongFileIndex;
-                }
+                // Wrong format, switch and restart
+                self.indexType = (self.indexType == ptLongFileIndex) ? ptShortFileIndex : ptLongFileIndex;
+                itemSize = (self.indexType == ptLongFileIndex) ? 0x14 : 0x10;
+                count = reader.baseStream.length / itemSize;
                 
-                [reader.baseStream seekToOffset:pos origin:SeekOriginBegin];
-                item = [[ClstItem alloc] initWithIndexType:self.indexType];
-                [item unserialize:reader];
+                reader.baseStream.position = pos;
+                [self.items removeAllObjects];
+                i = -1; // Will become 0 on next iteration
+                continue;
             }
         }
         
-        newItems[i] = item;
+        [self.items addObject:item];
     }
-    
-    self.items = [newItems copy];
 }
 
 - (void)serialize:(BinaryWriter *)writer {
     for (ClstItem *item in self.items) {
-        [item serialize:writer indexType:self.indexType];
+        [item serialize:writer withFormat:self.indexType];
     }
 }
 

@@ -27,7 +27,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#import "AbstractWrapperFactory.h"
+#import "AbstractFactory.h"
 #import "IWrapperRegistry.h"
 #import "IProviderRegistry.h"
 #import "IWrapper.h"

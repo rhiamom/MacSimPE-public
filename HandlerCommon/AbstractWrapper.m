@@ -29,6 +29,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IWrapperFactory.h"
+#import "TgiLoader.h"
 
 @protocol IWrapperRegistry, IProviderRegistry, IWrapper;
 
@@ -44,12 +45,12 @@
 /**
  * Holds a reference to the Registry this Plugin was last registered to (can be nil!)
  */
-@property (nonatomic, weak) id<IWrapperRegistry> linkedRegistry;
+@property (nonatomic, strong) id<IWrapperRegistry> linkedRegistry;
 
 /**
- * Holds a reference to available Providers (i.e. for Sim Names or Images)
+ * Returns or sets the Provider this Plugin can use
  */
-@property (nonatomic, weak) id<IProviderRegistry> linkedProvider;
+@property (nonatomic, strong) id<IProviderRegistry> linkedProvider;
 
 /**
  * Returns a List of all available Plugins in this Package
@@ -79,6 +80,8 @@
 #import "IPackedFile.h"
 #import "IScenegraphFileIndexItem.h"
 #import "IFileWrapper.h"
+#import "IWrapperReferencedResources.h"
+#import "ExceptionForm.h"
 
 @implementation AbstractWrapper {
     BOOL _processed;
@@ -149,7 +152,7 @@
 
 - (BinaryReader *)storedData {
     if (self.fileDescriptor && self.package) {
-        id<IPackedFile> file = [self.package read:self.fileDescriptor];
+        id<IPackedFile> file = [self.package readDescriptor:self.fileDescriptor];
         NSData *data = [file uncompressedData];
         MemoryStream *ms = [[MemoryStream alloc] initWithData:data];
         return [[BinaryReader alloc] initWithStream:ms];
@@ -239,7 +242,7 @@
     id<IWrapperInfo> info = [self wrapperDescription];
     return [NSString stringWithFormat:@"%@ (Author=%@, Version=%ld, GUID=%@, FileName=%@, Type=%@)",
             info.name, info.author, (long)info.version,
-            [Helper hexStringUInt:info.uid], self.wrapperFileName, NSStringFromClass([self class])];
+            [Helper hexStringUInt64:info.uid], self.wrapperFileName, NSStringFromClass([self class])];
 }
 
 // MARK: - IPackedFileSaveExtension Methods
@@ -260,7 +263,7 @@
     
     if (catchex) {
         @try {
-            NSData *data = [[self currentStateData] toArray];
+            NSData *data = [[self currentStateData] toData];
             [self.fileDescriptor setUserData:data fire:fire];
             self.changed = NO;
         }
@@ -270,30 +273,49 @@
             [self exceptionMessage:@"Error writing file" error:error];
         }
     } else {
-        NSData *data = [[self currentStateData] toArray];
+        NSData *data = [[self currentStateData] toData];
         [self.fileDescriptor setUserData:data fire:NO];
         self.changed = NO;
     }
 }
 
-- (void)save:(id<IPackedFileDescriptor>)pfd {
+- (void)savePFD:(id<IPackedFileDescriptor>)pfd {
     @try {
         MemoryStream *ms = [[MemoryStream alloc] init];
         BinaryWriter *bw = [[BinaryWriter alloc] initWithStream:ms];
         NSInteger size = [self save:bw];
         
-        NSData *data = [ms toArray];
+        NSData *data = [ms toData];
         if (size > 0 && size <= data.length) {
             NSData *trimmedData = [data subdataWithRange:NSMakeRange(0, size)];
             [pfd setUserData:trimmedData];
         }
     }
     @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"SimPE" code:1
-                                         userInfo:@{NSLocalizedDescriptionKey: exception.reason}];
-        [self exceptionMessage:@"Error writing file" error:error];
+        [ExceptionForm executeWithMessage:@"error writing file" exception:exception];
     }
 }
+
+- (void)saveToDescriptor:(id<IPackedFileDescriptor>)pfd {
+    @try {
+        NSMutableData *data = [[NSMutableData alloc] init];
+        BinaryWriter *writer = [[BinaryWriter alloc] initWithData:data];
+        
+        NSInteger size = [self save:writer];
+        
+        // Validate that we wrote some data
+        if (size != [data length]) {
+            NSLog(@"Warning: Expected %ld bytes but data contains %lu bytes",
+                  (long)size, (unsigned long)[data length]);
+        }
+        
+        [pfd setUserData:[data copy]];
+        [writer close];
+    } @catch (NSException *exception) {
+        [ExceptionForm executeWithMessage:@"errwritingfile" exception:exception];
+    }
+}
+
 
 - (NSInteger)save:(BinaryWriter *)writer {
     NSInteger pos = [writer.stream position];
@@ -301,9 +323,7 @@
         [self serialize:writer];
     }
     @catch (NSException *exception) {
-        NSError *error = [NSError errorWithDomain:@"SimPE" code:1
-                                         userInfo:@{NSLocalizedDescriptionKey: exception.reason}];
-        [self exceptionMessage:@"Error writing file" error:error];
+        [ExceptionForm executeWithMessage:@"error writing file" exception:exception];
     }
     return [writer.stream position] - pos;
 }
@@ -320,6 +340,38 @@
 
 - (void)processData:(id<IPackedFileDescriptor>)pfd package:(id<IPackageFile>)package file:(id<IPackedFile>)file {
     [self processData:pfd package:package file:file catchex:YES];
+}
+
+- (void)processData:(id<IPackedFileDescriptor>)fileDescriptor
+            package:(id<IPackageFile>)package
+               sync:(BOOL)sync {
+    
+    // Store references (use direct ivar access if properties don't exist)
+    _fileDescriptor = fileDescriptor;
+    _package = package;
+    
+    if (fileDescriptor == nil || package == nil) {
+        return;
+    }
+    
+    @try {
+        // Use readDescriptor method from IPackageFile
+        id<IPackedFile> packedFile = [package readDescriptor:fileDescriptor];
+        
+        if (packedFile == nil) {
+            NSLog(@"Warning: No packed file found for descriptor");
+            return;
+        }
+        
+        // You'll need to get the actual data from IPackedFile
+        // For now, just mark as processed
+        _processed = YES;
+        
+    } @catch (NSException *exception) {
+        NSLog(@"Error processing data: %@", [exception reason]);
+        _processed = NO;
+        @throw exception;
+    }
 }
 
 - (void)processData:(id<IScenegraphFileIndexItem>)item {
@@ -353,7 +405,7 @@
         self.fileDescriptor = pfd;
         self.package = package;
         BinaryReader *reader = [self storedData];
-        if ([reader.stream length] > 0) {
+        if ([reader.baseStream length] > 0) {
             [self unserialize:reader];
             _processed = YES;
         }
@@ -369,7 +421,7 @@
             if (file) {
                 self.fileDescriptor = pfd;
                 self.package = package;
-                file = [package read:pfd];
+                file = [package readDescriptor:pfd];
                 NSData *data = [file uncompressedData];
                 MemoryStream *ms = [[MemoryStream alloc] initWithData:data];
                 if ([ms length] > 0) {
@@ -390,7 +442,7 @@
         if (file) {
             self.fileDescriptor = pfd;
             self.package = package;
-            file = [package read:pfd];
+            file = [package readDescriptor:pfd];
             NSData *data = [file uncompressedData];
             MemoryStream *ms = [[MemoryStream alloc] initWithData:data];
             if ([ms length] > 0) {
@@ -429,8 +481,8 @@
     if (!self.package || !self.fileDescriptor) return nil;
     
     if (ta.containsFilename) {
-        id<IPackedFile> pf = [self.package read:self.fileDescriptor];
-        NSData *data = [pf getUncompressedData:0x40];
+        id<IPackedFile> pf = [self.package readDescriptor:self.fileDescriptor];
+        NSData *data = [pf getUncompressedDataWithMaxSize:0x40];
         return [Helper dataToString:data];
     } else {
         return nil;
@@ -506,7 +558,9 @@
     } else {
         // For multiple instances, create new instance with constructor arguments
         NSArray *args = [self getConstructorArguments];
-        // This would need proper constructor argument handling
+        // TODO: Implement proper constructor argument handling when needed
+        // For now, just use default init
+        (void)args; // Suppress unused variable warning
         return [[self.class alloc] init];
     }
 }
@@ -518,16 +572,28 @@
 // MARK: - Cleanup
 
 - (void)dispose {
-    if (_wrapperInfo && [_wrapperInfo respondsToSelector:@selector(dispose)]) {
-        [_wrapperInfo dispose];
-    }
-    if (_uiHandler && [_uiHandler respondsToSelector:@selector(dispose)]) {
-        [_uiHandler dispose];
-    }
+    // In Objective-C, just clear the references
+    // ARC will handle the memory management automatically
     _uiHandler = nil;
     _package = nil;
     _fileDescriptor = nil;
     _wrapperInfo = nil;
 }
+
+- (void)processData:(id<IScenegraphFileIndexItem>)item catchExceptions:(BOOL)catchex {
+}
+
+- (void)processData:(id<IPackedFileDescriptor>)pfd package:(id<IPackageFile>)package catchExceptions:(BOOL)catchex {
+}
+
+- (void)synchronizeUserData:(BOOL)catchExceptions fireEvent:(BOOL)fire {
+}
+
+- (void)processData:(id<IPackedFileDescriptor>)pfd package:(id<IPackageFile>)package file:(id<IPackedFile>)file catchExceptions:(BOOL)catchex {
+}
+
+@synthesize fileSignature;
+
+@synthesize assignableTypes;
 
 @end

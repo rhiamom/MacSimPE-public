@@ -30,7 +30,7 @@
 // ***************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import "IToolPlugin.h"
+#import "ITool.h"
 
 @class ResourceEventArgs;
 

@@ -63,6 +63,14 @@
     return self;
 }
 
+- (instancetype)initWithIndexType:(IndexTypes)indexType {
+    if (self = [super init]) {
+        self.format = indexType;
+        // Initialize other properties based on index type if needed
+    }
+    return self;
+}
+
 // MARK: - Properties
 
 - (TypeAlias *)typeName {
