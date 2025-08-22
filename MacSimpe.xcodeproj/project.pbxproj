@@ -27,6 +27,21 @@
 		B62437EE2E35A3350052119F /* additionalschools.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437ED2E35A3350052119F /* additionalschools.xml */; };
 		B62437F02E35A3490052119F /* additionalmajors.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437EF2E35A3490052119F /* additionalmajors.xml */; };
 		B62437F22E35A35C0052119F /* additionalcareers.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437F12E35A35C0052119F /* additionalcareers.xml */; };
+		B64B39162E58CE8200FC359D /* HashAlgorithmParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B39152E58CE8200FC359D /* HashAlgorithmParameters.m */; };
+		B64B39192E58CF3200FC359D /* PropertyObjectBuilderExt.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B39182E58CF3200FC359D /* PropertyObjectBuilderExt.m */; };
+		B64B391C2E58D05800FC359D /* PropertyUserTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B391B2E58D05800FC359D /* PropertyUserTypes.m */; };
+		B64B39202E58D0FB00FC359D /* quaxi_pets_censor_v1.package in Resources */ = {isa = PBXBuildFile; fileRef = B64B391F2E58D0FB00FC359D /* quaxi_pets_censor_v1.package */; };
+		B64B39212E58D0FB00FC359D /* quaxi_nl_censor_v1.package in Resources */ = {isa = PBXBuildFile; fileRef = B64B391D2E58D0FB00FC359D /* quaxi_nl_censor_v1.package */; };
+		B64B39222E58D0FB00FC359D /* quaxi_ofb_censor_v1.package in Resources */ = {isa = PBXBuildFile; fileRef = B64B391E2E58D0FB00FC359D /* quaxi_ofb_censor_v1.package */; };
+		B64B39252E58D26100FC359D /* SemiGlobalAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B39242E58D26100FC359D /* SemiGlobalAlias.m */; };
+		B64B39282E58D2E300FC359D /* SemiGlobalListing.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B39272E58D2E300FC359D /* SemiGlobalListing.m */; };
+		B64B392B2E58D3A500FC359D /* StreamHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B392A2E58D3A500FC359D /* StreamHelper.m */; };
+		B64B392E2E58D42A00FC359D /* ThreadConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B392D2E58D42A00FC359D /* ThreadConsumer.m */; };
+		B64B39322E58DD6300FC359D /* CpfWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B39312E58DD6300FC359D /* CpfWrapper.m */; };
+		B64B39352E58DE1F00FC359D /* CpfItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B39342E58DE1F00FC359D /* CpfItem.m */; };
+		B64B39382E58E0AC00FC359D /* CpfUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B39372E58E0AC00FC359D /* CpfUI.m */; };
+		B64B393B2E58E63000FC359D /* PackedFileWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B393A2E58E63000FC359D /* PackedFileWrapper.m */; };
+		B64B393E2E58E6F800FC359D /* PackedFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B393D2E58E6F800FC359D /* PackedFileItem.m */; };
 		B64E6BA72E3531DF009AD0A7 /* Alias.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BA62E3531DF009AD0A7 /* Alias.m */; };
 		B64E6BAA2E35335B009AD0A7 /* TypeAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BA92E35335B009AD0A7 /* TypeAlias.m */; };
 		B64E6BAD2E3534BB009AD0A7 /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BAC2E3534BB009AD0A7 /* Helper.m */; };
@@ -191,6 +206,33 @@
 		B632A4392E36B9120024810C /* IPackedFileSaveExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileSaveExtension.h; sourceTree = "<group>"; };
 		B646E9102E4E6BE400A92D70 /* IListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IListener.h; sourceTree = "<group>"; };
 		B646E9112E4E6CE700A92D70 /* IListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IListener.m; sourceTree = "<group>"; };
+		B64B39142E58CE3700FC359D /* HashAlgorithmParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashAlgorithmParameters.h; sourceTree = "<group>"; };
+		B64B39152E58CE8200FC359D /* HashAlgorithmParameters.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HashAlgorithmParameters.m; sourceTree = "<group>"; };
+		B64B39172E58CEED00FC359D /* PropertyObjectBuilderExt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyObjectBuilderExt.h; sourceTree = "<group>"; };
+		B64B39182E58CF3200FC359D /* PropertyObjectBuilderExt.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyObjectBuilderExt.m; sourceTree = "<group>"; };
+		B64B391A2E58CFE100FC359D /* PropertyUserTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyUserTypes.h; sourceTree = "<group>"; };
+		B64B391B2E58D05800FC359D /* PropertyUserTypes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyUserTypes.m; sourceTree = "<group>"; };
+		B64B391D2E58D0FB00FC359D /* quaxi_nl_censor_v1.package */ = {isa = PBXFileReference; lastKnownFileType = file; path = quaxi_nl_censor_v1.package; sourceTree = "<group>"; };
+		B64B391E2E58D0FB00FC359D /* quaxi_ofb_censor_v1.package */ = {isa = PBXFileReference; lastKnownFileType = file; path = quaxi_ofb_censor_v1.package; sourceTree = "<group>"; };
+		B64B391F2E58D0FB00FC359D /* quaxi_pets_censor_v1.package */ = {isa = PBXFileReference; lastKnownFileType = file; path = quaxi_pets_censor_v1.package; sourceTree = "<group>"; };
+		B64B39232E58D22700FC359D /* SemiGlobalAlias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SemiGlobalAlias.h; sourceTree = "<group>"; };
+		B64B39242E58D26100FC359D /* SemiGlobalAlias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SemiGlobalAlias.m; sourceTree = "<group>"; };
+		B64B39262E58D2AC00FC359D /* SemiGlobalListing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SemiGlobalListing.h; sourceTree = "<group>"; };
+		B64B39272E58D2E300FC359D /* SemiGlobalListing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SemiGlobalListing.m; sourceTree = "<group>"; };
+		B64B39292E58D37000FC359D /* StreamHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StreamHelper.h; sourceTree = "<group>"; };
+		B64B392A2E58D3A500FC359D /* StreamHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StreamHelper.m; sourceTree = "<group>"; };
+		B64B392C2E58D3EC00FC359D /* ThreadConsumer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadConsumer.h; sourceTree = "<group>"; };
+		B64B392D2E58D42A00FC359D /* ThreadConsumer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreadConsumer.m; sourceTree = "<group>"; };
+		B64B39302E58DD2400FC359D /* CpfWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CpfWrapper.h; sourceTree = "<group>"; };
+		B64B39312E58DD6300FC359D /* CpfWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CpfWrapper.m; sourceTree = "<group>"; };
+		B64B39332E58DDEB00FC359D /* CpfItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CpfItem.h; sourceTree = "<group>"; };
+		B64B39342E58DE1F00FC359D /* CpfItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CpfItem.m; sourceTree = "<group>"; };
+		B64B39362E58E07B00FC359D /* CpfUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CpfUI.h; sourceTree = "<group>"; };
+		B64B39372E58E0AC00FC359D /* CpfUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CpfUI.m; sourceTree = "<group>"; };
+		B64B39392E58E5C400FC359D /* PackedFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileWrapper.h; sourceTree = "<group>"; };
+		B64B393A2E58E63000FC359D /* PackedFileWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileWrapper.m; sourceTree = "<group>"; };
+		B64B393C2E58E6B500FC359D /* PackedFileitem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileitem.h; sourceTree = "<group>"; };
+		B64B393D2E58E6F800FC359D /* PackedFileItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileItem.m; sourceTree = "<group>"; };
 		B64E6BA42E353091009AD0A7 /* IAlias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAlias.h; sourceTree = "<group>"; };
 		B64E6BA52E353151009AD0A7 /* Alias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alias.h; sourceTree = "<group>"; };
 		B64E6BA62E3531DF009AD0A7 /* Alias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Alias.m; sourceTree = "<group>"; };
@@ -565,6 +607,19 @@
 			path = Clst;
 			sourceTree = "<group>";
 		};
+		B64B392F2E58DCF700FC359D /* FileHandler */ = {
+			isa = PBXGroup;
+			children = (
+				B64B39302E58DD2400FC359D /* CpfWrapper.h */,
+				B64B39312E58DD6300FC359D /* CpfWrapper.m */,
+				B64B39332E58DDEB00FC359D /* CpfItem.h */,
+				B64B39342E58DE1F00FC359D /* CpfItem.m */,
+				B64B39362E58E07B00FC359D /* CpfUI.h */,
+				B64B39372E58E0AC00FC359D /* CpfUI.m */,
+			);
+			path = FileHandler;
+			sourceTree = "<group>";
+		};
 		B64E6BAE2E3539F9009AD0A7 /* GenericHandlers */ = {
 			isa = PBXGroup;
 			children = (
@@ -650,6 +705,10 @@
 				B6819E5B2E3E76EF00E37434 /* FileIndex.m */,
 				B6819E562E3E72FF00E37434 /* FileIndexItem.h */,
 				B6819E572E3E734000E37434 /* FileIndexItem.m */,
+				B64B39392E58E5C400FC359D /* PackedFileWrapper.h */,
+				B64B393A2E58E63000FC359D /* PackedFileWrapper.m */,
+				B64B393C2E58E6B500FC359D /* PackedFileitem.h */,
+				B64B393D2E58E6F800FC359D /* PackedFileItem.m */,
 			);
 			path = Scenegraph;
 			sourceTree = "<group>";
@@ -702,6 +761,7 @@
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
+				B64B392F2E58DCF700FC359D /* FileHandler */,
 				B65044682E46D1DA0014569E /* Temp */,
 				B632A4352E36A2FD0024810C /* Clst */,
 				B64E6BAE2E3539F9009AD0A7 /* GenericHandlers */,
@@ -903,16 +963,23 @@
 				B6F440B22E4665BD00870564 /* FlagObjectBuilder.m */,
 				B69C59F52E3E8BFA00794FC7 /* GlobalizedObject.h */,
 				B69C59F62E3E8CC900794FC7 /* GlobalizedObject.m */,
+				B64B39142E58CE3700FC359D /* HashAlgorithmParameters.h */,
+				B64B39152E58CE8200FC359D /* HashAlgorithmParameters.m */,
 				B69F34D82E37EC48007EEA89 /* Hashes.h */,
 				B69F34D92E37ECDD007EEA89 /* Hashes.m */,
 				B64E6BAB2E353489009AD0A7 /* Helper.h */,
 				B64E6BAC2E3534BB009AD0A7 /* Helper.m */,
+				B6B8D0382E57AD94008557A2 /* Html2Rtf.h */,
+				B6B8D0392E57ADCA008557A2 /* Html2Rtf.m */,
+				B64E6BA42E353091009AD0A7 /* IAlias.h */,
+				B6B8D03B2E57AE75008557A2 /* ICacheFileTest.h */,
 				B69C59FE2E3E915100794FC7 /* IniRegistry.h */,
 				B69C59FF2E3E918100794FC7 /* IniRegistry.m */,
 				B6CDCCB82E3451DA004FDF82 /* IPackedFileDescriptorBasic.h */,
 				B64E6BBE2E354AD1009AD0A7 /* IPackedFileName.h */,
 				B69C5A322E3ECFF700794FC7 /* IPropertyClass.h */,
 				B69C5A312E3ECF7A00794FC7 /* ISerializeFormater.h */,
+				B6C3F06C2E54E3550073156B /* IUpdatablePlugin.h */,
 				B61CE5702E3A879B00547C40 /* IWaitingBarControl.h */,
 				B61CE5982E3ADA8B00547C40 /* Localization.h */,
 				B61CE5992E3ADAB200547C40 /* Localization.m */,
@@ -924,14 +991,31 @@
 				B66C34632E3BC2D900B4B9B8 /* PathProvider.m */,
 				B66C34652E3BC5E900B4B9B8 /* PathSettings.h */,
 				B66C34662E3BC60900B4B9B8 /* PathSettings.m */,
+				B6B8D03C2E57AF01008557A2 /* PropertyObjectBuilder.h */,
+				B6B8D03D2E57AF90008557A2 /* PropertyObjectBuilder.m */,
+				B64B39172E58CEED00FC359D /* PropertyObjectBuilderExt.h */,
+				B64B39182E58CF3200FC359D /* PropertyObjectBuilderExt.m */,
+				B64B391A2E58CFE100FC359D /* PropertyUserTypes.h */,
+				B64B391B2E58D05800FC359D /* PropertyUserTypes.m */,
+				B64B391D2E58D0FB00FC359D /* quaxi_nl_censor_v1.package */,
+				B64B391E2E58D0FB00FC359D /* quaxi_ofb_censor_v1.package */,
+				B64B391F2E58D0FB00FC359D /* quaxi_pets_censor_v1.package */,
 				B64E6BBF2E3571AF009AD0A7 /* Registry.h */,
 				B62437DA2E3597690052119F /* Registry.m */,
+				B64B39232E58D22700FC359D /* SemiGlobalAlias.h */,
+				B64B39242E58D26100FC359D /* SemiGlobalAlias.m */,
+				B64B39262E58D2AC00FC359D /* SemiGlobalListing.h */,
+				B64B39272E58D2E300FC359D /* SemiGlobalListing.m */,
 				B69C5A2E2E3ECECE00794FC7 /* Serializer.h */,
 				B69C5A2F2E3ECEF200794FC7 /* Serializer.m */,
+				B64B39292E58D37000FC359D /* StreamHelper.h */,
+				B64B392A2E58D3A500FC359D /* StreamHelper.m */,
 				B62437DF2E35A1190052119F /* TGILoader.h */,
 				B62437E02E35A15B0052119F /* TGILoader.m */,
 				B69C5A362E3ED3BB00794FC7 /* Thread.h */,
 				B69C5A372E3ED3E200794FC7 /* Thread.m */,
+				B64B392C2E58D3EC00FC359D /* ThreadConsumer.h */,
+				B64B392D2E58D42A00FC359D /* ThreadConsumer.m */,
 				B64E6BA82E353310009AD0A7 /* TypeAlias.h */,
 				B64E6BA92E35335B009AD0A7 /* TypeAlias.m */,
 				B61CE5712E3A87BF00547C40 /* Wait.h */,
@@ -944,13 +1028,6 @@
 				B69C5A2C2E3EC83B00794FC7 /* WarningException.m */,
 				B69C5A282E3EC5B700794FC7 /* XmlRegistryKey.h */,
 				B69C5A292E3EC5E300794FC7 /* XmlRegistryKey.m */,
-				B6C3F06C2E54E3550073156B /* IUpdatablePlugin.h */,
-				B64E6BA42E353091009AD0A7 /* IAlias.h */,
-				B6B8D0382E57AD94008557A2 /* Html2Rtf.h */,
-				B6B8D0392E57ADCA008557A2 /* Html2Rtf.m */,
-				B6B8D03B2E57AE75008557A2 /* ICacheFileTest.h */,
-				B6B8D03C2E57AF01008557A2 /* PropertyObjectBuilder.h */,
-				B6B8D03D2E57AF90008557A2 /* PropertyObjectBuilder.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1081,6 +1158,9 @@
 				B62437E62E35A2C20052119F /* txmtdefinition.xml in Resources */,
 				B62437EA2E35A2FB0052119F /* objddefinition.xml in Resources */,
 				B62437F22E35A35C0052119F /* additionalcareers.xml in Resources */,
+				B64B39202E58D0FB00FC359D /* quaxi_pets_censor_v1.package in Resources */,
+				B64B39212E58D0FB00FC359D /* quaxi_nl_censor_v1.package in Resources */,
+				B64B39222E58D0FB00FC359D /* quaxi_ofb_censor_v1.package in Resources */,
 				B62437EC2E35A3190052119F /* hoods.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1124,10 +1204,12 @@
 				B6B02CD82E4EBA34009240FD /* RcolUI.m in Sources */,
 				B69F34E02E37EF74007EEA89 /* CRCParameters.m in Sources */,
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
+				B64B39352E58DE1F00FC359D /* CpfItem.m in Sources */,
 				B6FBA7FC2E529DD30000F0D5 /* HeaderView.m in Sources */,
 				B64F1C9B2E43FEC3001C0DEC /* XmlPackageReaderBase.m in Sources */,
 				B69F34EC2E37F3F3007EEA89 /* GeneratableFile.m in Sources */,
 				B6B02CE12E4EC0E7009240FD /* ScenegraphHelper.m in Sources */,
+				B64B39282E58D2E300FC359D /* SemiGlobalListing.m in Sources */,
 				B61CE5A32E3AE68400547C40 /* PackageRepair.m in Sources */,
 				B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */,
 				B64EEF782E3985AC0008E7CA /* ResourceTreeNodesByGroup.m in Sources */,
@@ -1139,6 +1221,7 @@
 				B6CDCC902E340297004FDF82 /* FileStream.m in Sources */,
 				B69F34DA2E37ECDD007EEA89 /* Hashes.m in Sources */,
 				B671B48A2E4F9930004559C3 /* LoadFileWrappers.m in Sources */,
+				B64B39192E58CF3200FC359D /* PropertyObjectBuilderExt.m in Sources */,
 				B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */,
 				B69F34E92E37F37C007EEA89 /* ExtractableFile.m in Sources */,
 				B6FDC58D2E3FD9D7004E8AA6 /* WaitingScreen.m in Sources */,
@@ -1161,6 +1244,7 @@
 				B69C5A2D2E3EC83B00794FC7 /* WarningException.m in Sources */,
 				B64F1CA12E44041A001C0DEC /* FileTableItemType.m in Sources */,
 				B61CE5A02E3AE10A00547C40 /* FileTableBase.m in Sources */,
+				B64B393E2E58E6F800FC359D /* PackedFileItem.m in Sources */,
 				B6FDC59C2E3FE170004E8AA6 /* StreamMaintainer.m in Sources */,
 				B6B02CCF2E4EB2C8009240FD /* AbstractFactory.m in Sources */,
 				B6F440B02E46643B00870564 /* FlagBaseConverter.m in Sources */,
@@ -1169,6 +1253,7 @@
 				B6CDCCA32E342902004FDF82 /* HoleIndexItem.m in Sources */,
 				B671B4872E4F95FF004559C3 /* cSGResource.m in Sources */,
 				B61C4CFC2E456EF300BC38B4 /* PackageFiles.m in Sources */,
+				B64B392B2E58D3A500FC359D /* StreamHelper.m in Sources */,
 				B64E6BAA2E35335B009AD0A7 /* TypeAlias.m in Sources */,
 				B64EEF722E3981A00008E7CA /* ResourceListViewExtSorting.m in Sources */,
 				B6E24B2C2E561F98003E2A3E /* SimDescriptions.m in Sources */,
@@ -1188,8 +1273,10 @@
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
 				B6B02CD12E4EB2FC009240FD /* FileTable.m in Sources */,
 				B69C5A2A2E3EC5E300794FC7 /* XmlRegistryKey.m in Sources */,
+				B64B39322E58DD6300FC359D /* CpfWrapper.m in Sources */,
 				B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */,
 				B64F1C9E2E44011C001C0DEC /* FileTableItem.m in Sources */,
+				B64B39382E58E0AC00FC359D /* CpfUI.m in Sources */,
 				B62437E12E35A15B0052119F /* TGILoader.m in Sources */,
 				B6C3F0752E54E6450073156B /* SimCommonPackage.m in Sources */,
 				B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */,
@@ -1200,18 +1287,22 @@
 				B64F1CA42E4404F9001C0DEC /* Settings.m in Sources */,
 				B64E6BA72E3531DF009AD0A7 /* Alias.m in Sources */,
 				B6CDCC8B2E33FC6B004FDF82 /* Stream.m in Sources */,
+				B64B391C2E58D05800FC359D /* PropertyUserTypes.m in Sources */,
 				B6B02CDB2E4EBADF009240FD /* RcolForm.m in Sources */,
+				B64B39162E58CE8200FC359D /* HashAlgorithmParameters.m in Sources */,
 				B671B48D2E4FC38A004559C3 /* IWrapperReferencedResources.m in Sources */,
 				B69C5A382E3ED3E200794FC7 /* Thread.m in Sources */,
 				B6B02CD32E4EB331009240FD /* GenericRcolWrapper.m in Sources */,
 				B6F440AA2E465FDF00870564 /* ArgParser.m in Sources */,
 				B6F440B32E4665BD00870564 /* FlagObjectBuilder.m in Sources */,
+				B64B392E2E58D42A00FC359D /* ThreadConsumer.m in Sources */,
 				B6E24B232E561CE1003E2A3E /* SimFamilyNames.m in Sources */,
 				B6E24B282E561E63003E2A3E /* SimNames.m in Sources */,
 				B6F440A42E465EB300870564 /* Containers.m in Sources */,
 				B6B8D0372E57ABAB008557A2 /* TraitAlias.m in Sources */,
 				B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */,
 				B69F34FD2E383AE6007EEA89 /* ResourceMaps.m in Sources */,
+				B64B39252E58D26100FC359D /* SemiGlobalAlias.m in Sources */,
 				B61CE56F2E3A863800547C40 /* WaitControl.m in Sources */,
 				B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */,
 				B6B02CD22E4EB32A009240FD /* RcolWrapper.m in Sources */,
@@ -1221,6 +1312,7 @@
 				B64EEF812E3987F20008E7CA /* ResourceTreeTypeNodeExt.m in Sources */,
 				B65044672E46C40F0014569E /* DBPFIndexUtility.m in Sources */,
 				B6CDCCA02E3427DE004FDF82 /* HeaderHole.m in Sources */,
+				B64B393B2E58E63000FC359D /* PackedFileWrapper.m in Sources */,
 				B64EEF7E2E3986BB0008E7CA /* ResourceTreeNodesByType.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

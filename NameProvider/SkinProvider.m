@@ -29,9 +29,9 @@
 
 #import "SkinProvider.h"
 #import "MetaData.h"
-#import "Cpf.h"
+#import "CpfWrapper.h"
 #import "CpfItem.h"
-#import "RefFile.h"
+#import "PackedFileWrapper.h"
 #import "GenericRcol.h"
 #import "Nmap.h"
 #import "Txtr.h"
