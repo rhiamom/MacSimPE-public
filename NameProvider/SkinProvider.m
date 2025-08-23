@@ -32,7 +32,7 @@
 #import "CpfWrapper.h"
 #import "CpfItem.h"
 #import "PackedFileWrapper.h"
-#import "GenericRcol.h"
+#import "GenericRcolWrapper.h"
 #import "Nmap.h"
 #import "Txtr.h"
 #import "ImageData.h"

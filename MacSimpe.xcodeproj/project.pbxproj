@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B60ADF502E592B4F00F66F86 /* PackedFileForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */; };
+		B60ADF532E592D0600F66F86 /* PackedFileUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF522E592D0600F66F86 /* PackedFileUI.m */; };
+		B60ADF562E5937E900F66F86 /* cImageData.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF552E5937E900F66F86 /* cImageData.m */; };
+		B60ADF592E5938B600F66F86 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF582E5938B600F66F86 /* ImageLoader.m */; };
 		B61C4CFC2E456EF300BC38B4 /* PackageFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = B61C4CFB2E456EF300BC38B4 /* PackageFiles.m */; };
 		B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE5682E3A84A200547C40 /* ResourceNameSorter.m */; };
 		B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE56B2E3A85A800547C40 /* ViewFilter.m */; };
@@ -166,6 +170,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B60ADF4E2E592A9800F66F86 /* PackedFileForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileForm.h; sourceTree = "<group>"; };
+		B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileForm.m; sourceTree = "<group>"; };
+		B60ADF512E592C8E00F66F86 /* PackedFileUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileUI.h; sourceTree = "<group>"; };
+		B60ADF522E592D0600F66F86 /* PackedFileUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileUI.m; sourceTree = "<group>"; };
+		B60ADF542E59374E00F66F86 /* cImageData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cImageData.h; sourceTree = "<group>"; };
+		B60ADF552E5937E900F66F86 /* cImageData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cImageData.m; sourceTree = "<group>"; };
+		B60ADF572E59388800F66F86 /* ImageLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageLoader.h; sourceTree = "<group>"; };
+		B60ADF582E5938B600F66F86 /* ImageLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageLoader.m; sourceTree = "<group>"; };
 		B61C4CF92E456A1F00BC38B4 /* FileTableItemType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTableItemType.h; sourceTree = "<group>"; };
 		B61C4CFA2E456EB100BC38B4 /* PackageFiles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageFiles.h; sourceTree = "<group>"; };
 		B61C4CFB2E456EF300BC38B4 /* PackageFiles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageFiles.m; sourceTree = "<group>"; };
@@ -660,6 +672,10 @@
 				B671B4832E4F959E004559C3 /* AbstractRcolBlock.m */,
 				B671B4852E4F95D1004559C3 /* cSGResource.h */,
 				B671B4862E4F95FF004559C3 /* cSGResource.m */,
+				B60ADF542E59374E00F66F86 /* cImageData.h */,
+				B60ADF552E5937E900F66F86 /* cImageData.m */,
+				B60ADF572E59388800F66F86 /* ImageLoader.h */,
+				B60ADF582E5938B600F66F86 /* ImageLoader.m */,
 			);
 			path = Rcol;
 			sourceTree = "<group>";
@@ -709,6 +725,9 @@
 				B64B393A2E58E63000FC359D /* PackedFileWrapper.m */,
 				B64B393C2E58E6B500FC359D /* PackedFileitem.h */,
 				B64B393D2E58E6F800FC359D /* PackedFileItem.m */,
+				B60ADF4E2E592A9800F66F86 /* PackedFileForm.h */,
+				B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */,
+				B60ADF512E592C8E00F66F86 /* PackedFileUI.h */,
 			);
 			path = Scenegraph;
 			sourceTree = "<group>";
@@ -925,6 +944,7 @@
 				B69C59F02E3E7FBA00794FC7 /* IWrapperRegistry.h */,
 				B6B8D0352E57AB77008557A2 /* TraitAlias.h */,
 				B6B8D0362E57ABAB008557A2 /* TraitAlias.m */,
+				B60ADF522E592D0600F66F86 /* PackedFileUI.m */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -1210,6 +1230,7 @@
 				B69F34EC2E37F3F3007EEA89 /* GeneratableFile.m in Sources */,
 				B6B02CE12E4EC0E7009240FD /* ScenegraphHelper.m in Sources */,
 				B64B39282E58D2E300FC359D /* SemiGlobalListing.m in Sources */,
+				B60ADF502E592B4F00F66F86 /* PackedFileForm.m in Sources */,
 				B61CE5A32E3AE68400547C40 /* PackageRepair.m in Sources */,
 				B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */,
 				B64EEF782E3985AC0008E7CA /* ResourceTreeNodesByGroup.m in Sources */,
@@ -1302,6 +1323,9 @@
 				B6B8D0372E57ABAB008557A2 /* TraitAlias.m in Sources */,
 				B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */,
 				B69F34FD2E383AE6007EEA89 /* ResourceMaps.m in Sources */,
+				B60ADF562E5937E900F66F86 /* cImageData.m in Sources */,
+				B60ADF592E5938B600F66F86 /* ImageLoader.m in Sources */,
+				B60ADF532E592D0600F66F86 /* PackedFileUI.m in Sources */,
 				B64B39252E58D26100FC359D /* SemiGlobalAlias.m in Sources */,
 				B61CE56F2E3A863800547C40 /* WaitControl.m in Sources */,
 				B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */,
