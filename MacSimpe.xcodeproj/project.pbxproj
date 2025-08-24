@@ -144,6 +144,13 @@
 		B6E24B2C2E561F98003E2A3E /* SimDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B2B2E561F98003E2A3E /* SimDescriptions.m */; };
 		B6E24B302E5620E4003E2A3E /* SkinProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B2F2E5620E4003E2A3E /* SkinProvider.m */; };
 		B6E24B342E562218003E2A3E /* LotProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B332E562218003E2A3E /* LotProvider.m */; };
+		B6E2B5DC2E5BB20300AA6170 /* BuildTxtr.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5DB2E5BB20300AA6170 /* BuildTxtr.m */; };
+		B6E2B5DF2E5BB33C00AA6170 /* FixPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5DE2E5BB33C00AA6170 /* FixPackage.m */; };
+		B6E2B5E12E5BB3D900AA6170 /* WrapperFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5E02E5BB3D900AA6170 /* WrapperFactory.m */; };
+		B6E2B5E42E5BB5A100AA6170 /* GroupCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5E32E5BB5A100AA6170 /* GroupCacheItem.m */; };
+		B6E2B5E72E5BB65000AA6170 /* GroupCacheWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5E62E5BB65000AA6170 /* GroupCacheWrapper.m */; };
+		B6E2B5EA2E5BB87400AA6170 /* GroupCacheForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5E92E5BB87400AA6170 /* GroupCacheForm.m */; };
+		B6E2B5ED2E5BB92700AA6170 /* GroupCacheUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5EC2E5BB92700AA6170 /* GroupCacheUI.m */; };
 		B6F440A12E46589400870564 /* ASerializeFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440A02E46589400870564 /* ASerializeFormater.m */; };
 		B6F440A42E465EB300870564 /* Containers.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440A32E465EB300870564 /* Containers.m */; };
 		B6F440A72E465F2500870564 /* CountedListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440A62E465F2500870564 /* CountedListItem.m */; };
@@ -495,6 +502,20 @@
 		B6E24B312E56216A003E2A3E /* ILotProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILotProvider.h; sourceTree = "<group>"; };
 		B6E24B322E5621C5003E2A3E /* LotProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LotProvider.h; sourceTree = "<group>"; };
 		B6E24B332E562218003E2A3E /* LotProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LotProvider.m; sourceTree = "<group>"; };
+		B6E2B5D92E5BB05A00AA6170 /* WrapperFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WrapperFactory.h; sourceTree = "<group>"; };
+		B6E2B5DA2E5BB1ED00AA6170 /* BuildTxtr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuildTxtr.h; sourceTree = "<group>"; };
+		B6E2B5DB2E5BB20300AA6170 /* BuildTxtr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuildTxtr.m; sourceTree = "<group>"; };
+		B6E2B5DD2E5BB32A00AA6170 /* FixPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FixPackage.h; sourceTree = "<group>"; };
+		B6E2B5DE2E5BB33C00AA6170 /* FixPackage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FixPackage.m; sourceTree = "<group>"; };
+		B6E2B5E02E5BB3D900AA6170 /* WrapperFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WrapperFactory.m; sourceTree = "<group>"; };
+		B6E2B5E22E5BB58D00AA6170 /* GroupCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupCacheItem.h; sourceTree = "<group>"; };
+		B6E2B5E32E5BB5A100AA6170 /* GroupCacheItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupCacheItem.m; sourceTree = "<group>"; };
+		B6E2B5E52E5BB63C00AA6170 /* GroupCacheWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupCacheWrapper.h; sourceTree = "<group>"; };
+		B6E2B5E62E5BB65000AA6170 /* GroupCacheWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupCacheWrapper.m; sourceTree = "<group>"; };
+		B6E2B5E82E5BB85B00AA6170 /* GroupCacheForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupCacheForm.h; sourceTree = "<group>"; };
+		B6E2B5E92E5BB87400AA6170 /* GroupCacheForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupCacheForm.m; sourceTree = "<group>"; };
+		B6E2B5EB2E5BB90E00AA6170 /* GroupCacheUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupCacheUI.h; sourceTree = "<group>"; };
+		B6E2B5EC2E5BB92700AA6170 /* GroupCacheUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupCacheUI.m; sourceTree = "<group>"; };
 		B6F4409B2E4655B000870564 /* IRcolBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRcolBlock.h; sourceTree = "<group>"; };
 		B6F4409C2E46567200870564 /* RcolWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolWrapper.h; sourceTree = "<group>"; };
 		B6F4409D2E4656B400870564 /* RcolWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolWrapper.m; sourceTree = "<group>"; };
@@ -751,6 +772,20 @@
 				B60ADF4E2E592A9800F66F86 /* PackedFileForm.h */,
 				B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */,
 				B60ADF512E592C8E00F66F86 /* PackedFileUI.h */,
+				B6E2B5D92E5BB05A00AA6170 /* WrapperFactory.h */,
+				B6E2B5DA2E5BB1ED00AA6170 /* BuildTxtr.h */,
+				B6E2B5DB2E5BB20300AA6170 /* BuildTxtr.m */,
+				B6E2B5DD2E5BB32A00AA6170 /* FixPackage.h */,
+				B6E2B5DE2E5BB33C00AA6170 /* FixPackage.m */,
+				B6E2B5E02E5BB3D900AA6170 /* WrapperFactory.m */,
+				B6E2B5E22E5BB58D00AA6170 /* GroupCacheItem.h */,
+				B6E2B5E32E5BB5A100AA6170 /* GroupCacheItem.m */,
+				B6E2B5E52E5BB63C00AA6170 /* GroupCacheWrapper.h */,
+				B6E2B5E62E5BB65000AA6170 /* GroupCacheWrapper.m */,
+				B6E2B5E82E5BB85B00AA6170 /* GroupCacheForm.h */,
+				B6E2B5E92E5BB87400AA6170 /* GroupCacheForm.m */,
+				B6E2B5EB2E5BB90E00AA6170 /* GroupCacheUI.h */,
+				B6E2B5EC2E5BB92700AA6170 /* GroupCacheUI.m */,
 			);
 			path = Scenegraph;
 			sourceTree = "<group>";
@@ -1257,6 +1292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6C3F0652E54DC4E0073156B /* TypeRegistry.m in Sources */,
+				B6E2B5ED2E5BB92700AA6170 /* GroupCacheUI.m in Sources */,
 				B69F34DD2E37EEA9007EEA89 /* CRC.m in Sources */,
 				B64EEF752E39851A0008E7CA /* ResourceTreeNodeExt.m in Sources */,
 				B69F34F72E383644007EEA89 /* ResourceViewManagerHelpers.m in Sources */,
@@ -1285,6 +1321,7 @@
 				B6AAC5EE2E5A1C5C00846641 /* SOIL2.c in Sources */,
 				B60ADF502E592B4F00F66F86 /* PackedFileForm.m in Sources */,
 				B61CE5A32E3AE68400547C40 /* PackageRepair.m in Sources */,
+				B6E2B5DC2E5BB20300AA6170 /* BuildTxtr.m in Sources */,
 				B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */,
 				B64EEF782E3985AC0008E7CA /* ResourceTreeNodesByGroup.m in Sources */,
 				B6B8D02F2E57A8EA008557A2 /* CollectibleAlias.m in Sources */,
@@ -1311,6 +1348,7 @@
 				B6E24B342E562218003E2A3E /* LotProvider.m in Sources */,
 				B64E6BAD2E3534BB009AD0A7 /* Helper.m in Sources */,
 				B6E24B302E5620E4003E2A3E /* SkinProvider.m in Sources */,
+				B6E2B5E12E5BB3D900AA6170 /* WrapperFactory.m in Sources */,
 				B69C5A302E3ECEF200794FC7 /* Serializer.m in Sources */,
 				B61CE5A62E3AE72300547C40 /* SimPEResourceIndex.m in Sources */,
 				B6CDCC942E340521004FDF82 /* BinaryReader.m in Sources */,
@@ -1326,6 +1364,7 @@
 				B6CDCC972E340622004FDF82 /* BinaryWriter.m in Sources */,
 				B6CDCCA32E342902004FDF82 /* HoleIndexItem.m in Sources */,
 				B671B4872E4F95FF004559C3 /* cSGResource.m in Sources */,
+				B6E2B5EA2E5BB87400AA6170 /* GroupCacheForm.m in Sources */,
 				B61C4CFC2E456EF300BC38B4 /* PackageFiles.m in Sources */,
 				B64B392B2E58D3A500FC359D /* StreamHelper.m in Sources */,
 				B64E6BAA2E35335B009AD0A7 /* TypeAlias.m in Sources */,
@@ -1377,6 +1416,8 @@
 				B6B8D0372E57ABAB008557A2 /* TraitAlias.m in Sources */,
 				B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */,
 				B69F34FD2E383AE6007EEA89 /* ResourceMaps.m in Sources */,
+				B6E2B5E42E5BB5A100AA6170 /* GroupCacheItem.m in Sources */,
+				B6E2B5DF2E5BB33C00AA6170 /* FixPackage.m in Sources */,
 				B60ADF562E5937E900F66F86 /* cImageData.m in Sources */,
 				B60ADF592E5938B600F66F86 /* ImageLoader.m in Sources */,
 				B60ADF532E592D0600F66F86 /* PackedFileUI.m in Sources */,
@@ -1386,6 +1427,7 @@
 				B6BF52682E5B75BC007B48A1 /* NmapWrapper.m in Sources */,
 				B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */,
 				B6B02CD22E4EB32A009240FD /* RcolWrapper.m in Sources */,
+				B6E2B5E72E5BB65000AA6170 /* GroupCacheWrapper.m in Sources */,
 				B6F440A72E465F2500870564 /* CountedListItem.m in Sources */,
 				B6B8D0322E57A981008557A2 /* Events.m in Sources */,
 				B69F34E62E37F319007EEA89 /* PackageMaintainer.m in Sources */,
