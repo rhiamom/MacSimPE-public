@@ -94,6 +94,9 @@
 		B69F350F2E3848E1007EEA89 /* ResourceTreeViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = B69F350E2E3848E1007EEA89 /* ResourceTreeViewExt.m */; };
 		B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = B69F35142E385D41007EEA89 /* ResourceListViewExt.m */; };
 		B69F35182E385E4F007EEA89 /* NamedPackedFileDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B69F35172E385E4F007EEA89 /* NamedPackedFileDescriptor.m */; };
+		B6AAC5EB2E5A1C4500846641 /* libsoil2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AAC5EA2E5A1C4500846641 /* libsoil2.a */; };
+		B6AAC5EE2E5A1C5C00846641 /* SOIL2.c in Sources */ = {isa = PBXBuildFile; fileRef = B6AAC5ED2E5A1C5C00846641 /* SOIL2.c */; };
+		B6AAC5F12E5A1F9100846641 /* cLevelInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAC5F02E5A1F9100846641 /* cLevelInfo.m */; };
 		B6B02CCE2E4EB2B8009240FD /* AbstractWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BB52E353F46009AD0A7 /* AbstractWrapper.m */; };
 		B6B02CCF2E4EB2C8009240FD /* AbstractFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BB72E354348009AD0A7 /* AbstractFactory.m */; };
 		B6B02CD02E4EB2E5009240FD /* CompressedFileList.m in Sources */ = {isa = PBXBuildFile; fileRef = B632A4372E36A3AD0024810C /* CompressedFileList.m */; };
@@ -110,6 +113,10 @@
 		B6B8D0372E57ABAB008557A2 /* TraitAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B8D0362E57ABAB008557A2 /* TraitAlias.m */; };
 		B6B8D03A2E57ADCA008557A2 /* Html2Rtf.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B8D0392E57ADCA008557A2 /* Html2Rtf.m */; };
 		B6B8D03E2E57AF90008557A2 /* PropertyObjectBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B8D03D2E57AF90008557A2 /* PropertyObjectBuilder.m */; };
+		B6BF52652E5B7542007B48A1 /* NmapItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BF52642E5B7542007B48A1 /* NmapItem.m */; };
+		B6BF52682E5B75BC007B48A1 /* NmapWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BF52672E5B75BC007B48A1 /* NmapWrapper.m */; };
+		B6BF526B2E5B7651007B48A1 /* NmapForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BF526A2E5B7651007B48A1 /* NmapForm.m */; };
+		B6BF526E2E5B7806007B48A1 /* NmapUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BF526D2E5B7806007B48A1 /* NmapUI.m */; };
 		B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BB92E3543E2009AD0A7 /* AbstractWrapperInfo.m */; };
 		B6C3F0652E54DC4E0073156B /* TypeRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = B69C59F42E3E894900794FC7 /* TypeRegistry.m */; };
 		B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F0672E54E0890073156B /* InternalListeners.m */; };
@@ -378,6 +385,11 @@
 		B69F35142E385D41007EEA89 /* ResourceListViewExt.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResourceListViewExt.m; sourceTree = "<group>"; };
 		B69F35162E385E0E007EEA89 /* NamedPackedFileDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NamedPackedFileDescriptor.h; sourceTree = "<group>"; };
 		B69F35172E385E4F007EEA89 /* NamedPackedFileDescriptor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NamedPackedFileDescriptor.m; sourceTree = "<group>"; };
+		B6AAC5EA2E5A1C4500846641 /* libsoil2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsoil2.a; sourceTree = "<group>"; };
+		B6AAC5EC2E5A1C5C00846641 /* SOIL2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SOIL2.h; sourceTree = "<group>"; };
+		B6AAC5ED2E5A1C5C00846641 /* SOIL2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SOIL2.c; sourceTree = "<group>"; };
+		B6AAC5EF2E5A1F5B00846641 /* cLevelInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cLevelInfo.h; sourceTree = "<group>"; };
+		B6AAC5F02E5A1F9100846641 /* cLevelInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cLevelInfo.m; sourceTree = "<group>"; };
 		B6B02CD52E4EB567009240FD /* IPackedFileUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileUI.h; sourceTree = "<group>"; };
 		B6B02CD62E4EB9FB009240FD /* RcolUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolUI.h; sourceTree = "<group>"; };
 		B6B02CD72E4EBA34009240FD /* RcolUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolUI.m; sourceTree = "<group>"; };
@@ -406,6 +418,14 @@
 		B6BBE6F92E40F228003D5BCC /* ICommandLIne.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLIne.h; sourceTree = "<group>"; };
 		B6BBE6FA2E40F289003D5BCC /* ICommandLineFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLineFactory.h; sourceTree = "<group>"; };
 		B6BBE6FB2E40F314003D5BCC /* ICommandLineRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLineRegistry.h; sourceTree = "<group>"; };
+		B6BF52632E5B74F5007B48A1 /* NmapItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NmapItem.h; sourceTree = "<group>"; };
+		B6BF52642E5B7542007B48A1 /* NmapItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NmapItem.m; sourceTree = "<group>"; };
+		B6BF52662E5B75A4007B48A1 /* NmapWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NmapWrapper.h; sourceTree = "<group>"; };
+		B6BF52672E5B75BC007B48A1 /* NmapWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NmapWrapper.m; sourceTree = "<group>"; };
+		B6BF52692E5B763A007B48A1 /* NmapForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NmapForm.h; sourceTree = "<group>"; };
+		B6BF526A2E5B7651007B48A1 /* NmapForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NmapForm.m; sourceTree = "<group>"; };
+		B6BF526C2E5B77F4007B48A1 /* NmapUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NmapUI.h; sourceTree = "<group>"; };
+		B6BF526D2E5B7806007B48A1 /* NmapUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NmapUI.m; sourceTree = "<group>"; };
 		B6C3F0662E54E0720073156B /* InternalListeners.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InternalListeners.h; sourceTree = "<group>"; };
 		B6C3F0672E54E0890073156B /* InternalListeners.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InternalListeners.m; sourceTree = "<group>"; };
 		B6C3F0692E54E2280073156B /* IDockableTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDockableTool.h; sourceTree = "<group>"; };
@@ -541,6 +561,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6AAC5EB2E5A1C4500846641 /* libsoil2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,6 +697,8 @@
 				B60ADF552E5937E900F66F86 /* cImageData.m */,
 				B60ADF572E59388800F66F86 /* ImageLoader.h */,
 				B60ADF582E5938B600F66F86 /* ImageLoader.m */,
+				B6AAC5EF2E5A1F5B00846641 /* cLevelInfo.h */,
+				B6AAC5F02E5A1F9100846641 /* cLevelInfo.m */,
 			);
 			path = Rcol;
 			sourceTree = "<group>";
@@ -777,9 +800,36 @@
 			path = ResourceControls;
 			sourceTree = "<group>";
 		};
+		B6AAC5E92E5A1C1700846641 /* CSoil2 */ = {
+			isa = PBXGroup;
+			children = (
+				B6AAC5EC2E5A1C5C00846641 /* SOIL2.h */,
+				B6AAC5ED2E5A1C5C00846641 /* SOIL2.c */,
+				B6AAC5EA2E5A1C4500846641 /* libsoil2.a */,
+			);
+			path = CSoil2;
+			sourceTree = "<group>";
+		};
+		B6BF52622E5B74DB007B48A1 /* 3IDR */ = {
+			isa = PBXGroup;
+			children = (
+				B6BF52632E5B74F5007B48A1 /* NmapItem.h */,
+				B6BF52642E5B7542007B48A1 /* NmapItem.m */,
+				B6BF52662E5B75A4007B48A1 /* NmapWrapper.h */,
+				B6BF52672E5B75BC007B48A1 /* NmapWrapper.m */,
+				B6BF52692E5B763A007B48A1 /* NmapForm.h */,
+				B6BF526A2E5B7651007B48A1 /* NmapForm.m */,
+				B6BF526C2E5B77F4007B48A1 /* NmapUI.h */,
+				B6BF526D2E5B7806007B48A1 /* NmapUI.m */,
+			);
+			path = 3IDR;
+			sourceTree = "<group>";
+		};
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
+				B6BF52622E5B74DB007B48A1 /* 3IDR */,
+				B6AAC5E92E5A1C1700846641 /* CSoil2 */,
 				B64B392F2E58DCF700FC359D /* FileHandler */,
 				B65044682E46D1DA0014569E /* Temp */,
 				B632A4352E36A2FD0024810C /* Clst */,
@@ -1227,9 +1277,12 @@
 				B64B39352E58DE1F00FC359D /* CpfItem.m in Sources */,
 				B6FBA7FC2E529DD30000F0D5 /* HeaderView.m in Sources */,
 				B64F1C9B2E43FEC3001C0DEC /* XmlPackageReaderBase.m in Sources */,
+				B6BF526B2E5B7651007B48A1 /* NmapForm.m in Sources */,
 				B69F34EC2E37F3F3007EEA89 /* GeneratableFile.m in Sources */,
 				B6B02CE12E4EC0E7009240FD /* ScenegraphHelper.m in Sources */,
 				B64B39282E58D2E300FC359D /* SemiGlobalListing.m in Sources */,
+				B6BF52652E5B7542007B48A1 /* NmapItem.m in Sources */,
+				B6AAC5EE2E5A1C5C00846641 /* SOIL2.c in Sources */,
 				B60ADF502E592B4F00F66F86 /* PackedFileForm.m in Sources */,
 				B61CE5A32E3AE68400547C40 /* PackageRepair.m in Sources */,
 				B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */,
@@ -1306,6 +1359,7 @@
 				B6CDCCBB2E345922004FDF82 /* PackedFileDescriptors.m in Sources */,
 				B64EEF482E3939610008E7CA /* ResourceListItemExt.m in Sources */,
 				B64F1CA42E4404F9001C0DEC /* Settings.m in Sources */,
+				B6BF526E2E5B7806007B48A1 /* NmapUI.m in Sources */,
 				B64E6BA72E3531DF009AD0A7 /* Alias.m in Sources */,
 				B6CDCC8B2E33FC6B004FDF82 /* Stream.m in Sources */,
 				B64B391C2E58D05800FC359D /* PropertyUserTypes.m in Sources */,
@@ -1327,7 +1381,9 @@
 				B60ADF592E5938B600F66F86 /* ImageLoader.m in Sources */,
 				B60ADF532E592D0600F66F86 /* PackedFileUI.m in Sources */,
 				B64B39252E58D26100FC359D /* SemiGlobalAlias.m in Sources */,
+				B6AAC5F12E5A1F9100846641 /* cLevelInfo.m in Sources */,
 				B61CE56F2E3A863800547C40 /* WaitControl.m in Sources */,
+				B6BF52682E5B75BC007B48A1 /* NmapWrapper.m in Sources */,
 				B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */,
 				B6B02CD22E4EB32A009240FD /* RcolWrapper.m in Sources */,
 				B6F440A72E465F2500870564 /* CountedListItem.m in Sources */,
@@ -1509,6 +1565,10 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CSoil2",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Gramze-Sweatshop.MacSimpe";
@@ -1538,6 +1598,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CSoil2",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MARKETING_VERSION = 1.0;

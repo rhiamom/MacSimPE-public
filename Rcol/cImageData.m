@@ -35,16 +35,18 @@
 #import "ImageLoader.h"
 #import "FileTable.h"
 #import "FileIndex.h"
-#import "GenericRcol.h"
-#import "LevelInfo.h"
-#import "SGResource.h"
+#import "GenericRcolWrapper.h"
+#import "cLevelInfo.h"
+#import "cSGResource.h"
 #import "RcolWrapper.h"
 #import "MetaData.h"
 #import "ScenegraphHelper.h"
 #import "IPackageFile.h"
 #import "IPackedFileDescriptor.h"
 #import "IScenegraphFileIndexItem.h"
-#import "DDSData.h"
+#import "MemoryStream.h"
+#import "PackedFileDescriptor.h"
+
 
 // MARK: - MipMap Implementation
 
@@ -53,7 +55,7 @@
     NSImage *_image;
     MipMapType _dataType;
     NSString *_lifoFile;
-    ImageData *_parent;
+    __weak ImageData *_parent;
     NSInteger _index;
     NSInteger _mapCount;
 }
@@ -73,7 +75,8 @@
 
 - (void)reloadTexture {
     if ((_dataType != MipMapTypeLifoReference) && (_data != nil)) {
-        BinaryReader *reader = [[BinaryReader alloc] initWithData:_data];
+        MemoryStream *memoryStream = [[MemoryStream alloc] initWithData:_data];
+        BinaryReader *reader = [[BinaryReader alloc] initWithStream:memoryStream];
         _image = [ImageLoader loadWithTextureSize:self.parent.textureSize
                                            length:_data.length
                                            format:self.parent.format
@@ -127,7 +130,7 @@
     switch (_dataType) {
         case MipMapTypeTexture: {
             uint32_t imgSize = [reader readUInt32];
-            NSInteger pos = reader.position;
+            int64_t pos = reader.baseStream.position;
             
             if (!self.parent.parent.fast) {
                 @try {
@@ -140,11 +143,11 @@
             }
             
             // Read any remaining bytes to maintain proper stream position
-            NSInteger remaining = MAX(0, pos + imgSize - reader.position);
+            NSInteger remaining = MAX(0, pos + imgSize - reader.baseStream.position);
             if (remaining > 0) {
                 [reader readBytes:remaining];
             }
-            [reader seekToPosition:pos + imgSize];
+            [reader.baseStream seekToOffset:pos + imgSize origin:SeekOriginBegin];
             break;
         }
         case MipMapTypeLifoReference: {
@@ -200,14 +203,14 @@
 
 - (void)getReferencedLifo {
     if (_dataType == MipMapTypeLifoReference) {
-        id<IScenegraphFileIndex> nfi = [FileIndex.sharedIndex addNewChild];
+        id<IScenegraphFileIndex> nfi = [FileTable.fileIndex addNewChild];
         [nfi addIndexFromPackage:self.parent.parent.package];
         BOOL success = [self getReferencedLifoNoLoad];
-        [FileIndex.sharedIndex removeChild:nfi];
+        [FileTable.fileIndex removeChild:nfi];
         [nfi clear];
         
-        if (!success && ![FileIndex.sharedIndex loaded]) {
-            [FileIndex.sharedIndex load];
+        if (!success && ![FileTable.fileIndex loaded]) {
+            [FileTable.fileIndex load];
             [self getReferencedLifoNoLoad];
         }
     }
@@ -215,23 +218,23 @@
 
 - (BOOL)getReferencedLifoNoLoad {
     if (_dataType == MipMapTypeLifoReference) {
-        id<IScenegraphFileIndexItem> item = [FileIndex.sharedIndex findFileByName:_lifoFile
-                                                                             type:[MetaData LIFO]
-                                                                            group:[MetaData LOCAL_GROUP]
-                                                                       exactMatch:YES];
-        GenericRcol *rcol = nil;
+        id<IScenegraphFileIndexItem> item = [FileTableBase.fileIndex findFileByName:_lifoFile
+                                                                               type:[MetaData LIFO]
+                                                                           defGroup:[MetaData LOCAL_GROUP]
+                                                                         beTolerant:YES];
+        GenericRcol *rcol = nil;  // Declare the variable at the top
         
         if (item != nil) {
             // We have a global LIFO (loads faster)
             rcol = [[GenericRcol alloc] initWithProvider:nil fast:NO];
-            [rcol processData:item.fileDescriptor package:item.package];
+            [rcol processData:item.fileDescriptor package:item.package]; // Use correct method signature
         } else {
             // The lifo wasn't found globally, so look in local package
             id<IPackageFile> pkg = self.parent.parent.package;
-            NSArray<id<IPackedFileDescriptor>> *pfds = [pkg findFile:_lifoFile type:[MetaData LIFO]];
+            NSArray<id<IPackedFileDescriptor>> *pfds = [pkg findFile:_lifoFile type:[MetaData LIFO]]; // Fixed method name
             if (pfds.count > 0) {
                 rcol = [[GenericRcol alloc] initWithProvider:nil fast:NO];
-                [rcol processData:pfds[0] package:pkg];
+                [rcol processData:pfds[0] package:pkg]; // Use correct method signature
             }
         }
         
@@ -277,7 +280,7 @@
 
 @implementation MipMapBlock {
     NSMutableArray<MipMap *> *_mipMaps;
-    ImageData *_parent;
+    __weak ImageData *_parent;
     uint32_t _creator;
     uint32_t _unknown1;
 }
@@ -502,6 +505,7 @@
     [self.sgres unserialize:reader];
     
     if (self.parent.fast) {
+        /Users/catherinegramze/Desktop/fullsimpe-0.72.01/SimPe 3IDR/NmapItem.cs
         _textureSize = NSMakeSize(0, 0);
         _mipMapBlocks = [[NSMutableArray alloc] init];
         return;
@@ -543,7 +547,7 @@
     }
     
     [writer writeUInt32:self.version];
-    NSString *s = [self.sgres registerWithParent:nil];
+    NSString *s = [self.sgres register:nil];
     [writer writeString:s];
     
     [writer writeUInt32:self.sgres.blockId];
@@ -573,15 +577,18 @@
     for (MipMapBlock *mmp in _mipMapBlocks) {
         for (MipMap *mm in mmp.mipMaps) {
             if (mm.dataType == MipMapTypeLifoReference) {
-                id<IPackedFileDescriptor> pfd = [ScenegraphHelper buildPfdWithName:mm.lifoFile
-                                                                               type:[ScenegraphHelper LIFO]
-                                                                              group:parentGroup];
-                [list addObject:pfd];
-            }
-        }
-    }
-    
-    refMap[@"LIFO"] = list;
+                PackedFileDescriptor *pfd = [[PackedFileDescriptor alloc] init];
+                                pfd.type = [MetaData LIFO];
+                                pfd.group = parentGroup;
+                                pfd.filename = mm.lifoFile;
+                                // Note: We may need to set other properties like instance if needed
+                                
+                                [list addObject:pfd];
+                            }
+                        }
+                    }
+                    
+                    refMap[@"LIFO"] = list;
 }
 
 - (MipMap *)largestTexture {

@@ -1,8 +1,8 @@
 //
-//  SGResource.m
+//  NmapWrapper.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/15/25.
+//  Created by Catherine Gramze on 8/24/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,44 +27,53 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import "cSGResource.h"
-#import "RcolWrapper.h"
-#import "BinaryReader.h"
-#import "BinaryWriter.h"
+#import <Foundation/Foundation.h>
+#import "AbstractWrapper.h"
+#import "IFileWrapper.h"
+#import "IFileWrapperSaveExtension.h"
 
-@implementation SGResource
+@protocol IPackedFileDescriptor;
+@protocol IProviderRegistry;
+@protocol IPackedFileUI;
+@protocol IWrapperInfo;
+@class BinaryReader;
+@class BinaryWriter;
+@class NmapItem;
+
+/**
+ * This is the actual FileWrapper
+ * @remarks
+ * The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads
+ * a BinaryStream and translates the data into some userdefine Attributes.
+ */
+@interface Nmap : AbstractWrapper <IFileWrapper, IFileWrapperSaveExtension>
+
+// MARK: - Properties
+
+/**
+ * Returns / Sets the Header
+ */
+@property (nonatomic, strong) NSArray<id<IPackedFileDescriptor>> *items;
+
+/**
+ * The provider registry
+ */
+@property (nonatomic, strong, readonly) id<IProviderRegistry> provider;
 
 // MARK: - Initialization
 
-- (instancetype)initWithParent:(Rcol *)parent {
-    self = [super initWithParent:parent];
-    if (self) {
-        self.version = 0x02;
-        _fileName = @"";
-    }
-    return self;
-}
+/**
+ * Constructor
+ */
+- (instancetype)initWithProvider:(id<IProviderRegistry>)provider;
 
-- (NSString *)register:(id)parent {
-    // For now, just return the filename
-    // This may need to be more sophisticated based on the full C# implementation
-    return self.fileName ? self.fileName : @"";
-}
+// MARK: - Search Methods
 
-// MARK: - IRcolBlock Protocol Methods
-
-- (void)unserialize:(BinaryReader *)reader {
-    self.version = [reader readUInt32];
-    self.fileName = [reader readString];
-}
-
-- (void)serialize:(BinaryWriter *)writer {
-    [writer writeUInt32:self.version];
-    [writer writeString:self.fileName];
-}
-
-- (void)dispose {
-    // No special cleanup needed for SGResource
-}
+/**
+ * Returns all Filedescriptors for Files starting with the given Value
+ * @param start The string the Filename starts with
+ * @returns A List of File Descriptors
+ */
+- (NSArray<id<IPackedFileDescriptor>> *)findFiles:(NSString *)start;
 
 @end

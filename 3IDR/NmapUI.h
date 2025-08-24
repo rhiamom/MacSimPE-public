@@ -1,8 +1,8 @@
 //
-//  SGResource.m
+//  NmapUI.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/15/25.
+//  Created by Catherine Gramze on 8/24/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,44 +27,30 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import "cSGResource.h"
-#import "RcolWrapper.h"
-#import "BinaryReader.h"
-#import "BinaryWriter.h"
+#import <Foundation/Foundation.h>
+#import "IPackedFileUI.h"
 
-@implementation SGResource
+@class NmapForm;
+@class Nmap;
+@protocol IFileWrapper;
+
+/**
+ * This class is used to fill the UI for this FileType with Data
+ */
+@interface NmapUI : NSObject <IPackedFileUI>
+
+// MARK: - Properties
+
+/**
+ * Holds a reference to the Form containing the UI Panel
+ */
+@property (nonatomic, strong) NmapForm *form;
 
 // MARK: - Initialization
 
-- (instancetype)initWithParent:(Rcol *)parent {
-    self = [super initWithParent:parent];
-    if (self) {
-        self.version = 0x02;
-        _fileName = @"";
-    }
-    return self;
-}
-
-- (NSString *)register:(id)parent {
-    // For now, just return the filename
-    // This may need to be more sophisticated based on the full C# implementation
-    return self.fileName ? self.fileName : @"";
-}
-
-// MARK: - IRcolBlock Protocol Methods
-
-- (void)unserialize:(BinaryReader *)reader {
-    self.version = [reader readUInt32];
-    self.fileName = [reader readString];
-}
-
-- (void)serialize:(BinaryWriter *)writer {
-    [writer writeUInt32:self.version];
-    [writer writeString:self.fileName];
-}
-
-- (void)dispose {
-    // No special cleanup needed for SGResource
-}
+/**
+ * Constructor for the Class
+ */
+- (instancetype)init;
 
 @end

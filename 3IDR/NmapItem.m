@@ -1,8 +1,8 @@
 //
-//  SGResource.m
+//  NmapItem.m
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/15/25.
+//  Created by Catherine Gramze on 8/24/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,44 +27,58 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import "cSGResource.h"
-#import "RcolWrapper.h"
-#import "BinaryReader.h"
-#import "BinaryWriter.h"
+#import "NmapItem.h"
+#import "NmapWrapper.h"
+#import "Helper.h"
 
-@implementation SGResource
+@implementation NmapItem
 
 // MARK: - Initialization
 
-- (instancetype)initWithParent:(Rcol *)parent {
-    self = [super initWithParent:parent];
+- (instancetype)initWithParent:(Nmap *)parent {
+    self = [super init];
     if (self) {
-        self.version = 0x02;
-        _fileName = @"";
+        _parent = parent;
     }
     return self;
 }
 
-- (NSString *)register:(id)parent {
-    // For now, just return the filename
-    // This may need to be more sophisticated based on the full C# implementation
-    return self.fileName ? self.fileName : @"";
+// MARK: - NSObject Methods
+
+- (NSString *)description {
+    NSString *name = [NSString stringWithFormat:@"%@: 0x%@ - 0x%@",
+                      self.filename,
+                      [Helper hexStringUInt:self.group],
+                      [Helper hexStringUInt:self.instance]];
+    return name;
 }
 
-// MARK: - IRcolBlock Protocol Methods
+@end
 
-- (void)unserialize:(BinaryReader *)reader {
-    self.version = [reader readUInt32];
-    self.fileName = [reader readString];
+#import "NmapItem.h"
+#import "Nmap.h"
+#import "Helper.h"
+
+@implementation NmapItem
+
+// MARK: - Initialization
+
+- (instancetype)initWithParent:(Nmap *)parent {
+    self = [super init];
+    if (self) {
+        _parent = parent;
+    }
+    return self;
 }
 
-- (void)serialize:(BinaryWriter *)writer {
-    [writer writeUInt32:self.version];
-    [writer writeString:self.fileName];
-}
+// MARK: - NSObject Methods
 
-- (void)dispose {
-    // No special cleanup needed for SGResource
+- (NSString *)description {
+    NSString *name = [NSString stringWithFormat:@"%@: 0x%@ - 0x%@",
+                      self.filename,
+                      [Helper hexStringUInt:self.group],
+                      [Helper hexStringUInt:self.instance]];
+    return name;
 }
 
 @end

@@ -30,6 +30,9 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
 
+// Import CSoil2 headers
+#import "SOIL2.h"
+
 @class BinaryReader, BinaryWriter;
 
 /**
@@ -69,12 +72,13 @@ typedef NS_ENUM(uint32_t, TxtrFormats) {
 
 /**
  * Provides static Methods to process several Image Data formats
+ * Now using CSoil2 library for improved DDS/DXT handling
  */
 @interface ImageLoader : NSObject
 
 // MARK: - DDS File Processing
 /**
- * Loads the MipMap Data from a DDS File
+ * Loads the MipMap Data from a DDS File using CSoil2
  * @param filename The filename of the DDS file
  * @returns Array of DDSData objects (Biggest Map first)
  * @throws NSException if the signature is unknown
@@ -83,7 +87,7 @@ typedef NS_ENUM(uint32_t, TxtrFormats) {
 
 // MARK: - Image Loading
 /**
- * Tries to load an Image from the datasource
+ * Tries to load an Image from the datasource using CSoil2 when appropriate
  * @param imageSize Maximum Dimensions of the Image (used to determine the aspect ratio)
  * @param dataSize Number of bytes used for the image in the Stream
  * @param format Format of the Image
@@ -111,7 +115,7 @@ typedef NS_ENUM(uint32_t, TxtrFormats) {
 
 // MARK: - Image Saving
 /**
- * Creates a NSData array for the passed Image
+ * Creates a NSData array for the passed Image using CSoil2 for DDS formats
  * @param format The Format you want to store the Image in
  * @param image The Image
  * @returns NSData containing the Image Data
@@ -120,7 +124,7 @@ typedef NS_ENUM(uint32_t, TxtrFormats) {
 
 // MARK: - RAW Format Processing
 /**
- * Parse RAW format image data
+ * Parse RAW format image data (uses native implementation for raw formats)
  */
 + (NSImage *)rawParserWithParentSize:(NSSize)parentSize
                               format:(TxtrFormats)format
@@ -130,13 +134,13 @@ typedef NS_ENUM(uint32_t, TxtrFormats) {
                               height:(NSInteger)height;
 
 /**
- * Write RAW format image data
+ * Write RAW format image data (uses native implementation for raw formats)
  */
 + (NSData *)rawWriterWithImage:(NSImage *)image format:(TxtrFormats)format;
 
-// MARK: - DXT Format Processing
+// MARK: - DXT Format Processing (now using CSoil2)
 /**
- * Parse DXT1/DXT3/DXT5 format image data
+ * Parse DXT1/DXT3/DXT5 format image data using CSoil2 library
  */
 + (NSImage *)dxt3ParserWithParentSize:(NSSize)parentSize
                                format:(TxtrFormats)format
@@ -146,7 +150,7 @@ typedef NS_ENUM(uint32_t, TxtrFormats) {
                                height:(NSInteger)height;
 
 /**
- * Write DXT format image data
+ * Write DXT format image data using CSoil2 library
  */
 + (NSData *)dxt3WriterWithImage:(NSImage *)image format:(TxtrFormats)format;
 
@@ -165,5 +169,32 @@ typedef NS_ENUM(uint32_t, TxtrFormats) {
  * @returns NSBitmapImageFileType for the file extension
  */
 + (NSBitmapImageFileType)getImageFormatFromName:(NSString *)name;
+
+// MARK: - Private CSoil2 Utility Methods
+/**
+ * Converts TxtrFormats enum to SOIL format constants
+ */
++ (int)txtrFormatToSoilFormat:(TxtrFormats)format;
+
+/**
+ * Converts SOIL format constants to TxtrFormats enum
+ */
++ (TxtrFormats)soilFormatToTxtrFormat:(int)soilFormat;
+
+/**
+ * Converts NSImage to raw pixel data for CSoil2
+ */
++ (unsigned char *)nsImageToPixelData:(NSImage *)image
+                                width:(int *)width
+                               height:(int *)height
+                             channels:(int *)channels;
+
+/**
+ * Creates NSImage from raw pixel data returned by CSoil2
+ */
++ (NSImage *)pixelDataToNSImage:(unsigned char *)pixelData
+                          width:(int)width
+                         height:(int)height
+                       channels:(int)channels;
 
 @end

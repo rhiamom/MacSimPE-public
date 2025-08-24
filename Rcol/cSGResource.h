@@ -46,7 +46,12 @@
 
 // MARK: - Initialization
 - (instancetype)initWithParent:(Rcol *)parent;
-
+/**
+ * Registers this resource and returns its identifier
+ * @param parent The parent object (can be nil)
+ * @returns The filename or identifier string
+ */
+- (NSString *)register:(id)parent;
 // MARK: - IRcolBlock Protocol Methods
 - (void)unserialize:(BinaryReader *)reader;
 - (void)serialize:(BinaryWriter *)writer;

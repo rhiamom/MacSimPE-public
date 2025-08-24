@@ -1,8 +1,8 @@
 //
-//  SGResource.m
+//  NmapUI.m
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/15/25.
+//  Created by Catherine Gramze on 8/24/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,44 +27,49 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import "cSGResource.h"
-#import "RcolWrapper.h"
-#import "BinaryReader.h"
-#import "BinaryWriter.h"
+#import "NmapUI.h"
+#import "NmapForm.h"
+#import "NmapWrapper.h"
+#import "IFileWrapper.h"
+#import "IPackedFileDescriptor.h"
 
-@implementation SGResource
+@implementation NmapUI
 
-// MARK: - Initialization
+// MARK: - Code to Startup the UI
 
-- (instancetype)initWithParent:(Rcol *)parent {
-    self = [super initWithParent:parent];
+- (instancetype)init {
+    self = [super init];
     if (self) {
-        self.version = 0x02;
-        _fileName = @"";
+        // form = WrapperFactory.form; // Original commented line
+        _form = [[NmapForm alloc] init];
     }
     return self;
 }
 
-- (NSString *)register:(id)parent {
-    // For now, just return the filename
-    // This may need to be more sophisticated based on the full C# implementation
-    return self.fileName ? self.fileName : @"";
+// MARK: - IPackedFileUI Protocol
+
+- (NSView *)guiHandle {
+    return _form.wrapperPanel;
 }
 
-// MARK: - IRcolBlock Protocol Methods
-
-- (void)unserialize:(BinaryReader *)reader {
-    self.version = [reader readUInt32];
-    self.fileName = [reader readString];
+- (void)updateGUI:(id<IFileWrapper>)wrapper {
+    Nmap *wrp = (Nmap *)wrapper;
+    _form.wrapper = wrp;
+    
+    [_form.itemsArray removeAllObjects];
+    
+    for (id<IPackedFileDescriptor> pfd in wrp.items) {
+        [_form.itemsArray addObject:pfd];
+    }
+    
+    [_form.lblist reloadData];
 }
 
-- (void)serialize:(BinaryWriter *)writer {
-    [writer writeUInt32:self.version];
-    [writer writeString:self.fileName];
-}
+// MARK: - Memory Management
 
 - (void)dispose {
-    // No special cleanup needed for SGResource
+    // In ARC, explicit disposal isn't needed, but we can clean up if necessary
+    _form = nil;
 }
 
 @end
