@@ -39,10 +39,10 @@
 // Import specific wrappers
 #import "PackedFile.h"
 #import "TxtrWrapper.h"
-#import "Lifo.h"
+#import "LifoWrapper.h"
 #import "GenericRcolWrapper.h"
 #import "MmatWrapper.h"
-#import "Slot.h"
+#import "SlotWrapper.h"
 // Import command line implementations (uploaded by user)
 #import "BuildTxtr.h"
 #import "FixPackage.h"

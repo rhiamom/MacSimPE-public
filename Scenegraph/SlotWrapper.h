@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  SlotWrapper.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/29/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,66 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
+#import "AbstractWrapper.h"
+#import "IFileWrapper.h"
+#import "IFileWrapperSaveExtension.h"
+#import "SlotItem.h"
+
+@class BinaryReader, BinaryWriter, SlotItems;
+@protocol IPackedFileUI, IWrapperInfo;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
+ * Used to decode the Slot files
  */
-@protocol IScenegraphItem <NSObject>
+@interface Slot : AbstractWrapper <IFileWrapper, IFileWrapperSaveExtension>
+
+// MARK: - Properties
 
 /**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
+ * Returns the Items stored in the File
+ * @remarks Do not add Items based on this List! use the Add Method!!
  */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
+@property (nonatomic, readonly, strong) SlotItems *items;
 
 /**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
+ * The filename stored in the slot file
  */
-// - (id)findReferencedType:(uint32_t)type;
+@property (nonatomic, copy) NSString *filename;
+
+/**
+ * The version of the slot file format
+ */
+@property (nonatomic, assign) uint32_t version;
+
+/**
+ * Unknown value stored in the slot file
+ */
+@property (nonatomic, assign) uint32_t unknown;
+
+// MARK: - Initialization
+
+/**
+ * Constructor
+ */
+- (instancetype)init;
+
+// MARK: - IFileWrapper Protocol Methods
+
+/**
+ * Returns the Signature that can be used to identify Files processable with this Plugin
+ */
+@property (nonatomic, readonly, strong) NSData *fileSignature;
+
+/**
+ * Returns a list of File Types this Plugin can process
+ */
+@property (nonatomic, readonly, strong) NSArray<NSNumber *> *assignableTypes;
 
 @end
+
+NS_ASSUME_NONNULL_END

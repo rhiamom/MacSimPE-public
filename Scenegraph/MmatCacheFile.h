@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  MmatCacheFile.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/28/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,66 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
+#import "CacheFile.h"
+
+@class FileIndex, MmatWrapper;
+@protocol IPackedFileDescriptor;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
+ * Contains an Instance of a CacheFile
  */
-@protocol IScenegraphItem <NSObject>
+@interface MmatCacheFile : CacheFile
+
+// MARK: - Properties
 
 /**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
+ * Return the FileIndex represented by the Cached Files
  */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
+@property (nonatomic, strong, readonly) FileIndex *fileIndex;
 
 /**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
+ * Returns all known MMAT Files sorted by the Default State
  */
-// - (id)findReferencedType:(uint32_t)type;
+@property (nonatomic, strong, readonly) NSDictionary<NSNumber *, NSArray *> *defaultMap;
+
+/**
+ * Returns all known MMAT Files sorted by the ModelName
+ */
+@property (nonatomic, strong, readonly) NSDictionary<NSString *, NSArray *> *modelMap;
+
+// MARK: - Initialization
+
+/**
+ * Create a new Instance for an empty File
+ */
+- (instancetype)init;
+
+// MARK: - Item Management
+
+/**
+ * Add a MaterialOverride to the Cache
+ * @param mmat The Material Override to add
+ */
+- (void)addItem:(MmatWrapper *)mmat;
+
+/**
+ * Creates a FileIndex with all available MMAT Files
+ * @remarks
+ * The Tags of the FileDescriptions contain the MmatCacheItem Object,
+ * the FileNames of the FileDescriptions contain the Name of the package File
+ */
+- (void)loadOverrides;
+
+/**
+ * Load the Map Files
+ */
+- (void)loadOverrideMaps;
 
 @end
+
+NS_ASSUME_NONNULL_END

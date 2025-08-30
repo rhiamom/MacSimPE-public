@@ -7,10 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B6053BF62E5E52BD00751B39 /* LifoWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6053BF52E5E52BD00751B39 /* LifoWrapper.m */; };
+		B6053BF92E5E53C400751B39 /* LifoForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6053BF82E5E53C400751B39 /* LifoForm.m */; };
 		B60ADF502E592B4F00F66F86 /* PackedFileForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */; };
 		B60ADF532E592D0600F66F86 /* PackedFileUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF522E592D0600F66F86 /* PackedFileUI.m */; };
 		B60ADF562E5937E900F66F86 /* cImageData.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF552E5937E900F66F86 /* cImageData.m */; };
 		B60ADF592E5938B600F66F86 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF582E5938B600F66F86 /* ImageLoader.m */; };
+		B616F7122E60A5FC00D0263A /* LifoUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B616F7112E60A5FC00D0263A /* LifoUI.m */; };
+		B616F7152E60A7B900D0263A /* MmatWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B616F7142E60A7B900D0263A /* MmatWrapper.m */; };
+		B6194B532E5E008100255858 /* WorkshopItems.m in Sources */ = {isa = PBXBuildFile; fileRef = B6194B522E5E008100255858 /* WorkshopItems.m */; };
+		B6194B582E5E015200255858 /* TxtrWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6194B572E5E015200255858 /* TxtrWrapper.m */; };
+		B6194B5B2E5E02FE00255858 /* TxtrForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6194B5A2E5E02FE00255858 /* TxtrForm.m */; };
+		B6194B5E2E5E05E000255858 /* TxtrUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6194B5D2E5E05E000255858 /* TxtrUI.m */; };
+		B61986F72E62058F00600ED7 /* CacheLists.m in Sources */ = {isa = PBXBuildFile; fileRef = B61986F62E62058F00600ED7 /* CacheLists.m */; };
+		B61986FB2E6206F700600ED7 /* CacheException.m in Sources */ = {isa = PBXBuildFile; fileRef = B61986FA2E6206F700600ED7 /* CacheException.m */; };
+		B61986FE2E62079D00600ED7 /* ObjectCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B61986FD2E62079D00600ED7 /* ObjectCacheItem.m */; };
+		B61987012E62096300600ED7 /* SlotItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B61987002E62096300600ED7 /* SlotItem.m */; };
+		B61987042E6209E700600ED7 /* SlotWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B61987032E6209E700600ED7 /* SlotWrapper.m */; };
 		B61C4CFC2E456EF300BC38B4 /* PackageFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = B61C4CFB2E456EF300BC38B4 /* PackageFiles.m */; };
 		B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE5682E3A84A200547C40 /* ResourceNameSorter.m */; };
 		B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE56B2E3A85A800547C40 /* ViewFilter.m */; };
@@ -151,6 +164,10 @@
 		B6E2B5E72E5BB65000AA6170 /* GroupCacheWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5E62E5BB65000AA6170 /* GroupCacheWrapper.m */; };
 		B6E2B5EA2E5BB87400AA6170 /* GroupCacheForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5E92E5BB87400AA6170 /* GroupCacheForm.m */; };
 		B6E2B5ED2E5BB92700AA6170 /* GroupCacheUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5EC2E5BB92700AA6170 /* GroupCacheUI.m */; };
+		B6F13C6A2E60F73800691586 /* MmatCacheFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F13C692E60F73800691586 /* MmatCacheFile.m */; };
+		B6F13C6E2E60F80F00691586 /* MmatCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F13C6D2E60F80F00691586 /* MmatCacheItem.m */; };
+		B6F13C712E60F8DA00691586 /* CacheFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F13C702E60F8DA00691586 /* CacheFile.m */; };
+		B6F13C742E60F98400691586 /* CacheContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F13C732E60F98400691586 /* CacheContainer.m */; };
 		B6F440A12E46589400870564 /* ASerializeFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440A02E46589400870564 /* ASerializeFormater.m */; };
 		B6F440A42E465EB300870564 /* Containers.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440A32E465EB300870564 /* Containers.m */; };
 		B6F440A72E465F2500870564 /* CountedListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440A62E465F2500870564 /* CountedListItem.m */; };
@@ -158,6 +175,7 @@
 		B6F440AD2E4661D800870564 /* ExceptionForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440AC2E4661D800870564 /* ExceptionForm.m */; };
 		B6F440B02E46643B00870564 /* FlagBaseConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440AF2E46643B00870564 /* FlagBaseConverter.m */; };
 		B6F440B32E4665BD00870564 /* FlagObjectBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F440B22E4665BD00870564 /* FlagObjectBuilder.m */; };
+		B6F605032E5F985E0038ECC5 /* ImageSize.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F605022E5F985E0038ECC5 /* ImageSize.m */; };
 		B6FBA7F62E5286A10000F0D5 /* ErrorWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FBA7F52E5286A10000F0D5 /* ErrorWrapper.m */; };
 		B6FBA7F92E528FDE0000F0D5 /* ClstForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FBA7F82E528FDE0000F0D5 /* ClstForm.m */; };
 		B6FBA7FC2E529DD30000F0D5 /* HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6FBA7FB2E529DD30000F0D5 /* HeaderView.m */; };
@@ -184,6 +202,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B6053BF42E5E52A500751B39 /* LifoWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LifoWrapper.h; sourceTree = "<group>"; };
+		B6053BF52E5E52BD00751B39 /* LifoWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LifoWrapper.m; sourceTree = "<group>"; };
+		B6053BF72E5E53B000751B39 /* LifoForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LifoForm.h; sourceTree = "<group>"; };
+		B6053BF82E5E53C400751B39 /* LifoForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LifoForm.m; sourceTree = "<group>"; };
 		B60ADF4E2E592A9800F66F86 /* PackedFileForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileForm.h; sourceTree = "<group>"; };
 		B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileForm.m; sourceTree = "<group>"; };
 		B60ADF512E592C8E00F66F86 /* PackedFileUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileUI.h; sourceTree = "<group>"; };
@@ -192,6 +214,29 @@
 		B60ADF552E5937E900F66F86 /* cImageData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cImageData.m; sourceTree = "<group>"; };
 		B60ADF572E59388800F66F86 /* ImageLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageLoader.h; sourceTree = "<group>"; };
 		B60ADF582E5938B600F66F86 /* ImageLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageLoader.m; sourceTree = "<group>"; };
+		B616F7102E60A5E000D0263A /* LifoUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LifoUI.h; sourceTree = "<group>"; };
+		B616F7112E60A5FC00D0263A /* LifoUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LifoUI.m; sourceTree = "<group>"; };
+		B616F7132E60A7A500D0263A /* MmatWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MmatWrapper.h; sourceTree = "<group>"; };
+		B616F7142E60A7B900D0263A /* MmatWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MmatWrapper.m; sourceTree = "<group>"; };
+		B6194B512E5E006B00255858 /* WorkshopItems.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WorkshopItems.h; sourceTree = "<group>"; };
+		B6194B522E5E008100255858 /* WorkshopItems.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WorkshopItems.m; sourceTree = "<group>"; };
+		B6194B562E5E013F00255858 /* TxtrWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TxtrWrapper.h; sourceTree = "<group>"; };
+		B6194B572E5E015200255858 /* TxtrWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TxtrWrapper.m; sourceTree = "<group>"; };
+		B6194B592E5E02EC00255858 /* TxtrForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TxtrForm.h; sourceTree = "<group>"; };
+		B6194B5A2E5E02FE00255858 /* TxtrForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TxtrForm.m; sourceTree = "<group>"; };
+		B6194B5C2E5E05C400255858 /* TxtrUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TxtrUI.h; sourceTree = "<group>"; };
+		B6194B5D2E5E05E000255858 /* TxtrUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TxtrUI.m; sourceTree = "<group>"; };
+		B61986F52E62057C00600ED7 /* CacheLists.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CacheLists.h; sourceTree = "<group>"; };
+		B61986F62E62058F00600ED7 /* CacheLists.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CacheLists.m; sourceTree = "<group>"; };
+		B61986F82E62061700600ED7 /* ICacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICacheItem.h; sourceTree = "<group>"; };
+		B61986F92E6206E300600ED7 /* CacheException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CacheException.h; sourceTree = "<group>"; };
+		B61986FA2E6206F700600ED7 /* CacheException.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CacheException.m; sourceTree = "<group>"; };
+		B61986FC2E62078A00600ED7 /* ObjectCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectCacheItem.h; sourceTree = "<group>"; };
+		B61986FD2E62079D00600ED7 /* ObjectCacheItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjectCacheItem.m; sourceTree = "<group>"; };
+		B61986FF2E62094E00600ED7 /* SlotItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlotItem.h; sourceTree = "<group>"; };
+		B61987002E62096300600ED7 /* SlotItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlotItem.m; sourceTree = "<group>"; };
+		B61987022E6209D300600ED7 /* SlotWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlotWrapper.h; sourceTree = "<group>"; };
+		B61987032E6209E700600ED7 /* SlotWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlotWrapper.m; sourceTree = "<group>"; };
 		B61C4CF92E456A1F00BC38B4 /* FileTableItemType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTableItemType.h; sourceTree = "<group>"; };
 		B61C4CFA2E456EB100BC38B4 /* PackageFiles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageFiles.h; sourceTree = "<group>"; };
 		B61C4CFB2E456EF300BC38B4 /* PackageFiles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageFiles.m; sourceTree = "<group>"; };
@@ -516,6 +561,14 @@
 		B6E2B5E92E5BB87400AA6170 /* GroupCacheForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupCacheForm.m; sourceTree = "<group>"; };
 		B6E2B5EB2E5BB90E00AA6170 /* GroupCacheUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupCacheUI.h; sourceTree = "<group>"; };
 		B6E2B5EC2E5BB92700AA6170 /* GroupCacheUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupCacheUI.m; sourceTree = "<group>"; };
+		B6F13C682E60F72200691586 /* MmatCacheFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MmatCacheFile.h; sourceTree = "<group>"; };
+		B6F13C692E60F73800691586 /* MmatCacheFile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MmatCacheFile.m; sourceTree = "<group>"; };
+		B6F13C6C2E60F7FC00691586 /* MmatCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MmatCacheItem.h; sourceTree = "<group>"; };
+		B6F13C6D2E60F80F00691586 /* MmatCacheItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MmatCacheItem.m; sourceTree = "<group>"; };
+		B6F13C6F2E60F8C500691586 /* CacheFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CacheFile.h; sourceTree = "<group>"; };
+		B6F13C702E60F8DA00691586 /* CacheFile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CacheFile.m; sourceTree = "<group>"; };
+		B6F13C722E60F97000691586 /* CacheContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CacheContainer.h; sourceTree = "<group>"; };
+		B6F13C732E60F98400691586 /* CacheContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CacheContainer.m; sourceTree = "<group>"; };
 		B6F4409B2E4655B000870564 /* IRcolBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRcolBlock.h; sourceTree = "<group>"; };
 		B6F4409C2E46567200870564 /* RcolWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolWrapper.h; sourceTree = "<group>"; };
 		B6F4409D2E4656B400870564 /* RcolWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolWrapper.m; sourceTree = "<group>"; };
@@ -534,6 +587,8 @@
 		B6F440AF2E46643B00870564 /* FlagBaseConverter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlagBaseConverter.m; sourceTree = "<group>"; };
 		B6F440B12E46657F00870564 /* FlagObjectBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlagObjectBuilder.h; sourceTree = "<group>"; };
 		B6F440B22E4665BD00870564 /* FlagObjectBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlagObjectBuilder.m; sourceTree = "<group>"; };
+		B6F605012E5F984B0038ECC5 /* ImageSize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageSize.h; sourceTree = "<group>"; };
+		B6F605022E5F985E0038ECC5 /* ImageSize.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageSize.m; sourceTree = "<group>"; };
 		B6FBA7F42E52865B0000F0D5 /* ErrorWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorWrapper.h; sourceTree = "<group>"; };
 		B6FBA7F52E5286A10000F0D5 /* ErrorWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ErrorWrapper.m; sourceTree = "<group>"; };
 		B6FBA7F72E528F9B0000F0D5 /* ClstForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClstForm.h; sourceTree = "<group>"; };
@@ -761,31 +816,55 @@
 		B6819E592E3E758B00E37434 /* Scenegraph */ = {
 			isa = PBXGroup;
 			children = (
+				B6E2B5DA2E5BB1ED00AA6170 /* BuildTxtr.h */,
+				B6E2B5DB2E5BB20300AA6170 /* BuildTxtr.m */,
 				B6819E5A2E3E75A000E37434 /* FileIndex.h */,
 				B6819E5B2E3E76EF00E37434 /* FileIndex.m */,
 				B6819E562E3E72FF00E37434 /* FileIndexItem.h */,
 				B6819E572E3E734000E37434 /* FileIndexItem.m */,
-				B64B39392E58E5C400FC359D /* PackedFileWrapper.h */,
-				B64B393A2E58E63000FC359D /* PackedFileWrapper.m */,
-				B64B393C2E58E6B500FC359D /* PackedFileitem.h */,
-				B64B393D2E58E6F800FC359D /* PackedFileItem.m */,
-				B60ADF4E2E592A9800F66F86 /* PackedFileForm.h */,
-				B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */,
-				B60ADF512E592C8E00F66F86 /* PackedFileUI.h */,
-				B6E2B5D92E5BB05A00AA6170 /* WrapperFactory.h */,
-				B6E2B5DA2E5BB1ED00AA6170 /* BuildTxtr.h */,
-				B6E2B5DB2E5BB20300AA6170 /* BuildTxtr.m */,
 				B6E2B5DD2E5BB32A00AA6170 /* FixPackage.h */,
 				B6E2B5DE2E5BB33C00AA6170 /* FixPackage.m */,
-				B6E2B5E02E5BB3D900AA6170 /* WrapperFactory.m */,
-				B6E2B5E22E5BB58D00AA6170 /* GroupCacheItem.h */,
-				B6E2B5E32E5BB5A100AA6170 /* GroupCacheItem.m */,
-				B6E2B5E52E5BB63C00AA6170 /* GroupCacheWrapper.h */,
-				B6E2B5E62E5BB65000AA6170 /* GroupCacheWrapper.m */,
 				B6E2B5E82E5BB85B00AA6170 /* GroupCacheForm.h */,
 				B6E2B5E92E5BB87400AA6170 /* GroupCacheForm.m */,
+				B6E2B5E22E5BB58D00AA6170 /* GroupCacheItem.h */,
+				B6E2B5E32E5BB5A100AA6170 /* GroupCacheItem.m */,
 				B6E2B5EB2E5BB90E00AA6170 /* GroupCacheUI.h */,
 				B6E2B5EC2E5BB92700AA6170 /* GroupCacheUI.m */,
+				B6E2B5E52E5BB63C00AA6170 /* GroupCacheWrapper.h */,
+				B6E2B5E62E5BB65000AA6170 /* GroupCacheWrapper.m */,
+				B6F605012E5F984B0038ECC5 /* ImageSize.h */,
+				B6F605022E5F985E0038ECC5 /* ImageSize.m */,
+				B6053BF72E5E53B000751B39 /* LifoForm.h */,
+				B6053BF82E5E53C400751B39 /* LifoForm.m */,
+				B6053BF42E5E52A500751B39 /* LifoWrapper.h */,
+				B6053BF52E5E52BD00751B39 /* LifoWrapper.m */,
+				B60ADF4E2E592A9800F66F86 /* PackedFileForm.h */,
+				B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */,
+				B64B393C2E58E6B500FC359D /* PackedFileitem.h */,
+				B64B393D2E58E6F800FC359D /* PackedFileItem.m */,
+				B60ADF512E592C8E00F66F86 /* PackedFileUI.h */,
+				B64B39392E58E5C400FC359D /* PackedFileWrapper.h */,
+				B64B393A2E58E63000FC359D /* PackedFileWrapper.m */,
+				B6194B592E5E02EC00255858 /* TxtrForm.h */,
+				B6194B5A2E5E02FE00255858 /* TxtrForm.m */,
+				B6194B5C2E5E05C400255858 /* TxtrUI.h */,
+				B6194B5D2E5E05E000255858 /* TxtrUI.m */,
+				B6194B562E5E013F00255858 /* TxtrWrapper.h */,
+				B6194B572E5E015200255858 /* TxtrWrapper.m */,
+				B6194B512E5E006B00255858 /* WorkshopItems.h */,
+				B6194B522E5E008100255858 /* WorkshopItems.m */,
+				B6E2B5D92E5BB05A00AA6170 /* WrapperFactory.h */,
+				B6E2B5E02E5BB3D900AA6170 /* WrapperFactory.m */,
+				B616F7102E60A5E000D0263A /* LifoUI.h */,
+				B616F7112E60A5FC00D0263A /* LifoUI.m */,
+				B616F7132E60A7A500D0263A /* MmatWrapper.h */,
+				B616F7142E60A7B900D0263A /* MmatWrapper.m */,
+				B6F13C682E60F72200691586 /* MmatCacheFile.h */,
+				B6F13C692E60F73800691586 /* MmatCacheFile.m */,
+				B61986FF2E62094E00600ED7 /* SlotItem.h */,
+				B61987002E62096300600ED7 /* SlotItem.m */,
+				B61987022E6209D300600ED7 /* SlotWrapper.h */,
+				B61987032E6209E700600ED7 /* SlotWrapper.m */,
 			);
 			path = Scenegraph;
 			sourceTree = "<group>";
@@ -863,6 +942,7 @@
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
+				B6F13C6B2E60F7DE00691586 /* Cache */,
 				B6BF52622E5B74DB007B48A1 /* 3IDR */,
 				B6AAC5E92E5A1C1700846641 /* CSoil2 */,
 				B64B392F2E58DCF700FC359D /* FileHandler */,
@@ -1137,6 +1217,26 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		B6F13C6B2E60F7DE00691586 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				B6F13C6C2E60F7FC00691586 /* MmatCacheItem.h */,
+				B6F13C6D2E60F80F00691586 /* MmatCacheItem.m */,
+				B6F13C6F2E60F8C500691586 /* CacheFile.h */,
+				B6F13C702E60F8DA00691586 /* CacheFile.m */,
+				B6F13C722E60F97000691586 /* CacheContainer.h */,
+				B6F13C732E60F98400691586 /* CacheContainer.m */,
+				B61986F52E62057C00600ED7 /* CacheLists.h */,
+				B61986F62E62058F00600ED7 /* CacheLists.m */,
+				B61986F82E62061700600ED7 /* ICacheItem.h */,
+				B61986F92E6206E300600ED7 /* CacheException.h */,
+				B61986FA2E6206F700600ED7 /* CacheException.m */,
+				B61986FC2E62078A00600ED7 /* ObjectCacheItem.h */,
+				B61986FD2E62079D00600ED7 /* ObjectCacheItem.m */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1299,17 +1399,21 @@
 				B69C5A272E3EC52000794FC7 /* CaseInvariantArrayList.m in Sources */,
 				B6F440A12E46589400870564 /* ASerializeFormater.m in Sources */,
 				B66C34642E3BC2D900B4B9B8 /* PathProvider.m in Sources */,
+				B6F13C6E2E60F80F00691586 /* MmatCacheItem.m in Sources */,
+				B61986F72E62058F00600ED7 /* CacheLists.m in Sources */,
 				B69F34EF2E37F4D6007EEA89 /* PackedFile.m in Sources */,
 				B61CE5732E3A882000547C40 /* Wait.m in Sources */,
 				B62437DE2E35A0950052119F /* Parameters.m in Sources */,
 				B66C34672E3BC60900B4B9B8 /* PathSettings.m in Sources */,
 				B6CDCC7D2E33EB1F004FDF82 /* ToolTypes.m in Sources */,
 				B69F34F42E3835A1007EEA89 /* ResourceViewManager.m in Sources */,
+				B6194B582E5E015200255858 /* TxtrWrapper.m in Sources */,
 				B6CDCC9D2E34271B004FDF82 /* HeaderIndex.m in Sources */,
 				B6B02CCE2E4EB2B8009240FD /* AbstractWrapper.m in Sources */,
 				B6B02CD82E4EBA34009240FD /* RcolUI.m in Sources */,
 				B69F34E02E37EF74007EEA89 /* CRCParameters.m in Sources */,
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
+				B616F7152E60A7B900D0263A /* MmatWrapper.m in Sources */,
 				B64B39352E58DE1F00FC359D /* CpfItem.m in Sources */,
 				B6FBA7FC2E529DD30000F0D5 /* HeaderView.m in Sources */,
 				B64F1C9B2E43FEC3001C0DEC /* XmlPackageReaderBase.m in Sources */,
@@ -1323,8 +1427,10 @@
 				B61CE5A32E3AE68400547C40 /* PackageRepair.m in Sources */,
 				B6E2B5DC2E5BB20300AA6170 /* BuildTxtr.m in Sources */,
 				B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */,
+				B6053BF92E5E53C400751B39 /* LifoForm.m in Sources */,
 				B64EEF782E3985AC0008E7CA /* ResourceTreeNodesByGroup.m in Sources */,
 				B6B8D02F2E57A8EA008557A2 /* CollectibleAlias.m in Sources */,
+				B6F605032E5F985E0038ECC5 /* ImageSize.m in Sources */,
 				B6819E582E3E734000E37434 /* FileIndexItem.m in Sources */,
 				B69C59FD2E3E907000794FC7 /* FlagBase.m in Sources */,
 				B6CDCC772E33E8C7004FDF82 /* SharedTypes.m in Sources */,
@@ -1333,12 +1439,14 @@
 				B69F34DA2E37ECDD007EEA89 /* Hashes.m in Sources */,
 				B671B48A2E4F9930004559C3 /* LoadFileWrappers.m in Sources */,
 				B64B39192E58CF3200FC359D /* PropertyObjectBuilderExt.m in Sources */,
+				B61987012E62096300600ED7 /* SlotItem.m in Sources */,
 				B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */,
 				B69F34E92E37F37C007EEA89 /* ExtractableFile.m in Sources */,
 				B6FDC58D2E3FD9D7004E8AA6 /* WaitingScreen.m in Sources */,
 				B6CDCCAA2E342B97004FDF82 /* PackedFileDescriptor.m in Sources */,
 				B6F440AD2E4661D800870564 /* ExceptionForm.m in Sources */,
 				B6FBA7F92E528FDE0000F0D5 /* ClstForm.m in Sources */,
+				B61986FB2E6206F700600ED7 /* CacheException.m in Sources */,
 				B61CE59A2E3ADAB200547C40 /* Localization.m in Sources */,
 				B69C59F72E3E8CC900794FC7 /* GlobalizedObject.m in Sources */,
 				B69C59FA2E3E8DF000794FC7 /* ExpansionItem.m in Sources */,
@@ -1365,16 +1473,20 @@
 				B6CDCCA32E342902004FDF82 /* HoleIndexItem.m in Sources */,
 				B671B4872E4F95FF004559C3 /* cSGResource.m in Sources */,
 				B6E2B5EA2E5BB87400AA6170 /* GroupCacheForm.m in Sources */,
+				B6194B5B2E5E02FE00255858 /* TxtrForm.m in Sources */,
 				B61C4CFC2E456EF300BC38B4 /* PackageFiles.m in Sources */,
 				B64B392B2E58D3A500FC359D /* StreamHelper.m in Sources */,
 				B64E6BAA2E35335B009AD0A7 /* TypeAlias.m in Sources */,
+				B6F13C712E60F8DA00691586 /* CacheFile.m in Sources */,
 				B64EEF722E3981A00008E7CA /* ResourceListViewExtSorting.m in Sources */,
 				B6E24B2C2E561F98003E2A3E /* SimDescriptions.m in Sources */,
 				B6FDC5902E3FDAA4004E8AA6 /* WaitingForm.m in Sources */,
 				B69C5A002E3E918100794FC7 /* IniRegistry.m in Sources */,
+				B6053BF62E5E52BD00751B39 /* LifoWrapper.m in Sources */,
 				B64EEF7B2E39862F0008E7CA /* ResourceTreeNodesByInstance.m in Sources */,
 				B69F350F2E3848E1007EEA89 /* ResourceTreeViewExt.m in Sources */,
 				B69F34FA2E3839E7007EEA89 /* ClstItem.m in Sources */,
+				B6F13C6A2E60F73800691586 /* MmatCacheFile.m in Sources */,
 				B64EEF452E3938AE0008E7CA /* AResourceTreeNodeBuilder.m in Sources */,
 				B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */,
 				B6B8D03E2E57AF90008557A2 /* PropertyObjectBuilder.m in Sources */,
@@ -1383,6 +1495,7 @@
 				B62437DB2E3597690052119F /* Registry.m in Sources */,
 				B6B8D03A2E57ADCA008557A2 /* Html2Rtf.m in Sources */,
 				B6CDCC862E33F887004FDF82 /* File.m in Sources */,
+				B61986FE2E62079D00600ED7 /* ObjectCacheItem.m in Sources */,
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
 				B6B02CD12E4EB2FC009240FD /* FileTable.m in Sources */,
 				B69C5A2A2E3EC5E300794FC7 /* XmlRegistryKey.m in Sources */,
@@ -1390,6 +1503,7 @@
 				B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */,
 				B64F1C9E2E44011C001C0DEC /* FileTableItem.m in Sources */,
 				B64B39382E58E0AC00FC359D /* CpfUI.m in Sources */,
+				B6194B532E5E008100255858 /* WorkshopItems.m in Sources */,
 				B62437E12E35A15B0052119F /* TGILoader.m in Sources */,
 				B6C3F0752E54E6450073156B /* SimCommonPackage.m in Sources */,
 				B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */,
@@ -1403,12 +1517,14 @@
 				B6CDCC8B2E33FC6B004FDF82 /* Stream.m in Sources */,
 				B64B391C2E58D05800FC359D /* PropertyUserTypes.m in Sources */,
 				B6B02CDB2E4EBADF009240FD /* RcolForm.m in Sources */,
+				B616F7122E60A5FC00D0263A /* LifoUI.m in Sources */,
 				B64B39162E58CE8200FC359D /* HashAlgorithmParameters.m in Sources */,
 				B671B48D2E4FC38A004559C3 /* IWrapperReferencedResources.m in Sources */,
 				B69C5A382E3ED3E200794FC7 /* Thread.m in Sources */,
 				B6B02CD32E4EB331009240FD /* GenericRcolWrapper.m in Sources */,
 				B6F440AA2E465FDF00870564 /* ArgParser.m in Sources */,
 				B6F440B32E4665BD00870564 /* FlagObjectBuilder.m in Sources */,
+				B61987042E6209E700600ED7 /* SlotWrapper.m in Sources */,
 				B64B392E2E58D42A00FC359D /* ThreadConsumer.m in Sources */,
 				B6E24B232E561CE1003E2A3E /* SimFamilyNames.m in Sources */,
 				B6E24B282E561E63003E2A3E /* SimNames.m in Sources */,
@@ -1417,8 +1533,10 @@
 				B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */,
 				B69F34FD2E383AE6007EEA89 /* ResourceMaps.m in Sources */,
 				B6E2B5E42E5BB5A100AA6170 /* GroupCacheItem.m in Sources */,
+				B6194B5E2E5E05E000255858 /* TxtrUI.m in Sources */,
 				B6E2B5DF2E5BB33C00AA6170 /* FixPackage.m in Sources */,
 				B60ADF562E5937E900F66F86 /* cImageData.m in Sources */,
+				B6F13C742E60F98400691586 /* CacheContainer.m in Sources */,
 				B60ADF592E5938B600F66F86 /* ImageLoader.m in Sources */,
 				B60ADF532E592D0600F66F86 /* PackedFileUI.m in Sources */,
 				B64B39252E58D26100FC359D /* SemiGlobalAlias.m in Sources */,

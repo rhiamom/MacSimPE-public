@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  ImageSize.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/27/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,40 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
+@interface ImageSizeDialog : NSWindowController
+
+// MARK: - UI Components
+@property (nonatomic, strong) IBOutlet NSTextField *widthTextField;
+@property (nonatomic, strong) IBOutlet NSTextField *heightTextField;
+@property (nonatomic, strong) IBOutlet NSTextField *sizeLabel;
+@property (nonatomic, strong) IBOutlet NSTextField *xLabel;
+@property (nonatomic, strong) IBOutlet NSButton *okButton;
+
+// MARK: - Properties
+@property (nonatomic, assign) NSSize imageSize;
+@property (nonatomic, assign) BOOL cancelled;
+
+// MARK: - Class Methods
 /**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
+ * Shows the image size dialog and returns the selected size
+ * @param size The initial size to display
+ * @returns The new size selected by the user
  */
-@protocol IScenegraphItem <NSObject>
++ (NSSize)executeWithSize:(NSSize)size;
 
-/**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
- */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
+// MARK: - Instance Methods
+- (instancetype)init;
+- (void)setupUI;
 
-/**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
- */
-// - (id)findReferencedType:(uint32_t)type;
+// MARK: - Actions
+- (IBAction)okButtonPressed:(id)sender;
 
 @end
+
+NS_ASSUME_NONNULL_END

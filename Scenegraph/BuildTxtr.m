@@ -30,16 +30,14 @@
 //****************************************************************************
 
 #import "BuildTxtr.h"
-#import "ImageData.h"
-#import "DDSData.h"
-#import "MipMap.h"
-#import "MipMapBlock.h"
-#import "GenericRcol.h"
+#import "cImageData.h"
+#import "cLevelInfo.h"
+#import "GenericRcolWrapper.h"
 #import "PackedFileDescriptor.h"
 #import "PathProvider.h"
-#import "DDSTool.h"
+#import "Soil2.h"
 #import "ArgParser.h"
-#import "Message.h"
+#import "ExceptionForm.h"
 #import "FileStream.h"
 #import "BinaryWriter.h"
 
@@ -107,7 +105,7 @@
 
         // Build default sizes
         for (NSInteger i = 0; i < levels; i++) {
-            MipMap *mipMap = [[MipMap alloc] initWithImageData:imageData];
+            MipMap *mipMap = [[MipMap alloc] initWithParent:imageData];
             mipMap.texture = [[NSImage alloc] initWithSize:NSMakeSize(width, height)];
 
             if ((width == height) && (width == 1)) {
@@ -153,7 +151,7 @@
         }
 
         NSMutableArray<MipMapBlock *> *mipMapBlocks = [[NSMutableArray alloc] initWithCapacity:1];
-        MipMapBlock *block = [[MipMapBlock alloc] initWithImageData:imageData];
+        MipMapBlock *block = [[MipMapBlock alloc] initWithParent:imageData];
         block.mipMaps = [maps copy];
         [mipMapBlocks addObject:block];
 
@@ -181,7 +179,7 @@
         // Process in reverse order (like the C# version)
         for (NSInteger i = data.count - 1; i >= 0; i--) {
             DDSData *item = data[i];
-            MipMap *mipMap = [[MipMap alloc] initWithImageData:imageData];
+            MipMap *mipMap = [[MipMap alloc] initWithParent:imageData];
             mipMap.texture = item.texture;
             mipMap.data = item.data;
             
@@ -190,7 +188,7 @@
         }
 
         NSMutableArray<MipMapBlock *> *mipMapBlocks = [[NSMutableArray alloc] initWithCapacity:1];
-        MipMapBlock *block = [[MipMapBlock alloc] initWithImageData:imageData];
+        MipMapBlock *block = [[MipMapBlock alloc] initWithParent:imageData];
         block.mipMaps = [maps copy];
         [mipMapBlocks addObject:block];
 
@@ -204,7 +202,8 @@
 // MARK: - Command Line Parsing
 
 - (BOOL)parse:(NSArray<NSString *> *)argv {
-    NSInteger index = [ArgParser parseArgv:argv option:@"-txtr"];
+    NSMutableArray<NSString *> *mutableArgv = [argv mutableCopy];
+    NSInteger index = [ArgParser parseArguments:mutableArgv parameter:@"-txtr"];
     if (index < 0) {
         return NO;
     }
@@ -217,66 +216,82 @@
     NSInteger levels = 9;
     NSSize size = NSMakeSize(512, 512);
     TxtrFormats format = TxtrFormatsDXT1Format;
-
-    NSMutableArray<NSString *> *mutableArgv = [argv mutableCopy];
     
     while (mutableArgv.count > index) {
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-image" value:&filename]) continue;
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-out" value:&output]) continue;
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-name" value:&textureName]) continue;
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-levels" value:&numberString]) {
-            levels = [numberString integerValue];
+        NSString *result = nil;
+        
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-image" result:&result]) {
+            filename = result;
             continue;
         }
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-width" value:&numberString]) {
-            size.width = [numberString doubleValue];
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-out" result:&result]) {
+            output = result;
             continue;
         }
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-height" value:&numberString]) {
-            size.height = [numberString doubleValue];
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-name" result:&result]) {
+            textureName = result;
             continue;
         }
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-format" value:&numberString]) {
-            if ([numberString isEqualToString:@"dxt1"]) {
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-levels" result:&result]) {
+            levels = [result integerValue];
+            continue;
+        }
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-width" result:&result]) {
+            size.width = [result doubleValue];
+            continue;
+        }
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-height" result:&result]) {
+            size.height = [result doubleValue];
+            continue;
+        }
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-format" result:&result]) {
+            if ([result isEqualToString:@"dxt1"]) {
                 format = TxtrFormatsDXT1Format;
-            } else if ([numberString isEqualToString:@"dxt3"]) {
+            } else if ([result isEqualToString:@"dxt3"]) {
                 format = TxtrFormatsDXT3Format;
-            } else if ([numberString isEqualToString:@"dxt5"]) {
+            } else if ([result isEqualToString:@"dxt5"]) {
                 format = TxtrFormatsDXT5Format;
-            } else if ([numberString isEqualToString:@"raw24"]) {
+            } else if ([result isEqualToString:@"raw24"]) {
                 format = TxtrFormatsRaw24Bit;
-            } else if ([numberString isEqualToString:@"raw32"]) {
+            } else if ([result isEqualToString:@"raw32"]) {
                 format = TxtrFormatsRaw32Bit;
-            } else if ([numberString isEqualToString:@"raw8"]) {
+            } else if ([result isEqualToString:@"raw8"]) {
                 format = TxtrFormatsRaw8Bit;
             }
             continue;
         }
-        [Message show:[self help].firstObject];
+        
+        // If we get here, show help and return
+        [ExceptionForm showError:[self help].firstObject];
         return YES;
     }
 
     // Check if the file exists
     if (![[NSFileManager defaultManager] fileExistsAtPath:filename]) {
-        [Message show:[NSString stringWithFormat:@"%@ was not found.", filename]];
+        [ExceptionForm showError:[NSString stringWithFormat:@"%@ was not found.", filename]];
         return YES;
     }
     if ([output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
-        [Message show:@"Please specify an output file using -out"];
+        [ExceptionForm showError:@"Please specify an output file using -out"];
         return YES;
     }
 
     // Build TXTR File
     ImageData *imageData = [[ImageData alloc] initWithParent:nil];
 
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[PathProvider nvidiaDdsTool]] &&
-        (format == TxtrFormatsDXT1Format || format == TxtrFormatsDXT3Format || format == TxtrFormatsDXT5Format)) {
-        NSArray<DDSData *> *ddsData = [DDSTool buildDds:filename
-                                                  levels:levels
-                                                  format:format
-                                                 options:@"-sharpenMethod Smoothen"];
-        [self.class loadDds:imageData data:ddsData];
+    // For DXT formats, try advanced processing first, then fallback to basic method
+    if (format == TxtrFormatsDXT1Format || format == TxtrFormatsDXT3Format || format == TxtrFormatsDXT5Format) {
+        // Try to parse existing DDS file using CSOIL 2
+        NSArray<DDSData *> *ddsData = [ImageLoader parseDDS:filename];
+        if (ddsData && ddsData.count > 0) {
+            // Successfully parsed as DDS file
+            [self.class loadDds:imageData data:ddsData];
+        } else {
+            // Fallback: Input file is not DDS format, process as regular image
+            [self.class loadTxtr:imageData filename:filename size:size levels:levels format:format];
+        }
     } else {
+        // For non-DXT formats, always use the regular texture processing
         [self.class loadTxtr:imageData filename:filename size:size levels:levels format:format];
     }
 
@@ -289,18 +304,18 @@
 
     [rcol synchronizeUserData];
     
-    FileStream *fileStream = [[FileStream alloc] initWithPath:output mode:@"w"];
+    FileStream *fileStream = [[FileStream alloc] initWithPath:output access:FileAccessWrite];
     BinaryWriter *binaryWriter = [[BinaryWriter alloc] initWithFileStream:fileStream];
     [binaryWriter writeData:rcol.fileDescriptor.userData];
     [binaryWriter close];
     [fileStream close];
 
     return YES;
-}
 
+}
 - (NSArray<NSString *> *)help {
-    return @[@"-txtr -image [imgfile] -out [output].package -name [textureName] "
-             @"-format [dxt1|dxt3|dxt5|raw8|raw24|raw32] -levels [nr] -width [max. Width] -height [max. Height]"];
+    NSString *helpText = @"-txtr -image [imgfile] -out [output].package -name [textureName] -format [dxt1|dxt3|dxt5|raw8|raw24|raw32] -levels [nr] -width [max. Width] -height [max. Height]";
+    return @[helpText];
 }
 
 @end

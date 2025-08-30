@@ -71,13 +71,17 @@
 - (void)updateContentView;
 - (void)showEmptyState;
 
-// MARK: - Future Plugin Integration Points
-// These methods will be implemented when PluginManager and ResourceLoader are translated
-- (NSViewController *)createPluginViewForResource:(id<IPackedFileDescriptor>)resource;
+// MARK: - Plugin Integration Points
+- (NSView *)createPluginViewForResource:(id<IPackedFileDescriptor>)resource;
 - (NSViewController *)createWrapperViewForResource:(id<IPackedFileDescriptor>)resource;
 - (NSViewController *)createDetailsViewForResource:(id<IPackedFileDescriptor>)resource;
 - (NSViewController *)createHexViewForResource:(id<IPackedFileDescriptor>)resource;
 - (NSViewController *)createConverterView;
 - (NSViewController *)createFinderView;
+
+// MARK: - Private View Management
+- (void)cleanupCurrentView;
+- (void)installPluginView:(NSView *)pluginView;
+- (void)installViewController:(NSViewController *)viewController;
 
 @end

@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  TxtrWrapper.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/26/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,34 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
+#import "RcolWrapper.h"
+
+@protocol IProviderRegistry;
+@protocol IPackedFileUI;
+@protocol IWrapperInfo;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
+ * This is the actual FileWrapper for TXTR (Texture) files
+ * @remarks
+ * The wrapper is used to (un)serialize the Data of a file into its Attributes. So Basically it reads
+ * a BinaryStream and translates the data into some user-defined Attributes.
  */
-@protocol IScenegraphItem <NSObject>
+@interface Txtr : Rcol
+
+// MARK: - Initialization
 
 /**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
+ * Constructor
+ * @param provider The provider registry
+ * @param fast Whether to use fast loading mode
  */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
-
-/**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
- */
-// - (id)findReferencedType:(uint32_t)type;
+- (instancetype)initWithProvider:(id<IProviderRegistry>)provider fast:(BOOL)fast;
 
 @end
+
+NS_ASSUME_NONNULL_END

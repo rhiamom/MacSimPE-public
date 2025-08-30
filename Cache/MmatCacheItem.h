@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  MmatCacheItem.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/28/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,83 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
+#import "ICacheItem.h"
+
+@protocol IPackedFileDescriptor;
+@class BinaryReader, BinaryWriter, PackedFileDescriptor;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
+ * Contains one ObjectCacheItem
  */
-@protocol IScenegraphItem <NSObject>
+@interface MmatCacheItem : NSObject <ICacheItem>
+
+// MARK: - Constants
 
 /**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
+ * The current Version
  */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
+extern const uint8_t MMAT_CACHE_ITEM_VERSION;
+
+// MARK: - Properties
 
 /**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
+ * Returns an (unitialized) FileDescriptor
  */
-// - (id)findReferencedType:(uint32_t)type;
+@property (nonatomic, strong) id<IPackedFileDescriptor> fileDescriptor;
+
+/**
+ * Returns the Type Field of the Object
+ */
+@property (nonatomic, assign) BOOL defaultMaterial;
+
+/**
+ * Returns the ModelName for this Object
+ */
+@property (nonatomic, copy) NSString *modelName;
+
+/**
+ * Returns the Familyname for this Object
+ */
+@property (nonatomic, copy) NSString *family;
+
+/**
+ * The version of this cache item
+ */
+@property (nonatomic, readonly, assign) uint8_t version;
+
+// MARK: - Initialization
+
+/**
+ * Creates a new MmatCacheItem
+ */
+- (instancetype)init;
+
+// MARK: - ICacheItem Protocol
+
+/**
+ * Load cache item from binary reader
+ * @param reader The binary reader to load from
+ */
+- (void)load:(BinaryReader *)reader;
+
+/**
+ * Save cache item to binary writer
+ * @param writer The binary writer to save to
+ */
+- (void)save:(BinaryWriter *)writer;
+
+// MARK: - String Representation
+
+/**
+ * Returns string description of the cache item
+ */
+- (NSString *)description;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  ICacheItem.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/29/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,68 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
 
-/**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
- */
-@protocol IScenegraphItem <NSObject>
+@class BinaryReader, BinaryWriter;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
+ * Contains one CacheItem
  */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
+@protocol ICacheItem <NSObject>
 
 /**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
+ * Load the Item from the Stream
+ * @param reader the Stream Reader
  */
-// - (id)findReferencedType:(uint32_t)type;
+- (void)load:(BinaryReader *)reader;
+
+/**
+ * Save the Item to the Stream
+ * @param writer the Stream Writer
+ */
+- (void)save:(BinaryWriter *)writer;
+
+/**
+ * Returns the Version of this CacheItem
+ */
+@property (nonatomic, readonly) uint8_t version;
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import <Foundation/Foundation.h>
+
+@class BinaryReader, BinaryWriter;
+
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ * Contains one CacheItem
+ */
+@protocol ICacheItem <NSObject>
+
+/**
+ * Load the Item from the Stream
+ * @param reader the Stream Reader
+ */
+- (void)load:(BinaryReader *)reader;
+
+/**
+ * Save the Item to the Stream
+ * @param writer the Stream Writer
+ */
+- (void)save:(BinaryWriter *)writer;
+
+/**
+ * Returns the Version of this CacheItem
+ */
+@property (nonatomic, readonly) uint8_t version;
+
+@end
+
+NS_ASSUME_NONNULL_END

@@ -26,9 +26,15 @@
 
 #import "BottomHalfViewController.h"
 #import "IPackedFileDescriptor.h"
+#import "AbstractWrapper.h"
+#import "IPackedFileUI.h"
+#import "IFileWrapper.h"
+#import <AppKit/AppKit.h>
 
 @interface BottomHalfViewController ()
 @property (nonatomic, strong) NSTextField *emptyStateLabel;
+@property (nonatomic, strong) NSView *currentPluginView;
+@property (nonatomic, strong) id<IPackedFileUI> currentUIHandler;
 @end
 
 @implementation BottomHalfViewController
@@ -41,9 +47,16 @@
     // Don't set any default bottom tool
     self.selectedResource = nil;
     self.currentViewController = nil;
+    self.currentPluginView = nil;
+    self.currentUIHandler = nil;
     
     [self setupUI];
     [self showEmptyState];
+}
+
+- (void)dealloc {
+    // ARC will handle cleanup automatically
+    [self cleanupCurrentView];
 }
 
 // MARK: - Setup
@@ -95,12 +108,8 @@
 // MARK: - View Management
 
 - (void)updateContentView {
-    // Remove current view controller
-    if (self.currentViewController != nil) {
-        [self.currentViewController.view removeFromSuperview];
-        [self.currentViewController removeFromParentViewController];
-        self.currentViewController = nil;
-    }
+    // Clean up current view
+    [self cleanupCurrentView];
     
     // If no resource is selected, show empty state
     if (self.selectedResource == nil) {
@@ -108,12 +117,13 @@
         return;
     }
     
-    // Create appropriate view controller based on selected bottom tool
+    // Create appropriate view based on selected bottom tool
     NSViewController *newViewController = nil;
+    NSView *newPluginView = nil;
     
     switch (self.selectedBottomTool) {
         case BottomToolPluginView:
-            newViewController = [self createPluginViewForResource:self.selectedResource];
+            newPluginView = [self createPluginViewForResource:self.selectedResource];
             break;
             
         case BottomToolWrapper:
@@ -137,24 +147,65 @@
             break;
     }
     
-    // Install the new view controller
-    if (newViewController != nil) {
-        [self addChildViewController:newViewController];
-        [self.containerView addSubview:newViewController.view];
-        
-        // Setup constraints for new view
-        [newViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [NSLayoutConstraint activateConstraints:@[
-            [newViewController.view.topAnchor constraintEqualToAnchor:self.containerView.topAnchor],
-            [newViewController.view.bottomAnchor constraintEqualToAnchor:self.containerView.bottomAnchor],
-            [newViewController.view.leadingAnchor constraintEqualToAnchor:self.containerView.leadingAnchor],
-            [newViewController.view.trailingAnchor constraintEqualToAnchor:self.containerView.trailingAnchor]
-        ]];
-        
-        self.currentViewController = newViewController;
+    // Install the new view
+    if (newPluginView != nil) {
+        [self installPluginView:newPluginView];
+    } else if (newViewController != nil) {
+        [self installViewController:newViewController];
     } else {
         [self showEmptyState];
     }
+}
+
+- (void)cleanupCurrentView {
+    // Clean up plugin view and UI handler
+    if (self.currentPluginView != nil) {
+        [self.currentPluginView removeFromSuperview];
+        self.currentPluginView = nil;
+    }
+    
+    // Simply nil the UI handler - ARC will handle cleanup
+    self.currentUIHandler = nil;
+    
+    // Clean up view controller
+    if (self.currentViewController != nil) {
+        [self.currentViewController.view removeFromSuperview];
+        [self.currentViewController removeFromParentViewController];
+        self.currentViewController = nil;
+    }
+    
+    // Remove empty state label if present
+    [self.emptyStateLabel removeFromSuperview];
+}
+
+- (void)installPluginView:(NSView *)pluginView {
+    self.currentPluginView = pluginView;
+    [self.containerView addSubview:pluginView];
+    
+    // Setup constraints for plugin view
+    [pluginView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [NSLayoutConstraint activateConstraints:@[
+        [pluginView.topAnchor constraintEqualToAnchor:self.containerView.topAnchor],
+        [pluginView.bottomAnchor constraintEqualToAnchor:self.containerView.bottomAnchor],
+        [pluginView.leadingAnchor constraintEqualToAnchor:self.containerView.leadingAnchor],
+        [pluginView.trailingAnchor constraintEqualToAnchor:self.containerView.trailingAnchor]
+    ]];
+}
+
+- (void)installViewController:(NSViewController *)viewController {
+    [self addChildViewController:viewController];
+    [self.containerView addSubview:viewController.view];
+    
+    // Setup constraints for view controller's view
+    [viewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [NSLayoutConstraint activateConstraints:@[
+        [viewController.view.topAnchor constraintEqualToAnchor:self.containerView.topAnchor],
+        [viewController.view.bottomAnchor constraintEqualToAnchor:self.containerView.bottomAnchor],
+        [viewController.view.leadingAnchor constraintEqualToAnchor:self.containerView.leadingAnchor],
+        [viewController.view.trailingAnchor constraintEqualToAnchor:self.containerView.trailingAnchor]
+    ]];
+    
+    self.currentViewController = viewController;
 }
 
 - (void)showEmptyState {
@@ -172,13 +223,50 @@
     ]];
 }
 
-// MARK: - Future Plugin Integration Points
-// These methods will be implemented when PluginManager and ResourceLoader are translated
+// MARK: - Plugin Integration Methods
 
-- (NSViewController *)createPluginViewForResource:(id<IPackedFileDescriptor>)resource {
-    // TODO: This will be implemented when PluginManager is translated
-    // The PluginManager will determine the appropriate plugin view based on file type
-    NSLog(@"TODO: Create plugin view for resource type: 0x%08X", [resource type]);
+- (NSView *)createPluginViewForResource:(id<IPackedFileDescriptor>)resource {
+    // Get the wrapper from the resource's tag property
+    if (resource.tag != nil && [resource.tag conformsToProtocol:@protocol(IFileWrapper)]) {
+        AbstractWrapper *wrapper = (AbstractWrapper *)resource.tag;
+        
+        // Get or create the UI handler
+        id<IPackedFileUI> uiHandler = wrapper.uiHandler;
+        if (uiHandler == nil) {
+            uiHandler = [wrapper createDefaultUIHandler];
+            wrapper.uiHandler = uiHandler;
+        }
+        
+        if (uiHandler != nil) {
+            // Store reference for cleanup
+            self.currentUIHandler = uiHandler;
+            
+            // Use string-based selectors to avoid compile-time selector checking
+            SEL createViewSelector = NSSelectorFromString(@"createView");
+            SEL refreshSelector = NSSelectorFromString(@"refresh");
+            
+            // Check and call createView
+            if ([uiHandler respondsToSelector:createViewSelector]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                NSView *pluginView = [uiHandler performSelector:createViewSelector];
+#pragma clang diagnostic pop
+                if (pluginView != nil) {
+                    // Check and call refresh
+                    if ([uiHandler respondsToSelector:refreshSelector]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                        [uiHandler performSelector:refreshSelector];
+#pragma clang diagnostic pop
+                    }
+                    return pluginView;
+                }
+            }
+        }
+    }
+    
+    // If no plugin view available, log debug info and return nil
+    NSLog(@"No plugin view available for resource type: 0x%08X", [resource type]);
     return nil;
 }
 

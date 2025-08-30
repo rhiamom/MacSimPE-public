@@ -30,7 +30,7 @@
 //****************************************************************************
 
 #import <Foundation/Foundation.h>
-#import "ScenegraphWrapperFactory.h" // For ICommandLine protocol
+//#import "ScenegraphWrapperFactory.h" // For ICommandLine protocol
 
 @class GeneratableFile, FixObject, RenameForm;
 

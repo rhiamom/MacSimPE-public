@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  LifoWrapper.m
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/26/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,42 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
-#import <Foundation/Foundation.h>
 
-/**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
- */
-@protocol IScenegraphItem <NSObject>
+#import "LifoWrapper.h"
+#import "LifoUI.h"
+#import "AbstractWrapperInfo.h"
 
-/**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
- */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
+@implementation Lifo
 
-/**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
- */
-// - (id)findReferencedType:(uint32_t)type;
+// MARK: - Initialization
+
+- (instancetype)initWithProvider:(id<IProviderRegistry>)provider fast:(BOOL)fast {
+    self = [super initWithProvider:provider fast:fast];
+    if (self) {
+        // Initialize LIFO-specific properties here if needed
+    }
+    return self;
+}
+
+// MARK: - AbstractWrapper Methods
+
+- (id<IPackedFileUI>)createDefaultUIHandler {
+    return [[LifoUI alloc] init];
+}
+
+- (id<IWrapperInfo>)createWrapperInfo {
+    return [[AbstractWrapperInfo alloc] initWithName:@"LIFO Wrapper"
+                                              author:@"Pumuckl, Quaxi"
+                                         description:@"---"
+                                             version:5];
+}
+
+// MARK: - File Type Information
+
+- (NSArray<NSNumber *> *)assignableTypes {
+    return @[@(0xED534136)]; // LIFO Files
+}
 
 @end

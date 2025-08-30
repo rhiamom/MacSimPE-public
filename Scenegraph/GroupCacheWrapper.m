@@ -80,9 +80,9 @@
     result = [result stringByReplacingOccurrencesOfString:@"%userdatadir%" withString:savegameFolder];
     
     // Replace expansion paths
-    NSArray<ExpansionItem *> *expansion = [PathProvider expansion];
-    for (ExpansionItem *expansionItem in expansion) {
-        NSString *versionString = [expansionItem.version stringValue];
+    NSArray<ExpansionItem *> *expansions = [[PathProvider global] expansions];
+    for (ExpansionItem *expansionItem in expansions) {
+        NSString *versionString = [@(expansionItem.version) stringValue];
         if ([versionString isEqualToString:@"0"]) {
             versionString = @"";
         }

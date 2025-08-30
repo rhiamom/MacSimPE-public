@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  LifoUI.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/28/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,35 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
+#import "IPackedFileUI.h"
+
+@class LifoForm;
+@protocol IFileWrapper;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
+ * This class is used to fill the UI for this FileType with Data
  */
-@protocol IScenegraphItem <NSObject>
+@interface LifoUI : NSObject <IPackedFileUI>
+
+// MARK: - Properties
 
 /**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
+ * Holds a reference to the Form containing the UI Panel
  */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
+@property (nonatomic, strong) LifoForm *form;
+
+// MARK: - Initialization
 
 /**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
+ * Constructor for the Class
  */
-// - (id)findReferencedType:(uint32_t)type;
+- (instancetype)init;
 
 @end
+
+NS_ASSUME_NONNULL_END

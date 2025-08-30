@@ -35,16 +35,6 @@
 
 @class ImageData, DDSData, MipMap, MipMapBlock;
 
-// Forward declarations for enums that would be defined elsewhere
-typedef NS_ENUM(NSInteger, TxtrFormats) {
-    TxtrFormatsDXT1Format,
-    TxtrFormatsDXT3Format,
-    TxtrFormatsDXT5Format,
-    TxtrFormatsRaw8Bit,
-    TxtrFormatsRaw24Bit,
-    TxtrFormatsRaw32Bit
-};
-
 /**
  * Command line interface for building TXTR files
  */

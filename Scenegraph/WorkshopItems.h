@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  WorkshopItems.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/26/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,75 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
 
-/**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
- */
-@protocol IScenegraphItem <NSObject>
+@class Cpf;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
+ * Workshop Material Management Class
+ * Manages MMAT (Material) data for workshop subsets
  */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
+@interface WorkshopMMAT : NSObject
+
+// MARK: - Properties
 
 /**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
+ * Arbitrary Data
  */
-// - (id)findReferencedType:(uint32_t)type;
+@property (nonatomic, strong, nullable) NSArray *tag;
+
+/**
+ * The name of the subset
+ */
+@property (nonatomic, strong) NSString *subset;
+
+/**
+ * The stored MMATs (read-only)
+ */
+@property (nonatomic, strong, readonly) NSArray<Cpf *> *mmats;
+
+/**
+ * Returns all known ObjectStateIndex for the current subset (read-only)
+ */
+@property (nonatomic, strong, readonly) NSArray<NSNumber *> *objectStateIndex;
+
+// MARK: - Initialization
+
+/**
+ * Constructor
+ * @param subset initial Name of the Subset
+ */
+- (instancetype)initWithSubset:(NSString *)subset;
+
+// MARK: - MMAT Management
+
+/**
+ * Adds the passed MMAT if it doesn't already exist
+ * @param mmat The MMAT to add
+ * @return YES if the MMAT was added, NO if it already existed
+ */
+- (BOOL)addMMAT:(Cpf *)mmat;
+
+// MARK: - ObjectStateIndex Management
+
+/**
+ * Adds the passed value if it doesn't already exist
+ * @param val The value to add
+ * @return YES if the value was added, NO if it already existed
+ */
+- (BOOL)addObjectStateIndex:(uint32_t)val;
+
+// MARK: - String Representation
+
+/**
+ * Returns string representation showing subset name and count
+ */
+- (NSString *)description;
 
 @end
+
+NS_ASSUME_NONNULL_END

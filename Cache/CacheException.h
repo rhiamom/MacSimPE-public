@@ -1,8 +1,8 @@
 //
-//  IScenegraphItem.h
+//  CacheException.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/8/25.
+//  Created by Catherine Gramze on 8/29/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,27 +25,51 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
 #import <Foundation/Foundation.h>
 
-/**
- * Specialization of an IRcol Interface, providing additional Methods to find referenced Scenegraph Resources
- */
-@protocol IScenegraphItem <NSObject>
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Returns all Referenced Scenegraph Resources sorted by type of Reference
- * @remarks The Key is the name of the Reference Type, the value is an NSArray containing all ReferencedFiles
- * @returns Dictionary where keys are NSString reference type names and values are NSArray objects containing referenced files
+ * A Cache Exception
  */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSArray<id<IPackedFileDescriptor>> *> *referenceChains;
+@interface CacheException : NSException
+
+// MARK: - Properties
 
 /**
- * Returns the first Referenced RCOL Resource for the passed Type
- * @param type Type of the Resource you are looking for
- * @returns Descriptor for the first found RCOL Resource or nil
+ * The name of the cache file (can be nil)
  */
-// - (id)findReferencedType:(uint32_t)type;
+@property (nonatomic, readonly, copy, nullable) NSString *filename;
+
+/**
+ * The version of the cache file
+ */
+@property (nonatomic, readonly, assign) uint8_t version;
+
+// MARK: - Initialization
+
+/**
+ * Create a new Instance of the Exception
+ * @param message The Message
+ * @param filename the Name of the Cache File (can be nil)
+ * @param version the Version of the Cache File
+ */
+- (instancetype)initWithMessage:(NSString *)message
+                       filename:(nullable NSString *)filename
+                        version:(uint8_t)version;
+
+/**
+ * Convenience method to create and raise a CacheException
+ * @param message The Message
+ * @param filename the Name of the Cache File (can be nil)
+ * @param version the Version of the Cache File
+ */
++ (void)raiseWithMessage:(NSString *)message
+                filename:(nullable NSString *)filename
+                 version:(uint8_t)version;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -26,34 +26,36 @@
 
 #import <Cocoa/Cocoa.h>
 #import "AppState.h"
-#import "ResourceViewManager.h"
 #import "ToolSidebarView.h"
 
-@class TopHalfViewController;
-@class BottomHalfViewController;
 @protocol IPackedFileDescriptor;
 
-@interface ContentViewController : NSViewController <ToolSidebarDelegate>
+@interface BottomHalfViewController : NSViewController
 
-// MARK: - Core Components
+// MARK: - Properties
 @property (nonatomic, strong) AppState *appState;
-@property (nonatomic, strong) ResourceViewManager *resourceManager;
-
-// MARK: - UI State (matching Swift ContentView)
-@property (nonatomic, assign) Tool selectedTool;
-@property (nonatomic, assign) uint32_t selectedResourceType;
+@property (nonatomic, assign) BottomTool selectedBottomTool;
 @property (nonatomic, strong) id<IPackedFileDescriptor> selectedResource;
-@property (nonatomic, assign) BOOL justOpenedPackage;
 
 // MARK: - UI Components
-@property (nonatomic, strong) IBOutlet ToolSidebarView *toolSidebar;
-@property (nonatomic, strong) IBOutlet TopHalfViewController *topHalfViewController;
-@property (nonatomic, strong) IBOutlet BottomHalfViewController *bottomHalfViewController;
-@property (nonatomic, strong) IBOutlet NSSplitView *mainSplitView;
-@property (nonatomic, strong) IBOutlet NSSplitView *verticalSplitView;
+@property (nonatomic, strong) IBOutlet NSView *containerView;
+@property (nonatomic, strong) NSViewController *currentViewController;
 
-// MARK: - Menu Actions
-- (IBAction)openPackage:(id)sender;
-- (IBAction)savePackage:(id)sender;
+// MARK: - View Management
+- (void)updateContentView;
+- (void)showEmptyState;
+
+// MARK: - Plugin Integration Points
+- (NSView *)createPluginViewForResource:(id<IPackedFileDescriptor>)resource;
+- (NSViewController *)createWrapperViewForResource:(id<IPackedFileDescriptor>)resource;
+- (NSViewController *)createDetailsViewForResource:(id<IPackedFileDescriptor>)resource;
+- (NSViewController *)createHexViewForResource:(id<IPackedFileDescriptor>)resource;
+- (NSViewController *)createConverterView;
+- (NSViewController *)createFinderView;
+
+// MARK: - Private View Management
+- (void)cleanupCurrentView;
+- (void)installPluginView:(NSView *)pluginView;
+- (void)installViewController:(NSViewController *)viewController;
 
 @end
