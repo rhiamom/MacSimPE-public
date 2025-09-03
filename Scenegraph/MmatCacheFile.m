@@ -35,6 +35,7 @@
 #import "CacheLists.h"
 #import "IPackedFileDescriptor.h"
 #import "IPackageFile.h"
+#import "FileIndexItem.h"
 
 
 @interface MmatCacheFile ()
@@ -105,8 +106,8 @@
                 id<IPackedFileDescriptor> pfd = mci.fileDescriptor;
                 pfd.filename = cc.fileName;
                 [self.fileIndex addIndexFromDescriptor:pfd
-                                        package:nil
-                                     localGroup:[FileIndex getLocalGroup:pfd.filename]];
+                                               package:nil  // Pass nil since this is cached data without an actual package object
+                                            localGroup:[FileIndexItem getLocalGroupForFilename:cc.fileName]];
             }
         }
     }

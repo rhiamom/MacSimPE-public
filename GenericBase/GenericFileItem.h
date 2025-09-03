@@ -1,8 +1,12 @@
 //
-//  BinaryReader.h
-//  SimPE for Mac
+//  GenericFileItem.h
+//  MacSimpe
+//
+//  Created by Catherine Gramze on 9/2/25.
 //
 // ***************************************************************************
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
 // *                                                                         *
 // *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
 // *   rhiamom@mac.com                                                       *
@@ -24,37 +28,67 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import "Stream.h"
+#import "GenericCommon.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BinaryReader : NSObject
+@class GenericItem;
 
-@property (nonatomic, readonly) Stream *baseStream;
+/**
+ * Type-safe NSMutableArray for GenericItem Objects
+ */
+@interface GenericItems : NSMutableArray<GenericItem *>
 
-- (instancetype)initWithStream:(Stream *)stream;
+// MARK: - Indexed Access
+- (GenericItem *)objectAtIndex:(NSUInteger)index;
+- (GenericItem *)objectAtUnsignedIntIndex:(uint32_t)index;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(GenericItem *)object;
+- (void)replaceObjectAtUnsignedIntIndex:(uint32_t)index withObject:(GenericItem *)object;
 
-- (uint8_t)readByte;
-- (int8_t)readSByte;
-- (uint16_t)readUInt16;
-- (int16_t)readInt16;
-- (uint32_t)readUInt32;
-- (int32_t)readInt32;
-- (uint64_t)readUInt64;
-- (int64_t)readInt64;
-- (float)readSingle;
-- (double)readDouble;
-- (BOOL)readBoolean;
-- (unichar)readChar;
+// MARK: - Collection Operations
+- (void)addGenericItem:(GenericItem *)item;
+- (void)insertGenericItem:(GenericItem *)item atIndex:(NSUInteger)index;
+- (void)removeGenericItem:(GenericItem *)item;
+- (BOOL)containsGenericItem:(GenericItem *)item;
 
-- (NSData *)readBytes:(NSInteger)count;
-- (NSString *)readString;
-- (instancetype)initWithData:(NSData *)data;
-- (void)seekToPosition:(NSInteger)position;
-- (void)skipBytes:(NSInteger)count;
-- (NSInteger)remainingBytes;
-- (NSInteger)position;
-- (void)close;
+// MARK: - Properties
+@property (nonatomic, readonly) NSUInteger length;
+
+// MARK: - Copying
+- (instancetype)deepCopy;
+
+@end
+
+/**
+ * A SubItem of a Generic File
+ */
+@interface GenericItem : GenericCommon
+
+// MARK: - Properties
+
+/**
+ * Returns or sets the List of Subitems
+ */
+@property (nonatomic, strong, nullable) NSArray<GenericItem *> *subitems;
+
+/**
+ * Number of Subitems stored
+ */
+@property (nonatomic, readonly, assign) NSInteger count;
+
+// MARK: - Initialization
+
+/**
+ * Creates a new Instance
+ */
+- (instancetype)init;
+
+// MARK: - Protected Methods
+
+/**
+ * Returns the List of Subitems
+ */
+- (NSArray<GenericItem *> *)getSubitems;
 
 @end
 

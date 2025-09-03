@@ -1,8 +1,12 @@
 //
-//  BinaryReader.h
-//  SimPE for Mac
+//  GenericUIBase.h
+//  MacSimpe
+//
+//  Created by Catherine Gramze on 9/2/25.
 //
 // ***************************************************************************
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
 // *                                                                         *
 // *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
 // *   rhiamom@mac.com                                                       *
@@ -24,38 +28,84 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import "Stream.h"
+#import <AppKit/AppKit.h>
+
+@class GenericElements;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BinaryReader : NSObject
+/**
+ * Abstract Base for some PackedFile handlers
+ */
+@interface GenericUIBase : NSObject
 
-@property (nonatomic, readonly) Stream *baseStream;
+// MARK: - Class Properties
 
-- (instancetype)initWithStream:(Stream *)stream;
+/**
+ * The Form containing the Panel
+ */
+@property (class, nonatomic, strong, nullable) GenericElements *form;
 
-- (uint8_t)readByte;
-- (int8_t)readSByte;
-- (uint16_t)readUInt16;
-- (int16_t)readInt16;
-- (uint32_t)readUInt32;
-- (int32_t)readInt32;
-- (uint64_t)readUInt64;
-- (int64_t)readInt64;
-- (float)readSingle;
-- (double)readDouble;
-- (BOOL)readBoolean;
-- (unichar)readChar;
+// MARK: - Initialization
 
-- (NSData *)readBytes:(NSInteger)count;
-- (NSString *)readString;
-- (instancetype)initWithData:(NSData *)data;
-- (void)seekToPosition:(NSInteger)position;
-- (void)skipBytes:(NSInteger)count;
-- (NSInteger)remainingBytes;
-- (NSInteger)position;
-- (void)close;
+/**
+ * Constructor for the Class
+ */
+- (instancetype)init;
+
+// MARK: - Cleanup
+
+/**
+ * Cleanup method (equivalent to C# Dispose)
+ */
+- (void)dispose;
 
 @end
 
 NS_ASSUME_NONNULL_END
+
+//
+//  GenericUIBase.m
+//  MacSimpe
+//
+//  Created by Catherine Gramze on 9/2/25.
+//
+
+#import "GenericUIBase.h"
+#import "GenericElements.h"
+
+@implementation GenericUIBase
+
+// MARK: - Class Property Implementation
+
+static GenericElements * _Nullable _form = nil;
+
++ (GenericElements * _Nullable)form {
+    return _form;
+}
+
++ (void)setForm:(GenericElements * _Nullable)form {
+    _form = form;
+}
+
+
+// MARK: - Initialization
+
+- (instancetype _Nonnull)init {
+    self = [super init];
+    if (self) {
+        if (_form == nil) {
+            _form = [[GenericElements alloc] init];
+        }
+    }
+    return self;
+}
+
+// MARK: - Cleanup
+
+- (void)dispose {
+    // Virtual method - can be overridden by subclasses
+    // Default implementation does nothing
+}
+
+@end

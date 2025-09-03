@@ -24,6 +24,7 @@
 // ***************************************************************************
 
 #import "BinaryReader.h"
+#import "MemoryStream.h"
 
 @interface BinaryReader ()
 {
@@ -146,6 +147,29 @@
     
     NSData *stringData = [self readBytes:length];
     return [[NSString alloc] initWithData:stringData encoding:NSUTF8StringEncoding];
+}
+
+// MARK: - Additional Constructor
+- (instancetype)initWithData:(NSData *)data {
+    MemoryStream *memStream = [[MemoryStream alloc] initWithData:[data mutableCopy]];
+    return [self initWithStream:memStream];
+}
+
+// MARK: - Stream Position Methods
+- (void)seekToPosition:(NSInteger)position {
+    self.baseStream.position = (int64_t)position;
+}
+
+- (NSInteger)position {
+    return (NSInteger)self.baseStream.position;
+}
+
+- (void)skipBytes:(NSInteger)count {
+    self.baseStream.position += (int64_t)count;
+}
+
+- (NSInteger)remainingBytes {
+    return (NSInteger)(self.baseStream.length - self.baseStream.position);
 }
 
 - (void)close {

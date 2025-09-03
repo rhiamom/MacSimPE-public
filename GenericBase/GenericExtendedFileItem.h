@@ -1,8 +1,12 @@
 //
-//  BinaryReader.h
-//  SimPE for Mac
+//  GenericExtendedFileItem.h
+//  MacSimpe
+//
+//  Created by Catherine Gramze on 9/3/25.
 //
 // ***************************************************************************
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
 // *                                                                         *
 // *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
 // *   rhiamom@mac.com                                                       *
@@ -24,37 +28,55 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import "Stream.h"
+#import "GenericCommon.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BinaryReader : NSObject
+@class GenericItem;
 
-@property (nonatomic, readonly) Stream *baseStream;
+/**
+ * Use this class to implement specific FileItems
+ */
+@interface GenericExtendedItem : NSObject
 
-- (instancetype)initWithStream:(Stream *)stream;
+// MARK: - Properties
 
-- (uint8_t)readByte;
-- (int8_t)readSByte;
-- (uint16_t)readUInt16;
-- (int16_t)readInt16;
-- (uint32_t)readUInt32;
-- (int32_t)readInt32;
-- (uint64_t)readUInt64;
-- (int64_t)readInt64;
-- (float)readSingle;
-- (double)readDouble;
-- (BOOL)readBoolean;
-- (unichar)readChar;
+/**
+ * Returns the based FileItem
+ */
+@property (nonatomic, readonly, strong) GenericCommon *base;
 
-- (NSData *)readBytes:(NSInteger)count;
-- (NSString *)readString;
-- (instancetype)initWithData:(NSData *)data;
-- (void)seekToPosition:(NSInteger)position;
-- (void)skipBytes:(NSInteger)count;
-- (NSInteger)remainingBytes;
-- (NSInteger)position;
-- (void)close;
+// MARK: - Initialization
+
+/**
+ * Creates a new Instance
+ * @param item The based GenericItem Object
+ */
+- (instancetype)initWithItem:(GenericCommon *)item;
+
+/**
+ * Convenience initializer with GenericItem
+ * @param item The GenericItem to wrap
+ */
+- (instancetype)initWithGenericItem:(GenericItem *)item;
+
+// MARK: - Factory Methods
+
+/**
+ * Creates a new ExtendedFileItem Object from a GenericItem
+ * @param item The FileItem you want to convert from
+ * @returns The new ExtendedFileItem Object
+ * @remarks Every derived class should implement this for its implementation!
+ */
++ (instancetype)extendedItemWithGenericItem:(GenericItem *)item;
+
+/**
+ * Creates a new ExtendedFileItem Object from a GenericCommon
+ * @param item The Common Object you want to convert from
+ * @returns The new ExtendedFileItem Object
+ * @remarks Every derived class should implement this for its implementation!
+ */
++ (instancetype)extendedItemWithGenericCommon:(GenericCommon *)item;
 
 @end
 

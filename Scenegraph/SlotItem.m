@@ -30,7 +30,7 @@
 #import "SlotItem.h"
 #import "BinaryReader.h"
 #import "BinaryWriter.h"
-#import "Slot.h"
+#import "SlotWrapper.h"
 
 // MARK: - SlotItem Implementation
 

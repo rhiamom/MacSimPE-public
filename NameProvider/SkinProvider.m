@@ -35,8 +35,8 @@
 #import "GenericRcolWrapper.h"
 #import "NmapWrapper.h"
 #import "TxtrWrapper.h"
-#import "ImageData.h"
-#import "MaterialDefinition.h"
+#import "cImageData.h"
+#import "cMaterialDefinition.h"
 #import "IPackageFile.h"
 #import "IPackedFileDescriptor.h"
 #import "File.h"
@@ -44,6 +44,10 @@
 #import "ExpansionItem.h"
 #import "Registry.h"
 #import "Helper.h"
+#import "cSGResource.h"
+#import "GeneratableFile.h"
+#import "FileTablebase.h"
+
 
 @implementation Skins
 
@@ -142,7 +146,9 @@
     
     for (id<IPackedFileDescriptor> pfd in pfds) {
         @try {
-            Txtr *txtr = [[Txtr alloc] initWithProvider:nil fast:YES];
+            // Get the global TypeRegistry (which implements IProviderRegistry) through FileTableBase
+            id<IWrapperRegistry> registry = [FileTableBase wrapperRegistry];
+            Txtr *txtr = [[Txtr alloc] initWithProvider:(id<IProviderRegistry>)registry fast:YES];
             BOOL check = NO;
             
             // Check against name map items
@@ -356,7 +362,9 @@
         
         // Look for the right one
         for (id<IPackedFileDescriptor> pfd in pfds) {
-            Txtr *rcol = [[Txtr alloc] initWithProvider:nil fast:NO];
+            // Get the global TypeRegistry (which implements IProviderRegistry) through FileTableBase
+            id<IWrapperRegistry> registry = [FileTableBase wrapperRegistry];
+            Txtr *rcol = [[Txtr alloc] initWithProvider:(id<IProviderRegistry>)registry fast:NO];
             [rcol processData:pfd package:package];
             
             NSString *rcolFileName = [[rcol fileName] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].lowercaseString;
@@ -386,8 +394,8 @@
     
     if ([txtr fast]) {
         [txtr setFast:NO];
-        File *package = [File loadFromFile:[[txtr package] fileName]];
-        id<IPackedFileDescriptor> pfd = [package findFile:[[txtr fileDescriptor] type]
+        GeneratableFile *package = [File loadFromFile:[[txtr package] fileName]];  // Changed to GeneratableFile *
+        id<IPackedFileDescriptor> pfd = [package findFileWithType:[[txtr fileDescriptor] type]
                                                   subtype:[[txtr fileDescriptor] subtype]
                                                     group:[[txtr fileDescriptor] group]
                                                  instance:[[txtr fileDescriptor] instance]];

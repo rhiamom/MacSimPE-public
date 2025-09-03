@@ -1,8 +1,12 @@
 //
-//  BinaryReader.h
-//  SimPE for Mac
+//  SimsComboBox.h
+//  MacSimpe
+//
+//  Created by Catherine Gramze on 8/31/25.
 //
 // ***************************************************************************
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
 // *                                                                         *
 // *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
 // *   rhiamom@mac.com                                                       *
@@ -21,40 +25,61 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************
+// ***************************************************************************/
 
-#import <Foundation/Foundation.h>
-#import "Stream.h"
+#import <Cocoa/Cocoa.h>
+
+@protocol IAlias;
+@class ExtSDesc;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BinaryReader : NSObject
+/**
+ * Custom combo box for selecting Sims
+ * Translated from SimPe.PackedFiles.Wrapper.SimComboBox
+ */
+@interface SimComboBox : NSView
 
-@property (nonatomic, readonly) Stream *baseStream;
+// MARK: - UI Components
+@property (nonatomic, strong) NSComboBox *comboBox;
 
-- (instancetype)initWithStream:(Stream *)stream;
+// MARK: - Properties
 
-- (uint8_t)readByte;
-- (int8_t)readSByte;
-- (uint16_t)readUInt16;
-- (int16_t)readInt16;
-- (uint32_t)readUInt32;
-- (int32_t)readInt32;
-- (uint64_t)readUInt64;
-- (int64_t)readInt64;
-- (float)readSingle;
-- (double)readDouble;
-- (BOOL)readBoolean;
-- (unichar)readChar;
+/**
+ * The currently selected Sim instance number
+ */
+@property (nonatomic, assign) uint16_t selectedSimInstance;
 
-- (NSData *)readBytes:(NSInteger)count;
-- (NSString *)readString;
-- (instancetype)initWithData:(NSData *)data;
-- (void)seekToPosition:(NSInteger)position;
-- (void)skipBytes:(NSInteger)count;
-- (NSInteger)remainingBytes;
-- (NSInteger)position;
-- (void)close;
+/**
+ * The currently selected Sim ID
+ */
+@property (nonatomic, assign) uint32_t selectedSimId;
+
+/**
+ * The currently selected Sim description object
+ */
+@property (nonatomic, strong, nullable) ExtSDesc *selectedSim;
+
+// MARK: - Events
+
+/**
+ * Event fired when the selected Sim changes
+ */
+@property (nonatomic, copy, nullable) void (^selectedSimChanged)(SimComboBox *sender);
+
+// MARK: - Initialization
+
+/**
+ * Initialize the SimComboBox
+ */
+- (instancetype)initWithFrame:(NSRect)frameRect;
+
+// MARK: - Data Management
+
+/**
+ * Reload the combo box content from the SimDescriptionProvider
+ */
+- (void)reload;
 
 @end
 

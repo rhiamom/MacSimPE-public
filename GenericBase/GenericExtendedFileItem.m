@@ -1,8 +1,12 @@
 //
-//  BinaryReader.h
-//  SimPE for Mac
+//  GenericExtendedFileItem.m
+//  MacSimpe
+//
+//  Created by Catherine Gramze on 9/3/25.
 //
 // ***************************************************************************
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
 // *                                                                         *
 // *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
 // *   rhiamom@mac.com                                                       *
@@ -23,39 +27,41 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import <Foundation/Foundation.h>
-#import "Stream.h"
+#import "GenericExtendedFileItem.h"
+#import "GenericFileItem.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@implementation GenericExtendedItem {
+    GenericCommon *_baseitem;
+}
 
-@interface BinaryReader : NSObject
+// MARK: - Initialization
 
-@property (nonatomic, readonly) Stream *baseStream;
+- (instancetype)initWithItem:(GenericCommon *)item {
+    self = [super init];
+    if (self) {
+        _baseitem = item;
+    }
+    return self;
+}
 
-- (instancetype)initWithStream:(Stream *)stream;
+- (instancetype)initWithGenericItem:(GenericItem *)item {
+    return [self initWithItem:item];
+}
 
-- (uint8_t)readByte;
-- (int8_t)readSByte;
-- (uint16_t)readUInt16;
-- (int16_t)readInt16;
-- (uint32_t)readUInt32;
-- (int32_t)readInt32;
-- (uint64_t)readUInt64;
-- (int64_t)readInt64;
-- (float)readSingle;
-- (double)readDouble;
-- (BOOL)readBoolean;
-- (unichar)readChar;
+// MARK: - Properties
 
-- (NSData *)readBytes:(NSInteger)count;
-- (NSString *)readString;
-- (instancetype)initWithData:(NSData *)data;
-- (void)seekToPosition:(NSInteger)position;
-- (void)skipBytes:(NSInteger)count;
-- (NSInteger)remainingBytes;
-- (NSInteger)position;
-- (void)close;
+- (GenericCommon *)base {
+    return _baseitem;
+}
+
+// MARK: - Factory Methods
+
++ (instancetype)extendedItemWithGenericItem:(GenericItem *)item {
+    return [[self alloc] initWithGenericItem:item];
+}
+
++ (instancetype)extendedItemWithGenericCommon:(GenericCommon *)item {
+    return [[self alloc] initWithItem:item];
+}
 
 @end
-
-NS_ASSUME_NONNULL_END

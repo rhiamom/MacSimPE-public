@@ -30,6 +30,8 @@
 #import "MetaData.h"
 #import "TypeAlias.h"
 #import "TGILoader.h"
+#import "PathProvider.h"
+#import <Cocoa/Cocoa.h>
 
 @implementation MetaData
 
@@ -91,22 +93,50 @@
 + (uint32_t)LOCAL_GROUP { return 0xFFFFFFFF; }
 
 // MARK: - CEP String Constants
+
 + (NSString *)GMND_PACKAGE {
-    NSString *savegameFolder = [@"~/Documents/EA Games/The Sims 2" stringByExpandingTildeInPath];
+    NSString *savegameFolder = [PathProvider simSavegameFolder];
     return [savegameFolder stringByAppendingPathComponent:@"Downloads/_EnableColorOptionsGMND.package"];
 }
 
 + (NSString *)MMAT_PACKAGE {
-    return @"/Applications/The Sims 2/TSData/Res/Sims3D/_EnableColorOptionsMMAT.package";
+    return @"/Applications/The Sims 2/Contents/Assets/TSData/Res/Sims3D/_EnableColorOptionsMMAT.package";
 }
 
 + (NSString *)ZCEP_FOLDER {
-    NSString *savegameFolder = [@"~/Documents/EA Games/The Sims 2" stringByExpandingTildeInPath];
-    return [savegameFolder stringByAppendingPathComponent:@"zCEP-EXTRA"];
+    NSString *savegameFolder = [PathProvider simSavegameFolder];
+    return [savegameFolder stringByAppendingPathComponent:@"Downloads/zCEP-EXTRA"];
 }
 
 + (NSString *)CTLG_FOLDER {
-    return @"/Applications/The Sims 2/TSData/Res/Catalog/zCEP-EXTRA";
+    return @"/Applications/The Sims 2/Contents/Assets/TSData/Res/Catalog/zCEP-EXTRA";
+}
+// Add these implementations to your MetaData.m file
+
+// MARK: - Color Properties Implementation
+
++ (NSColor *)specialSimColor {
+    // Color of a Sim that is either Unlinked or does not have Character Data
+    // C#: Color.FromArgb(0xD0, Color.Black) = rgba(0, 0, 0, 0xD0/255)
+    return [NSColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:(0xD0/255.0)];
+}
+
++ (NSColor *)unlinkedSim {
+    // Color of a Sim that is unlinked
+    // C#: Color.FromArgb(0xEF, Color.SteelBlue) = rgba(70, 130, 180, 0xEF/255)
+    return [NSColor colorWithRed:(70.0/255.0) green:(130.0/255.0) blue:(180.0/255.0) alpha:(0xEF/255.0)];
+}
+
++ (NSColor *)npcSim {
+    // Color of a NPC Sim
+    // C#: Color.FromArgb(0xEF, Color.YellowGreen) = rgba(154, 205, 50, 0xEF/255)
+    return [NSColor colorWithRed:(154.0/255.0) green:(205.0/255.0) blue:(50.0/255.0) alpha:(0xEF/255.0)];
+}
+
++ (NSColor *)inactiveSim {
+    // Color of a Sim that has no Character Data
+    // C#: Color.FromArgb(0xEF, Color.LightCoral) = rgba(240, 128, 128, 0xEF/255)
+    return [NSColor colorWithRed:(240.0/255.0) green:(128.0/255.0) blue:(128.0/255.0) alpha:(0xEF/255.0)];
 }
 
 // MARK: - Semi-Global Methods

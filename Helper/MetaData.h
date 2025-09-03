@@ -30,7 +30,7 @@
 
 #import "TypeAlias.h"
 #import <Foundation/Foundation.h>
-
+#import <Cocoa/Cocoa.h>
 
 // MARK: - Core Enumerations
 
@@ -104,8 +104,8 @@ typedef NS_OPTIONS(uint32_t, SkinCategories) {
 
 typedef NS_ENUM(uint32_t, SchoolTypes) {
     SchoolTypesUnknown = 0x00000000,
-    SchoolTypesPublic = 0xD06788B5,
-    SchoolTypesPrivate = 0xCC8F4C11
+    SchoolTypesPublicSchool = 0xD06788B5,    // Note: "PublicSchool" not just "Public"
+    SchoolTypesPrivateSchool = 0xCC8F4C11    // Note: "PrivateSchool" not just "Private"
 };
 
 typedef NS_ENUM(uint16_t, Grades) {
@@ -253,22 +253,6 @@ typedef NS_ENUM(uint16_t, Gender) {
     GenderFemale = 0x01
 };
 
-typedef NS_ENUM(uint32_t, Careers) {
-    CareersUnknown = 0xFFFFFFFF,
-    CareersUnemployed = 0x00000000,
-    CareersMilitary = 0x6C9EBD32,
-    CareersPolitics = 0x2C945B14,
-    CareersScience = 0x0C9EBD47,
-    CareersMedical = 0x0C7761FD,
-    CareersAthletic = 0x2C89E95F,
-    CareersEconomy = 0x45196555,
-    CareersLawEnforcement = 0xAC9EBCE3,
-    CareersCulinary = 0xEC9EBD5F,
-    CareersSlacker = 0xEC77620B,
-    CareersCriminal = 0x6C9EBD0E
-    // Add more careers as needed
-};
-
 typedef NS_ENUM(int32_t, NeighborhoodSlots) {
     NeighborhoodSlotsSims = 0,
     NeighborhoodSlotsSimsIntern = 1,
@@ -345,7 +329,233 @@ typedef NS_ENUM(uint16_t, ExpansionPack) {
     ExpansionPackBonVoyage = 0x0A
 };
 
+// Missing enums and properties to add to your MetaData.h
+
+// MARK: - Missing Large Enums
+
+typedef NS_ENUM(uint32_t, XObjFunctionSubSort) {
+    XObjFunctionSubSortRoof = 0x0100,
+    
+    XObjFunctionSubSortFloorBrick = 0x0201,
+    XObjFunctionSubSortFloorCarpet = 0x0202,
+    XObjFunctionSubSortFloorLino = 0x0204,
+    XObjFunctionSubSortFloorPoured = 0x0208,
+    XObjFunctionSubSortFloorStone = 0x0210,
+    XObjFunctionSubSortFloorTile = 0x0220,
+    XObjFunctionSubSortFloorWood = 0x0240,
+    XObjFunctionSubSortFloorOther = 0x0200,
+    
+    XObjFunctionSubSortFenceRail = 0x0400,
+    XObjFunctionSubSortFenceHalfwall = 0x0401,
+    
+    XObjFunctionSubSortWallBrick = 0x0501,
+    XObjFunctionSubSortWallMasonry = 0x0502,
+    XObjFunctionSubSortWallPaint = 0x0504,
+    XObjFunctionSubSortWallPaneling = 0x0508,
+    XObjFunctionSubSortWallPoured = 0x0510,
+    XObjFunctionSubSortWallSiding = 0x0520,
+    XObjFunctionSubSortWallTile = 0x0540,
+    XObjFunctionSubSortWallWallpaper = 0x0580,
+    XObjFunctionSubSortWallOther = 0x0500,
+    
+    XObjFunctionSubSortTerrain = 0x0600,
+    
+    XObjFunctionSubSortHoodLandmark = 0x0701,
+    XObjFunctionSubSortHoodFlora = 0x0702,
+    XObjFunctionSubSortHoodEffects = 0x0703,
+    XObjFunctionSubSortHoodMisc = 0x0704,
+    XObjFunctionSubSortHoodStone = 0x0705,
+    XObjFunctionSubSortHoodOther = 0x0700
+};
+
+typedef NS_ENUM(uint32_t, ObjFunctionSubSort) {
+    // Seating subsorts
+    ObjFunctionSubSortSeatingDiningroomChair = 0x101,
+    ObjFunctionSubSortSeatingLivingroomChair = 0x102,
+    ObjFunctionSubSortSeatingSofas = 0x104,
+    ObjFunctionSubSortSeatingBeds = 0x108,
+    ObjFunctionSubSortSeatingRecreation = 0x110,
+    ObjFunctionSubSortSeatingUnknownA = 0x120,
+    ObjFunctionSubSortSeatingUnknownB = 0x140,
+    ObjFunctionSubSortSeatingMisc = 0x180,
+    
+    // Surfaces subsorts
+    ObjFunctionSubSortSurfacesCounter = 0x201,
+    ObjFunctionSubSortSurfacesTable = 0x202,
+    ObjFunctionSubSortSurfacesEndTable = 0x204,
+    ObjFunctionSubSortSurfacesDesks = 0x208,
+    ObjFunctionSubSortSurfacesCoffeetable = 0x210,
+    ObjFunctionSubSortSurfacesBusiness = 0x220,
+    ObjFunctionSubSortSurfacesUnknownB = 0x240,
+    ObjFunctionSubSortSurfacesMisc = 0x280,
+    
+    // Decorative subsorts
+    ObjFunctionSubSortDecorativeWall = 0x2001,
+    ObjFunctionSubSortDecorativeSculpture = 0x2002,
+    ObjFunctionSubSortDecorativeRugs = 0x2004,
+    ObjFunctionSubSortDecorativePlants = 0x2008,
+    ObjFunctionSubSortDecorativeMirror = 0x2010,
+    ObjFunctionSubSortDecorativeCurtain = 0x2020,
+    ObjFunctionSubSortDecorativeUnknownB = 0x2040,
+    ObjFunctionSubSortDecorativeMisc = 0x2080,
+    
+    // Plumbing subsorts
+    ObjFunctionSubSortPlumbingToilet = 0x1001,
+    ObjFunctionSubSortPlumbingShower = 0x1002,
+    ObjFunctionSubSortPlumbingSink = 0x1004,
+    ObjFunctionSubSortPlumbingHotTub = 0x1008,
+    ObjFunctionSubSortPlumbingUnknownA = 0x1010,
+    ObjFunctionSubSortPlumbingUnknownB = 0x1020,
+    ObjFunctionSubSortPlumbingUnknownC = 0x1040,
+    ObjFunctionSubSortPlumbingMisc = 0x1080,
+    
+    // Appliances subsorts
+    ObjFunctionSubSortAppliancesCooking = 0x401,
+    ObjFunctionSubSortAppliancesRefrigerator = 0x402,
+    ObjFunctionSubSortAppliancesSmall = 0x404,
+    ObjFunctionSubSortAppliancesLarge = 0x408,
+    ObjFunctionSubSortAppliancesUnknownA = 0x410,
+    ObjFunctionSubSortAppliancesUnknownB = 0x420,
+    ObjFunctionSubSortAppliancesUnknownC = 0x440,
+    ObjFunctionSubSortAppliancesMisc = 0x480,
+    
+    // Electronics subsorts
+    ObjFunctionSubSortElectronicsEntertainment = 0x801,
+    ObjFunctionSubSortElectronicsTvAndComputer = 0x802,
+    ObjFunctionSubSortElectronicsAudio = 0x804,
+    ObjFunctionSubSortElectronicsSmall = 0x808,
+    ObjFunctionSubSortElectronicsUnknownA = 0x810,
+    ObjFunctionSubSortElectronicsUnknownB = 0x820,
+    ObjFunctionSubSortElectronicsUnknownC = 0x840,
+    ObjFunctionSubSortElectronicsMisc = 0x880,
+    
+    // Lighting subsorts
+    ObjFunctionSubSortLightingTableLamp = 0x8001,
+    ObjFunctionSubSortLightingFloorLamp = 0x8002,
+    ObjFunctionSubSortLightingWallLamp = 0x8004,
+    ObjFunctionSubSortLightingCeilingLamp = 0x8008,
+    ObjFunctionSubSortLightingOutdoor = 0x8010,
+    ObjFunctionSubSortLightingUnknownA = 0x8020,
+    ObjFunctionSubSortLightingUnknownB = 0x8040,
+    ObjFunctionSubSortLightingMisc = 0x8080,
+    
+    // Hobbies subsorts
+    ObjFunctionSubSortHobbiesCreative = 0x10001,
+    ObjFunctionSubSortHobbiesKnowledge = 0x10002,
+    ObjFunctionSubSortHobbiesExcersising = 0x10004,
+    ObjFunctionSubSortHobbiesRecreation = 0x10008,
+    ObjFunctionSubSortHobbiesUnknownA = 0x10010,
+    ObjFunctionSubSortHobbiesUnknownB = 0x10020,
+    ObjFunctionSubSortHobbiesUnknownC = 0x10040,
+    ObjFunctionSubSortHobbiesMisc = 0x10080,
+    
+    // General subsorts
+    ObjFunctionSubSortGeneralUnknownA = 0x4001,
+    ObjFunctionSubSortGeneralDresser = 0x4002,
+    ObjFunctionSubSortGeneralUnknownB = 0x4004,
+    ObjFunctionSubSortGeneralParty = 0x4008,
+    ObjFunctionSubSortGeneralChild = 0x4010,
+    ObjFunctionSubSortGeneralCar = 0x4020,
+    ObjFunctionSubSortGeneralPets = 0x4040,
+    ObjFunctionSubSortGeneralMisc = 0x4080,
+    
+    // Aspiration Rewards subsorts
+    ObjFunctionSubSortAspirationRewardsUnknownA = 0x40001,
+    ObjFunctionSubSortAspirationRewardsUnknownB = 0x40002,
+    ObjFunctionSubSortAspirationRewardsUnknownC = 0x40004,
+    ObjFunctionSubSortAspirationRewardsUnknownD = 0x40008,
+    ObjFunctionSubSortAspirationRewardsUnknownE = 0x40010,
+    ObjFunctionSubSortAspirationRewardsUnknownF = 0x40020,
+    ObjFunctionSubSortAspirationRewardsUnknownG = 0x40040,
+    ObjFunctionSubSortAspirationRewardsUnknownH = 0x40080,
+    
+    // Career Rewards subsorts
+    ObjFunctionSubSortCareerRewardsUnknownA = 0x80001,
+    ObjFunctionSubSortCareerRewardsUnknownB = 0x80002,
+    ObjFunctionSubSortCareerRewardsUnknownC = 0x80004,
+    ObjFunctionSubSortCareerRewardsUnknownD = 0x80008,
+    ObjFunctionSubSortCareerRewardsUnknownE = 0x80010,
+    ObjFunctionSubSortCareerRewardsUnknownF = 0x80020,
+    ObjFunctionSubSortCareerRewardsUnknownG = 0x80040,
+    ObjFunctionSubSortCareerRewardsUnknownH = 0x80080
+};
+
+// MARK: - Complete Careers Enum (to replace your existing truncated one)
+
+typedef NS_ENUM(uint32_t, Careers) {
+    CareersUnknown = 0xFFFFFFFF,
+    CareersUnemployed = 0x00000000,
+    CareersMilitary = 0x6C9EBD32,
+    CareersPolitics = 0x2C945B14,
+    CareersScience = 0x0C9EBD47,
+    CareersMedical = 0x0C7761FD,
+    CareersAthletic = 0x2C89E95F,
+    CareersEconomy = 0x45196555,
+    CareersLawEnforcement = 0xAC9EBCE3,
+    CareersCulinary = 0xEC9EBD5F,
+    CareersSlacker = 0xEC77620B,
+    CareersCriminal = 0x6C9EBD0E,
+    
+    // Teen/Elder variants
+    CareersTeenElderAthletic = 0xAC89E947,
+    CareersTeenElderBusiness = 0x4C1E0577,
+    CareersTeenElderCriminal = 0xACA07ACD,
+    CareersTeenElderCulinary = 0x4CA07B0C,
+    CareersTeenElderLawEnforcement = 0x6CA07B39,
+    CareersTeenElderMedical = 0xAC89E918,
+    CareersTeenElderMilitary = 0xCCA07B66,
+    CareersTeenElderPolitics = 0xCCA07B8D,
+    CareersTeenElderScience = 0xECA07BB0,
+    CareersTeenElderSlacker = 0x6CA07BDC,
+    
+    // University careers
+    CareersParanormal = 0x2E6FFF87,
+    CareersNaturalScientist = 0xEE70001C,
+    CareersShowBiz = 0xAE6FFFB0,
+    CareersArtist = 0x4E6FFFBC,
+    CareersAdventurer = 0x3240CBA5,
+    CareersEducation = 0x72428B30,
+    CareersGamer = 0xF240C306,
+    CareersJournalism = 0x7240D944,
+    CareersLaw = 0x12428B19,
+    CareersMusic = 0xB2428B0C,
+    
+    // Teen/Elder University variants
+    CareersTeenElderAdventurer = 0xF240D235,
+    CareersTeenElderEducation = 0xD243BBEC,
+    CareersTeenElderGamer = 0x1240C962,
+    CareersTeenElderJournalism = 0x5240E212,
+    CareersTeenElderLaw = 0x1243BBDE,
+    CareersTeenElderMusic = 0xB243BBD2,
+    
+    // Pet careers
+    CareersPetSecurity = 0xD188A400,
+    CareersPetService = 0xB188A4C1,
+    CareersPetShowBiz = 0xD175CC2D,
+    
+    // Seasons careers
+    CareersTeenElderConstruction = 0x53E1C30F,
+    CareersTeenElderDance = 0xD3E094A5,
+    CareersTeenElderEntertainment = 0x53E09494,
+    CareersTeenElderIntelligence = 0x93E094C0,
+    CareersTeenElderOceanography = 0x13E09443,
+    CareersConstruction = 0xF3E1C301,
+    CareersDance = 0xD3E09422,
+    CareersEntertainment = 0xB3E09417,
+    CareersIntelligence = 0x33E0940E,
+    CareersOceanography = 0x73E09404
+};
+
+// MARK: - Missing Color Properties (add these to your @interface MetaData)
+
+
+
 @interface MetaData : NSObject
+// Color constants as class properties
+@property (class, nonatomic, readonly, strong) NSColor *specialSimColor;
+@property (class, nonatomic, readonly, strong) NSColor *unlinkedSim;
+@property (class, nonatomic, readonly, strong) NSColor *npcSim;
+@property (class, nonatomic, readonly, strong) NSColor *inactiveSim;
 
 // MARK: - Core Constants
 + (uint32_t)DIRECTORY_FILE;

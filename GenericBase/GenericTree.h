@@ -1,8 +1,12 @@
 //
-//  BinaryReader.h
-//  SimPE for Mac
+//  GenericTree.h
+//  MacSimpe
+//
+//  Created by Catherine Gramze on 9/3/25.
 //
 // ***************************************************************************
+// *   Copyright (C) 2005 by Ambertation                                     *
+// *   quaxi@ambertation.de                                                  *
 // *                                                                         *
 // *   Objective-C translation Copyright (C) 2025 by GramzeSweatShop         *
 // *   rhiamom@mac.com                                                       *
@@ -24,37 +28,51 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import "Stream.h"
+#import <AppKit/AppKit.h>
+#import "Generic.h"
+
+@protocol IFileWrapper;
+@class GenericItem;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BinaryReader : NSObject
+/**
+ * Tree-based UI Handler for Generic Files
+ * Displays file data in a hierarchical tree structure instead of a flat list
+ */
+@interface GenericTree : Generic
 
-@property (nonatomic, readonly) Stream *baseStream;
+// MARK: - Initialization
 
-- (instancetype)initWithStream:(Stream *)stream;
+/**
+ * Constructor
+ */
+- (instancetype)init;
 
-- (uint8_t)readByte;
-- (int8_t)readSByte;
-- (uint16_t)readUInt16;
-- (int16_t)readInt16;
-- (uint32_t)readUInt32;
-- (int32_t)readInt32;
-- (uint64_t)readUInt64;
-- (int64_t)readInt64;
-- (float)readSingle;
-- (double)readDouble;
-- (BOOL)readBoolean;
-- (unichar)readChar;
+// MARK: - IPackedFileUI Protocol Override
 
-- (NSData *)readBytes:(NSInteger)count;
-- (NSString *)readString;
-- (instancetype)initWithData:(NSData *)data;
-- (void)seekToPosition:(NSInteger)position;
-- (void)skipBytes:(NSInteger)count;
-- (NSInteger)remainingBytes;
-- (NSInteger)position;
-- (void)close;
+/**
+ * Returns the tree panel as the main GUI view
+ */
+- (NSView *)createView;
+
+/**
+ * Updates the GUI with the given wrapper data using tree display
+ * @param wrapper The file wrapper containing data to display
+ */
+- (void)updateGUI:(id<IFileWrapper>)wrapper;
+
+// MARK: - Tree Building Methods
+
+/**
+ * Recursively adds tree nodes for the given items
+ * @param items Array of GenericItem objects to add as nodes
+ * @param parentNode The parent node to add children to, or nil for root level
+ * @param names Array of property names to display
+ */
+- (void)addTreeNodes:(NSArray<GenericItem *> *)items
+          parentNode:(nullable NSOutlineViewItem *)parentNode
+               names:(NSArray<NSString *> *)names;
 
 @end
 

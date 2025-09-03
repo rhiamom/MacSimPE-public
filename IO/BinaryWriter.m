@@ -212,7 +212,16 @@
 - (void)writeByte:(uint8_t)byte {
     [self writeBytes:&byte length:1];
 }
-// MARK: - Stream Control
+
+// Add this method implementation to your BinaryWriter.m file
+
+// MARK: - Stream Control Method
+- (void)skipBytes:(NSInteger)count {
+    // Move the stream position forward by count bytes
+    // This is equivalent to seeking to current position + count
+    int64_t currentPos = self.stream.position;
+    self.stream.position = currentPos + (int64_t)count;
+}
 
 - (void)seekToPosition:(NSInteger)position {
     if (self.stream) {
