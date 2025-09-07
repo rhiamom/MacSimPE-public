@@ -24,6 +24,12 @@
 		B61986FE2E62079D00600ED7 /* ObjectCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B61986FD2E62079D00600ED7 /* ObjectCacheItem.m */; };
 		B61987012E62096300600ED7 /* SlotItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B61987002E62096300600ED7 /* SlotItem.m */; };
 		B61987042E6209E700600ED7 /* SlotWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B61987032E6209E700600ED7 /* SlotWrapper.m */; };
+		B61BA7C22E6B457800392771 /* PictureUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7C12E6B457800392771 /* PictureUI.m */; };
+		B61BA7C52E6B461D00392771 /* UIBase.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7C42E6B461D00392771 /* UIBase.m */; };
+		B61BA7C82E6B492800392771 /* PictureWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7C72E6B492800392771 /* PictureWrapper.m */; };
+		B61BA7CC2E6B4A0F00392771 /* TGALoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7CB2E6B4A0F00392771 /* TGALoader.m */; };
+		B61BA7CF2E6B4D2800392771 /* Elements.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7CE2E6B4D2800392771 /* Elements.m */; };
+		B61BA7D22E6B58B200392771 /* Elements2.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7D12E6B58B200392771 /* Elements2.m */; };
 		B61C4CFC2E456EF300BC38B4 /* PackageFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = B61C4CFB2E456EF300BC38B4 /* PackageFiles.m */; };
 		B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE5682E3A84A200547C40 /* ResourceNameSorter.m */; };
 		B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE56B2E3A85A800547C40 /* ViewFilter.m */; };
@@ -89,6 +95,8 @@
 		B673A12F2E636C92004039D3 /* cMaterialDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = B673A12E2E636C92004039D3 /* cMaterialDefinition.m */; };
 		B673A1332E636D71004039D3 /* Vectors.m in Sources */ = {isa = PBXBuildFile; fileRef = B673A1322E636D71004039D3 /* Vectors.m */; };
 		B6819E582E3E734000E37434 /* FileIndexItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6819E572E3E734000E37434 /* FileIndexItem.m */; };
+		B68EE9962E68DA520057ABE5 /* StrItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EE9952E68DA520057ABE5 /* StrItem.m */; };
+		B68EE9992E68DBF20057ABE5 /* StrWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EE9982E68DBF20057ABE5 /* StrWrapper.m */; };
 		B691A41E2E67B7B30042D5A5 /* GenericElements.m in Sources */ = {isa = PBXBuildFile; fileRef = B691A41D2E67B7B30042D5A5 /* GenericElements.m */; };
 		B69C59F72E3E8CC900794FC7 /* GlobalizedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = B69C59F62E3E8CC900794FC7 /* GlobalizedObject.m */; };
 		B69C59FA2E3E8DF000794FC7 /* ExpansionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B69C59F92E3E8DF000794FC7 /* ExpansionItem.m */; };
@@ -117,6 +125,8 @@
 		B6AAC5EB2E5A1C4500846641 /* libsoil2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AAC5EA2E5A1C4500846641 /* libsoil2.a */; };
 		B6AAC5EE2E5A1C5C00846641 /* SOIL2.c in Sources */ = {isa = PBXBuildFile; fileRef = B6AAC5ED2E5A1C5C00846641 /* SOIL2.c */; };
 		B6AAC5F12E5A1F9100846641 /* cLevelInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAC5F02E5A1F9100846641 /* cLevelInfo.m */; };
+		B6AF28FD2E6A07A800EDEB2D /* ProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AF28FC2E6A07A800EDEB2D /* ProgressBar.m */; };
+		B6AF28FE2E6A07B000EDEB2D /* EnumComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AF28FA2E6A065200EDEB2D /* EnumComboBox.m */; };
 		B6B02CCE2E4EB2B8009240FD /* AbstractWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BB52E353F46009AD0A7 /* AbstractWrapper.m */; };
 		B6B02CCF2E4EB2C8009240FD /* AbstractFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = B64E6BB72E354348009AD0A7 /* AbstractFactory.m */; };
 		B6B02CD02E4EB2E5009240FD /* CompressedFileList.m in Sources */ = {isa = PBXBuildFile; fileRef = B632A4372E36A3AD0024810C /* CompressedFileList.m */; };
@@ -163,6 +173,9 @@
 		B6CDCCAA2E342B97004FDF82 /* PackedFileDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCA92E342B97004FDF82 /* PackedFileDescriptor.m */; };
 		B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCB32E34416F004FDF82 /* MetaData.m */; };
 		B6CDCCBB2E345922004FDF82 /* PackedFileDescriptors.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CDCCBA2E345922004FDF82 /* PackedFileDescriptors.m */; };
+		B6D042C42E69022700366E80 /* DefaultWrapperFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D042C32E69022700366E80 /* DefaultWrapperFactory.m */; };
+		B6D042C72E6904AC00366E80 /* StrListViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D042C62E6904AC00366E80 /* StrListViewer.m */; };
+		B6D042CA2E6909DB00366E80 /* StrForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D042C92E6909DB00366E80 /* StrForm.m */; };
 		B6E24B232E561CE1003E2A3E /* SimFamilyNames.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B222E561CE1003E2A3E /* SimFamilyNames.m */; };
 		B6E24B282E561E63003E2A3E /* SimNames.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B272E561E63003E2A3E /* SimNames.m */; };
 		B6E24B2C2E561F98003E2A3E /* SimDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B2B2E561F98003E2A3E /* SimDescriptions.m */; };
@@ -252,6 +265,19 @@
 		B61987002E62096300600ED7 /* SlotItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlotItem.m; sourceTree = "<group>"; };
 		B61987022E6209D300600ED7 /* SlotWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SlotWrapper.h; sourceTree = "<group>"; };
 		B61987032E6209E700600ED7 /* SlotWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SlotWrapper.m; sourceTree = "<group>"; };
+		B61BA7C02E6B456300392771 /* PictureUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PictureUI.h; sourceTree = "<group>"; };
+		B61BA7C12E6B457800392771 /* PictureUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PictureUI.m; sourceTree = "<group>"; };
+		B61BA7C32E6B460D00392771 /* UIBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIBase.h; sourceTree = "<group>"; };
+		B61BA7C42E6B461D00392771 /* UIBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIBase.m; sourceTree = "<group>"; };
+		B61BA7C62E6B491500392771 /* PictureWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PictureWrapper.h; sourceTree = "<group>"; };
+		B61BA7C72E6B492800392771 /* PictureWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PictureWrapper.m; sourceTree = "<group>"; };
+		B61BA7CA2E6B49FB00392771 /* TGALoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TGALoader.h; sourceTree = "<group>"; };
+		B61BA7CB2E6B4A0F00392771 /* TGALoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TGALoader.m; sourceTree = "<group>"; };
+		B61BA7CD2E6B4D1600392771 /* Elements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Elements.h; sourceTree = "<group>"; };
+		B61BA7CE2E6B4D2800392771 /* Elements.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Elements.m; sourceTree = "<group>"; };
+		B61BA7D02E6B58A100392771 /* Elements2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Elements2.h; sourceTree = "<group>"; };
+		B61BA7D12E6B58B200392771 /* Elements2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Elements2.m; sourceTree = "<group>"; };
+		B61BA7D32E6E174C00392771 /* stbi_DDS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS.h; sourceTree = "<group>"; };
 		B61C4CF92E456A1F00BC38B4 /* FileTableItemType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTableItemType.h; sourceTree = "<group>"; };
 		B61C4CFA2E456EB100BC38B4 /* PackageFiles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageFiles.h; sourceTree = "<group>"; };
 		B61C4CFB2E456EF300BC38B4 /* PackageFiles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageFiles.m; sourceTree = "<group>"; };
@@ -405,6 +431,11 @@
 		B6819E572E3E734000E37434 /* FileIndexItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileIndexItem.m; sourceTree = "<group>"; };
 		B6819E5A2E3E75A000E37434 /* FileIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileIndex.h; sourceTree = "<group>"; };
 		B6819E5B2E3E76EF00E37434 /* FileIndex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileIndex.m; sourceTree = "<group>"; };
+		B68EE9932E68D9A90057ABE5 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		B68EE9942E68DA3F0057ABE5 /* StrItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrItem.h; sourceTree = "<group>"; };
+		B68EE9952E68DA520057ABE5 /* StrItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrItem.m; sourceTree = "<group>"; };
+		B68EE9972E68DBDF0057ABE5 /* StrWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrWrapper.h; sourceTree = "<group>"; };
+		B68EE9982E68DBF20057ABE5 /* StrWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrWrapper.m; sourceTree = "<group>"; };
 		B690E6F12E4A4FF400A75815 /* FileTableEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTableEnums.h; sourceTree = "<group>"; };
 		B691A41A2E67B4EF0042D5A5 /* GenericUIBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenericUIBase.h; sourceTree = "<group>"; };
 		B691A41B2E67B5390042D5A5 /* GenericElements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenericElements.h; sourceTree = "<group>"; };
@@ -474,6 +505,10 @@
 		B6AAC5ED2E5A1C5C00846641 /* SOIL2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SOIL2.c; sourceTree = "<group>"; };
 		B6AAC5EF2E5A1F5B00846641 /* cLevelInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cLevelInfo.h; sourceTree = "<group>"; };
 		B6AAC5F02E5A1F9100846641 /* cLevelInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cLevelInfo.m; sourceTree = "<group>"; };
+		B6AF28F92E6A063C00EDEB2D /* EnumComboBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnumComboBox.h; sourceTree = "<group>"; };
+		B6AF28FA2E6A065200EDEB2D /* EnumComboBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnumComboBox.m; sourceTree = "<group>"; };
+		B6AF28FB2E6A079100EDEB2D /* ProgressBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgressBar.h; sourceTree = "<group>"; };
+		B6AF28FC2E6A07A800EDEB2D /* ProgressBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressBar.m; sourceTree = "<group>"; };
 		B6B02CD52E4EB567009240FD /* IPackedFileUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileUI.h; sourceTree = "<group>"; };
 		B6B02CD62E4EB9FB009240FD /* RcolUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolUI.h; sourceTree = "<group>"; };
 		B6B02CD72E4EBA34009240FD /* RcolUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolUI.m; sourceTree = "<group>"; };
@@ -571,6 +606,12 @@
 		B6CDCCB92E3458C2004FDF82 /* PackedFileDescriptors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileDescriptors.h; sourceTree = "<group>"; };
 		B6CDCCBA2E345922004FDF82 /* PackedFileDescriptors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileDescriptors.m; sourceTree = "<group>"; };
 		B6CDCCBD2E34665C004FDF82 /* IPackageFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageFile.h; sourceTree = "<group>"; };
+		B6D042C22E69020400366E80 /* DefaultWrapperFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DefaultWrapperFactory.h; sourceTree = "<group>"; };
+		B6D042C32E69022700366E80 /* DefaultWrapperFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DefaultWrapperFactory.m; sourceTree = "<group>"; };
+		B6D042C52E69049A00366E80 /* StrListViewer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrListViewer.h; sourceTree = "<group>"; };
+		B6D042C62E6904AC00366E80 /* StrListViewer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrListViewer.m; sourceTree = "<group>"; };
+		B6D042C82E6909CA00366E80 /* StrForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrForm.h; sourceTree = "<group>"; };
+		B6D042C92E6909DB00366E80 /* StrForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrForm.m; sourceTree = "<group>"; };
 		B6E24B212E561C2A003E2A3E /* SimFamilyNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimFamilyNames.h; sourceTree = "<group>"; };
 		B6E24B222E561CE1003E2A3E /* SimFamilyNames.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimFamilyNames.m; sourceTree = "<group>"; };
 		B6E24B242E561D4B003E2A3E /* ISimFamilyNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimFamilyNames.h; sourceTree = "<group>"; };
@@ -705,6 +746,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B61BA7C92E6B49E100392771 /* TGA_View */ = {
+			isa = PBXGroup;
+			children = (
+				B61BA7CA2E6B49FB00392771 /* TGALoader.h */,
+				B61BA7CB2E6B4A0F00392771 /* TGALoader.m */,
+			);
+			path = TGA_View;
+			sourceTree = "<group>";
+		};
 		B61CE59B2E3ADF2300547C40 /* WorkspaceHelper */ = {
 			isa = PBXGroup;
 			children = (
@@ -755,12 +805,22 @@
 		B632A4352E36A2FD0024810C /* Clst */ = {
 			isa = PBXGroup;
 			children = (
-				B632A4362E36A3160024810C /* CompressedFileList.h */,
-				B632A4372E36A3AD0024810C /* CompressedFileList.m */,
-				B69F34F82E38398A007EEA89 /* ClstItem.h */,
-				B69F34F92E3839E7007EEA89 /* ClstItem.m */,
 				B6FBA7F72E528F9B0000F0D5 /* ClstForm.h */,
 				B6FBA7F82E528FDE0000F0D5 /* ClstForm.m */,
+				B69F34F82E38398A007EEA89 /* ClstItem.h */,
+				B69F34F92E3839E7007EEA89 /* ClstItem.m */,
+				B632A4362E36A3160024810C /* CompressedFileList.h */,
+				B632A4372E36A3AD0024810C /* CompressedFileList.m */,
+				B6D042C22E69020400366E80 /* DefaultWrapperFactory.h */,
+				B6D042C32E69022700366E80 /* DefaultWrapperFactory.m */,
+				B6D042C82E6909CA00366E80 /* StrForm.h */,
+				B6D042C92E6909DB00366E80 /* StrForm.m */,
+				B68EE9942E68DA3F0057ABE5 /* StrItem.h */,
+				B68EE9952E68DA520057ABE5 /* StrItem.m */,
+				B6D042C52E69049A00366E80 /* StrListViewer.h */,
+				B6D042C62E6904AC00366E80 /* StrListViewer.m */,
+				B68EE9972E68DBDF0057ABE5 /* StrWrapper.h */,
+				B68EE9982E68DBF20057ABE5 /* StrWrapper.m */,
 			);
 			path = Clst;
 			sourceTree = "<group>";
@@ -776,6 +836,16 @@
 				B64B39372E58E0AC00FC359D /* CpfUI.m */,
 				B6F114542E64CE1A00348F44 /* SDescWrapper.h */,
 				B6F114552E64CE2900348F44 /* SDescWrapper.m */,
+				B61BA7C02E6B456300392771 /* PictureUI.h */,
+				B61BA7C12E6B457800392771 /* PictureUI.m */,
+				B61BA7C32E6B460D00392771 /* UIBase.h */,
+				B61BA7C42E6B461D00392771 /* UIBase.m */,
+				B61BA7C62E6B491500392771 /* PictureWrapper.h */,
+				B61BA7C72E6B492800392771 /* PictureWrapper.m */,
+				B61BA7CD2E6B4D1600392771 /* Elements.h */,
+				B61BA7CE2E6B4D2800392771 /* Elements.m */,
+				B61BA7D02E6B58A100392771 /* Elements2.h */,
+				B61BA7D12E6B58B200392771 /* Elements2.m */,
 			);
 			path = FileHandler;
 			sourceTree = "<group>";
@@ -1004,6 +1074,8 @@
 		B6AAC5E92E5A1C1700846641 /* CSoil2 */ = {
 			isa = PBXGroup;
 			children = (
+				B61BA7D32E6E174C00392771 /* stbi_DDS.h */,
+				B68EE9932E68D9A90057ABE5 /* stb_image.h */,
 				B6AAC5EC2E5A1C5C00846641 /* SOIL2.h */,
 				B6AAC5ED2E5A1C5C00846641 /* SOIL2.c */,
 				B6AAC5EA2E5A1C4500846641 /* libsoil2.a */,
@@ -1011,17 +1083,28 @@
 			path = CSoil2;
 			sourceTree = "<group>";
 		};
+		B6AF28F82E6A060100EDEB2D /* EnumComboBox */ = {
+			isa = PBXGroup;
+			children = (
+				B6AF28F92E6A063C00EDEB2D /* EnumComboBox.h */,
+				B6AF28FA2E6A065200EDEB2D /* EnumComboBox.m */,
+				B6AF28FB2E6A079100EDEB2D /* ProgressBar.h */,
+				B6AF28FC2E6A07A800EDEB2D /* ProgressBar.m */,
+			);
+			path = EnumComboBox;
+			sourceTree = "<group>";
+		};
 		B6BF52622E5B74DB007B48A1 /* 3IDR */ = {
 			isa = PBXGroup;
 			children = (
-				B6BF52632E5B74F5007B48A1 /* NmapItem.h */,
-				B6BF52642E5B7542007B48A1 /* NmapItem.m */,
-				B6BF52662E5B75A4007B48A1 /* NmapWrapper.h */,
-				B6BF52672E5B75BC007B48A1 /* NmapWrapper.m */,
 				B6BF52692E5B763A007B48A1 /* NmapForm.h */,
 				B6BF526A2E5B7651007B48A1 /* NmapForm.m */,
+				B6BF52632E5B74F5007B48A1 /* NmapItem.h */,
+				B6BF52642E5B7542007B48A1 /* NmapItem.m */,
 				B6BF526C2E5B77F4007B48A1 /* NmapUI.h */,
 				B6BF526D2E5B7806007B48A1 /* NmapUI.m */,
+				B6BF52662E5B75A4007B48A1 /* NmapWrapper.h */,
+				B6BF52672E5B75BC007B48A1 /* NmapWrapper.m */,
 			);
 			path = 3IDR;
 			sourceTree = "<group>";
@@ -1029,16 +1112,16 @@
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
-				B691A4192E67B4B00042D5A5 /* GenericBase */,
-				B6F1144D2E64CBA600348F44 /* Sims */,
-				B673A1302E636D4F004039D3 /* Geometry */,
-				B6F13C6B2E60F7DE00691586 /* Cache */,
+				B61BA7C92E6B49E100392771 /* TGA_View */,
 				B6BF52622E5B74DB007B48A1 /* 3IDR */,
-				B6AAC5E92E5A1C1700846641 /* CSoil2 */,
-				B64B392F2E58DCF700FC359D /* FileHandler */,
-				B65044682E46D1DA0014569E /* Temp */,
+				B6F13C6B2E60F7DE00691586 /* Cache */,
 				B632A4352E36A2FD0024810C /* Clst */,
+				B6AAC5E92E5A1C1700846641 /* CSoil2 */,
+				B6AF28F82E6A060100EDEB2D /* EnumComboBox */,
+				B64B392F2E58DCF700FC359D /* FileHandler */,
+				B691A4192E67B4B00042D5A5 /* GenericBase */,
 				B64E6BAE2E3539F9009AD0A7 /* GenericHandlers */,
+				B673A1302E636D4F004039D3 /* Geometry */,
 				B6CDCC822E33F0F3004FDF82 /* GUI */,
 				B64E6BB32E353E8B009AD0A7 /* HandlerCommon */,
 				B6CDCCB12E3440CA004FDF82 /* Helper */,
@@ -1053,6 +1136,8 @@
 				B64F1C962E43FC49001C0DEC /* Rcol */,
 				B69F34F12E383523007EEA89 /* ResourceControls */,
 				B6819E592E3E758B00E37434 /* Scenegraph */,
+				B6F1144D2E64CBA600348F44 /* Sims */,
+				B65044682E46D1DA0014569E /* Temp */,
 				B61CE59B2E3ADF2300547C40 /* WorkspaceHelper */,
 				B62437E22E35A2470052119F /* XMLResourceFiles */,
 			);
@@ -1512,6 +1597,7 @@
 				B69F34F42E3835A1007EEA89 /* ResourceViewManager.m in Sources */,
 				B6F114532E64CCC000348F44 /* ExtSDesc.m in Sources */,
 				B6194B582E5E015200255858 /* TxtrWrapper.m in Sources */,
+				B6AF28FD2E6A07A800EDEB2D /* ProgressBar.m in Sources */,
 				B6CDCC9D2E34271B004FDF82 /* HeaderIndex.m in Sources */,
 				B6B02CCE2E4EB2B8009240FD /* AbstractWrapper.m in Sources */,
 				B6B02CD82E4EBA34009240FD /* RcolUI.m in Sources */,
@@ -1553,9 +1639,12 @@
 				B61986FB2E6206F700600ED7 /* CacheException.m in Sources */,
 				B61CE59A2E3ADAB200547C40 /* Localization.m in Sources */,
 				B69C59F72E3E8CC900794FC7 /* GlobalizedObject.m in Sources */,
+				B61BA7D22E6B58B200392771 /* Elements2.m in Sources */,
+				B61BA7C22E6B457800392771 /* PictureUI.m in Sources */,
 				B69C59FA2E3E8DF000794FC7 /* ExpansionItem.m in Sources */,
 				B64EEF4B2E3974800008E7CA /* ResourceListViewExtSelection.m in Sources */,
 				B691A41E2E67B7B30042D5A5 /* GenericElements.m in Sources */,
+				B61BA7C52E6B461D00392771 /* UIBase.m in Sources */,
 				B6B02CD42E4EB38D009240FD /* RemoteControl.m in Sources */,
 				B6F1144C2E63BB8900348F44 /* PropertyParser.m in Sources */,
 				B69C5A352E3ED1E600794FC7 /* DescriptiveSerializer.m in Sources */,
@@ -1567,6 +1656,7 @@
 				B61CE5A62E3AE72300547C40 /* SimPEResourceIndex.m in Sources */,
 				B6CCE7EE2E68980700BE2BB3 /* GenericFile.m in Sources */,
 				B6CDCC942E340521004FDF82 /* BinaryReader.m in Sources */,
+				B61BA7C82E6B492800392771 /* PictureWrapper.m in Sources */,
 				B69F35182E385E4F007EEA89 /* NamedPackedFileDescriptor.m in Sources */,
 				B69C5A2D2E3EC83B00794FC7 /* WarningException.m in Sources */,
 				B64F1CA12E44041A001C0DEC /* FileTableItemType.m in Sources */,
@@ -1574,6 +1664,7 @@
 				B64B393E2E58E6F800FC359D /* PackedFileItem.m in Sources */,
 				B6F114562E64CE2900348F44 /* SDescWrapper.m in Sources */,
 				B6FDC59C2E3FE170004E8AA6 /* StreamMaintainer.m in Sources */,
+				B6D042CA2E6909DB00366E80 /* StrForm.m in Sources */,
 				B6B02CCF2E4EB2C8009240FD /* AbstractFactory.m in Sources */,
 				B6F440B02E46643B00870564 /* FlagBaseConverter.m in Sources */,
 				B6F114502E64CBD300348F44 /* SimsComboBox.m in Sources */,
@@ -1601,6 +1692,7 @@
 				B673A12C2E636B2D004039D3 /* MemoryCacheFile.m in Sources */,
 				B673A1332E636D71004039D3 /* Vectors.m in Sources */,
 				B64EEF452E3938AE0008E7CA /* AResourceTreeNodeBuilder.m in Sources */,
+				B6D042C72E6904AC00366E80 /* StrListViewer.m in Sources */,
 				B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */,
 				B6B8D03E2E57AF90008557A2 /* PropertyObjectBuilder.m in Sources */,
 				B673A1262E6368ED004039D3 /* ObjectComboBox.m in Sources */,
@@ -1616,6 +1708,8 @@
 				B65E3A6E2E689C0A00994D92 /* GenericTree.m in Sources */,
 				B64B39322E58DD6300FC359D /* CpfWrapper.m in Sources */,
 				B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */,
+				B6D042C42E69022700366E80 /* DefaultWrapperFactory.m in Sources */,
+				B6AF28FE2E6A07B000EDEB2D /* EnumComboBox.m in Sources */,
 				B64F1C9E2E44011C001C0DEC /* FileTableItem.m in Sources */,
 				B64B39382E58E0AC00FC359D /* CpfUI.m in Sources */,
 				B6194B532E5E008100255858 /* WorkshopItems.m in Sources */,
@@ -1638,9 +1732,11 @@
 				B64B39162E58CE8200FC359D /* HashAlgorithmParameters.m in Sources */,
 				B671B48D2E4FC38A004559C3 /* IWrapperReferencedResources.m in Sources */,
 				B69C5A382E3ED3E200794FC7 /* Thread.m in Sources */,
+				B61BA7CF2E6B4D2800392771 /* Elements.m in Sources */,
 				B6B02CD32E4EB331009240FD /* GenericRcolWrapper.m in Sources */,
 				B6F440AA2E465FDF00870564 /* ArgParser.m in Sources */,
 				B6F440B32E4665BD00870564 /* FlagObjectBuilder.m in Sources */,
+				B68EE9962E68DA520057ABE5 /* StrItem.m in Sources */,
 				B61987042E6209E700600ED7 /* SlotWrapper.m in Sources */,
 				B64B392E2E58D42A00FC359D /* ThreadConsumer.m in Sources */,
 				B6E24B232E561CE1003E2A3E /* SimFamilyNames.m in Sources */,
@@ -1649,6 +1745,7 @@
 				B6B8D0372E57ABAB008557A2 /* TraitAlias.m in Sources */,
 				B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */,
 				B69F34FD2E383AE6007EEA89 /* ResourceMaps.m in Sources */,
+				B61BA7CC2E6B4A0F00392771 /* TGALoader.m in Sources */,
 				B6E2B5E42E5BB5A100AA6170 /* GroupCacheItem.m in Sources */,
 				B6194B5E2E5E05E000255858 /* TxtrUI.m in Sources */,
 				B6E2B5DF2E5BB33C00AA6170 /* FixPackage.m in Sources */,
@@ -1658,6 +1755,7 @@
 				B60ADF532E592D0600F66F86 /* PackedFileUI.m in Sources */,
 				B64B39252E58D26100FC359D /* SemiGlobalAlias.m in Sources */,
 				B6AAC5F12E5A1F9100846641 /* cLevelInfo.m in Sources */,
+				B68EE9992E68DBF20057ABE5 /* StrWrapper.m in Sources */,
 				B61CE56F2E3A863800547C40 /* WaitControl.m in Sources */,
 				B6BF52682E5B75BC007B48A1 /* NmapWrapper.m in Sources */,
 				B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */,

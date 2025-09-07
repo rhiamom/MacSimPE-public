@@ -173,7 +173,7 @@
 // MARK: - AbstractWrapper Methods
 
 - (id<IPackedFileUI>)createDefaultUIHandler {
-    return [[Generic alloc] init];
+    return [[GenericUI alloc] init];
 }
 
 - (void)unserialize:(BinaryReader *)reader {

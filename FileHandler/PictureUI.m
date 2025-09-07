@@ -1,8 +1,8 @@
 //
-//  GenericTree.h
+//  PictureUI.m
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/3/25.
+//  Created by Catherine Gramze on 9/5/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,53 +27,48 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
-#import "Generic.h"
-#import "GenericFileItem.h"
 
-@protocol IFileWrapper;
-@class GenericItem;
+#import "PictureUI.h"
+#import "Elements.h"
+#import "IFileWrapper.h"
+#import "IFileWrapperSaveExtension.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
-/**
- * Tree-based UI Handler for Generic Files
- * Displays file data in a hierarchical tree structure instead of a flat list
- */
-@interface GenericTree : GenericUI
+@implementation PictureUI
 
 // MARK: - Initialization
 
-/**
- * Constructor
- */
-- (instancetype)init;
+- (instancetype)init {
+    self = [super init];
+    return self;
+}
 
-// MARK: - IPackedFileUI Protocol Override
+// MARK: - IPackedFileUI Implementation
 
-/**
- * Returns the tree panel as the main GUI view
- */
-- (NSView *)createView;
+- (NSView *)guiHandle {
+    return [UIBase form].jpegPanel;
+}
 
-/**
- * Updates the GUI with the given wrapper data using tree display
- * @param wrapper The file wrapper containing data to display
- */
-- (void)updateGUI:(id<IFileWrapper>)wrapper;
+- (void)updateGUI:(id<IFileWrapper>)wrapper {
+    Elements *form = [UIBase form];
+    
+    // Direct assignment with cast - the original C# probably did this
+    form.picwrapper = (IFileWrapperSaveExtension *)wrapper;
+    
+    // Show jpeg panel, hide others
+    [form.jpegPanel setHidden:NO];
+    [form.xmlPanel setHidden:YES];
+    [form.objdPanel setHidden:YES];
+    // Add other panels as needed
+    
+    // Get and set the image
+    NSImage *img = nil;
+    if ([wrapper respondsToSelector:@selector(image)]) {
+        img = [wrapper performSelector:@selector(image)];
+    }
+    
+    if (img) {
+        form.pb.image = img;
+    }
+}
 
-// MARK: - Tree Building Methods
-
-/**
- * Recursively adds tree nodes for the given items
- * @param items Array of GenericItem objects to add as nodes
- * @param parentNode The parent node to add children to, or nil for root level
- * @param names Array of property names to display
- */
-- (void)addTreeNodes:(NSArray<GenericItem *> *)items
-          parentNode:(nullable GenericItem *)parentNode
-               names:(NSArray<NSString *> *)names;
 @end
-
-NS_ASSUME_NONNULL_END

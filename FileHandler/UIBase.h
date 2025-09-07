@@ -1,8 +1,8 @@
 //
-//  GenericTree.h
+//  UIBase.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/3/25.
+//  Created by Catherine Gramze on 9/5/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,55 +25,36 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************
+// ***************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
-#import "Generic.h"
-#import "GenericFileItem.h"
 
-@protocol IFileWrapper;
-@class GenericItem;
-
-NS_ASSUME_NONNULL_BEGIN
+@class Elements;
 
 /**
- * Tree-based UI Handler for Generic Files
- * Displays file data in a hierarchical tree structure instead of a flat list
+ * Abstract Base for some UIHandlers
  */
-@interface GenericTree : GenericUI
+@interface UIBase : NSObject
+
+// MARK: - Class Properties
+
+/**
+ * The Form containing the Panel
+ */
+@property (class, nonatomic, strong) Elements *form;
 
 // MARK: - Initialization
 
 /**
- * Constructor
+ * Constructor for the Class
  */
 - (instancetype)init;
 
-// MARK: - IPackedFileUI Protocol Override
+// MARK: - Memory Management
 
 /**
- * Returns the tree panel as the main GUI view
+ * Cleanup method (equivalent to IDisposable.Dispose)
  */
-- (NSView *)createView;
+- (void)dispose;
 
-/**
- * Updates the GUI with the given wrapper data using tree display
- * @param wrapper The file wrapper containing data to display
- */
-- (void)updateGUI:(id<IFileWrapper>)wrapper;
-
-// MARK: - Tree Building Methods
-
-/**
- * Recursively adds tree nodes for the given items
- * @param items Array of GenericItem objects to add as nodes
- * @param parentNode The parent node to add children to, or nil for root level
- * @param names Array of property names to display
- */
-- (void)addTreeNodes:(NSArray<GenericItem *> *)items
-          parentNode:(nullable GenericItem *)parentNode
-               names:(NSArray<NSString *> *)names;
 @end
-
-NS_ASSUME_NONNULL_END

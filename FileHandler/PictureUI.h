@@ -1,8 +1,8 @@
 //
-//  GenericTree.h
+//  PictureUI.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/3/25.
+//  Created by Catherine Gramze on 9/5/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,55 +25,39 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************
+// ***************************************************************************/
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
-#import "Generic.h"
-#import "GenericFileItem.h"
+#import "UIBase.h"
+#import "IPackedFileUI.h"
 
 @protocol IFileWrapper;
-@class GenericItem;
-
-NS_ASSUME_NONNULL_BEGIN
+@class PictureForm;
 
 /**
- * Tree-based UI Handler for Generic Files
- * Displays file data in a hierarchical tree structure instead of a flat list
+ * Handles Packed Jpeg Files
  */
-@interface GenericTree : GenericUI
+@interface PictureUI : UIBase <IPackedFileUI>
 
 // MARK: - Initialization
 
 /**
- * Constructor
+ * Initialize the Picture UI handler
  */
 - (instancetype)init;
 
-// MARK: - IPackedFileUI Protocol Override
+// MARK: - IPackedFileUI Implementation
 
 /**
- * Returns the tree panel as the main GUI view
+ * Returns the main GUI view for this packed file UI
  */
-- (NSView *)createView;
+@property (nonatomic, readonly) NSView *guiHandle;
 
 /**
- * Updates the GUI with the given wrapper data using tree display
- * @param wrapper The file wrapper containing data to display
+ * Update the GUI with data from the wrapper
+ * @param wrapper The file wrapper containing image data
  */
 - (void)updateGUI:(id<IFileWrapper>)wrapper;
 
-// MARK: - Tree Building Methods
-
-/**
- * Recursively adds tree nodes for the given items
- * @param items Array of GenericItem objects to add as nodes
- * @param parentNode The parent node to add children to, or nil for root level
- * @param names Array of property names to display
- */
-- (void)addTreeNodes:(NSArray<GenericItem *> *)items
-          parentNode:(nullable GenericItem *)parentNode
-               names:(NSArray<NSString *> *)names;
 @end
-
-NS_ASSUME_NONNULL_END

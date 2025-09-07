@@ -1,8 +1,8 @@
 //
-//  GenericTree.h
+//  PictureWrapper.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/3/25.
+//  Created by Catherine Gramze on 9/5/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,23 +25,36 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************
+// ***************************************************************************/
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
-#import "Generic.h"
-#import "GenericFileItem.h"
+#import "AbstractWrapper.h"
+#import "IFileWrapper.h"
 
-@protocol IFileWrapper;
-@class GenericItem;
-
-NS_ASSUME_NONNULL_BEGIN
+@class BinaryReader;
+@protocol IPackedFileUI;
 
 /**
- * Tree-based UI Handler for Generic Files
- * Displays file data in a hierarchical tree structure instead of a flat list
+ * Represents a PackedFile in JPEG Format
  */
-@interface GenericTree : GenericUI
+@interface PictureWrapper : AbstractWrapper <IFileWrapper>
+
+// MARK: - Properties
+
+/**
+ * Returns the Stored Image
+ */
+@property (nonatomic, readonly, strong) NSImage *image;
+
+// MARK: - Class Methods
+
+/**
+ * Creates an alpha channel based on RGB brightness
+ * @param img The source image
+ * @return A new image with alpha channel applied
+ */
++ (NSImage *)setAlpha:(NSImage *)img;
 
 // MARK: - Initialization
 
@@ -50,30 +63,26 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)init;
 
-// MARK: - IPackedFileUI Protocol Override
+// MARK: - Loading Methods
 
 /**
- * Returns the tree panel as the main GUI view
+ * Load image data from a BinaryReader
+ * @param reader The data to process
+ * @param errmsg Whether to show error messages
+ * @return YES if loading was successful
  */
-- (NSView *)createView;
+- (BOOL)doLoad:(BinaryReader *)reader errmsg:(BOOL)errmsg;
+
+// MARK: - IFileWrapper Protocol
 
 /**
- * Updates the GUI with the given wrapper data using tree display
- * @param wrapper The file wrapper containing data to display
+ * Returns a list of File Types this Plugin can process
  */
-- (void)updateGUI:(id<IFileWrapper>)wrapper;
-
-// MARK: - Tree Building Methods
+@property (nonatomic, readonly, strong) NSArray<NSNumber *> *assignableTypes;
 
 /**
- * Recursively adds tree nodes for the given items
- * @param items Array of GenericItem objects to add as nodes
- * @param parentNode The parent node to add children to, or nil for root level
- * @param names Array of property names to display
+ * Returns the Signature that can be used to identify Files processable with this Plugin
  */
-- (void)addTreeNodes:(NSArray<GenericItem *> *)items
-          parentNode:(nullable GenericItem *)parentNode
-               names:(NSArray<NSString *> *)names;
+@property (nonatomic, readonly, strong) NSData *fileSignature;
+
 @end
-
-NS_ASSUME_NONNULL_END
