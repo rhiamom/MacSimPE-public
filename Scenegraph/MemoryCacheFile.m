@@ -38,7 +38,7 @@
 #import "MetaData.h"
 #import "Str.h"
 #import "StrItemList.h"
-#import "Picture.h"
+#import "PictureWrapper.h"
 #import "WindowsRegistry.h"
 #import "LocalizationManager.h"
 #import "Alias.h"
@@ -223,7 +223,7 @@
     }
     
     // Try to load icon
-    Picture *pic = [[Picture alloc] init];
+    PictureWrapper *pic = [[PictureWrapper alloc] init];
     NSArray<id<IScenegraphFileIndexItem>> *imageItems = [[FileTable fileIndex] findFile:SIM_IMAGE_FILE
                                                                                    group:objd.fileDescriptor.group
                                                                                 instance:1

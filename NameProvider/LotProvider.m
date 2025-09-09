@@ -38,7 +38,7 @@
 #import "GeneratableFile.h"
 #import "Str.h"
 #import "StrItemList.h"
-#import "Picture.h"
+#import "PictureWrapper.h"
 #import "Helper.h"
 #import "Registry.h"
 #import "Wait.h"
@@ -329,7 +329,7 @@
             }
             
             // Get lot image
-            Picture *pic = [[Picture alloc] init];
+            PictureWrapper *pic = [[PictureWrapper alloc] init];
             [pic processData:item];
             
             uint32_t instance = [self getInstanceFromFilename:[pkg saveFileName]];

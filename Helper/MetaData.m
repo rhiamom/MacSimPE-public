@@ -288,4 +288,8 @@
     
     return typeAlias;
 }
+
++ (uint32_t)XMLTYPE {
+    return 0x0000044F;
+}
         @end

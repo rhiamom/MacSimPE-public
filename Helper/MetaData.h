@@ -612,6 +612,7 @@ typedef NS_ENUM(uint32_t, Careers) {
 + (uint32_t)CUSTOM_GROUP;
 + (uint32_t)GLOBAL_GROUP;
 + (uint32_t)LOCAL_GROUP;
++ (uint32_t)XMLTYPE;
 
 // MARK: - Static Methods
 + (NSArray<NSNumber *> *)rcolList;

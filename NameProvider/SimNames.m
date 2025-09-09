@@ -29,9 +29,9 @@
 
 #import "SimNames.h"
 #import "MetaData.h"
-#import "ExtObjd.h"
-#import "Str.h"
-#import "Picture.h"
+#import "ExtObjdWrapper.h"
+#import "StrWrapper.h"
+#import "PictureWrapper.h"
 #import "Alias.h"
 #import "IPackageFile.h"
 #import "IPackedFileDescriptor.h"
@@ -183,9 +183,9 @@
                                                      instance:[objd CTSSInstance]];
     
     if (strPfd != nil) {
-        Str *str = [[Str alloc] init];
+        StrWrapper *str = [[StrWrapper alloc] init];
         [str processData:strPfd package:packageFile];
-        StrItemList *items = [str fallbackedLanguageItems:[[Registry windowsRegistry] languageCode]];
+        StrItemList *items = [str fallbackedLanguageItemsForLanguage:[[Registry windowsRegistry] languageCode]];
         
         if ([items length] > 0) {
 #if DEBUG
@@ -205,7 +205,7 @@
         for (id<IPackedFileDescriptor> pfd in picList) {
             if ([pfd group] != [[objd fileDescriptor] group]) continue;
             if ([pfd instance] < 0x200) {
-                Picture *pic = [[Picture alloc] init];
+                PictureWrapper *pic = [[PictureWrapper alloc] init];
                 [pic processData:pfd package:packageFile];
                 tags[1] = [pic image];
                 break;

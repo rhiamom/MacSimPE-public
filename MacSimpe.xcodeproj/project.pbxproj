@@ -30,6 +30,7 @@
 		B61BA7CC2E6B4A0F00392771 /* TGALoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7CB2E6B4A0F00392771 /* TGALoader.m */; };
 		B61BA7CF2E6B4D2800392771 /* Elements.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7CE2E6B4D2800392771 /* Elements.m */; };
 		B61BA7D22E6B58B200392771 /* Elements2.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7D12E6B58B200392771 /* Elements2.m */; };
+		B61BA7FA2E6E1BE500392771 /* XmlWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B61BA7F92E6E1BE500392771 /* XmlWrapper.m */; };
 		B61C4CFC2E456EF300BC38B4 /* PackageFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = B61C4CFB2E456EF300BC38B4 /* PackageFiles.m */; };
 		B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE5682E3A84A200547C40 /* ResourceNameSorter.m */; };
 		B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE56B2E3A85A800547C40 /* ViewFilter.m */; };
@@ -94,6 +95,8 @@
 		B673A12C2E636B2D004039D3 /* MemoryCacheFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B673A12B2E636B2D004039D3 /* MemoryCacheFile.m */; };
 		B673A12F2E636C92004039D3 /* cMaterialDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = B673A12E2E636C92004039D3 /* cMaterialDefinition.m */; };
 		B673A1332E636D71004039D3 /* Vectors.m in Sources */ = {isa = PBXBuildFile; fileRef = B673A1322E636D71004039D3 /* Vectors.m */; };
+		B67DE0762E70649D00A17C62 /* ObjdPropertyParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B67DE0752E70648D00A17C62 /* ObjdPropertyParser.m */; };
+		B67DE0792E7067AA00A17C62 /* ExtObjdWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B67DE0782E7067AA00A17C62 /* ExtObjdWrapper.m */; };
 		B6819E582E3E734000E37434 /* FileIndexItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6819E572E3E734000E37434 /* FileIndexItem.m */; };
 		B68EE9962E68DA520057ABE5 /* StrItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EE9952E68DA520057ABE5 /* StrItem.m */; };
 		B68EE9992E68DBF20057ABE5 /* StrWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EE9982E68DBF20057ABE5 /* StrWrapper.m */; };
@@ -278,6 +281,8 @@
 		B61BA7D02E6B58A100392771 /* Elements2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Elements2.h; sourceTree = "<group>"; };
 		B61BA7D12E6B58B200392771 /* Elements2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Elements2.m; sourceTree = "<group>"; };
 		B61BA7D32E6E174C00392771 /* stbi_DDS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stbi_DDS.h; sourceTree = "<group>"; };
+		B61BA7F82E6E1BD400392771 /* XmlWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XmlWrapper.h; sourceTree = "<group>"; };
+		B61BA7F92E6E1BE500392771 /* XmlWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XmlWrapper.m; sourceTree = "<group>"; };
 		B61C4CF92E456A1F00BC38B4 /* FileTableItemType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileTableItemType.h; sourceTree = "<group>"; };
 		B61C4CFA2E456EB100BC38B4 /* PackageFiles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackageFiles.h; sourceTree = "<group>"; };
 		B61C4CFB2E456EF300BC38B4 /* PackageFiles.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackageFiles.m; sourceTree = "<group>"; };
@@ -426,6 +431,10 @@
 		B673A12E2E636C92004039D3 /* cMaterialDefinition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cMaterialDefinition.m; sourceTree = "<group>"; };
 		B673A1312E636D62004039D3 /* Vectors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vectors.h; sourceTree = "<group>"; };
 		B673A1322E636D71004039D3 /* Vectors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Vectors.m; sourceTree = "<group>"; };
+		B67DE0742E70647700A17C62 /* ObjdPropertyParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjdPropertyParser.h; sourceTree = "<group>"; };
+		B67DE0752E70648D00A17C62 /* ObjdPropertyParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjdPropertyParser.m; sourceTree = "<group>"; };
+		B67DE0772E70679300A17C62 /* ExtObjdWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtObjdWrapper.h; sourceTree = "<group>"; };
+		B67DE0782E7067AA00A17C62 /* ExtObjdWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtObjdWrapper.m; sourceTree = "<group>"; };
 		B6819DE82E3C078F00E37434 /* IScenegraphFileIndexItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphFileIndexItem.h; sourceTree = "<group>"; };
 		B6819E562E3E72FF00E37434 /* FileIndexItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileIndexItem.h; sourceTree = "<group>"; };
 		B6819E572E3E734000E37434 /* FileIndexItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileIndexItem.m; sourceTree = "<group>"; };
@@ -846,6 +855,8 @@
 				B61BA7CE2E6B4D2800392771 /* Elements.m */,
 				B61BA7D02E6B58A100392771 /* Elements2.h */,
 				B61BA7D12E6B58B200392771 /* Elements2.m */,
+				B61BA7F82E6E1BD400392771 /* XmlWrapper.h */,
+				B61BA7F92E6E1BE500392771 /* XmlWrapper.m */,
 			);
 			path = FileHandler;
 			sourceTree = "<group>";
@@ -1109,9 +1120,21 @@
 			path = 3IDR;
 			sourceTree = "<group>";
 		};
+		B6C3E7682E6F778F0095C28A /* ExtendedFilehandlers */ = {
+			isa = PBXGroup;
+			children = (
+				B67DE0742E70647700A17C62 /* ObjdPropertyParser.h */,
+				B67DE0752E70648D00A17C62 /* ObjdPropertyParser.m */,
+				B67DE0772E70679300A17C62 /* ExtObjdWrapper.h */,
+				B67DE0782E7067AA00A17C62 /* ExtObjdWrapper.m */,
+			);
+			path = ExtendedFilehandlers;
+			sourceTree = "<group>";
+		};
 		B6CDCC3B2E33E837004FDF82 = {
 			isa = PBXGroup;
 			children = (
+				B6C3E7682E6F778F0095C28A /* ExtendedFilehandlers */,
 				B61BA7C92E6B49E100392771 /* TGA_View */,
 				B6BF52622E5B74DB007B48A1 /* 3IDR */,
 				B6F13C6B2E60F7DE00691586 /* Cache */,
@@ -1628,6 +1651,7 @@
 				B6CDCC902E340297004FDF82 /* FileStream.m in Sources */,
 				B69F34DA2E37ECDD007EEA89 /* Hashes.m in Sources */,
 				B671B48A2E4F9930004559C3 /* LoadFileWrappers.m in Sources */,
+				B61BA7FA2E6E1BE500392771 /* XmlWrapper.m in Sources */,
 				B64B39192E58CF3200FC359D /* PropertyObjectBuilderExt.m in Sources */,
 				B61987012E62096300600ED7 /* SlotItem.m in Sources */,
 				B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */,
@@ -1694,6 +1718,7 @@
 				B64EEF452E3938AE0008E7CA /* AResourceTreeNodeBuilder.m in Sources */,
 				B6D042C72E6904AC00366E80 /* StrListViewer.m in Sources */,
 				B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */,
+				B67DE0792E7067AA00A17C62 /* ExtObjdWrapper.m in Sources */,
 				B6B8D03E2E57AF90008557A2 /* PropertyObjectBuilder.m in Sources */,
 				B673A1262E6368ED004039D3 /* ObjectComboBox.m in Sources */,
 				B6CDCC8E2E33FE4E004FDF82 /* MemoryStream.m in Sources */,
@@ -1702,6 +1727,7 @@
 				B6B8D03A2E57ADCA008557A2 /* Html2Rtf.m in Sources */,
 				B6CDCC862E33F887004FDF82 /* File.m in Sources */,
 				B61986FE2E62079D00600ED7 /* ObjectCacheItem.m in Sources */,
+				B67DE0762E70649D00A17C62 /* ObjdPropertyParser.m in Sources */,
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
 				B6B02CD12E4EB2FC009240FD /* FileTable.m in Sources */,
 				B69C5A2A2E3EC5E300794FC7 /* XmlRegistryKey.m in Sources */,
@@ -1931,6 +1957,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AJHGU52KS3;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "SimPE for Mac";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
@@ -1965,6 +1992,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AJHGU52KS3;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "SimPE for Mac";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";

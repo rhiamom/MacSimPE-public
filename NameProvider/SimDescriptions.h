@@ -31,6 +31,7 @@
 #import "SimCommonPackage.h"
 #import "ISimDescriptionProvider.h"
 
+
 @protocol IPackageFile;
 @protocol IPackedFileDescriptor;
 @protocol ISDesc;
@@ -39,7 +40,8 @@
 @class TraitAlias;
 @class CollectibleAlias;
 @class LinkedSDesc;
-
+@class PictureWrapper;
+@class StrItemList;
 /**
  * Zusammenfassung für SimDescription.
  */
@@ -121,14 +123,14 @@
  * Creates a collectible alias from parsed data
  */
 - (NSInteger)createCollectibleAlias:(StrItemList *)strs
-                            picture:(Picture *)pic
+                            picture:(PictureWrapper *)pic
                                line:(NSString *)line
                               index:(NSInteger)index;
 
 /**
  * Loads collectible icon from game files
  */
-+ (NSImage *)loadCollectibleIcon:(Picture *)pic group:(uint32_t)group instance:(uint32_t)instance;
++ (NSImage *)loadCollectibleIcon:(PictureWrapper *)pic group:(uint32_t)group instance:(uint32_t)instance;
 
 /**
  * Utility methods for parsing UI attributes
