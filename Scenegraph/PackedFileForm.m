@@ -37,12 +37,11 @@
 #import "PackedFileWrapper.h"
 #import "PackedFileItem.h"
 #import "GenericRcolWrapper.h"
-#import "MipMap.h"
-#import "ImageData.h"
+#import "cImageData.h"
 #import "PackedFileDescriptor.h"
 #import "FileSelect.h"
 #import "PackageFiles.h"
-#import "LocalizationManager.h"
+#import "Localization.h"
 
 @implementation RefFileForm
 

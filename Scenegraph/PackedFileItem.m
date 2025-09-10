@@ -28,11 +28,11 @@
 // ***************************************************************************/
 
 #import "PackedFileItem.h"
-#import "Cpf.h"
+#import "CpfWrapper.h"
 #import "CpfItem.h"
 #import "RefFile.h"
 #import "GenericRcol.h"
-#import "MaterialDefinition.h"
+#import "cMaterialDefinition.h"
 #import "FileTable.h"
 #import "MetaData.h"
 #import "Helper.h"

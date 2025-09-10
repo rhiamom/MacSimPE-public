@@ -47,24 +47,24 @@ typedef NS_ENUM(uint32_t, IndexTypes) {
     ptShortFileIndex
 };
 
-typedef NS_ENUM(uint32_t, ChildAge) {
-    ChildAgeBaby = 0x20,
-    ChildAgeToddler = 0x01,
-    ChildAgeChild = 0x02,
-    ChildAgeTeen = 0x04,
-    ChildAgeAdult = 0x08,
-    ChildAgeElder = 0x10,
-    ChildAgeYoungAdult = 0x40
+typedef NS_ENUM(uint32_t, Age) {
+    AgeBaby = 0x20,
+    AgeToddler = 0x01,
+    AgeChild = 0x02,
+    AgeTeen = 0x04,
+    AgeAdult = 0x08,
+    AgeElder = 0x10,
+    AgeYoungAdult = 0x40
 };
 
-typedef NS_ENUM(uint16_t, ChildStatus) {
-    ChildStatusBaby = 0x01,
-    ChildStatusToddler = 0x02,
-    ChildStatusChild = 0x03,
-    ChildStatusTeen = 0x10,
-    ChildStatusAdult = 0x13,
-    ChildStatusElder = 0x33,
-    ChildStatusYoungAdult = 0x40
+typedef NS_ENUM(uint16_t, Status) {
+    StatusBaby = 0x01,
+    StatusToddler = 0x02,
+    StatusChild = 0x03,
+    StatusTeen = 0x10,
+    StatusAdult = 0x13,
+    StatusElder = 0x33,
+    StatusYoungAdult = 0x40
 };
 
 typedef NS_ENUM(uint16_t, ChildFamily) {
@@ -90,7 +90,7 @@ typedef NS_OPTIONS(uint32_t, SkinCategories) {
     SkinCategoriesCasual2 = 0x02,
     SkinCategoriesCasual3 = 0x04,
     SkinCategoriesEveryday = 0x07, // Casual1 | Casual2 | Casual3
-    SkinCategoriesSwimmwear = 0x08,
+    SkinCategoriesSwimwear = 0x08,
     SkinCategoriesPj = 0x10,
     SkinCategoriesFormal = 0x20,
     SkinCategoriesUndies = 0x40,

@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Type mapping for property descriptions indexed by property index
  */
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSNumber *, PropertyDescription *> *typemap;
+@property (nonatomic, strong, readonly) NSDictionary<NSNumber *, PropertyDescription *> *typemap;
 
 // MARK: - Initialization
 
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param filename Name of the File to parse
  * @remarks If the File is not available, an empty Properties hashtable will be returned!
  */
-- (instancetype)initWithFilename:(NSString *)filename;
+- (instancetype)initWithPath:(NSString *)filename;
 
 // MARK: - Property Description Access
 

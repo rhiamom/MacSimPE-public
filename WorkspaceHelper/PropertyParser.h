@@ -84,6 +84,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable id)buildValue:(NSString *)typeName stringValue:(nullable NSString *)value;
 
+- (void)handleProperty:(NSXMLElement *)node propertyDescription:(PropertyDescription *)pd;
+
 // MARK: - Property Access
 
 /**

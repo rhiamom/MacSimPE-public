@@ -505,7 +505,7 @@
     [self.sgres unserialize:reader];
     
     if (self.parent.fast) {
-        /Users/catherinegramze/Desktop/fullsimpe-0.72.01/SimPe 3IDR/NmapItem.cs
+      
         _textureSize = NSMakeSize(0, 0);
         _mipMapBlocks = [[NSMutableArray alloc] init];
         return;

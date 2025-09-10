@@ -29,47 +29,68 @@
 
 #import "ObjdPropertyParser.h"
 
-@implementation ObjdPropertyParser {
-    NSMutableDictionary<NSNumber *, PropertyDescription *> *_typemap;
-}
+@interface ObjdPropertyParser()
+
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, PropertyDescription *> *typemapInternal;
+
+@end
+
+@implementation ObjdPropertyParser
 
 // MARK: - Initialization
 
-- (instancetype)initWithFilename:(NSString *)filename {
+- (instancetype)initWithPath:(NSString *)filename {
     self = [super initWithPath:filename];
     if (self) {
-        _typemap = [[NSMutableDictionary alloc] init];
-        [self parseXMLForIndices:filename];
+        _typemapInternal = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
 // MARK: - Properties
 
-- (NSMutableDictionary<NSNumber *, PropertyDescription *> *)typemap {
-    return _typemap;
+- (NSDictionary<NSNumber *, PropertyDescription *> *)typemap {
+    if (self.properties == nil) {
+        // This will trigger loading if not already loaded
+        [self properties];
+    }
+    return [_typemapInternal copy];
 }
 
 // MARK: - Property Description Access
 
 - (nullable PropertyDescription *)getDescriptor:(uint16_t)index {
-    return _typemap[@(index)];
+    if (self.properties == nil) {
+        // This will trigger loading if not already loaded
+        [self properties];
+    }
+    return _typemapInternal[@(index)];
 }
 
-// MARK: - Overridden Methods
+// MARK: - Property Building (Override)
 
 - (nullable id)buildValue:(NSString *)typeName stringValue:(nullable NSString *)value {
     return [super buildValue:typeName stringValue:value];
 }
 
-// MARK: - Private Methods
+// MARK: - Property Handling (Override)
 
-- (void)parseXMLForIndices:(NSString *)filename {
-    // Parse XML file to extract index mappings
-    // This would need to be implemented based on the XML structure
-    // For now, this is a placeholder that would need the actual XML parsing logic
+- (void)handleProperty:(NSXMLElement *)node propertyDescription:(PropertyDescription *)pd {
+    [super handleProperty:node propertyDescription:pd];
     
-    // Since we don't have the full PropertyParser implementation details,
-    // we'll need to implement the XML parsing logic here or wait for
-    // the base PropertyParser to provide the necessary hooks
+    for (NSXMLNode *subnode in [node children]) {
+        if ([[subnode name] isEqualToString:@"index"]) {
+            @try {
+                uint16_t index = (uint16_t)[[subnode stringValue] intValue];
+                if (![_typemapInternal.allKeys containsObject:@(index)]) {
+                    _typemapInternal[@(index)] = pd;
+                }
+            }
+            @catch (NSException *exception) {
+                // Ignore parsing errors, similar to the C# empty catch block
+            }
+        }
+    }
 }
+
+@end

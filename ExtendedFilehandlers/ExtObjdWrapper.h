@@ -33,9 +33,8 @@
 #import "AbstractWrapper.h"
 #import "IFileWrapper.h"
 #import "IFileWrapperSaveExtension.h"
-#import "IMultiplePackedFileWrapper.h"
-#import "ObjectTypes.h"
-#import "ObjFunctionSubSort.h"
+#import "MetaData.h"
+
 
 @class BinaryReader, BinaryWriter, ObjdPropertyParser;
 @class ObjRoomSort, ObjFunctionSort;

@@ -37,7 +37,7 @@
 #import "AbstractWrapperInfo.h"
 #import "MetaData.h"
 #import "FileStream.h"
-#import "Stream.h'"
+#import "Stream.h"
 
 @interface ExtObjd ()
 @property (nonatomic, strong) NSMutableData *filename;
@@ -55,7 +55,7 @@ static ObjdPropertyParser *tpp = nil;
     if (tpp == nil) {
         NSString *dataPath = [Helper simPeDataPath];
         NSString *xmlPath = [dataPath stringByAppendingPathComponent:@"objddefinition.xml"];
-        tpp = [[ObjdPropertyParser alloc] initWithFilename:xmlPath];
+        tpp = [[ObjdPropertyParser alloc] initWithPath:xmlPath];
     }
     return tpp;
 }
