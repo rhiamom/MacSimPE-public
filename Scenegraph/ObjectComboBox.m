@@ -30,7 +30,7 @@
 #import "ObjectComboBox.h"
 #import "MemoryCacheFile.h"
 #import "MemoryCacheItem.h"
-#import "StaticAlias.h"
+#import "Alias.h"
 #import "IAlias.h"
 
 @interface ObjectComboBox ()
@@ -254,9 +254,9 @@ static MemoryCacheFile *_cacheFile = nil;
             if (!use) continue;
             
             NSString *displayName = [NSString stringWithFormat:@"%@ {%@}", mci.name, mci.objdName];
-            StaticAlias *alias = [[StaticAlias alloc] initWithGuid:mci.guid
-                                                              name:displayName
-                                                               tag:@[mci]];
+            StaticAlias *alias = [[StaticAlias alloc] initWithId:mci.guid
+                                                            name:displayName
+                                                             tag:@[mci]];
             
             [items addObject:alias];
         }

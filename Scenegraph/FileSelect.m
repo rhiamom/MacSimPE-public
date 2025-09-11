@@ -310,27 +310,29 @@ static FileSelect *sharedForm = nil;
     GenericRcol *rcol = skinChain.txtr;
     
     if (rcol != nil && rcol.blocks.count > 0) {
-        ImageData *imageData = rcol.blocks[0];
-        MipMap *mipMap = [imageData getLargestTextureForSize:_pictureBox.bounds.size];
-        if (mipMap != nil) {
-            NSImage *preview = [ImageLoader previewForTexture:mipMap.texture size:_pictureBox.bounds.size];
-            _pictureBox.image = preview;
+        id<IRcolBlock> block = rcol.blocks[0];
+        if ([block isKindOfClass:[ImageData class]]) {
+            ImageData *imageData = (ImageData *)block;
+            MipMap *mipMap = [imageData getLargestTexture:_pictureBox.bounds.size];
+            if (mipMap != nil) {
+                NSImage *preview = [ImageLoader previewImage:mipMap.texture size:_pictureBox.bounds.size];
+                _pictureBox.image = preview;
+            }
         }
+        
+        NSString *lineBreak = @"\n";
+        NSMutableString *infoText = [[NSMutableString alloc] init];
+        [infoText appendFormat:@"Name: %@%@%@", lineBreak, skinChain.name, lineBreak];
+        [infoText appendFormat:@"Category: %@%@%@", lineBreak, skinChain.categoryNames, lineBreak];
+        [infoText appendFormat:@"Age: %@%@%@", lineBreak, skinChain.ageNames, lineBreak];
+        [infoText appendFormat:@"Override: %@%@%@", lineBreak,
+         [[node.skinData getSaveItem:@"override0subset"] stringValue], lineBreak];
+        [infoText appendFormat:@"Group: %@%@%@", lineBreak,
+         [Helper hexString:node.skinData.fileDescriptor.group], lineBreak];
+        
+        _nameLabel.stringValue = infoText;
     }
-    
-    NSString *lineBreak = @"\n";
-    NSMutableString *infoText = [[NSMutableString alloc] init];
-    [infoText appendFormat:@"Name: %@%@%@", lineBreak, skinChain.name, lineBreak];
-    [infoText appendFormat:@"Category: %@%@%@", lineBreak, skinChain.categoryNames, lineBreak];
-    [infoText appendFormat:@"Age: %@%@%@", lineBreak, skinChain.ageNames, lineBreak];
-    [infoText appendFormat:@"Override: %@%@%@", lineBreak,
-     [[node.skinData getSaveItem:@"override0subset"] stringValue], lineBreak];
-    [infoText appendFormat:@"Group: %@%@%@", lineBreak,
-     [Helper hexString:node.skinData.fileDescriptor.group], lineBreak];
-    
-    _nameLabel.stringValue = infoText;
 }
-
 // MARK: - Helper Methods
 
 - (NSString *)stringForAge:(uint32_t)age {
@@ -348,15 +350,20 @@ static FileSelect *sharedForm = nil;
 
 - (NSString *)stringForSkinCategory:(uint32_t)category {
     switch (category) {
-        case SkinCategoriesSkin: return @"Skin";
+        case SkinCategoriesCasual1: return @"Casual1";
+        case SkinCategoriesCasual2: return @"Casual2";
+        case SkinCategoriesCasual3: return @"Casual3";
         case SkinCategoriesEveryday: return @"Everyday";
-        case SkinCategoriesFormal: return @"Formal";
         case SkinCategoriesSwimwear: return @"Swimwear";
         case SkinCategoriesPj: return @"Pajamas";
+        case SkinCategoriesFormal: return @"Formal";
         case SkinCategoriesUndies: return @"Underwear";
-        case SkinCategoriesOuterwear: return @"Outerwear";
-        case SkinCategoriesActivewear: return @"Activewear";
+        case SkinCategoriesSkin: return @"Skin";
         case SkinCategoriesPregnant: return @"Pregnant";
+        case SkinCategoriesActivewear: return @"Activewear";
+        case SkinCategoriesTryOn: return @"TryOn";
+        case SkinCategoriesNakedOverlay: return @"NakedOverlay";
+        case SkinCategoriesOuterwear: return @"Outerwear";
         default: return [NSString stringWithFormat:@"Category_%u", category];
     }
 }

@@ -85,6 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (nullable id<IPackedFileDescriptor>)execute;
 
+
 // MARK: - Initialization
 
 /**
@@ -118,6 +119,10 @@ NS_ASSUME_NONNULL_BEGIN
  * @param outlineView The outline view that changed selection
  */
 - (void)handleSelectionChange:(NSOutlineView *)outlineView;
+
+- (NSString *)stringForAge:(uint32_t)age;
+
+- (NSString *)stringForSkinCategory:(uint32_t)category;
 
 @end
 

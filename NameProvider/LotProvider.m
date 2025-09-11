@@ -36,8 +36,8 @@
 #import "FileIndex.h"
 #import "FileIndexItem.h"
 #import "GeneratableFile.h"
-#import "Str.h"
-#import "StrItemList.h"
+#import "StrWrapper.h"
+#import "StrItem.h"
 #import "PictureWrapper.h"
 #import "Helper.h"
 #import "Registry.h"
@@ -81,9 +81,9 @@
 - (NSString *)lotName {
     id<IScenegraphFileIndexItem> strItem = [self strFileIndexItem];
     if (strItem != nil) {
-        Str *str = [[Str alloc] init];
+        StrWrapper *str = [[StrWrapper alloc] init];
         [str processData:strItem];
-        StrItemList *items = [str fallbackedLanguageItems:[[Registry windowsRegistry] languageCode]];
+        StrItemList *items = [str fallbackedLanguageItemsForLanguage:[[Registry windowsRegistry] languageCode]];
         
         if ([items length] > 0) {
             NSString *result = [[items objectAtIndex:0] title];
@@ -105,10 +105,10 @@
 - (id<IScenegraphFileIndexItem>)bnfoFileIndexItem {
     if ([self ltxtFileIndexItem] == nil) return nil;
     
-    id<IPackedFileDescriptor> pfd = [[[self ltxtFileIndexItem] package] findFile:0x104F6A6E
-                                                                         subtype:0
-                                                                           group:[MetaData LOCAL_GROUP]
-                                                                        instance:self.instance];
+    id<IPackedFileDescriptor> pfd = [[[self ltxtFileIndexItem] package] findFileWithType:0x104F6A6E
+                                                                                 subtype:0
+                                                                                   group:[MetaData LOCAL_GROUP]
+                                                                                instance:self.instance];
     if (pfd == nil) return nil;
     
     return [[FileIndexItem alloc] initWithDescriptor:pfd package:[[self ltxtFileIndexItem] package]];
@@ -117,10 +117,10 @@
 - (id<IScenegraphFileIndexItem>)strFileIndexItem {
     if ([self ltxtFileIndexItem] == nil) return nil;
     
-    id<IPackedFileDescriptor> pfd = [[[self ltxtFileIndexItem] package] findFile:[MetaData STRING_FILE]
-                                                                         subtype:0
-                                                                           group:[MetaData LOCAL_GROUP]
-                                                                        instance:(self.instance | 0x8000)];
+    id<IPackedFileDescriptor> pfd = [[[self ltxtFileIndexItem] package] findFileWithType:[MetaData STRING_FILE]
+                                                                                 subtype:0
+                                                                                   group:[MetaData LOCAL_GROUP]
+                                                                                instance:(self.instance | 0x8000)];
     if (pfd == nil) return nil;
     
     return [[FileIndexItem alloc] initWithDescriptor:pfd package:[[self ltxtFileIndexItem] package]];
@@ -141,6 +141,8 @@
 // MARK: - LotProvider Implementation
 
 @implementation LotProvider
+
+@synthesize delegate;
 
 // MARK: - Initialization
 
@@ -251,7 +253,7 @@
     for (NSString *fileName in matchingFiles) {
         NSString *fullPath = [parentDir stringByAppendingPathComponent:fileName];
         GeneratableFile *pkg = [GeneratableFile loadFromFile:fullPath];
-        [self.ngbhfi addTypesIndexFromPackage:pkg type:0x0BF999E7 fast:NO];
+        [self.ngbhfi addTypesIndexFromPackage:pkg type:0x0BF999E7 overwrite:NO];
     }
 }
 
@@ -265,7 +267,7 @@
     for (NSString *fileName in matchingFiles) {
         NSString *fullPath = [self.dir stringByAppendingPathComponent:fileName];
         GeneratableFile *pkg = [GeneratableFile loadFromFile:fullPath];
-        [self.ngbhfi addTypesIndexFromPackage:pkg type:0x856DDBAC fast:NO];
+        [self.ngbhfi addTypesIndexFromPackage:pkg type:0x856DDBAC overwrite:NO];
     }
 }
 
@@ -290,16 +292,15 @@
 
 - (void)startThread {
     [self.lotfi load];
-    NSArray<id<IScenegraphFileIndexItem>> *items = [self.lotfi findFile:0x856DDBAC
-                                                                   group:[MetaData LOCAL_GROUP]
-                                                                instance:0x35CA0002
-                                                                filename:nil];
-    
+    NSArray<id<IScenegraphFileIndexItem>> *items = [self.lotfi findFileWithType:0x856DDBAC
+                                                                          group:[MetaData LOCAL_GROUP]
+                                                                       instance:0x35CA0002
+                                                                        package:nil];
     BOOL wasRunning = [Wait running];
     if (!wasRunning) {
         [Wait start];
     }
-    [Wait subStart:[items count]];
+    [Wait subStartWithCount:[items count]];
     
     @try {
         NSInteger ct = 0;
@@ -313,16 +314,16 @@
             id<IPackageFile> pkg = [item package];
             
             // Get lot name from string resource
-            id<IPackedFileDescriptor> pfd = [pkg findFile:[MetaData STRING_FILE]
-                                                  subtype:0
-                                                    group:[MetaData LOCAL_GROUP]
-                                                 instance:0x00000A46];
+            id<IPackedFileDescriptor> pfd = [pkg findFileWithType:[MetaData STRING_FILE]
+                                                          subtype:0
+                                                            group:[MetaData LOCAL_GROUP]
+                                                         instance:0x00000A46];
             NSString *name = [Localization getString:@"Unknown"];
             if (pfd != nil) {
-                Str *str = [[Str alloc] init];
+                StrWrapper *str = [[StrWrapper alloc] init];
                 [str processData:pfd package:pkg];
                 
-                StrItemList *list = [str fallbackedLanguageItems:[[Registry windowsRegistry] languageCode]];
+                StrItemList *list = [str fallbackedLanguageItemsForLanguage:[[Registry windowsRegistry] languageCode]];
                 if ([list count] > 0) {
                     name = [[list objectAtIndex:0] title];
                 }
@@ -335,10 +336,10 @@
             uint32_t instance = [self getInstanceFromFilename:[pkg saveFileName]];
             
             // Find associated LTXT file
-            NSArray<id<IScenegraphFileIndexItem>> *ltxtItems = [self.ngbhfi findFile:0x0BF999E7
+            NSArray<id<IScenegraphFileIndexItem>> *ltxtItems = [self.ngbhfi findFileWithType:0x0BF999E7
                                                                                group:[MetaData LOCAL_GROUP]
                                                                             instance:instance
-                                                                            filename:nil];
+                                                                            package:nil];
             id<IScenegraphFileIndexItem> ltxt = nil;
             if ([ltxtItems count] > 0) {
                 ltxt = [ltxtItems firstObject];

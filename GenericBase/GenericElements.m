@@ -29,7 +29,7 @@
 
 #import "GenericElements.h"
 #import "IFileWrapperSaveExtension.h"
-#import "GenericItem.h"
+#import "GenericFileItem.h"
 
 @interface GenericElements () <NSTableViewDataSource, NSTableViewDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate>
 
@@ -219,7 +219,7 @@
         GenericItem *genericItem = (GenericItem *)item;
         
         if ([tableColumn.identifier isEqualToString:@"name"]) {
-            return genericItem.name ?: @"";
+            return genericItem.names ?: @"";
         }
         
         // Return property value if available

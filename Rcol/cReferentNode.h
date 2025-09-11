@@ -1,8 +1,8 @@
 //
-//  GenericFileItem.h
+//  cReferentNode.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/2/25.
+//  Created by Catherine Gramze on 9/11/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -28,73 +28,14 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import "GenericCommon.h"
+#import "AbstractRcolBlock.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class BinaryReader, BinaryWriter;
 
-@class GenericItem;
+// MARK: - ReferentNode
 
-/**
- * Type-safe NSMutableArray for GenericItem Objects
- */
-@interface GenericItems : NSMutableArray<GenericItem *>
+@interface ReferentNode : AbstractRcolBlock
 
-// MARK: - Indexed Access
-- (GenericItem *)objectAtIndex:(NSUInteger)index;
-- (GenericItem *)objectAtUnsignedIntIndex:(uint32_t)index;
-- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(GenericItem *)object;
-- (void)replaceObjectAtUnsignedIntIndex:(uint32_t)index withObject:(GenericItem *)object;
-
-// MARK: - Collection Operations
-- (void)addGenericItem:(GenericItem *)item;
-- (void)insertGenericItem:(GenericItem *)item atIndex:(NSUInteger)index;
-- (void)removeGenericItem:(GenericItem *)item;
-- (BOOL)containsGenericItem:(GenericItem *)item;
-
-// MARK: - Properties
-@property (nonatomic, readonly) NSUInteger length;
-
-// MARK: - Copying
-- (instancetype)deepCopy;
+- (instancetype)initWithParent:(Rcol *)parent;
 
 @end
-
-/**
- * A SubItem of a Generic File
- */
-@interface GenericItem : GenericCommon
-
-// MARK: - Properties
-
-/**
- * Returns or sets the List of Subitems
- */
-@property (nonatomic, strong, nullable) NSArray<GenericItem *> *subitems;
-
-/**
- * Number of Subitems stored
- */
-@property (nonatomic, readonly, assign) NSInteger count;
-
-/**
- * Alias for subitems to match tree nomenclature
- */
-@property (nonatomic, strong, nullable) NSArray<GenericItem *> *children;
-
-// MARK: - Initialization
-
-/**
- * Creates a new Instance
- */
-- (instancetype)init;
-
-// MARK: - Protected Methods
-
-/**
- * Returns the List of Subitems
- */
-- (NSArray<GenericItem *> *)getSubitems;
-
-@end
-
-NS_ASSUME_NONNULL_END

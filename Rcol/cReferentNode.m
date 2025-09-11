@@ -1,8 +1,8 @@
 //
-//  GenericFileItem.h
+//  cReferentNode.m
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/2/25.
+//  Created by Catherine Gramze on 9/11/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,74 +27,53 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
 
-#import <Foundation/Foundation.h>
-#import "GenericCommon.h"
+#import "cReferentNode.h"
+#import "BinaryReader.h"
+#import "BinaryWriter.h"
+#import "Helper.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@implementation ReferentNode
 
-@class GenericItem;
+- (instancetype)initWithParent:(Rcol *)parent {
+    self = [super initWithParent:parent];
+    if (self) {
+        // ReferentNode has no additional initialization beyond AbstractRcolBlock
+    }
+    return self;
+}
 
-/**
- * Type-safe NSMutableArray for GenericItem Objects
- */
-@interface GenericItems : NSMutableArray<GenericItem *>
+#pragma mark - IRcolBlock Protocol
 
-// MARK: - Indexed Access
-- (GenericItem *)objectAtIndex:(NSUInteger)index;
-- (GenericItem *)objectAtUnsignedIntIndex:(uint32_t)index;
-- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(GenericItem *)object;
-- (void)replaceObjectAtUnsignedIntIndex:(uint32_t)index withObject:(GenericItem *)object;
+- (void)unserialize:(BinaryReader *)reader {
+    self.version = [reader readUInt32];
+}
 
-// MARK: - Collection Operations
-- (void)addGenericItem:(GenericItem *)item;
-- (void)insertGenericItem:(GenericItem *)item atIndex:(NSUInteger)index;
-- (void)removeGenericItem:(GenericItem *)item;
-- (BOOL)containsGenericItem:(GenericItem *)item;
+- (void)serialize:(BinaryWriter *)writer {
+    [writer writeUInt32:self.version];
+}
 
-// MARK: - Properties
-@property (nonatomic, readonly) NSUInteger length;
+#pragma mark - UI Management (TODO: Implement for macOS)
 
-// MARK: - Copying
-- (instancetype)deepCopy;
+- (NSViewController *)viewController {
+    // TODO: Implement macOS-specific view controller
+    // This would replace the Windows Forms TabPage functionality
+    return nil;
+}
 
-@end
+- (void)refresh {
+    // TODO: Implement refresh logic for UI updates
+}
 
-/**
- * A SubItem of a Generic File
- */
-@interface GenericItem : GenericCommon
+#pragma mark - String Representation
 
-// MARK: - Properties
+- (NSString *)description {
+    return self.blockName;
+}
 
-/**
- * Returns or sets the List of Subitems
- */
-@property (nonatomic, strong, nullable) NSArray<GenericItem *> *subitems;
+#pragma mark - Resource Management
 
-/**
- * Number of Subitems stored
- */
-@property (nonatomic, readonly, assign) NSInteger count;
-
-/**
- * Alias for subitems to match tree nomenclature
- */
-@property (nonatomic, strong, nullable) NSArray<GenericItem *> *children;
-
-// MARK: - Initialization
-
-/**
- * Creates a new Instance
- */
-- (instancetype)init;
-
-// MARK: - Protected Methods
-
-/**
- * Returns the List of Subitems
- */
-- (NSArray<GenericItem *> *)getSubitems;
+- (void)dispose {
+    [super dispose];
+}
 
 @end
-
-NS_ASSUME_NONNULL_END

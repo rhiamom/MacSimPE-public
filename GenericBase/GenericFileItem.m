@@ -92,7 +92,9 @@
 // MARK: - GenericItem Implementation
 
 @implementation GenericItem
+
 @synthesize subitems = _subitems;
+
 // MARK: - Initialization
 
 - (instancetype)init {
@@ -121,6 +123,13 @@
     }
 }
 
+- (NSArray<GenericItem *> *)children {
+    return self.subitems;
+}
+
+- (void)setChildren:(NSArray<GenericItem *> *)children {
+    self.subitems = children;
+}
 // MARK: - Protected Methods
 
 /**

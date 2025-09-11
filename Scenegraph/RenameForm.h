@@ -1,8 +1,8 @@
 //
-//  ObjectComboBox.h
+//  RenameForm.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/30/25.
+//  Created by Catherine Gramze on 9/11/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,73 +27,42 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************/
 
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
+#import "FixObject.h"
 
-// Forward declarations
-@class MemoryCacheFile, MemoryCacheItem, StaticAlias;
-@protocol IAlias;
+@protocol IPackageFile;
+@protocol IPackedFileDescriptor;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- * Specialized combo box for displaying cached game objects with filtering options
- */
-@interface ObjectComboBox : NSView <NSComboBoxDataSource, NSComboBoxDelegate>
+@interface RenameForm : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
 
-// MARK: - Properties
+@property (nonatomic, weak) IBOutlet NSTableView *tableView;
+@property (nonatomic, weak) IBOutlet NSTextField *modelNameField;
+@property (nonatomic, weak) IBOutlet NSButton *updateButton;
+@property (nonatomic, weak) IBOutlet NSButton *okButton;
+@property (nonatomic, weak) IBOutlet NSButton *universityV2Checkbox;
 
-/**
- * Returns the MemoryObject Cache
- */
-@property (class, nonatomic, strong, readonly) MemoryCacheFile *objectCache;
+@property (nonatomic, strong) id<IPackageFile> package;
+@property (nonatomic, strong) NSMutableArray<NSMutableDictionary *> *items;
+@property (nonatomic, assign) BOOL dialogResult;
 
-/**
- * The underlying combo box control
- */
-@property (nonatomic, strong, readonly) NSComboBox *comboBox;
++ (NSString *)findMainOldName:(id<IPackageFile>)package;
++ (NSString *)replaceOldUnique:(NSString *)name
+                     newUnique:(NSString *)newUnique
+                         force:(BOOL)force;
++ (NSMutableDictionary *)getNames:(BOOL)automatic
+                          package:(id<IPackageFile>)package
+                        tableView:(nullable NSTableView *)tableView
+                         userName:(NSString *)userName;
++ (NSString *)getUniqueName;
++ (NSString *)getUniqueNameOrNull:(BOOL)returnNull;
++ (NSMutableDictionary *)execute:(id<IPackageFile>)package
+                      uniqueName:(BOOL)uniqueName
+                         version:(FixVersion *)version;
 
-/**
- * Filter properties
- */
-@property (nonatomic, assign) BOOL showInventory;
-@property (nonatomic, assign) BOOL showTokens;
-@property (nonatomic, assign) BOOL showMemories;
-@property (nonatomic, assign) BOOL showJobData;
-@property (nonatomic, assign) BOOL showAspiration;
-@property (nonatomic, assign) BOOL showBadge;
-@property (nonatomic, assign) BOOL showSkill;
-
-/**
- * Selection properties
- */
-@property (nonatomic, assign) uint32_t selectedGuid;
-@property (nonatomic, strong, nullable) MemoryCacheItem *selectedItem;
-
-/**
- * Whether the combo box has been loaded
- */
-@property (nonatomic, readonly, assign) BOOL loaded;
-
-// MARK: - Initialization
-
-/**
- * Initialize the ObjectComboBox
- */
-- (instancetype)initWithFrame:(NSRect)frameRect;
-
-// MARK: - Content Management
-
-/**
- * Reload the combo box content based on current filter settings
- */
-- (void)reload;
-
-// MARK: - Events
-
-/**
- * Event fired when the selected object changes
- */
-@property (nonatomic, copy, nullable) void (^selectedObjectChanged)(ObjectComboBox *sender);
+- (IBAction)updateNames:(id)sender;
+- (IBAction)okClicked:(id)sender;
 
 @end
 

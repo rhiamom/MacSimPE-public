@@ -1,8 +1,8 @@
 //
-//  ObjectComboBox.h
+//  FixGUID.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/30/25.
+//  Created by Catherine Gramze on 9/11/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,75 +25,51 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
-#import <AppKit/AppKit.h>
+#import <Foundation/Foundation.h>
 
-// Forward declarations
-@class MemoryCacheFile, MemoryCacheItem, StaticAlias;
-@protocol IAlias;
+@protocol IPackageFile;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Specialized combo box for displaying cached game objects with filtering options
+ * Set of old and new Guid
  */
-@interface ObjectComboBox : NSView <NSComboBoxDataSource, NSComboBoxDelegate>
+@interface GuidSet : NSObject
 
-// MARK: - Properties
+@property (nonatomic, assign) uint32_t oldGuid;
+@property (nonatomic, assign) uint32_t guid;
+
+@end
 
 /**
- * Returns the MemoryObject Cache
+ * This class can Fix the Integrity of cloned Objects
  */
-@property (class, nonatomic, strong, readonly) MemoryCacheFile *objectCache;
+@interface FixGuid : NSObject
 
 /**
- * The underlying combo box control
+ * The Base Package
  */
-@property (nonatomic, strong, readonly) NSComboBox *comboBox;
+@property (nonatomic, strong, readonly) id<IPackageFile> package;
 
 /**
- * Filter properties
+ * Creates a new Instance of this class
+ * @param package The package you want to fix the Integrity in
  */
-@property (nonatomic, assign) BOOL showInventory;
-@property (nonatomic, assign) BOOL showTokens;
-@property (nonatomic, assign) BOOL showMemories;
-@property (nonatomic, assign) BOOL showJobData;
-@property (nonatomic, assign) BOOL showAspiration;
-@property (nonatomic, assign) BOOL showBadge;
-@property (nonatomic, assign) BOOL showSkill;
+- (instancetype)initWithPackage:(id<IPackageFile>)package;
 
 /**
- * Selection properties
+ * Changes all guids (Depends on the passed Replacement Map)
+ * @param guids List of GuidSet Objects
  */
-@property (nonatomic, assign) uint32_t selectedGuid;
-@property (nonatomic, strong, nullable) MemoryCacheItem *selectedItem;
+- (void)fixGuids:(NSArray<GuidSet *> *)guids;
 
 /**
- * Whether the combo box has been loaded
+ * Changes all guids (ignore the current GUID)
+ * @param newGuid The new GUID
  */
-@property (nonatomic, readonly, assign) BOOL loaded;
-
-// MARK: - Initialization
-
-/**
- * Initialize the ObjectComboBox
- */
-- (instancetype)initWithFrame:(NSRect)frameRect;
-
-// MARK: - Content Management
-
-/**
- * Reload the combo box content based on current filter settings
- */
-- (void)reload;
-
-// MARK: - Events
-
-/**
- * Event fired when the selected object changes
- */
-@property (nonatomic, copy, nullable) void (^selectedObjectChanged)(ObjectComboBox *sender);
+- (void)fixGuid:(uint32_t)newGuid;
 
 @end
 

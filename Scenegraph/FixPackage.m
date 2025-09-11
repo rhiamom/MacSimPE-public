@@ -52,7 +52,8 @@
 // MARK: - Command Line Parsing
 
 - (BOOL)parse:(NSArray<NSString *> *)argv {
-    NSInteger index = [ArgParser parseArgv:argv option:@"-fix"];
+    NSMutableArray<NSString *> *mutableArgv = [argv mutableCopy];
+    NSInteger index = [ArgParser parseArguments:mutableArgv parameter:@"-fix"];
     if (index < 0) {
         return NO;
     }
@@ -63,13 +64,11 @@
     NSString *versionText = @"";
     FixVersion version = FixVersionUniversityReady;
 
-    NSMutableArray<NSString *> *mutableArgv = [argv mutableCopy];
-
     while (mutableArgv.count > index) {
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-package" value:&packagePath]) continue;
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-modelname" value:&modelName]) continue;
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-prefix" value:&prefix]) continue;
-        if ([ArgParser parseArgv:mutableArgv atIndex:index option:@"-fixversion" value:&versionText]) {
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-package" result:&packagePath]) continue;
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-modelname" result:&modelName]) continue;
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-prefix" result:&prefix]) continue;
+        if ([ArgParser parseArguments:mutableArgv atIndex:index parameter:@"-fixversion" result:&versionText]) {
             NSString *trimmedVersion = [[versionText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] lowercaseString];
             if ([trimmedVersion isEqualToString:@"uni1"]) {
                 version = FixVersionUniversityReady;
@@ -103,18 +102,18 @@
 
         // Get names mapping
         BOOL hasModelName = [[modelName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0;
-        NSDictionary *nameMap = [RenameForm getNames:hasModelName
-                                             package:package
-                                              parent:nil
-                                           modelName:modelName];
+        NSMutableDictionary *nameMap = [RenameForm getNames:hasModelName
+                                                    package:package
+                                                  tableView:nil
+                                                   userName:modelName];
 
         // Create and configure FixObject
         FixObject *fixObject = [[FixObject alloc] initWithPackage:package
                                                           version:version
-                                                         autoFix:NO];
+                                             removeNonDefaultText:NO];
         
         // Apply fixes
-        [fixObject fix:nameMap autoFix:NO];
+        [fixObject fix:nameMap uniqueFamily:NO];
         [fixObject cleanUp];
         [fixObject fixGroup];
 

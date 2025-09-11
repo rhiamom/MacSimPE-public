@@ -54,31 +54,3 @@
 }
 
 @end
-
-#import "NmapItem.h"
-#import "Nmap.h"
-#import "Helper.h"
-
-@implementation NmapItem
-
-// MARK: - Initialization
-
-- (instancetype)initWithParent:(Nmap *)parent {
-    self = [super init];
-    if (self) {
-        _parent = parent;
-    }
-    return self;
-}
-
-// MARK: - NSObject Methods
-
-- (NSString *)description {
-    NSString *name = [NSString stringWithFormat:@"%@: 0x%@ - 0x%@",
-                      self.filename,
-                      [Helper hexStringUInt:self.group],
-                      [Helper hexStringUInt:self.instance]];
-    return name;
-}
-
-@end

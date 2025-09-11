@@ -30,7 +30,7 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
 #import "ICacheItem.h"
-#import "ObjectTypes.h"
+#import "MetaData.h"
 
 @protocol IPackedFileDescriptor;
 @class BinaryReader, BinaryWriter, PackedFileDescriptor, CacheContainer;

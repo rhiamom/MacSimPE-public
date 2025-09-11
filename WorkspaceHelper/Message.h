@@ -1,8 +1,8 @@
 //
-//  ObjectComboBox.h
+//  Message.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 8/30/25.
+//  Created by Catherine Gramze on 9/11/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,76 +25,50 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
 
-// Forward declarations
-@class MemoryCacheFile, MemoryCacheItem, StaticAlias;
-@protocol IAlias;
+typedef NS_ENUM(NSInteger, MessageBoxButtons) {
+    MessageBoxButtonsOK,
+    MessageBoxButtonsOKCancel,
+    MessageBoxButtonsYesNo,
+    MessageBoxButtonsYesNoCancel
+};
+
+typedef NS_ENUM(NSInteger, MessageBoxResult) {
+    MessageBoxResultOK = 1,
+    MessageBoxResultCancel = 0,
+    MessageBoxResultYes = 6,
+    MessageBoxResultNo = 7
+};
+// Custom modal response constants for Yes/No dialogs
+typedef NS_ENUM(NSInteger, CustomModalResponse) {
+    CustomModalResponseYes = 1000,
+    CustomModalResponseNo = 1001,
+    // Standard ones we can use directly:
+    // NSModalResponseOK = 1
+    // NSModalResponseCancel = 0
+};
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- * Specialized combo box for displaying cached game objects with filtering options
- */
-@interface ObjectComboBox : NSView <NSComboBoxDataSource, NSComboBoxDelegate>
+@interface Message : NSWindowController
 
-// MARK: - Properties
+@property (nonatomic, strong) NSView *panel1;
+@property (nonatomic, strong) NSView *panel2;      
+@property (nonatomic, strong) NSTextField *label1;
 
-/**
- * Returns the MemoryObject Cache
- */
-@property (class, nonatomic, strong, readonly) MemoryCacheFile *objectCache;
+@property (nonatomic, assign) NSModalResponse dialogResult;
 
-/**
- * The underlying combo box control
- */
-@property (nonatomic, strong, readonly) NSComboBox *comboBox;
++ (NSModalResponse)show:(NSString *)message;
++ (NSModalResponse)show:(NSString *)message
+                caption:(nullable NSString *)caption
+                buttons:(MessageBoxButtons)messageBoxButtons;
 
-/**
- * Filter properties
- */
-@property (nonatomic, assign) BOOL showInventory;
-@property (nonatomic, assign) BOOL showTokens;
-@property (nonatomic, assign) BOOL showMemories;
-@property (nonatomic, assign) BOOL showJobData;
-@property (nonatomic, assign) BOOL showAspiration;
-@property (nonatomic, assign) BOOL showBadge;
-@property (nonatomic, assign) BOOL showSkill;
-
-/**
- * Selection properties
- */
-@property (nonatomic, assign) uint32_t selectedGuid;
-@property (nonatomic, strong, nullable) MemoryCacheItem *selectedItem;
-
-/**
- * Whether the combo box has been loaded
- */
-@property (nonatomic, readonly, assign) BOOL loaded;
-
-// MARK: - Initialization
-
-/**
- * Initialize the ObjectComboBox
- */
-- (instancetype)initWithFrame:(NSRect)frameRect;
-
-// MARK: - Content Management
-
-/**
- * Reload the combo box content based on current filter settings
- */
-- (void)reload;
-
-// MARK: - Events
-
-/**
- * Event fired when the selected object changes
- */
-@property (nonatomic, copy, nullable) void (^selectedObjectChanged)(ObjectComboBox *sender);
-
+- (void)addButton:(NSString *)caption dialogResult:(NSModalResponse)dialogResult;
+- (void)buttonClick:(id)sender;
+- (MessageBoxResult)mapModalResponseToMessageBoxResult:(NSModalResponse)response;
 @end
 
 NS_ASSUME_NONNULL_END

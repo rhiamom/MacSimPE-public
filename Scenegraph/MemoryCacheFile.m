@@ -33,19 +33,21 @@
 #import "FileTable.h"
 #import "Helper.h"
 #import "Wait.h"
-#import "ExtObjd.h"
+#import "ExtObjdWrapper.h"
 #import "CacheContainer.h"
 #import "MetaData.h"
-#import "Str.h"
-#import "StrItemList.h"
+#import "StrWrapper.h"
+#import "StrItem.h"
 #import "PictureWrapper.h"
-#import "WindowsRegistry.h"
-#import "LocalizationManager.h"
+#import "Registry.h"
+#import "Localization.h"
 #import "Alias.h"
 #import "IScenegraphFileIndex.h"
 #import "IScenegraphFileIndexItem.h"
 #import "IPackedFileDescriptor.h"
 #import "IAlias.h"
+#import "IPackageFile.h"
+#import "CacheLists.h"
 
 @interface MemoryCacheFile ()
 
@@ -123,7 +125,7 @@
 }
 
 - (void)reloadCache:(id<IScenegraphFileIndex>)fileIndex save:(BOOL)save {
-    NSArray<id<IScenegraphFileIndexItem>> *items = [fileIndex findFile:OBJD_FILE useAllValues:YES];
+    NSArray<id<IScenegraphFileIndexItem>> *items = [fileIndex findFileWithType:[MetaData OBJD_FILE] noLocal:NO];
     
     BOOL added = NO;
     [Wait setMaxProgress:(NSInteger)items.count];
@@ -171,14 +173,14 @@
     
     // Try to get localized name from CTSS file
     @try {
-        NSArray<id<IScenegraphFileIndexItem>> *stringItems = [[FileTable fileIndex] findFile:CTSS_FILE
-                                                                                         group:objd.fileDescriptor.group
-                                                                                      instance:objd.ctssInstance
-                                                                                       package:nil];
+        NSArray<id<IScenegraphFileIndexItem>> *stringItems = [[FileTable fileIndex] findFileWithType:[MetaData CTSS_FILE]
+                                                                                               group:objd.fileDescriptor.group
+                                                                                            instance:objd.ctssInstance
+                                                                                             package:nil];
         if (stringItems.count > 0) {
-            Str *str = [[Str alloc] init];
+            StrWrapper *str = [[StrWrapper alloc] init];
             [str processData:stringItems[0]];
-            StrItemList *strs = [str languageItems:[[WindowsRegistry shared] languageCode]];
+            StrItemList *strs = [str languageItemsForLanguage:[[Registry windowsRegistry] languageCode]];;
             
             if (strs.length > 0) {
                 mci.name = [strs objectAtIndex:0].title;
@@ -186,7 +188,7 @@
             
             // Not found? Try English
             if (mci.name.length == 0) {
-                strs = [str languageItems:1];
+                strs = [str languageItemsForLanguage:1];
                 if (strs.length > 0) {
                     mci.name = [strs objectAtIndex:0].title;
                 }
@@ -198,14 +200,14 @@
     
     // Try to get value names from STRING file
     @try {
-        NSArray<id<IScenegraphFileIndexItem>> *stringItems = [[FileTable fileIndex] findFile:STRING_FILE
-                                                                                         group:objd.fileDescriptor.group
-                                                                                      instance:0x100
-                                                                                       package:nil];
+        NSArray<id<IScenegraphFileIndexItem>> *stringItems = [[FileTable fileIndex] findFileWithType:[MetaData STRING_FILE]
+                                                                                               group:objd.fileDescriptor.group
+                                                                                            instance:0x100
+                                                                                             package:nil];
         if (stringItems.count > 0) {
-            Str *str = [[Str alloc] init];
+            StrWrapper *str = [[StrWrapper alloc] init];
             [str processData:stringItems[0]];
-            StrItemList *strs = [str languageItems:LanguagesEnglish];
+            StrItemList *strs = [str languageItemsForLanguage:LanguagesEnglish];
             
             NSMutableArray *valueNames = [[NSMutableArray alloc] initWithCapacity:strs.count];
             for (NSInteger i = 0; i < strs.count; i++) {
@@ -224,10 +226,10 @@
     
     // Try to load icon
     PictureWrapper *pic = [[PictureWrapper alloc] init];
-    NSArray<id<IScenegraphFileIndexItem>> *imageItems = [[FileTable fileIndex] findFile:SIM_IMAGE_FILE
-                                                                                   group:objd.fileDescriptor.group
-                                                                                instance:1
-                                                                                 package:nil];
+    NSArray<id<IScenegraphFileIndexItem>> *imageItems = [[FileTable fileIndex] findFileWithType:[MetaData SIM_IMAGE_FILE]
+                                                                                          group:objd.fileDescriptor.group
+                                                                                       instance:1
+                                                                                        package:nil];
     if (imageItems.count > 0) {
         @try {
             [pic processData:imageItems[0]];
@@ -271,7 +273,7 @@
 }
 
 - (void)loadMemTable {
-    self.internalFileIndex = [[FileIndex alloc] initWithItems:[[NSMutableArray alloc] init]];
+    self.internalFileIndex = [[FileIndex alloc] init];
     self.internalFileIndex.duplicates = NO;
     
     for (CacheContainer *cc in self.containers) {
@@ -298,9 +300,9 @@
     Alias *alias;
     
     if (mci == nil) {
-        alias = [[Alias alloc] initWithGuid:guid name:[[LocalizationManager shared] getString:@"Unknown"]];
+        alias = [[Alias alloc] initWithId:guid name:[[Localization shared] getString:@"Unknown"]];
     } else {
-        alias = [[Alias alloc] initWithGuid:guid name:mci.name];
+        alias = [[Alias alloc] initWithId:guid name:mci.name];
     }
     
     NSMutableArray *tagArray = [[NSMutableArray alloc] initWithCapacity:3];

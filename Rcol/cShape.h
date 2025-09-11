@@ -1,8 +1,8 @@
 //
-//  GenericFileItem.h
+//  cShape.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/2/25.
+//  Created by Catherine Gramze on 9/11/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -28,73 +28,55 @@
 // ***************************************************************************
 
 #import <Foundation/Foundation.h>
-#import "GenericCommon.h"
+#import <Cocoa/Cocoa.h>
+#import "AbstractRcolBlock.h"
+#import "IScenegraphBlock.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class Shape, ObjectGraphNode, ReferentNode, BinaryReader, BinaryWriter;
 
-@class GenericItem;
+// MARK: - ShapePart
 
-/**
- * Type-safe NSMutableArray for GenericItem Objects
- */
-@interface GenericItems : NSMutableArray<GenericItem *>
+@interface ShapePart : NSObject
 
-// MARK: - Indexed Access
-- (GenericItem *)objectAtIndex:(NSUInteger)index;
-- (GenericItem *)objectAtUnsignedIntIndex:(uint32_t)index;
-- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(GenericItem *)object;
-- (void)replaceObjectAtUnsignedIntIndex:(uint32_t)index withObject:(GenericItem *)object;
+@property (nonatomic, copy) NSString *subset;
+@property (nonatomic, copy) NSString *fileName;
+@property (nonatomic, strong) NSData *data;
 
-// MARK: - Collection Operations
-- (void)addGenericItem:(GenericItem *)item;
-- (void)insertGenericItem:(GenericItem *)item atIndex:(NSUInteger)index;
-- (void)removeGenericItem:(GenericItem *)item;
-- (BOOL)containsGenericItem:(GenericItem *)item;
-
-// MARK: - Properties
-@property (nonatomic, readonly) NSUInteger length;
-
-// MARK: - Copying
-- (instancetype)deepCopy;
-
-@end
-
-/**
- * A SubItem of a Generic File
- */
-@interface GenericItem : GenericCommon
-
-// MARK: - Properties
-
-/**
- * Returns or sets the List of Subitems
- */
-@property (nonatomic, strong, nullable) NSArray<GenericItem *> *subitems;
-
-/**
- * Number of Subitems stored
- */
-@property (nonatomic, readonly, assign) NSInteger count;
-
-/**
- * Alias for subitems to match tree nomenclature
- */
-@property (nonatomic, strong, nullable) NSArray<GenericItem *> *children;
-
-// MARK: - Initialization
-
-/**
- * Creates a new Instance
- */
 - (instancetype)init;
-
-// MARK: - Protected Methods
-
-/**
- * Returns the List of Subitems
- */
-- (NSArray<GenericItem *> *)getSubitems;
+- (void)unserialize:(BinaryReader *)reader;
+- (void)serialize:(BinaryWriter *)writer;
+- (NSString *)description;
 
 @end
 
-NS_ASSUME_NONNULL_END
+// MARK: - ShapeItem
+
+@interface ShapeItem : NSObject
+
+@property (nonatomic, assign) int32_t unknown1;
+@property (nonatomic, assign) uint8_t unknown2;
+@property (nonatomic, assign) int32_t unknown3;
+@property (nonatomic, assign) uint8_t unknown4;
+@property (nonatomic, copy) NSString *fileName;
+@property (nonatomic, weak) Shape *parent;
+
+- (instancetype)initWithParent:(Shape *)parent;
+- (void)unserialize:(BinaryReader *)reader;
+- (void)serialize:(BinaryWriter *)writer;
+- (NSString *)description;
+
+@end
+
+// MARK: - Shape
+
+@interface Shape : AbstractRcolBlock <IScenegraphBlock>
+
+@property (nonatomic, strong) NSArray<NSNumber *> *unknown;
+@property (nonatomic, strong) NSArray<ShapeItem *> *items;
+@property (nonatomic, strong) NSArray<ShapePart *> *parts;
+@property (nonatomic, strong) ObjectGraphNode *graphNode;
+@property (nonatomic, strong, readonly) ReferentNode *refNode;
+
+- (instancetype)initWithParent:(Rcol *)parent;
+
+@end
