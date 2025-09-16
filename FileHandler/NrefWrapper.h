@@ -1,8 +1,8 @@
 //
-//  RenameForm.h
+//  NrefWrapper.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/11/25.
+//  Created by Catherine Gramze on 9/15/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,45 +25,53 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
-#import <Cocoa/Cocoa.h>
-#import "FixObject.h"
+#import <Foundation/Foundation.h>
+#import "AbstractWrapper.h"
+#import "IFileWrapper.h"
+#import "IFileWrapperSaveExtension.h"
+#import "IFileWrapper.h"
 
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
+@class BinaryReader;
+@class BinaryWriter;
+@protocol IPackedFileUI;
+@protocol IWrapperInfo;
 
-NS_ASSUME_NONNULL_BEGIN
+/**
+ * The Name Reference Files
+ */
+@interface NrefWrapper : AbstractWrapper <IFileWrapper, IFileWrapperSaveExtension, IMultiplePackedFileWrapper>
 
-@interface RenameForm : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
+// MARK: - Properties
 
-@property (nonatomic, weak) IBOutlet NSTableView *tableView;
-@property (nonatomic, weak) IBOutlet NSTextField *modelNameField;
-@property (nonatomic, weak) IBOutlet NSButton *updateButton;
-@property (nonatomic, weak) IBOutlet NSButton *okButton;
-@property (nonatomic, weak) IBOutlet NSButton *universityV2Checkbox;
+/**
+ * The Filename stored in the NREF File
+ */
+@property (nonatomic, copy) NSString *fileName;
 
-@property (nonatomic, strong) id<IPackageFile> package;
-@property (nonatomic, strong) NSMutableArray<NSMutableDictionary *> *items;
-@property (nonatomic, assign) BOOL dialogResult;
+/**
+ * The Group hash computed from the filename
+ */
+@property (nonatomic, readonly) uint32_t group;
 
-+ (NSString *)findMainOldName:(id<IPackageFile>)package;
-+ (NSString *)replaceOldUnique:(NSString *)name
-                     newUnique:(NSString *)newUnique
-                     extension:(BOOL)extension;
-+ (NSMutableDictionary *)getNames:(BOOL)automatic
-                          package:(id<IPackageFile>)package
-                        tableView:(nullable NSTableView *)tableView
-                         userName:(NSString *)userName;
-+ (NSString *)getUniqueName;
-+ (NSString *)getUniqueNameOrNull:(BOOL)returnNull;
-+ (NSMutableDictionary *)execute:(id<IPackageFile>)package
-                      uniqueName:(BOOL)uniqueName
-                         version:(FixVersion *)version;
+// MARK: - Initialization
 
-- (IBAction)updateNames:(id)sender;
-- (IBAction)okClicked:(id)sender;
+/**
+ * Constructor
+ */
+- (instancetype)init;
+
+// MARK: - IFileWrapper Protocol
+
+/**
+ * Returns the Signature that can be used to identify Files processable with this Plugin
+ */
+@property (nonatomic, readonly, strong) NSData *fileSignature;
+
+/**
+ * Returns a list of File Types this Plugin can process
+ */
+@property (nonatomic, readonly, strong) NSArray<NSNumber *> *assignableTypes;
 
 @end
-
-NS_ASSUME_NONNULL_END

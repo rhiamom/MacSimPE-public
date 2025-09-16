@@ -15,6 +15,13 @@
 		B60ADF592E5938B600F66F86 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF582E5938B600F66F86 /* ImageLoader.m */; };
 		B616F7122E60A5FC00D0263A /* LifoUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B616F7112E60A5FC00D0263A /* LifoUI.m */; };
 		B616F7152E60A7B900D0263A /* MmatWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B616F7142E60A7B900D0263A /* MmatWrapper.m */; };
+		B6172A982E7878F900C750DE /* cDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = B6172A972E7878F900C750DE /* cDirectionalLight.m */; };
+		B6172A9B2E7879CD00C750DE /* cStandardLightBase.m in Sources */ = {isa = PBXBuildFile; fileRef = B6172A9A2E7879CD00C750DE /* cStandardLightBase.m */; };
+		B6172A9E2E787A7C00C750DE /* cLightT.m in Sources */ = {isa = PBXBuildFile; fileRef = B6172A9D2E787A7C00C750DE /* cLightT.m */; };
+		B6172AA12E787CC300C750DE /* NrefWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6172AA02E787CC300C750DE /* NrefWrapper.m */; };
+		B6172AA42E78800C00C750DE /* cShapeRefNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6172AA32E78800C00C750DE /* cShapeRefNode.m */; };
+		B6172AA72E7880B400C750DE /* cRenderableNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6172AA62E7880B400C750DE /* cRenderableNode.m */; };
+		B6172AAA2E78814900C750DE /* cBoundedNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6172AA92E78814900C750DE /* cBoundedNode.m */; };
 		B6194B532E5E008100255858 /* WorkshopItems.m in Sources */ = {isa = PBXBuildFile; fileRef = B6194B522E5E008100255858 /* WorkshopItems.m */; };
 		B6194B582E5E015200255858 /* TxtrWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6194B572E5E015200255858 /* TxtrWrapper.m */; };
 		B6194B5B2E5E02FE00255858 /* TxtrForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6194B5A2E5E02FE00255858 /* TxtrForm.m */; };
@@ -57,6 +64,13 @@
 		B6385F402E7365C300DB7DDF /* cShape.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F3F2E7365C300DB7DDF /* cShape.m */; };
 		B6385F432E736CB700DB7DDF /* cObjectGraphNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F422E736CB700DB7DDF /* cObjectGraphNode.m */; };
 		B6385F462E736D7C00DB7DDF /* cReferentNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F452E736D7C00DB7DDF /* cReferentNode.m */; };
+		B6385F492E73714200DB7DDF /* cResourceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F482E73714200DB7DDF /* cResourceNode.m */; };
+		B6385F4C2E7371D500DB7DDF /* AbstractCresChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F4B2E7371D500DB7DDF /* AbstractCresChildren.m */; };
+		B6385F742E745A1D00DB7DDF /* cCompositionTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F732E745A1D00DB7DDF /* cCompositionTreeNode.m */; };
+		B6385F772E745CF900DB7DDF /* cTransformNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F762E745CF900DB7DDF /* cTransformNode.m */; };
+		B6385F7A2E745E7000DB7DDF /* VectorTransformation.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F792E745E7000DB7DDF /* VectorTransformation.m */; };
+		B6385F7D2E745F2600DB7DDF /* Quaternion.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F7C2E745F2600DB7DDF /* Quaternion.m */; };
+		B6385F802E74602500DB7DDF /* Matrices.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F7F2E74602500DB7DDF /* Matrices.m */; };
 		B64B39162E58CE8200FC359D /* HashAlgorithmParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B39152E58CE8200FC359D /* HashAlgorithmParameters.m */; };
 		B64B39192E58CF3200FC359D /* PropertyObjectBuilderExt.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B39182E58CF3200FC359D /* PropertyObjectBuilderExt.m */; };
 		B64B391C2E58D05800FC359D /* PropertyUserTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B391B2E58D05800FC359D /* PropertyUserTypes.m */; };
@@ -89,6 +103,8 @@
 		B64F1CA12E44041A001C0DEC /* FileTableItemType.m in Sources */ = {isa = PBXBuildFile; fileRef = B64F1CA02E44041A001C0DEC /* FileTableItemType.m */; };
 		B64F1CA42E4404F9001C0DEC /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = B64F1CA32E4404F9001C0DEC /* Settings.m */; };
 		B65044672E46C40F0014569E /* DBPFIndexUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = B65044662E46C40F0014569E /* DBPFIndexUtility.m */; };
+		B651C6962E74A467001B3B03 /* GeometryException.m in Sources */ = {isa = PBXBuildFile; fileRef = B651C6952E74A467001B3B03 /* GeometryException.m */; };
+		B651C6992E74A5B7001B3B03 /* cGeometryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B651C6982E74A5B7001B3B03 /* cGeometryNode.m */; };
 		B65E3A6E2E689C0A00994D92 /* GenericTree.m in Sources */ = {isa = PBXBuildFile; fileRef = B65E3A6D2E689C0A00994D92 /* GenericTree.m */; };
 		B66C34642E3BC2D900B4B9B8 /* PathProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B66C34632E3BC2D900B4B9B8 /* PathProvider.m */; };
 		B66C34672E3BC60900B4B9B8 /* PathSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B66C34662E3BC60900B4B9B8 /* PathSettings.m */; };
@@ -262,6 +278,20 @@
 		B616F7112E60A5FC00D0263A /* LifoUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LifoUI.m; sourceTree = "<group>"; };
 		B616F7132E60A7A500D0263A /* MmatWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MmatWrapper.h; sourceTree = "<group>"; };
 		B616F7142E60A7B900D0263A /* MmatWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MmatWrapper.m; sourceTree = "<group>"; };
+		B6172A962E7878DF00C750DE /* cDirectionalLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cDirectionalLight.h; sourceTree = "<group>"; };
+		B6172A972E7878F900C750DE /* cDirectionalLight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cDirectionalLight.m; sourceTree = "<group>"; };
+		B6172A992E7879B300C750DE /* cStandardLightBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cStandardLightBase.h; sourceTree = "<group>"; };
+		B6172A9A2E7879CD00C750DE /* cStandardLightBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cStandardLightBase.m; sourceTree = "<group>"; };
+		B6172A9C2E787A6800C750DE /* cLightT.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cLightT.h; sourceTree = "<group>"; };
+		B6172A9D2E787A7C00C750DE /* cLightT.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cLightT.m; sourceTree = "<group>"; };
+		B6172A9F2E787CAC00C750DE /* NrefWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NrefWrapper.h; sourceTree = "<group>"; };
+		B6172AA02E787CC300C750DE /* NrefWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NrefWrapper.m; sourceTree = "<group>"; };
+		B6172AA22E787FF300C750DE /* cShapeRefNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cShapeRefNode.h; sourceTree = "<group>"; };
+		B6172AA32E78800C00C750DE /* cShapeRefNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cShapeRefNode.m; sourceTree = "<group>"; };
+		B6172AA52E78809F00C750DE /* cRenderableNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cRenderableNode.h; sourceTree = "<group>"; };
+		B6172AA62E7880B400C750DE /* cRenderableNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cRenderableNode.m; sourceTree = "<group>"; };
+		B6172AA82E78813400C750DE /* cBoundedNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cBoundedNode.h; sourceTree = "<group>"; };
+		B6172AA92E78814900C750DE /* cBoundedNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cBoundedNode.m; sourceTree = "<group>"; };
 		B6194B512E5E006B00255858 /* WorkshopItems.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WorkshopItems.h; sourceTree = "<group>"; };
 		B6194B522E5E008100255858 /* WorkshopItems.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WorkshopItems.m; sourceTree = "<group>"; };
 		B6194B562E5E013F00255858 /* TxtrWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TxtrWrapper.h; sourceTree = "<group>"; };
@@ -362,6 +392,21 @@
 		B6385F422E736CB700DB7DDF /* cObjectGraphNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cObjectGraphNode.m; sourceTree = "<group>"; };
 		B6385F442E736D6900DB7DDF /* cReferentNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cReferentNode.h; sourceTree = "<group>"; };
 		B6385F452E736D7C00DB7DDF /* cReferentNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cReferentNode.m; sourceTree = "<group>"; };
+		B6385F472E73712E00DB7DDF /* cResourceNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cResourceNode.h; sourceTree = "<group>"; };
+		B6385F482E73714200DB7DDF /* cResourceNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cResourceNode.m; sourceTree = "<group>"; };
+		B6385F4A2E7371BF00DB7DDF /* AbstractCresChildren.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractCresChildren.h; sourceTree = "<group>"; };
+		B6385F4B2E7371D500DB7DDF /* AbstractCresChildren.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractCresChildren.m; sourceTree = "<group>"; };
+		B6385F4D2E73727400DB7DDF /* ICresChildren.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICresChildren.h; sourceTree = "<group>"; };
+		B6385F722E745A0300DB7DDF /* cCompositionTreeNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cCompositionTreeNode.h; sourceTree = "<group>"; };
+		B6385F732E745A1D00DB7DDF /* cCompositionTreeNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cCompositionTreeNode.m; sourceTree = "<group>"; };
+		B6385F752E745CE400DB7DDF /* cTransformNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cTransformNode.h; sourceTree = "<group>"; };
+		B6385F762E745CF900DB7DDF /* cTransformNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cTransformNode.m; sourceTree = "<group>"; };
+		B6385F782E745E5900DB7DDF /* VectorTransformation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VectorTransformation.h; sourceTree = "<group>"; };
+		B6385F792E745E7000DB7DDF /* VectorTransformation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VectorTransformation.m; sourceTree = "<group>"; };
+		B6385F7B2E745F1600DB7DDF /* Quaternion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
+		B6385F7C2E745F2600DB7DDF /* Quaternion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Quaternion.m; sourceTree = "<group>"; };
+		B6385F7E2E74601500DB7DDF /* Matrices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Matrices.h; sourceTree = "<group>"; };
+		B6385F7F2E74602500DB7DDF /* Matrices.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Matrices.m; sourceTree = "<group>"; };
 		B646E9102E4E6BE400A92D70 /* IListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IListener.h; sourceTree = "<group>"; };
 		B646E9112E4E6CE700A92D70 /* IListener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IListener.m; sourceTree = "<group>"; };
 		B64B39142E58CE3700FC359D /* HashAlgorithmParameters.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashAlgorithmParameters.h; sourceTree = "<group>"; };
@@ -447,6 +492,10 @@
 		B65044662E46C40F0014569E /* DBPFIndexUtility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBPFIndexUtility.m; sourceTree = "<group>"; };
 		B65044692E46D1F10014569E /* RemoteControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteControl.h; sourceTree = "<group>"; };
 		B650446A2E46D2160014569E /* RemoteControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RemoteControl.m; sourceTree = "<group>"; };
+		B651C6942E74A452001B3B03 /* GeometryException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeometryException.h; sourceTree = "<group>"; };
+		B651C6952E74A467001B3B03 /* GeometryException.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeometryException.m; sourceTree = "<group>"; };
+		B651C6972E74A59F001B3B03 /* cGeometryNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cGeometryNode.h; sourceTree = "<group>"; };
+		B651C6982E74A5B7001B3B03 /* cGeometryNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cGeometryNode.m; sourceTree = "<group>"; };
 		B65E3A6C2E689BEB00994D92 /* GenericTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenericTree.h; sourceTree = "<group>"; };
 		B65E3A6D2E689C0A00994D92 /* GenericTree.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GenericTree.m; sourceTree = "<group>"; };
 		B66C34612E3BC15100B4B9B8 /* IProviderRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IProviderRegistry.h; sourceTree = "<group>"; };
@@ -821,9 +870,12 @@
 		B61CE59B2E3ADF2300547C40 /* WorkspaceHelper */ = {
 			isa = PBXGroup;
 			children = (
+				B6FBA7F42E52865B0000F0D5 /* ErrorWrapper.h */,
+				B6FBA7F52E5286A10000F0D5 /* ErrorWrapper.m */,
 				B61CE59C2E3ADF3E00547C40 /* FileTable.h */,
 				B61CE59D2E3ADF9D00547C40 /* FileTable.m */,
 				B6BBE6FB2E40F314003D5BCC /* ICommandLineRegistry.h */,
+				B6C3F0692E54E2280073156B /* IDockableTool.h */,
 				B6FDC5992E3FE031004E8AA6 /* IHelp.h */,
 				B6FDC5982E3FE009004E8AA6 /* IHelpFactory.h */,
 				B6FDC5972E3FDFD6004E8AA6 /* IHelpRegistry.h */,
@@ -837,17 +889,14 @@
 				B6FDC5962E3FDF73004E8AA6 /* IToolResult.h */,
 				B671B4882E4F98C3004559C3 /* LoadFileWrappers.h */,
 				B671B4892E4F9930004559C3 /* LoadFileWrappers.m */,
+				B6C01F982E73241800AA6108 /* Message.h */,
+				B6C01F992E73242900AA6108 /* Message.m */,
+				B6F1144A2E63BB7300348F44 /* PropertyParser.h */,
+				B6F1144B2E63BB8900348F44 /* PropertyParser.m */,
 				B6B02CDF2E4EC0AA009240FD /* ScenegraphHelper.h */,
 				B6B02CE02E4EC0E7009240FD /* ScenegraphHelper.m */,
 				B6B02CDC2E4EBEEB009240FD /* WrapperBaseControl.h */,
 				B6B02CDD2E4EBF3B009240FD /* WrapperBaseControl.m */,
-				B6FBA7F42E52865B0000F0D5 /* ErrorWrapper.h */,
-				B6FBA7F52E5286A10000F0D5 /* ErrorWrapper.m */,
-				B6C3F0692E54E2280073156B /* IDockableTool.h */,
-				B6F1144A2E63BB7300348F44 /* PropertyParser.h */,
-				B6F1144B2E63BB8900348F44 /* PropertyParser.m */,
-				B6C01F982E73241800AA6108 /* Message.h */,
-				B6C01F992E73242900AA6108 /* Message.m */,
 			);
 			path = WorkspaceHelper;
 			sourceTree = "<group>";
@@ -915,6 +964,8 @@
 				B61BA7C42E6B461D00392771 /* UIBase.m */,
 				B61BA7F82E6E1BD400392771 /* XmlWrapper.h */,
 				B61BA7F92E6E1BE500392771 /* XmlWrapper.m */,
+				B6172A9F2E787CAC00C750DE /* NrefWrapper.h */,
+				B6172AA02E787CC300C750DE /* NrefWrapper.m */,
 			);
 			path = FileHandler;
 			sourceTree = "<group>";
@@ -946,18 +997,47 @@
 		B64F1C962E43FC49001C0DEC /* Rcol */ = {
 			isa = PBXGroup;
 			children = (
+				B6385F4A2E7371BF00DB7DDF /* AbstractCresChildren.h */,
+				B6385F4B2E7371D500DB7DDF /* AbstractCresChildren.m */,
 				B671B4822E4F9432004559C3 /* AbstractRcolBlock.h */,
 				B671B4832E4F959E004559C3 /* AbstractRcolBlock.m */,
+				B6172AA82E78813400C750DE /* cBoundedNode.h */,
+				B6172AA92E78814900C750DE /* cBoundedNode.m */,
+				B6385F722E745A0300DB7DDF /* cCompositionTreeNode.h */,
+				B6385F732E745A1D00DB7DDF /* cCompositionTreeNode.m */,
+				B6172A962E7878DF00C750DE /* cDirectionalLight.h */,
+				B6172A972E7878F900C750DE /* cDirectionalLight.m */,
+				B651C6972E74A59F001B3B03 /* cGeometryNode.h */,
+				B651C6982E74A5B7001B3B03 /* cGeometryNode.m */,
 				B60ADF542E59374E00F66F86 /* cImageData.h */,
 				B60ADF552E5937E900F66F86 /* cImageData.m */,
 				B6AAC5EF2E5A1F5B00846641 /* cLevelInfo.h */,
 				B6AAC5F02E5A1F9100846641 /* cLevelInfo.m */,
+				B6172A9C2E787A6800C750DE /* cLightT.h */,
+				B6172A9D2E787A7C00C750DE /* cLightT.m */,
 				B673A12D2E636C79004039D3 /* cMaterialDefinition.h */,
 				B673A12E2E636C92004039D3 /* cMaterialDefinition.m */,
+				B6385F412E736C9F00DB7DDF /* cObjectGraphNode.h */,
+				B6385F422E736CB700DB7DDF /* cObjectGraphNode.m */,
+				B6385F442E736D6900DB7DDF /* cReferentNode.h */,
+				B6385F452E736D7C00DB7DDF /* cReferentNode.m */,
+				B6172AA52E78809F00C750DE /* cRenderableNode.h */,
+				B6172AA62E7880B400C750DE /* cRenderableNode.m */,
+				B6385F472E73712E00DB7DDF /* cResourceNode.h */,
+				B6385F482E73714200DB7DDF /* cResourceNode.m */,
 				B671B4852E4F95D1004559C3 /* cSGResource.h */,
 				B671B4862E4F95FF004559C3 /* cSGResource.m */,
+				B6385F3E2E7365B400DB7DDF /* cShape.h */,
+				B6385F3F2E7365C300DB7DDF /* cShape.m */,
+				B6172AA22E787FF300C750DE /* cShapeRefNode.h */,
+				B6172AA32E78800C00C750DE /* cShapeRefNode.m */,
+				B6172A992E7879B300C750DE /* cStandardLightBase.h */,
+				B6172A9A2E7879CD00C750DE /* cStandardLightBase.m */,
+				B6385F752E745CE400DB7DDF /* cTransformNode.h */,
+				B6385F762E745CF900DB7DDF /* cTransformNode.m */,
 				B64F1C972E43FC63001C0DEC /* GenericRcolWrapper.h */,
 				B64F1C982E43FCBC001C0DEC /* GenericRcolWrapper.m */,
+				B6385F4D2E73727400DB7DDF /* ICresChildren.h */,
 				B60ADF572E59388800F66F86 /* ImageLoader.h */,
 				B60ADF582E5938B600F66F86 /* ImageLoader.m */,
 				B6F4409B2E4655B000870564 /* IRcolBlock.h */,
@@ -967,12 +1047,6 @@
 				B6B02CD72E4EBA34009240FD /* RcolUI.m */,
 				B6F4409C2E46567200870564 /* RcolWrapper.h */,
 				B6F4409D2E4656B400870564 /* RcolWrapper.m */,
-				B6385F3E2E7365B400DB7DDF /* cShape.h */,
-				B6385F3F2E7365C300DB7DDF /* cShape.m */,
-				B6385F412E736C9F00DB7DDF /* cObjectGraphNode.h */,
-				B6385F422E736CB700DB7DDF /* cObjectGraphNode.m */,
-				B6385F442E736D6900DB7DDF /* cReferentNode.h */,
-				B6385F452E736D7C00DB7DDF /* cReferentNode.m */,
 			);
 			path = Rcol;
 			sourceTree = "<group>";
@@ -991,6 +1065,14 @@
 			children = (
 				B673A1312E636D62004039D3 /* Vectors.h */,
 				B673A1322E636D71004039D3 /* Vectors.m */,
+				B6385F782E745E5900DB7DDF /* VectorTransformation.h */,
+				B6385F792E745E7000DB7DDF /* VectorTransformation.m */,
+				B6385F7B2E745F1600DB7DDF /* Quaternion.h */,
+				B6385F7C2E745F2600DB7DDF /* Quaternion.m */,
+				B6385F7E2E74601500DB7DDF /* Matrices.h */,
+				B6385F7F2E74602500DB7DDF /* Matrices.m */,
+				B651C6942E74A452001B3B03 /* GeometryException.h */,
+				B651C6952E74A467001B3B03 /* GeometryException.m */,
 			);
 			path = Geometry;
 			sourceTree = "<group>";
@@ -1090,12 +1172,12 @@
 			isa = PBXGroup;
 			children = (
 				B6385F3C2E7359BF00DB7DDF /* splash.png */,
+				B6385F392E7357A500DB7DDF /* SplashForm.h */,
+				B6385F3A2E7357B800DB7DDF /* SplashForm.m */,
 				B68881D52E734C56001C417B /* SplashScreen.h */,
 				B68881D62E734C69001C417B /* SplashScreen.m */,
 				B68881D82E734DE3001C417B /* TransparentButton.h */,
 				B68881D92E734DF8001C417B /* TransparentButton.m */,
-				B6385F392E7357A500DB7DDF /* SplashForm.h */,
-				B6385F3A2E7357B800DB7DDF /* SplashForm.m */,
 			);
 			path = Splash;
 			sourceTree = "<group>";
@@ -1733,6 +1815,7 @@
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
 				B616F7152E60A7B900D0263A /* MmatWrapper.m in Sources */,
 				B64B39352E58DE1F00FC359D /* CpfItem.m in Sources */,
+				B6385F4C2E7371D500DB7DDF /* AbstractCresChildren.m in Sources */,
 				B6FBA7FC2E529DD30000F0D5 /* HeaderView.m in Sources */,
 				B64F1C9B2E43FEC3001C0DEC /* XmlPackageReaderBase.m in Sources */,
 				B6BF526B2E5B7651007B48A1 /* NmapForm.m in Sources */,
@@ -1757,6 +1840,7 @@
 				B6B02CDE2E4EBF3B009240FD /* WrapperBaseControl.m in Sources */,
 				B6CDCC902E340297004FDF82 /* FileStream.m in Sources */,
 				B69F34DA2E37ECDD007EEA89 /* Hashes.m in Sources */,
+				B651C6992E74A5B7001B3B03 /* cGeometryNode.m in Sources */,
 				B671B48A2E4F9930004559C3 /* LoadFileWrappers.m in Sources */,
 				B61BA7FA2E6E1BE500392771 /* XmlWrapper.m in Sources */,
 				B64B39192E58CF3200FC359D /* PropertyObjectBuilderExt.m in Sources */,
@@ -1773,22 +1857,27 @@
 				B61BA7D22E6B58B200392771 /* Elements2.m in Sources */,
 				B61BA7C22E6B457800392771 /* PictureUI.m in Sources */,
 				B69C59FA2E3E8DF000794FC7 /* ExpansionItem.m in Sources */,
+				B6385F802E74602500DB7DDF /* Matrices.m in Sources */,
 				B64EEF4B2E3974800008E7CA /* ResourceListViewExtSelection.m in Sources */,
 				B691A41E2E67B7B30042D5A5 /* GenericElements.m in Sources */,
 				B61BA7C52E6B461D00392771 /* UIBase.m in Sources */,
 				B6B02CD42E4EB38D009240FD /* RemoteControl.m in Sources */,
 				B6F1144C2E63BB8900348F44 /* PropertyParser.m in Sources */,
 				B69C5A352E3ED1E600794FC7 /* DescriptiveSerializer.m in Sources */,
+				B651C6962E74A467001B3B03 /* GeometryException.m in Sources */,
 				B6E24B342E562218003E2A3E /* LotProvider.m in Sources */,
 				B64E6BAD2E3534BB009AD0A7 /* Helper.m in Sources */,
 				B6E24B302E5620E4003E2A3E /* SkinProvider.m in Sources */,
 				B6E2B5E12E5BB3D900AA6170 /* WrapperFactory.m in Sources */,
 				B69C5A302E3ECEF200794FC7 /* Serializer.m in Sources */,
+				B6385F7A2E745E7000DB7DDF /* VectorTransformation.m in Sources */,
 				B61CE5A62E3AE72300547C40 /* SimPEResourceIndex.m in Sources */,
 				B6CCE7EE2E68980700BE2BB3 /* GenericFile.m in Sources */,
 				B6CDCC942E340521004FDF82 /* BinaryReader.m in Sources */,
 				B61BA7C82E6B492800392771 /* PictureWrapper.m in Sources */,
+				B6172A982E7878F900C750DE /* cDirectionalLight.m in Sources */,
 				B6385F462E736D7C00DB7DDF /* cReferentNode.m in Sources */,
+				B6172A9B2E7879CD00C750DE /* cStandardLightBase.m in Sources */,
 				B69F35182E385E4F007EEA89 /* NamedPackedFileDescriptor.m in Sources */,
 				B69C5A2D2E3EC83B00794FC7 /* WarningException.m in Sources */,
 				B64F1CA12E44041A001C0DEC /* FileTableItemType.m in Sources */,
@@ -1804,6 +1893,7 @@
 				B6CCE7E52E6893BA00BE2BB3 /* GenericFileItem.m in Sources */,
 				B6FBA7F62E5286A10000F0D5 /* ErrorWrapper.m in Sources */,
 				B6CDCC972E340622004FDF82 /* BinaryWriter.m in Sources */,
+				B6385F492E73714200DB7DDF /* cResourceNode.m in Sources */,
 				B6CDCCA32E342902004FDF82 /* HoleIndexItem.m in Sources */,
 				B671B4872E4F95FF004559C3 /* cSGResource.m in Sources */,
 				B673A1292E636A2B004039D3 /* MemoryCacheItem.m in Sources */,
@@ -1833,6 +1923,7 @@
 				B67DE0792E7067AA00A17C62 /* ExtObjdWrapper.m in Sources */,
 				B6B8D03E2E57AF90008557A2 /* PropertyObjectBuilder.m in Sources */,
 				B673A1262E6368ED004039D3 /* ObjectComboBox.m in Sources */,
+				B6172AAA2E78814900C750DE /* cBoundedNode.m in Sources */,
 				B6CDCC8E2E33FE4E004FDF82 /* MemoryStream.m in Sources */,
 				B6C3F0722E54E4DE0073156B /* OpcodeProvider.m in Sources */,
 				B62437DB2E3597690052119F /* Registry.m in Sources */,
@@ -1852,6 +1943,7 @@
 				B64B39382E58E0AC00FC359D /* CpfUI.m in Sources */,
 				B6194B532E5E008100255858 /* WorkshopItems.m in Sources */,
 				B62437E12E35A15B0052119F /* TGILoader.m in Sources */,
+				B6385F772E745CF900DB7DDF /* cTransformNode.m in Sources */,
 				B6C3F0752E54E6450073156B /* SimCommonPackage.m in Sources */,
 				B6CDCCB42E34416F004FDF82 /* MetaData.m in Sources */,
 				B6CDCCA72E342B3D004FDF82 /* PackedFileDescriptorSimple.m in Sources */,
@@ -1866,6 +1958,8 @@
 				B673A12F2E636C92004039D3 /* cMaterialDefinition.m in Sources */,
 				B64B391C2E58D05800FC359D /* PropertyUserTypes.m in Sources */,
 				B6B02CDB2E4EBADF009240FD /* RcolForm.m in Sources */,
+				B6172AA42E78800C00C750DE /* cShapeRefNode.m in Sources */,
+				B6172AA12E787CC300C750DE /* NrefWrapper.m in Sources */,
 				B6385F402E7365C300DB7DDF /* cShape.m in Sources */,
 				B616F7122E60A5FC00D0263A /* LifoUI.m in Sources */,
 				B64B39162E58CE8200FC359D /* HashAlgorithmParameters.m in Sources */,
@@ -1880,6 +1974,7 @@
 				B61987042E6209E700600ED7 /* SlotWrapper.m in Sources */,
 				B64B392E2E58D42A00FC359D /* ThreadConsumer.m in Sources */,
 				B6E24B232E561CE1003E2A3E /* SimFamilyNames.m in Sources */,
+				B6172A9E2E787A7C00C750DE /* cLightT.m in Sources */,
 				B6E24B282E561E63003E2A3E /* SimNames.m in Sources */,
 				B6F440A42E465EB300870564 /* Containers.m in Sources */,
 				B6B8D0372E57ABAB008557A2 /* TraitAlias.m in Sources */,
@@ -1887,6 +1982,7 @@
 				B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */,
 				B69F34FD2E383AE6007EEA89 /* ResourceMaps.m in Sources */,
 				B61BA7CC2E6B4A0F00392771 /* TGALoader.m in Sources */,
+				B6385F7D2E745F2600DB7DDF /* Quaternion.m in Sources */,
 				B6E2B5E42E5BB5A100AA6170 /* GroupCacheItem.m in Sources */,
 				B6194B5E2E5E05E000255858 /* TxtrUI.m in Sources */,
 				B6E2B5DF2E5BB33C00AA6170 /* FixPackage.m in Sources */,
@@ -1900,6 +1996,7 @@
 				B61CE56F2E3A863800547C40 /* WaitControl.m in Sources */,
 				B6385F3B2E7357B800DB7DDF /* SplashForm.m in Sources */,
 				B6BF52682E5B75BC007B48A1 /* NmapWrapper.m in Sources */,
+				B6172AA72E7880B400C750DE /* cRenderableNode.m in Sources */,
 				B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */,
 				B6B02CD22E4EB32A009240FD /* RcolWrapper.m in Sources */,
 				B6E2B5E72E5BB65000AA6170 /* GroupCacheWrapper.m in Sources */,
@@ -1910,6 +2007,7 @@
 				B6CCE7E82E68956000BE2BB3 /* GenericExtendedFileItem.m in Sources */,
 				B65044672E46C40F0014569E /* DBPFIndexUtility.m in Sources */,
 				B6CDCCA02E3427DE004FDF82 /* HeaderHole.m in Sources */,
+				B6385F742E745A1D00DB7DDF /* cCompositionTreeNode.m in Sources */,
 				B64B393B2E58E63000FC359D /* PackedFileWrapper.m in Sources */,
 				B64EEF7E2E3986BB0008E7CA /* ResourceTreeNodesByType.m in Sources */,
 			);

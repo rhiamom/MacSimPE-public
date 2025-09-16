@@ -1,8 +1,8 @@
 //
-//  RenameForm.h
+//  cCompositionTreeNode.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/11/25.
+//  Created by Catherine Gramze on 9/12/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,45 +25,50 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
-#import <Cocoa/Cocoa.h>
-#import "FixObject.h"
+#import <Foundation/Foundation.h>
+#import "AbstractRcolBlock.h"
 
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
+@class Rcol;
+@class BinaryReader;
+@class BinaryWriter;
 
-NS_ASSUME_NONNULL_BEGIN
+/**
+ * This is the actual FileWrapper
+ * @remarks
+ * The wrapper is used to (un)serialize the Data of a file into its Attributes. So Basically it reads
+ * a BinaryStream and translates the data into some user-defined Attributes.
+ */
+@interface CompositionTreeNode : AbstractRcolBlock
 
-@interface RenameForm : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
+// MARK: - Initialization
 
-@property (nonatomic, weak) IBOutlet NSTableView *tableView;
-@property (nonatomic, weak) IBOutlet NSTextField *modelNameField;
-@property (nonatomic, weak) IBOutlet NSButton *updateButton;
-@property (nonatomic, weak) IBOutlet NSButton *okButton;
-@property (nonatomic, weak) IBOutlet NSButton *universityV2Checkbox;
+/**
+ * Constructor
+ */
+- (instancetype)initWithParent:(Rcol *)parent;
 
-@property (nonatomic, strong) id<IPackageFile> package;
-@property (nonatomic, strong) NSMutableArray<NSMutableDictionary *> *items;
-@property (nonatomic, assign) BOOL dialogResult;
+// MARK: - IRcolBlock Protocol Methods
 
-+ (NSString *)findMainOldName:(id<IPackageFile>)package;
-+ (NSString *)replaceOldUnique:(NSString *)name
-                     newUnique:(NSString *)newUnique
-                     extension:(BOOL)extension;
-+ (NSMutableDictionary *)getNames:(BOOL)automatic
-                          package:(id<IPackageFile>)package
-                        tableView:(nullable NSTableView *)tableView
-                         userName:(NSString *)userName;
-+ (NSString *)getUniqueName;
-+ (NSString *)getUniqueNameOrNull:(BOOL)returnNull;
-+ (NSMutableDictionary *)execute:(id<IPackageFile>)package
-                      uniqueName:(BOOL)uniqueName
-                         version:(FixVersion *)version;
+/**
+ * Unserializes a BinaryStream into the Attributes of this Instance
+ * @param reader The Stream that contains the FileData
+ */
+- (void)unserialize:(BinaryReader *)reader;
 
-- (IBAction)updateNames:(id)sender;
-- (IBAction)okClicked:(id)sender;
+/**
+ * Serializes the Attributes stored in this Instance to the BinaryStream
+ * @param writer The Stream the Data should be stored to
+ * @remarks
+ * Be sure that the Position of the stream is Proper on
+ * return (i.e. must point to the first Byte after your actual File)
+ */
+- (void)serialize:(BinaryWriter *)writer;
+
+/**
+ * Dispose of resources
+ */
+- (void)dispose;
 
 @end
-
-NS_ASSUME_NONNULL_END

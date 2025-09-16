@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * String listing array
  */
-@property (nonatomic, strong) NSArray<NSString *> *listing;
+@property (nonatomic, strong) NSMutableArray<NSString *> *listing;
 
 // MARK: - Class Properties
 

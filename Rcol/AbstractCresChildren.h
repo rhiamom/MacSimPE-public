@@ -1,5 +1,5 @@
 //
-//  RenameForm.h
+//  AbstractCresChildren.h
 //  MacSimpe
 //
 //  Created by Catherine Gramze on 9/11/25.
@@ -25,45 +25,47 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
-#import <Cocoa/Cocoa.h>
-#import "FixObject.h"
+#import <Foundation/Foundation.h>
+#import "AbstractRcolBlock.h"
+#import "ICresChildren.h"
 
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
+@class IntArrayList;
+@class TransformNode;
+@class VectorTransformations;
+@class VectorTransformation;
+@class Rcol;
 
-NS_ASSUME_NONNULL_BEGIN
+/**
+ * Implemented common Methods of the ICresChildren Protocol
+ */
+@interface AbstractCresChildren : AbstractRcolBlock <ICresChildren>
 
-@interface RenameForm : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
+// MARK: - Private Properties
+@property (nonatomic, strong) NSMutableArray *seenBones;
+@property (nonatomic, assign) NSInteger pos;
 
-@property (nonatomic, weak) IBOutlet NSTableView *tableView;
-@property (nonatomic, weak) IBOutlet NSTextField *modelNameField;
-@property (nonatomic, weak) IBOutlet NSButton *updateButton;
-@property (nonatomic, weak) IBOutlet NSButton *okButton;
-@property (nonatomic, weak) IBOutlet NSButton *universityV2Checkbox;
+// MARK: - Initialization
+- (instancetype)initWithParent:(Rcol *)parent;
 
-@property (nonatomic, strong) id<IPackageFile> package;
-@property (nonatomic, strong) NSMutableArray<NSMutableDictionary *> *items;
-@property (nonatomic, assign) BOOL dialogResult;
+// MARK: - Abstract Methods (Must be implemented by subclasses)
+- (NSString *)getName NS_REQUIRES_SUPER;
 
-+ (NSString *)findMainOldName:(id<IPackageFile>)package;
-+ (NSString *)replaceOldUnique:(NSString *)name
-                     newUnique:(NSString *)newUnique
-                     extension:(BOOL)extension;
-+ (NSMutableDictionary *)getNames:(BOOL)automatic
-                          package:(id<IPackageFile>)package
-                        tableView:(nullable NSTableView *)tableView
-                         userName:(NSString *)userName;
-+ (NSString *)getUniqueName;
-+ (NSString *)getUniqueNameOrNull:(BOOL)returnNull;
-+ (NSMutableDictionary *)execute:(id<IPackageFile>)package
-                      uniqueName:(BOOL)uniqueName
-                         version:(FixVersion *)version;
+// MARK: - ICresChildren Protocol Implementation
+- (id<ICresChildren>)getBlock:(NSInteger)index;
+- (IntArrayList *)getParentBlocks;
+- (id<ICresChildren>)getFirstParent;
 
-- (IBAction)updateNames:(id)sender;
-- (IBAction)okClicked:(id)sender;
+// MARK: - Hierarchy Transformations
+- (VectorTransformations *)getHierarchyTransformations;
+- (VectorTransformation *)getEffectiveTransformation;
+
+// MARK: - Private Helper Methods
+- (VectorTransformations *)getAbsoluteTransformation:(id<ICresChildren>)node
+                               vectorTransformations:(VectorTransformations *)v;
+
+// MARK: - NSFastEnumeration Support
+- (void)reset;
 
 @end
-
-NS_ASSUME_NONNULL_END

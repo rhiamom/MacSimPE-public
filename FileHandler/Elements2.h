@@ -68,6 +68,10 @@ typedef void (^ExecutePreview)(Cpf *cpf, id package);
 // Internal properties
 @property (nonatomic, strong) id<IFileWrapperSaveExtension> wrapper;
 @property (nonatomic, strong) ExecutePreview fkt;
+// State tracking properties (replace setTag pattern)
+@property (nonatomic, assign) BOOL cpfNameEditingFlag;
+@property (nonatomic, assign) BOOL cpfAutoChangeInProgress;
+@property (nonatomic, assign) BOOL nrefTextChangeEnabled;
 
 // Main panel properties for external access
 @property (nonatomic, weak) IBOutlet NSView *cpfPanel;

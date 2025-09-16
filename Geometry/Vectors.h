@@ -29,14 +29,16 @@
 
 #import <Foundation/Foundation.h>
 
-@class BinaryReader, BinaryWriter;
+@class BinaryReader;
+@class BinaryWriter;
+@class Helper;
 
-NS_ASSUME_NONNULL_BEGIN
+// MARK: - Vector2f
 
 /**
  * Contains a 2D Vector (when (un)serialized, it will be interpreted as SingleFloat!)
  */
-@interface Vector2 : NSObject <NSCopying>
+@interface Vector2f : NSObject
 
 // MARK: - Properties
 
@@ -55,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Returns a zero vector
  */
-+ (Vector2 *)zero;
++ (Vector2f *)zero;
 
 // MARK: - Initialization
 
@@ -82,6 +84,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Serializes the Attributes stored in this Instance to the BinaryStream
  * @param writer The Stream the Data should be stored to
+ * @remarks
+ * Be sure that the Position of the stream is Proper on
+ * return (i.e. must point to the first Byte after your actual File)
  */
 - (void)serialize:(BinaryWriter *)writer;
 
@@ -90,67 +95,16 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Create a clone of this Vector
  */
-- (Vector2 *)clone;
-
-/**
- * Vector addition
- * @param other The vector to add
- * @return The resulting vector
- */
-- (Vector2 *)add:(Vector2 *)other;
-
-/**
- * Vector subtraction
- * @param other The vector to subtract
- * @return The resulting vector
- */
-- (Vector2 *)subtract:(Vector2 *)other;
-
-/**
- * Scalar multiplication
- * @param scalar The scalar to multiply by
- * @return The resulting vector
- */
-- (Vector2 *)multiplyByScalar:(double)scalar;
-
-/**
- * Scalar division
- * @param scalar The scalar to divide by
- * @return The resulting vector
- */
-- (Vector2 *)divideByScalar:(double)scalar;
-
-/**
- * Dot product
- * @param other The other vector
- * @return The dot product result
- */
-- (double)dotProduct:(Vector2 *)other;
-
-// MARK: - Comparison
-
-/**
- * Check if two vectors are equal
- * @param other The other vector
- * @return YES if equal, NO otherwise
- */
-- (BOOL)isEqualToVector:(Vector2 *)other;
-
-// MARK: - String Representation
-
-/**
- * String representation of the vector
- */
-- (NSString *)description;
+- (Vector2f *)clone;
 
 @end
 
-//    Mark: Vector 3 class
+// MARK: - Vector3f
 
 /**
  * Contains a 3D Vector (when (un)serialized, it will be interpreted as SingleFloat!)
  */
-@interface Vector3 : Vector2
+@interface Vector3f : Vector2f
 
 // MARK: - Properties
 
@@ -160,17 +114,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) double z;
 
 /**
- * Returns the unit vector for this vector
+ * Returns the UnitVector for this Vector
  */
-@property (nonatomic, readonly) Vector3 *unitVector;
+@property (nonatomic, readonly, strong) Vector3f *unitVector;
 
 /**
- * Returns the norm of the vector
+ * Returns the Norm of the Vector
  */
 @property (nonatomic, readonly) double norm;
 
 /**
- * Returns the length of the vector
+ * Returns the Length of the Vector
  */
 @property (nonatomic, readonly) double length;
 
@@ -179,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Returns a zero vector
  */
-+ (Vector3 *)zero;
++ (Vector3f *)zero;
 
 // MARK: - Initialization
 
@@ -198,106 +152,98 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Creates new Vector Instance from string array
- * @param dataArray Array of strings containing coordinates
+ * @param dataArray String array with x, y, z values
  */
 - (instancetype)initWithStringArray:(NSArray<NSString *> *)dataArray;
 
 /**
- * Creates new Vector Instance from space-separated string
- * @param data Space-separated coordinate string
+ * Creates new Vector Instance from string
+ * @param data String with space-separated x, y, z values
  */
 - (instancetype)initWithString:(NSString *)data;
 
 /**
  * Creates new Vector Instance from double array
- * @param data Array of double values
+ * @param data Double array with x, y, z values
  */
 - (instancetype)initWithDoubleArray:(NSArray<NSNumber *> *)data;
 
-// MARK: - Operations
+// MARK: - Vector Operations
 
 /**
- * Create a clone of this Vector
- */
-- (Vector3 *)clone;
-
-/**
- * Makes this vector a unit vector (length = 1)
+ * Makes sure this Vector is a Unit Vector (Length=1)
  */
 - (void)makeUnitVector;
 
 /**
- * Get the inverse of this vector
- * @return The inverted vector
+ * Create the Inverse of a Vector
  */
-- (Vector3 *)getInverse;
+- (Vector3f *)getInverse;
 
 /**
  * Vector addition
  * @param other The vector to add
  * @return The resulting vector
  */
-- (Vector3 *)add:(Vector3 *)other;
+- (Vector3f *)add:(Vector3f *)other;
 
 /**
  * Vector subtraction
  * @param other The vector to subtract
  * @return The resulting vector
  */
-- (Vector3 *)subtract:(Vector3 *)other;
+- (Vector3f *)subtract:(Vector3f *)other;
 
 /**
  * Scalar multiplication
  * @param scalar The scalar to multiply by
  * @return The resulting vector
  */
-- (Vector3 *)multiplyByScalar:(double)scalar;
+- (Vector3f *)multiplyByScalar:(double)scalar;
 
 /**
  * Scalar division
  * @param scalar The scalar to divide by
  * @return The resulting vector
  */
-- (Vector3 *)divideByScalar:(double)scalar;
+- (Vector3f *)divideByScalar:(double)scalar;
 
 /**
- * Dot product (scalar product)
+ * Scalar product (dot product)
  * @param other The other vector
  * @return The dot product result
  */
-- (double)dotProduct:(Vector3 *)other;
+- (double)dotProduct:(Vector3f *)other;
 
 /**
  * Cross product
  * @param other The other vector
  * @return The cross product vector
  */
-- (Vector3 *)crossProduct:(Vector3 *)other;
+- (Vector3f *)crossProduct:(Vector3f *)other;
+
+/**
+ * Compare vectors
+ * @param other The other vector
+ * @return YES if equal, NO otherwise
+ */
+- (BOOL)isEqualToVector:(Vector3f *)other;
 
 // MARK: - Component Access
 
 /**
- * Get a component by index (0=x, 1=y, 2=z)
- * @param index The component index
- * @return The component value
+ * Returns a Component of this Vector (0=x, 1=y, 2=z)
+ * @param index Index of the component
+ * @returns the value stored in that Component
  */
 - (double)getComponent:(int)index;
 
 /**
- * Set a component by index (0=x, 1=y, 2=z)
- * @param index The component index
- * @param value The new value
+ * Set a Component of this Vector (0=x, 1=y, 2=z)
+ * @param index Index of the component
+ * @param val The new Value
  */
-- (void)setComponent:(int)index value:(double)value;
-
-// MARK: - Comparison
-
-/**
- * Check if two vectors are equal
- * @param other The other vector
- * @return YES if equal, NO otherwise
- */
-- (BOOL)isEqualToVector:(Vector3 *)other;
+- (void)setComponent:(int)index value:(double)val;
 
 // MARK: - String Representation
 
@@ -306,14 +252,79 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSString *)toString2;
 
+// MARK: - Operations
+
+/**
+ * Create a clone of this Vector
+ */
+- (Vector3f *)clone;
+
 @end
 
-//    Mark: Vector 4 class
+// MARK: - Vector3i
+
+/**
+ * Contains a 3D Vector with integer components
+ */
+@interface Vector3i : NSObject
+
+// MARK: - Properties
+
+/**
+ * The X Coordinate of the Vector
+ */
+@property (nonatomic, assign) int x;
+
+/**
+ * The Y Coordinate of the Vector
+ */
+@property (nonatomic, assign) int y;
+
+/**
+ * The Z Coordinate of the Vector
+ */
+@property (nonatomic, assign) int z;
+
+// MARK: - Initialization
+
+/**
+ * Creates a new Vector Instance (0-Vector)
+ */
+- (instancetype)init;
+
+/**
+ * Creates new Vector Instance
+ * @param x X-Coordinate
+ * @param y Y-Coordinate
+ * @param z Z-Coordinate
+ */
+- (instancetype)initWithX:(int)x y:(int)y z:(int)z;
+
+// MARK: - Serialization
+
+/**
+ * Unserializes a BinaryStream into the Attributes of this Instance
+ * @param reader The Stream that contains the FileData
+ */
+- (void)unserialize:(BinaryReader *)reader;
+
+/**
+ * Serializes the Attributes stored in this Instance to the BinaryStream
+ * @param writer The Stream the Data should be stored to
+ * @remarks
+ * Be sure that the Position of the stream is Proper on
+ * return (i.e. must point to the first Byte after your actual File)
+ */
+- (void)serialize:(BinaryWriter *)writer;
+
+@end
+
+// MARK: - Vector4f
 
 /**
  * Contains a 4D Vector (when (un)serialized, it will be interpreted as SingleFloat!)
  */
-@interface Vector4 : Vector3
+@interface Vector4f : Vector3f
 
 // MARK: - Properties
 
@@ -327,7 +338,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Returns a zero vector
  */
-+ (Vector4 *)zero;
++ (Vector4f *)zero;
 
 // MARK: - Initialization
 
@@ -353,277 +364,129 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithX:(double)x y:(double)y z:(double)z w:(double)w;
 
-// MARK: - Operations
-
-/**
- * Create a clone of this Vector
- */
-- (Vector4 *)clone;
-
-/**
- * Vector addition
- * @param other The vector to add
- * @return The resulting vector
- */
-- (Vector4 *)add:(Vector4 *)other;
-
-/**
- * Vector subtraction
- * @param other The vector to subtract
- * @return The resulting vector
- */
-- (Vector4 *)subtract:(Vector4 *)other;
-
-/**
- * Scalar multiplication
- * @param scalar The scalar to multiply by
- * @return The resulting vector
- */
-- (Vector4 *)multiplyByScalar:(double)scalar;
-
-/**
- * Scalar division
- * @param scalar The scalar to divide by
- * @return The resulting vector
- */
-- (Vector4 *)divideByScalar:(double)scalar;
-
-/**
- * Dot product
- * @param other The other vector
- * @return The dot product result
- */
-- (double)dotProduct:(Vector4 *)other;
-
 // MARK: - Component Access
 
 /**
- * Get a component by index (0=x, 1=y, 2=z, 3=w)
- * @param index The component index
- * @return The component value
+ * Returns a Component of this Vector (0=x, 1=y, 2=z, 3=w)
+ * @param index Index of the component
+ * @returns the value stored in that Component
  */
 - (double)getComponent:(int)index;
 
 /**
- * Set a component by index (0=x, 1=y, 2=z, 3=w)
- * @param index The component index
- * @param value The new value
+ * Set a Component of this Vector (0=x, 1=y, 2=z, 3=w)
+ * @param index Index of the component
+ * @param val The new Value
  */
-- (void)setComponent:(int)index value:(double)value;
-
-// MARK: - Comparison
-
-/**
- * Check if two vectors are equal
- * @param other The other vector
- * @return YES if equal, NO otherwise
- */
-- (BOOL)isEqualToVector:(Vector4 *)other;
-
-@end
-
-
-@class BinaryReader, BinaryWriter;
-
-/**
- * Contains a 3D Vector with integer coordinates
- */
-@interface Vector3i : NSObject <NSCopying>
-
-// MARK: - Properties
-
-/**
- * The X Coordinate of the Vector
- */
-@property (nonatomic, assign) int32_t x;
-
-/**
- * The Y Coordinate of the Vector
- */
-@property (nonatomic, assign) int32_t y;
-
-/**
- * The Z Coordinate of the Vector
- */
-@property (nonatomic, assign) int32_t z;
-
-// MARK: - Class Methods
-
-/**
- * Returns a zero vector
- */
-+ (Vector3i *)zero;
-
-// MARK: - Initialization
-
-/**
- * Creates a new Vector Instance (0-Vector)
- */
-- (instancetype)init;
-
-/**
- * Creates new Vector Instance
- * @param x X-Coordinate
- * @param y Y-Coordinate
- * @param z Z-Coordinate
- */
-- (instancetype)initWithX:(int32_t)x y:(int32_t)y z:(int32_t)z;
-
-// MARK: - Serialization
-
-/**
- * Unserializes a BinaryStream into the Attributes of this Instance
- * @param reader The Stream that contains the FileData
- */
-- (void)unserialize:(BinaryReader *)reader;
-
-/**
- * Serializes the Attributes stored in this Instance to the BinaryStream
- * @param writer The Stream the Data should be stored to
- */
-- (void)serialize:(BinaryWriter *)writer;
+- (void)setComponent:(int)index value:(double)val;
 
 // MARK: - Operations
 
 /**
  * Create a clone of this Vector
  */
-- (Vector3i *)clone;
-
-/**
- * Vector addition
- * @param other The vector to add
- * @return The resulting vector
- */
-- (Vector3i *)add:(Vector3i *)other;
-
-/**
- * Vector subtraction
- * @param other The vector to subtract
- * @return The resulting vector
- */
-- (Vector3i *)subtract:(Vector3i *)other;
-
-// MARK: - Comparison
-
-/**
- * Check if two vectors are equal
- * @param other The other vector
- * @return YES if equal, NO otherwise
- */
-- (BOOL)isEqualToVector:(Vector3i *)other;
+- (Vector4f *)clone;
 
 @end
 
-@class Vector2, Vector3, Vector3i, Vector4;
-
-// MARK: - Vector2 Collection
-
-/**
- * Type-safe NSMutableArray for Vector2 Objects
- */
-@interface Vectors2 : NSMutableArray<Vector2 *>
-
-// MARK: - Typed Accessors
-- (Vector2 *)objectAtIndex:(NSUInteger)index;
-- (Vector2 *)objectAtUnsignedIndex:(uint32_t)index;
-- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(Vector2 *)object;
-- (void)replaceObjectAtUnsignedIndex:(uint32_t)index withObject:(Vector2 *)object;
-
-// MARK: - Collection Operations
-- (NSInteger)addVector:(Vector2 *)item;
-- (void)insertVector:(Vector2 *)item atIndex:(NSUInteger)index;
-- (void)removeVector:(Vector2 *)item;
-- (BOOL)containsVector:(Vector2 *)item;
-
-// MARK: - Properties
-@property (nonatomic, readonly) NSInteger length;
-
-// MARK: - Copying
-- (Vectors2 *)clone;
-
-@end
-
-// MARK: - Vector3 Collection
-
-/**
- * Type-safe NSMutableArray for Vector3 Objects
- */
-@interface Vectors3 : NSMutableArray<Vector3 *>
-
-// MARK: - Typed Accessors
-- (Vector3 *)objectAtIndex:(NSUInteger)index;
-- (Vector3 *)objectAtUnsignedIndex:(uint32_t)index;
-- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(Vector3 *)object;
-- (void)replaceObjectAtUnsignedIndex:(uint32_t)index withObject:(Vector3 *)object;
-
-// MARK: - Collection Operations
-- (NSInteger)addVector:(Vector3 *)item;
-- (void)insertVector:(Vector3 *)item atIndex:(NSUInteger)index;
-- (void)removeVector:(Vector3 *)item;
-- (BOOL)containsVector:(Vector3 *)item;
-
-// MARK: - Properties
-@property (nonatomic, readonly) NSInteger length;
-
-// MARK: - Copying
-- (Vectors3 *)clone;
-
-@end
-
-// MARK: - Vector3i Collection
+// MARK: - Container Classes
 
 /**
  * Type-safe NSMutableArray for Vector3i Objects
  */
 @interface Vectors3i : NSMutableArray<Vector3i *>
 
-// MARK: - Typed Accessors
+// MARK: - Indexed Access
 - (Vector3i *)objectAtIndex:(NSUInteger)index;
-- (Vector3i *)objectAtUnsignedIndex:(uint32_t)index;
+- (Vector3i *)objectAtUnsignedIntIndex:(uint32_t)index;
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(Vector3i *)object;
-- (void)replaceObjectAtUnsignedIndex:(uint32_t)index withObject:(Vector3i *)object;
+- (void)replaceObjectAtUnsignedIntIndex:(uint32_t)index withObject:(Vector3i *)object;
 
 // MARK: - Collection Operations
-- (NSInteger)addVector:(Vector3i *)item;
-- (void)insertVector:(Vector3i *)item atIndex:(NSUInteger)index;
-- (void)removeVector:(Vector3i *)item;
-- (BOOL)containsVector:(Vector3i *)item;
+- (NSInteger)addVector3i:(Vector3i *)item;
+- (void)insertVector3i:(Vector3i *)item atIndex:(NSUInteger)index;
+- (void)removeVector3i:(Vector3i *)item;
+- (BOOL)containsVector3i:(Vector3i *)item;
 
 // MARK: - Properties
 @property (nonatomic, readonly) NSInteger length;
 
-// MARK: - Copying
-- (Vectors3i *)clone;
+// MARK: - Cloning
+- (id)copy;
 
 @end
-
-// MARK: - Vector4 Collection
 
 /**
- * Type-safe NSMutableArray for Vector4 Objects
+ * Type-safe NSMutableArray for Vector3f Objects
  */
-@interface Vectors4 : NSMutableArray<Vector4 *>
+@interface Vectors3f : NSMutableArray<Vector3f *>
 
-// MARK: - Typed Accessors
-- (Vector4 *)objectAtIndex:(NSUInteger)index;
-- (Vector4 *)objectAtUnsignedIndex:(uint32_t)index;
-- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(Vector4 *)object;
-- (void)replaceObjectAtUnsignedIndex:(uint32_t)index withObject:(Vector4 *)object;
+// MARK: - Indexed Access
+- (Vector3f *)objectAtIndex:(NSUInteger)index;
+- (Vector3f *)objectAtUnsignedIntIndex:(uint32_t)index;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(Vector3f *)object;
+- (void)replaceObjectAtUnsignedIntIndex:(uint32_t)index withObject:(Vector3f *)object;
 
 // MARK: - Collection Operations
-- (NSInteger)addVector:(Vector4 *)item;
-- (void)insertVector:(Vector4 *)item atIndex:(NSUInteger)index;
-- (void)removeVector:(Vector4 *)item;
-- (BOOL)containsVector:(Vector4 *)item;
+- (NSInteger)addVector3f:(Vector3f *)item;
+- (void)insertVector3f:(Vector3f *)item atIndex:(NSUInteger)index;
+- (void)removeVector3f:(Vector3f *)item;
+- (BOOL)containsVector3f:(Vector3f *)item;
 
 // MARK: - Properties
 @property (nonatomic, readonly) NSInteger length;
 
-// MARK: - Copying
-- (Vectors4 *)clone;
+// MARK: - Cloning
+- (id)copy;
 
 @end
 
-NS_ASSUME_NONNULL_END
+/**
+ * Type-safe NSMutableArray for Vector2f Objects
+ */
+@interface Vectors2f : NSMutableArray<Vector2f *>
 
+// MARK: - Indexed Access
+- (Vector2f *)objectAtIndex:(NSUInteger)index;
+- (Vector2f *)objectAtUnsignedIntIndex:(uint32_t)index;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(Vector2f *)object;
+- (void)replaceObjectAtUnsignedIntIndex:(uint32_t)index withObject:(Vector2f *)object;
+
+// MARK: - Collection Operations
+- (NSInteger)addVector2f:(Vector2f *)item;
+- (void)insertVector2f:(Vector2f *)item atIndex:(NSUInteger)index;
+- (void)removeVector2f:(Vector2f *)item;
+- (BOOL)containsVector2f:(Vector2f *)item;
+
+// MARK: - Properties
+@property (nonatomic, readonly) NSInteger length;
+
+// MARK: - Cloning
+- (id)copy;
+
+@end
+
+/**
+ * Type-safe NSMutableArray for Vector4f Objects
+ */
+@interface Vectors4f : NSMutableArray<Vector4f *>
+
+// MARK: - Indexed Access
+- (Vector4f *)objectAtIndex:(NSUInteger)index;
+- (Vector4f *)objectAtUnsignedIntIndex:(uint32_t)index;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(Vector4f *)object;
+- (void)replaceObjectAtUnsignedIntIndex:(uint32_t)index withObject:(Vector4f *)object;
+
+// MARK: - Collection Operations
+- (NSInteger)addVector4f:(Vector4f *)item;
+- (void)insertVector4f:(Vector4f *)item atIndex:(NSUInteger)index;
+- (void)removeVector4f:(Vector4f *)item;
+- (BOOL)containsVector4f:(Vector4f *)item;
+
+// MARK: - Properties
+@property (nonatomic, readonly) NSInteger length;
+
+// MARK: - Cloning
+- (id)copy;
+
+@end

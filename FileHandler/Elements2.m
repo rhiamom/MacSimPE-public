@@ -30,39 +30,45 @@
 #import "IFileWrapperSaveExtension.h"
 #import "CpfItem.h"
 #import "CpfWrapper.h"
-#import "Nref.h"
+#import "NrefWrapper.h"
 #import "Helper.h"
 #import "Localization.h"
-#import "DataTypes.h"
+#import "MetaData.h"
 #import "ExceptionForm.h"
 #import <AppKit/AppKit.h>
 
 @implementation Elements2
 
-@synthesize wrapper, fkt, cpfPanel, nrefPanel;
+@synthesize wrapper, fkt, cpfPanel, nrefPanel, cpfNameEditingFlag, cpfAutoChangeInProgress, nrefTextChangeEnabled;
 
 - (instancetype)init {
     self = [super initWithWindowNibName:@"Elements2"];
+    if (self) {
+        self.cpfNameEditingFlag = NO;
+        self.cpfAutoChangeInProgress = NO;
+        self.nrefTextChangeEnabled = YES;
+    }
     return self;
 }
 
 - (void)windowDidLoad {
     [super windowDidLoad];
+    // Additional window setup can be done here
 }
 
 #pragma mark - CPF Actions
 
 - (IBAction)cpfItemSelect:(id)sender {
-    if ([rtbcpfname tag] != 0) return;
+    if (self.cpfNameEditingFlag) return;
     [llcpfchange setEnabled:NO];
     if ([lbcpf selectedRow] < 0) return;
     [llcpfchange setEnabled:YES];
     
-    [rtbcpfname setTag:1];
+    self.cpfNameEditingFlag = YES;
     @try {
         CpfItem *item = [lbcpf.dataSource tableView:lbcpf
-                            objectValueForTableColumn:nil
-                                                  row:[lbcpf selectedRow]];
+                          objectValueForTableColumn:nil
+                                                row:[lbcpf selectedRow]];
         [rtbcpfname setString:[item name]];
         
         // Set combo box selection
@@ -84,12 +90,12 @@
             }
             case DataTypesInteger: {
                 [rtbcpf setString:[NSString stringWithFormat:@"0x%@",
-                                  [Helper hexString:[item integerValue]]]];
+                                   [Helper hexString:[item integerValue]]]];
                 break;
             }
             case DataTypesUInteger: {
                 [rtbcpf setString:[NSString stringWithFormat:@"0x%@",
-                                  [Helper hexString:[item uIntegerValue]]]];
+                                   [Helper hexStringUInt:[item uintegerValue]]]];
                 break;
             }
             case DataTypesBoolean: {
@@ -103,9 +109,10 @@
         }
     } @catch (NSException *ex) {
         [ExceptionForm showError:[[Localization shared] getString:@"errconvert"]
+                     withDetails:[ex description]
                        exception:ex];
     } @finally {
-        [rtbcpfname setTag:0];
+        self.cpfNameEditingFlag = NO;
     }
 }
 
@@ -119,8 +126,8 @@
         item = [[CpfItem alloc] init];
     } else {
         item = [lbcpf.dataSource tableView:lbcpf
-                    objectValueForTableColumn:nil
-                                          row:[lbcpf selectedRow]];
+                 objectValueForTableColumn:nil
+                                       row:[lbcpf selectedRow]];
     }
     
     [item setName:[rtbcpfname string]];
@@ -145,15 +152,16 @@
                 NSScanner *scanner = [NSScanner scannerWithString:hexString];
                 unsigned int value;
                 [scanner scanHexInt:&value];
-                [item setUIntegerValue:value];
+                [item setUintegerValue:value];
             } @catch (NSException *ex) {
-                [item setUIntegerValue:0];
+                [item setUintegerValue:0];
             }
             break;
         }
         case DataTypesSingle: {
             @try {
-                [item setSingleValue:[[rtbcpf string] floatValue]];
+                float value = [[rtbcpf string] floatValue];
+                [item setSingleValue:value];
             } @catch (NSException *ex) {
                 [item setSingleValue:0.0f];
             }
@@ -161,8 +169,11 @@
         }
         case DataTypesBoolean: {
             @try {
-                NSInteger value = [[rtbcpf string] integerValue];
-                [item setBooleanValue:(value != 0)];
+                NSString *boolString = [[rtbcpf string] lowercaseString];
+                BOOL value = [boolString isEqualToString:@"1"] ||
+                [boolString isEqualToString:@"true"] ||
+                [boolString isEqualToString:@"yes"];
+                [item setBooleanValue:value];
             } @catch (NSException *ex) {
                 [item setBooleanValue:NO];
             }
@@ -175,55 +186,53 @@
     }
     
     if ([lbcpf selectedRow] < 0) {
-        [lbcpf.dataSource addObject:item];
-        [item release];
-    } else {
-        [lbcpf.dataSource replaceObjectAtIndex:[lbcpf selectedRow] withObject:item];
+        // Add new item to data source
+        Cpf *cpf = (Cpf *)wrapper;
+        [cpf addItem:item allowDuplicate:NO];
+        [cpf setChanged:YES];
     }
-    [lbcpf reloadData];
     
-    if (wrapper != nil) {
-        [wrapper setChanged:YES];
-    }
-}
-
-- (IBAction)addCpf:(id)sender {
-    [lbcpf deselectAll:nil];
-    [self cpfChange:nil];
-    [lbcpf selectRowIndexes:[NSIndexSet indexSetWithIndex:[lbcpf numberOfRows] - 1]
-       byExtendingSelection:NO];
     [self cpfUpdate];
 }
 
-- (void)cpfUpdate {
-    Cpf *wrp = (Cpf *)wrapper;
+- (IBAction)addCpf:(id)sender {
+    CpfItem *item = [[CpfItem alloc] init];
+    [item setName:@"New Item"];
+    [item setDatatype:DataTypesString];
+    [item setStringValue:@""];
     
-    NSMutableArray *items = [NSMutableArray array];
-    NSInteger rowCount = [lbcpf numberOfRows];
-    for (NSInteger i = 0; i < rowCount; i++) {
-        CpfItem *item = [lbcpf.dataSource tableView:lbcpf
-                            objectValueForTableColumn:nil
-                                                  row:i];
-        [items addObject:item];
-    }
-    [wrp setItems:items];
+    Cpf *cpf = (Cpf *)wrapper;
+    [cpf addItem:item allowDuplicate:YES];
+    [cpf setChanged:YES];
+    
+    [self cpfUpdate];
+    
+    // Select the new item
+    NSInteger newIndex = [[cpf items] count] - 1;
+    [lbcpf selectRowIndexes:[NSIndexSet indexSetWithIndex:newIndex] byExtendingSelection:NO];
+    [self cpfItemSelect:nil];
 }
 
 - (IBAction)cpfCommit:(id)sender {
     @try {
-        if ([lbcpf selectedRow] >= 0) {
-            [self cpfChange:nil];
-        }
-        [self cpfUpdate];
-        Cpf *wrp = (Cpf *)wrapper;
-        
-        [wrp synchronizeUserData];
+        [wrapper synchronizeUserData];
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText:[[LocalizationManager sharedManager] getString:@"commited"]];
+        [alert setMessageText:[[Localization shared] getString:@"commited"]];
         [alert runModal];
-        [alert release];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:[[Localization shared] getString:@"errwritingfile"]
+        [ExceptionForm showError:[[Localization shared] getString:@"errwritingfile"]
+                     withDetails:[ex description]
+                       exception:ex];
+    }
+}
+
+- (IBAction)btprevClick:(id)sender {
+    @try {
+        Cpf *cpf = (Cpf *)wrapper;
+        self.fkt(cpf, [cpf package]);
+    } @catch (NSException *ex) {
+        [ExceptionForm showError:@""
+                     withDetails:[ex description]
                        exception:ex];
     }
 }
@@ -232,24 +241,16 @@
     if ([lbcpf selectedRow] < 0) return;
     
     CpfItem *item = [lbcpf.dataSource tableView:lbcpf
-                        objectValueForTableColumn:nil
-                                              row:[lbcpf selectedRow]];
-    [lbcpf.dataSource removeObject:item];
-    [lbcpf reloadData];
+                      objectValueForTableColumn:nil
+                                            row:[lbcpf selectedRow]];
+    
+    Cpf *cpf = (Cpf *)wrapper;
+    NSMutableArray *items = [NSMutableArray arrayWithArray:[cpf items]];
+    [items removeObject:item];
+    [cpf setItems:items];
+    [cpf setChanged:YES];
+    
     [self cpfUpdate];
-    if (wrapper != nil) {
-        [wrapper setChanged:YES];
-    }
-}
-
-- (IBAction)btprevClick:(id)sender {
-    if (self.fkt == nil) return;
-    @try {
-        Cpf *cpf = (Cpf *)wrapper;
-        self.fkt(cpf, [cpf package]);
-    } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
-    }
 }
 
 - (IBAction)cpfAutoChange:(id)sender {
@@ -257,14 +258,14 @@
 }
 
 - (void)cpfAutoChange {
-    if ([rtbcpfname tag] != 0) return;
+    if (self.cpfAutoChangeInProgress) return;
     if ([lbcpf selectedRow] < 0) return;
     
-    [rtbcpfname setTag:1];
+    self.cpfAutoChangeInProgress = YES;
     @try {
         [self cpfChange:nil];
     } @finally {
-        [rtbcpfname setTag:0];
+        self.cpfAutoChangeInProgress = NO;
     }
 }
 
@@ -272,18 +273,20 @@
 
 - (IBAction)tbnrefTextChanged:(id)sender {
     @try {
-        Nref *wrp = (Nref *)wrapper;
+        NrefWrapper *wrp = (NrefWrapper *)wrapper;
         [tbnrefhash setStringValue:[NSString stringWithFormat:@"0x%@",
-                                   [Helper hexString:[wrp group]]]];
+                                    [Helper hexStringUInt:[wrp group]]]];
         
-        if ([tbNref tag] == nil) { // allow event execution
+        if (self.nrefTextChangeEnabled) { // allow event execution
             [wrp setFileName:[tbNref stringValue]];
             [wrp setChanged:YES];
         }
         [tbnrefhash setStringValue:[NSString stringWithFormat:@"0x%@",
-                                   [Helper hexString:[wrp group]]]];
+                                    [Helper hexStringUInt:[wrp group]]]];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:@"" exception:ex];
+        [ExceptionForm showError:@""
+                     withDetails:[ex description]
+                       exception:ex];
     }
 }
 
@@ -291,13 +294,24 @@
     @try {
         [wrapper synchronizeUserData];
         NSAlert *alert = [[NSAlert alloc] init];
-        [alert setMessageText:[[LocalizationManager sharedManager] getString:@"commited"]];
+        [alert setMessageText:[[Localization shared] getString:@"commited"]];
         [alert runModal];
-        [alert release];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:[[LocalizationManager sharedManager] getString:@"errwritingfile"]
+        [ExceptionForm showError:[[Localization shared] getString:@"errwritingfile"]
+                     withDetails:[ex description]
                        exception:ex];
     }
+}
+
+#pragma mark - Helper Methods
+
+- (void)cpfUpdate {
+    // Trigger table view to reload data
+    [lbcpf reloadData];
+    
+    // Update UI state
+    [llcpfchange setEnabled:[lbcpf selectedRow] >= 0];
+    [llcpfadd setEnabled:YES];
 }
 
 @end

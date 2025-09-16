@@ -41,19 +41,25 @@
 #import "cImageData.h"
 #import "LifoWrapper.h"
 #import "cLevelInfo.h"
-#import "ResourceNode.h"
-#import "GeometryNode.h"
-#import "DirectionalLight.h"
+#import "cResourceNode.h"
+#import "cGeometryNode.h"
+#import "cDirectionalLight.h"
+#import "cObjectGraphNode.h"
 #import "StrWrapper.h"
-#import "StrToken.h"
+#import "StrItem.h"
 #import "NrefWrapper.h"
 #import "ExtObjdWrapper.h"
 #import "MmatWrapper.h"
 #import "CpfWrapper.h"
 #import "CpfItem.h"
-#import "RefFile.h"
-#import "ShapeRefNode.h"
+#import "PackedFileWrapper.h"
+#import "cShapeRefNode.h"
 #import "PackedFileDescriptor.h"
+#import "IPackageFile.h"
+#import "cSGResource.h"
+#import "AbstractRcolBlock.h"
+#import "cLightT.h"
+#import "PackedFileDescriptors.h"
 
 
 @interface FixObject ()
@@ -154,94 +160,82 @@ static NSMutableArray *_staticTypes = nil;
 }
 
 - (void)fixResource:(NSMutableDictionary *)map rcol:(Rcol *)rcol {
-    switch (rcol.fileDescriptor.type) {
-        case [MetaData TXMT]: {
-            MaterialDefinition *matd = (MaterialDefinition *)rcol.blocks[0];
-            [self fixTxtrRef:@"stdMatBaseTextureName" matd:matd map:map rcol:rcol];
-            [self fixTxtrRef:@"stdMatNormalMapTextureName" matd:matd map:map rcol:rcol];
-            break;
-        }
-            
-        case [MetaData SHPE]: {
-            Shape *shp = (Shape *)rcol.blocks[0];
-            for (ShapeItem *item in shp.items) {
-                NSString *newRef = map[[Hashes stripHashFromName:[item.fileName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].lowercaseString]];
-                if (newRef != nil) {
-                    item.fileName = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], newRef];
-                }
+    uint32_t fileType = rcol.fileDescriptor.type;
+    
+    if (fileType == [MetaData TXMT]) {
+        MaterialDefinition *matd = (MaterialDefinition *)rcol.blocks[0];
+        [self fixTxtrRef:@"stdMatBaseTextureName" matd:matd map:map rcol:rcol];
+        [self fixTxtrRef:@"stdMatNormalMapTextureName" matd:matd map:map rcol:rcol];
+        
+    } else if (fileType == [MetaData SHPE]) {
+        Shape *shp = (Shape *)rcol.blocks[0];
+        for (ShapeItem *item in shp.items) {
+            NSString *newRef = map[[Hashes stripHashFromName:[item.fileName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].lowercaseString]];
+            if (newRef != nil) {
+                item.fileName = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], newRef];
             }
-            
-            for (ShapePart *part in shp.parts) {
-                NSString *newRef = map[[NSString stringWithFormat:@"%@_txmt", [Hashes stripHashFromName:[part.fileName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].lowercaseString]]];
-                if (newRef != nil) {
-                    part.fileName = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], [newRef substringToIndex:newRef.length - 5]];
-                }
-            }
-            break;
         }
-            
-        case [MetaData TXTR]: {
-            ImageData *imageData = (ImageData *)rcol.blocks[0];
-            for (MipMapBlock *mmb in imageData.mipMapBlocks) {
-                for (MipMap *mm in mmb.mipMaps) {
-                    if (mm.texture == nil) {
-                        NSArray<id<IPackedFileDescriptor>> *pfd = [self.package findFile:mm.lifoFile type:0xED534136];
-                        if (pfd.count > 0) {
-                            Lifo *lifo = [[Lifo alloc] initWithProvider:nil fast:NO];
-                            [lifo processData:pfd[0] package:self.package];
-                            LevelInfo *li = (LevelInfo *)lifo.blocks[0];
-                            
-                            mm.texture = nil;
-                            mm.data = li.data;
-                            
-                            pfd[0].markForDelete = YES;
-                        } else {
-                            NSString *newRef = [Hashes stripHashFromName:map[[mm.lifoFile stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].lowercaseString]];
-                            if (newRef != nil) {
-                                mm.lifoFile = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], newRef];
-                            }
+        
+        for (ShapePart *part in shp.parts) {
+            NSString *newRef = map[[NSString stringWithFormat:@"%@_txmt", [Hashes stripHashFromName:[part.fileName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].lowercaseString]]];
+            if (newRef != nil) {
+                part.fileName = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], [newRef substringToIndex:newRef.length - 5]];
+            }
+        }
+        
+    } else if (fileType == [MetaData TXTR]) {
+        ImageData *imageData = (ImageData *)rcol.blocks[0];
+        for (MipMapBlock *mmb in imageData.mipMapBlocks) {
+            for (MipMap *mm in mmb.mipMaps) {
+                if (mm.texture == nil) {
+                    NSArray<id<IPackedFileDescriptor>> *pfd = [self.package findFileByName:mm.lifoFile type:0xED534136];
+                    if (pfd.count > 0) {
+                        Lifo *lifo = [[Lifo alloc] initWithProvider:nil fast:NO];
+                        [lifo processData:pfd[0] package:self.package];
+                        LevelInfo *li = (LevelInfo *)lifo.blocks[0];
+                        
+                        mm.texture = nil;
+                        mm.data = li.data;
+                        
+                        pfd[0].markForDelete = YES;
+                    } else {
+                        NSString *newRef = [Hashes stripHashFromName:map[[mm.lifoFile stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].lowercaseString]];
+                        if (newRef != nil) {
+                            mm.lifoFile = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], newRef];
                         }
                     }
                 }
             }
-            break;
         }
-            
-        case [MetaData CRES]: {
-            ResourceNode *rn = (ResourceNode *)rcol.blocks[0];
-            NSString *name = [Hashes stripHashFromName:rcol.fileName];
-            
-            if (self.fixVersion == FixVersionUniversityReady2) {
-                rn.graphNode.fileName = name;
-            } else if (self.fixVersion == FixVersionUniversityReady) {
-                rn.graphNode.fileName = [NSString stringWithFormat:@"##0x1c050000!%@", name];
-            }
-            break;
+        
+    } else if (fileType == [MetaData CRES]) {
+        ResourceNode *rn = (ResourceNode *)rcol.blocks[0];
+        NSString *name = [Hashes stripHashFromName:rcol.fileName];
+        
+        if (self.fixVersion == FixVersionUniversityReady2) {
+            rn.graphNode.fileName = name;
+        } else if (self.fixVersion == FixVersionUniversityReady) {
+            rn.graphNode.fileName = [NSString stringWithFormat:@"##0x1c050000!%@", name];
         }
-            
-        case [MetaData GMND]: {
-            GeometryNode *gn = (GeometryNode *)rcol.blocks[0];
-            NSString *name = [Hashes stripHashFromName:rcol.fileName];
-            
-            if (self.fixVersion == FixVersionUniversityReady2) {
-                gn.objectGraphNode.fileName = name;
-            } else if (self.fixVersion == FixVersionUniversityReady) {
-                gn.objectGraphNode.fileName = [NSString stringWithFormat:@"##0x1c050000!%@", name];
-            }
-            break;
+        
+    } else if (fileType == [MetaData GMND]) {
+        GeometryNode *gn = (GeometryNode *)rcol.blocks[0];
+        NSString *name = [Hashes stripHashFromName:rcol.fileName];
+        
+        if (self.fixVersion == FixVersionUniversityReady2) {
+            gn.objectGraphNode.fileName = name;
+        } else if (self.fixVersion == FixVersionUniversityReady) {
+            gn.objectGraphNode.fileName = [NSString stringWithFormat:@"##0x1c050000!%@", name];
         }
-            
-        case [MetaData LDIR]:
-        case [MetaData LAMB]:
-        case [MetaData LPNT]:
-        case [MetaData LSPT]: {
-            DirectionalLight *dl = (DirectionalLight *)rcol.blocks[0];
-            dl.lightT.nameResource.fileName = dl.nameResource.fileName;
-            break;
-        }
+        
+    } else if (fileType == [MetaData LDIR] ||
+               fileType == [MetaData LAMB] ||
+               fileType == [MetaData LPNT] ||
+               fileType == [MetaData LSPT]) {
+        DirectionalLight *dl = (DirectionalLight *)rcol.blocks[0];
+        dl.lightT.nameResource.fileName = dl.nameResource.fileName;
     }
 }
-
 - (void)fixNames:(NSMutableDictionary *)map {
     for (NSNumber *typeNum in [MetaData rcolList]) {
         uint32_t type = typeNum.unsignedIntValue;
@@ -266,7 +260,7 @@ static NSMutableArray *_staticTypes = nil;
     NSMutableArray *mmats = [[NSMutableArray alloc] init];
     
     for (id<IPackedFileDescriptor> pfd in mmatPfds) {
-        CpfWrapper *mmat = [[CpfWrapper alloc] init];
+        Cpf *mmat = [[Cpf alloc] init];
         [mmat processData:pfd package:self.package];
         
         NSString *content = [Scenegraph mmatContent:mmat];
@@ -539,7 +533,7 @@ static NSMutableArray *_staticTypes = nil;
     BOOL updateRugs = NO;
     
     for (id<IPackedFileDescriptor> pfd in pfds) {
-        ExtObjdWrapper *objd = [[ExtObjdWrapper alloc] init];
+        ExtObjd *objd = [[ExtObjd alloc] init];
         [objd processData:pfd package:self.package];
         
         if (objd.functionSubSort == ObjFunctionSubSortDecorativeRugs) {
@@ -550,7 +544,7 @@ static NSMutableArray *_staticTypes = nil;
     
     if (updateRugs) {
         for (id<IPackedFileDescriptor> pfd in pfds) {
-            ExtObjdWrapper *objd = [[ExtObjdWrapper alloc] init];
+            ExtObjd *objd = [[ExtObjd alloc] init];
             [objd processData:pfd package:self.package];
             
             if (objd.type == ObjectTypesTiles) {
@@ -623,7 +617,7 @@ static NSMutableArray *_staticTypes = nil;
     }
 }
 
-- (void)fixCpfProperties:(CpfWrapper *)cpf
+- (void)fixCpfProperties:(Cpf *)cpf
               properties:(NSArray<NSString *> *)props
                  nameMap:(NSMutableDictionary *)nameMap
                   prefix:(NSString *)prefix
@@ -643,7 +637,7 @@ static NSMutableArray *_staticTypes = nil;
     }
 }
 
-- (void)fixCpfPropertiesWithValue:(CpfWrapper *)cpf
+- (void)fixCpfPropertiesWithValue:(Cpf *)cpf
                        properties:(NSArray<NSString *> *)props
                             value:(uint32_t)value {
     for (NSString *p in props) {
@@ -654,7 +648,7 @@ static NSMutableArray *_staticTypes = nil;
     }
 }
 
-- (CpfItem *)fixCpfProperty:(CpfWrapper *)cpf
+- (CpfItem *)fixCpfProperty:(Cpf *)cpf
                    property:(NSString *)prop
                       value:(uint32_t)value {
     CpfItem *item = [cpf getItem:prop];
@@ -729,7 +723,7 @@ static NSMutableArray *_staticTypes = nil;
 - (void)fixSkin:(NSMutableDictionary *)nameMap
          refMap:(NSMutableDictionary *)refMap
       groupHash:(NSString *)groupHash {
-    CpfWrapper *cpf = [[CpfWrapper alloc] init];
+    Cpf *cpf = [[Cpf alloc] init];
     
     uint32_t types[] = {[MetaData XOBJ], [MetaData XFLR], [MetaData XFNC], [MetaData XROF], [MetaData XNGB]};
     NSArray<NSString *> *txtrProps = @[@"textureedges", @"texturetop", @"texturetopbump", @"texturetrim", @"textureunder", @"texturetname"];

@@ -182,7 +182,7 @@
  * @param type The type to filter by
  * @returns Array of matching Files
  */
-- (NSArray<id<IPackedFileDescriptor>> *)findFile:(NSString *)filename type:(uint32_t)type;
+- (NSArray<id<IPackedFileDescriptor>> *)findFileByName:(NSString *)filename type:(uint32_t)type;
 
 /**
  * Returns a List of all Files matching the passed type

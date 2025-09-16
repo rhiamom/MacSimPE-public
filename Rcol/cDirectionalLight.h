@@ -1,8 +1,8 @@
 //
-//  RenameForm.h
+//  cDirectionalLight.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/11/25.
+//  Created by Catherine Gramze on 9/15/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,45 +25,50 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
+#import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
-#import "FixObject.h"
+#import "AbstractRcolBlock.h"
 
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
+@class StandardLightBase;
+@class LightT;
+@class ReferentNode;
+@class ObjectGraphNode;
+@class BinaryReader;
+@class BinaryWriter;
+@class Rcol;
 
-NS_ASSUME_NONNULL_BEGIN
+/**
+ * Zusammenfassung für StandardLightBase.
+ */
+@interface DirectionalLight : AbstractRcolBlock
 
-@interface RenameForm : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
+// MARK: - Properties
 
-@property (nonatomic, weak) IBOutlet NSTableView *tableView;
-@property (nonatomic, weak) IBOutlet NSTextField *modelNameField;
-@property (nonatomic, weak) IBOutlet NSButton *updateButton;
-@property (nonatomic, weak) IBOutlet NSButton *okButton;
-@property (nonatomic, weak) IBOutlet NSButton *universityV2Checkbox;
+@property (nonatomic, strong) StandardLightBase *standardLightBase;
+@property (nonatomic, strong) LightT *lightT;
+@property (nonatomic, strong) ReferentNode *referentNode;
+@property (nonatomic, strong) ObjectGraphNode *objectGraphNode;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, assign) float val1;
+@property (nonatomic, assign) float val2;
+@property (nonatomic, assign) float red;
+@property (nonatomic, assign) float green;
+@property (nonatomic, assign) float blue;
 
-@property (nonatomic, strong) id<IPackageFile> package;
-@property (nonatomic, strong) NSMutableArray<NSMutableDictionary *> *items;
-@property (nonatomic, assign) BOOL dialogResult;
+// MARK: - Initialization
 
-+ (NSString *)findMainOldName:(id<IPackageFile>)package;
-+ (NSString *)replaceOldUnique:(NSString *)name
-                     newUnique:(NSString *)newUnique
-                     extension:(BOOL)extension;
-+ (NSMutableDictionary *)getNames:(BOOL)automatic
-                          package:(id<IPackageFile>)package
-                        tableView:(nullable NSTableView *)tableView
-                         userName:(NSString *)userName;
-+ (NSString *)getUniqueName;
-+ (NSString *)getUniqueNameOrNull:(BOOL)returnNull;
-+ (NSMutableDictionary *)execute:(id<IPackageFile>)package
-                      uniqueName:(BOOL)uniqueName
-                         version:(FixVersion *)version;
+- (instancetype)initWithParent:(Rcol *)parent;
 
-- (IBAction)updateNames:(id)sender;
-- (IBAction)okClicked:(id)sender;
+// MARK: - IRcolBlock Protocol Methods
+
+- (void)unserialize:(BinaryReader *)reader;
+- (void)serialize:(BinaryWriter *)writer;
+- (void)dispose;
+
+// MARK: - UI Management
+
+- (void)extendTabView:(NSTabView *)tabView;
 
 @end
-
-NS_ASSUME_NONNULL_END

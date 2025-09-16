@@ -1,8 +1,8 @@
 //
-//  RenameForm.h
+//  GeometryException.h
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/11/25.
+//  Created by Catherine Gramze on 9/12/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -27,43 +27,30 @@
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************/
 
-#import <Cocoa/Cocoa.h>
-#import "FixObject.h"
+#import <Foundation/Foundation.h>
 
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
+// MARK: - GeometryException
 
-NS_ASSUME_NONNULL_BEGIN
+/**
+ * Exception thrown by the Geometry Classes
+ */
+@interface GeometryException : NSException
 
-@interface RenameForm : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
+// MARK: - Class Methods
 
-@property (nonatomic, weak) IBOutlet NSTableView *tableView;
-@property (nonatomic, weak) IBOutlet NSTextField *modelNameField;
-@property (nonatomic, weak) IBOutlet NSButton *updateButton;
-@property (nonatomic, weak) IBOutlet NSButton *okButton;
-@property (nonatomic, weak) IBOutlet NSButton *universityV2Checkbox;
+/**
+ * Create a new Instance with a message
+ * @param message The Message that should be displayed
+ * @returns A new GeometryException instance
+ */
++ (instancetype)exceptionWithMessage:(NSString *)message;
 
-@property (nonatomic, strong) id<IPackageFile> package;
-@property (nonatomic, strong) NSMutableArray<NSMutableDictionary *> *items;
-@property (nonatomic, assign) BOOL dialogResult;
+// MARK: - Initialization
 
-+ (NSString *)findMainOldName:(id<IPackageFile>)package;
-+ (NSString *)replaceOldUnique:(NSString *)name
-                     newUnique:(NSString *)newUnique
-                     extension:(BOOL)extension;
-+ (NSMutableDictionary *)getNames:(BOOL)automatic
-                          package:(id<IPackageFile>)package
-                        tableView:(nullable NSTableView *)tableView
-                         userName:(NSString *)userName;
-+ (NSString *)getUniqueName;
-+ (NSString *)getUniqueNameOrNull:(BOOL)returnNull;
-+ (NSMutableDictionary *)execute:(id<IPackageFile>)package
-                      uniqueName:(BOOL)uniqueName
-                         version:(FixVersion *)version;
-
-- (IBAction)updateNames:(id)sender;
-- (IBAction)okClicked:(id)sender;
+/**
+ * Create a new Instance
+ * @param message The Message that should be displayed
+ */
+- (instancetype)initWithMessage:(NSString *)message;
 
 @end
-
-NS_ASSUME_NONNULL_END

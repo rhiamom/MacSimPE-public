@@ -1,8 +1,8 @@
 //
-//  RenameForm.h
+//  cCompositionTreeNode.m
 //  MacSimpe
 //
-//  Created by Catherine Gramze on 9/11/25.
+//  Created by Catherine Gramze on 9/12/25.
 //
 // ***************************************************************************
 // *   Copyright (C) 2005 by Ambertation                                     *
@@ -25,45 +25,46 @@
 // *   along with this program; if not, write to the                         *
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-// ***************************************************************************/
+// ***************************************************************************
 
-#import <Cocoa/Cocoa.h>
-#import "FixObject.h"
+#import "cCompositionTreeNode.h"
+#import "RcolWrapper.h"
+#import "BinaryReader.h"
+#import "BinaryWriter.h"
 
-@protocol IPackageFile;
-@protocol IPackedFileDescriptor;
+@implementation CompositionTreeNode
 
-NS_ASSUME_NONNULL_BEGIN
+// MARK: - Initialization
 
-@interface RenameForm : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
+- (instancetype)initWithParent:(Rcol *)parent {
+    self = [super initWithParent:parent];
+    if (self) {
+        self.version = 0xb;
+    }
+    return self;
+}
 
-@property (nonatomic, weak) IBOutlet NSTableView *tableView;
-@property (nonatomic, weak) IBOutlet NSTextField *modelNameField;
-@property (nonatomic, weak) IBOutlet NSButton *updateButton;
-@property (nonatomic, weak) IBOutlet NSButton *okButton;
-@property (nonatomic, weak) IBOutlet NSButton *universityV2Checkbox;
+// MARK: - IRcolBlock Protocol Methods
 
-@property (nonatomic, strong) id<IPackageFile> package;
-@property (nonatomic, strong) NSMutableArray<NSMutableDictionary *> *items;
-@property (nonatomic, assign) BOOL dialogResult;
+- (void)unserialize:(BinaryReader *)reader {
+    self.version = [reader readUInt32];
+}
 
-+ (NSString *)findMainOldName:(id<IPackageFile>)package;
-+ (NSString *)replaceOldUnique:(NSString *)name
-                     newUnique:(NSString *)newUnique
-                     extension:(BOOL)extension;
-+ (NSMutableDictionary *)getNames:(BOOL)automatic
-                          package:(id<IPackageFile>)package
-                        tableView:(nullable NSTableView *)tableView
-                         userName:(NSString *)userName;
-+ (NSString *)getUniqueName;
-+ (NSString *)getUniqueNameOrNull:(BOOL)returnNull;
-+ (NSMutableDictionary *)execute:(id<IPackageFile>)package
-                      uniqueName:(BOOL)uniqueName
-                         version:(FixVersion *)version;
+- (void)serialize:(BinaryWriter *)writer {
+    [writer writeUInt32:self.version];
+}
 
-- (IBAction)updateNames:(id)sender;
-- (IBAction)okClicked:(id)sender;
+// MARK: - Template Methods
+
+- (void)initTabPage {
+    // In the original C# version, this set up Windows Forms controls
+    // For macOS with AppKit, tab page setup will be handled differently
+    // through view controllers and bindings
+}
+
+- (void)dispose {
+    // Clean up any resources if needed
+    [super dispose];
+}
 
 @end
-
-NS_ASSUME_NONNULL_END
