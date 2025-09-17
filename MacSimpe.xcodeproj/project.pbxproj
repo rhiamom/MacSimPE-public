@@ -106,6 +106,12 @@
 		B651C6962E74A467001B3B03 /* GeometryException.m in Sources */ = {isa = PBXBuildFile; fileRef = B651C6952E74A467001B3B03 /* GeometryException.m */; };
 		B651C6992E74A5B7001B3B03 /* cGeometryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B651C6982E74A5B7001B3B03 /* cGeometryNode.m */; };
 		B65E3A6E2E689C0A00994D92 /* GenericTree.m in Sources */ = {isa = PBXBuildFile; fileRef = B65E3A6D2E689C0A00994D92 /* GenericTree.m */; };
+		B6687EA62E7B0DCB00BFA0B3 /* NrefUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6687EA52E7B0DCB00BFA0B3 /* NrefUI.m */; };
+		B6687EA92E7B101700BFA0B3 /* ObjdWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6687EA82E7B101700BFA0B3 /* ObjdWrapper.m */; };
+		B6687EAC2E7B17B800BFA0B3 /* SRelWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6687EAB2E7B17B800BFA0B3 /* SRelWrapper.m */; };
+		B6687EAF2E7B1A0900BFA0B3 /* SRelUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6687EAE2E7B1A0900BFA0B3 /* SRelUI.m */; };
+		B6687EB22E7B1B4600BFA0B3 /* LocalizedEnums.m in Sources */ = {isa = PBXBuildFile; fileRef = B6687EB12E7B1B4600BFA0B3 /* LocalizedEnums.m */; };
+		B6687EB52E7B1CEC00BFA0B3 /* Boolset.m in Sources */ = {isa = PBXBuildFile; fileRef = B6687EB42E7B1CEC00BFA0B3 /* Boolset.m */; };
 		B66C34642E3BC2D900B4B9B8 /* PathProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B66C34632E3BC2D900B4B9B8 /* PathProvider.m */; };
 		B66C34672E3BC60900B4B9B8 /* PathSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = B66C34662E3BC60900B4B9B8 /* PathSettings.m */; };
 		B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B4832E4F959E004559C3 /* AbstractRcolBlock.m */; };
@@ -498,6 +504,18 @@
 		B651C6982E74A5B7001B3B03 /* cGeometryNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cGeometryNode.m; sourceTree = "<group>"; };
 		B65E3A6C2E689BEB00994D92 /* GenericTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenericTree.h; sourceTree = "<group>"; };
 		B65E3A6D2E689C0A00994D92 /* GenericTree.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GenericTree.m; sourceTree = "<group>"; };
+		B6687EA42E7B0DB700BFA0B3 /* NrefUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NrefUI.h; sourceTree = "<group>"; };
+		B6687EA52E7B0DCB00BFA0B3 /* NrefUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NrefUI.m; sourceTree = "<group>"; };
+		B6687EA72E7B100500BFA0B3 /* ObjdWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjdWrapper.h; sourceTree = "<group>"; };
+		B6687EA82E7B101700BFA0B3 /* ObjdWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjdWrapper.m; sourceTree = "<group>"; };
+		B6687EAA2E7B17A600BFA0B3 /* SRelWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRelWrapper.h; sourceTree = "<group>"; };
+		B6687EAB2E7B17B800BFA0B3 /* SRelWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRelWrapper.m; sourceTree = "<group>"; };
+		B6687EAD2E7B19EF00BFA0B3 /* SRelUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRelUI.h; sourceTree = "<group>"; };
+		B6687EAE2E7B1A0900BFA0B3 /* SRelUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRelUI.m; sourceTree = "<group>"; };
+		B6687EB02E7B1B2F00BFA0B3 /* LocalizedEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalizedEnums.h; sourceTree = "<group>"; };
+		B6687EB12E7B1B4600BFA0B3 /* LocalizedEnums.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalizedEnums.m; sourceTree = "<group>"; };
+		B6687EB32E7B1CD900BFA0B3 /* Boolset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Boolset.h; sourceTree = "<group>"; };
+		B6687EB42E7B1CEC00BFA0B3 /* Boolset.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Boolset.m; sourceTree = "<group>"; };
 		B66C34612E3BC15100B4B9B8 /* IProviderRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IProviderRegistry.h; sourceTree = "<group>"; };
 		B66C34622E3BC28400B4B9B8 /* PathProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathProvider.h; sourceTree = "<group>"; };
 		B66C34632E3BC2D900B4B9B8 /* PathProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathProvider.m; sourceTree = "<group>"; };
@@ -954,6 +972,12 @@
 				B61BA7D12E6B58B200392771 /* Elements2.m */,
 				B6C01F922E731C0700AA6108 /* FixGUID.h */,
 				B6C01F932E731C1900AA6108 /* FixGUID.m */,
+				B6687EA42E7B0DB700BFA0B3 /* NrefUI.h */,
+				B6687EA52E7B0DCB00BFA0B3 /* NrefUI.m */,
+				B6172A9F2E787CAC00C750DE /* NrefWrapper.h */,
+				B6172AA02E787CC300C750DE /* NrefWrapper.m */,
+				B6687EA72E7B100500BFA0B3 /* ObjdWrapper.h */,
+				B6687EA82E7B101700BFA0B3 /* ObjdWrapper.m */,
 				B61BA7C02E6B456300392771 /* PictureUI.h */,
 				B61BA7C12E6B457800392771 /* PictureUI.m */,
 				B61BA7C62E6B491500392771 /* PictureWrapper.h */,
@@ -964,8 +988,10 @@
 				B61BA7C42E6B461D00392771 /* UIBase.m */,
 				B61BA7F82E6E1BD400392771 /* XmlWrapper.h */,
 				B61BA7F92E6E1BE500392771 /* XmlWrapper.m */,
-				B6172A9F2E787CAC00C750DE /* NrefWrapper.h */,
-				B6172AA02E787CC300C750DE /* NrefWrapper.m */,
+				B6687EAA2E7B17A600BFA0B3 /* SRelWrapper.h */,
+				B6687EAB2E7B17B800BFA0B3 /* SRelWrapper.m */,
+				B6687EAD2E7B19EF00BFA0B3 /* SRelUI.h */,
+				B6687EAE2E7B1A0900BFA0B3 /* SRelUI.m */,
 			);
 			path = FileHandler;
 			sourceTree = "<group>";
@@ -1506,6 +1532,8 @@
 				B6F440A92E465FDF00870564 /* ArgParser.m */,
 				B6F4409F2E46585D00870564 /* ASerializeFormater.h */,
 				B6F440A02E46589400870564 /* ASerializeFormater.m */,
+				B6687EB32E7B1CD900BFA0B3 /* Boolset.h */,
+				B6687EB42E7B1CEC00BFA0B3 /* Boolset.m */,
 				B69C5A252E3EC4F000794FC7 /* CaseInvariantArrayList.h */,
 				B69C5A262E3EC52000794FC7 /* CaseInvariantArrayList.m */,
 				B6F440A22E465E7B00870564 /* Containers.h */,
@@ -1551,6 +1579,8 @@
 				B61CE5702E3A879B00547C40 /* IWaitingBarControl.h */,
 				B61CE5982E3ADA8B00547C40 /* Localization.h */,
 				B61CE5992E3ADAB200547C40 /* Localization.m */,
+				B6687EB02E7B1B2F00BFA0B3 /* LocalizedEnums.h */,
+				B6687EB12E7B1B4600BFA0B3 /* LocalizedEnums.m */,
 				B6CDCCB22E3440F7004FDF82 /* MetaData.h */,
 				B6CDCCB32E34416F004FDF82 /* MetaData.m */,
 				B62437DC2E35A0450052119F /* Parameters.h */,
@@ -1813,6 +1843,7 @@
 				B6B02CD82E4EBA34009240FD /* RcolUI.m in Sources */,
 				B69F34E02E37EF74007EEA89 /* CRCParameters.m in Sources */,
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
+				B6687EAC2E7B17B800BFA0B3 /* SRelWrapper.m in Sources */,
 				B616F7152E60A7B900D0263A /* MmatWrapper.m in Sources */,
 				B64B39352E58DE1F00FC359D /* CpfItem.m in Sources */,
 				B6385F4C2E7371D500DB7DDF /* AbstractCresChildren.m in Sources */,
@@ -1847,6 +1878,7 @@
 				B61987012E62096300600ED7 /* SlotItem.m in Sources */,
 				B61CE56C2E3A85A800547C40 /* ViewFilter.m in Sources */,
 				B69F34E92E37F37C007EEA89 /* ExtractableFile.m in Sources */,
+				B6687EA62E7B0DCB00BFA0B3 /* NrefUI.m in Sources */,
 				B6FDC58D2E3FD9D7004E8AA6 /* WaitingScreen.m in Sources */,
 				B6CDCCAA2E342B97004FDF82 /* PackedFileDescriptor.m in Sources */,
 				B6F440AD2E4661D800870564 /* ExceptionForm.m in Sources */,
@@ -1922,6 +1954,7 @@
 				B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */,
 				B67DE0792E7067AA00A17C62 /* ExtObjdWrapper.m in Sources */,
 				B6B8D03E2E57AF90008557A2 /* PropertyObjectBuilder.m in Sources */,
+				B6687EB52E7B1CEC00BFA0B3 /* Boolset.m in Sources */,
 				B673A1262E6368ED004039D3 /* ObjectComboBox.m in Sources */,
 				B6172AAA2E78814900C750DE /* cBoundedNode.m in Sources */,
 				B6CDCC8E2E33FE4E004FDF82 /* MemoryStream.m in Sources */,
@@ -1933,10 +1966,12 @@
 				B67DE0762E70649D00A17C62 /* ObjdPropertyParser.m in Sources */,
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
 				B6B02CD12E4EB2FC009240FD /* FileTable.m in Sources */,
+				B6687EAF2E7B1A0900BFA0B3 /* SRelUI.m in Sources */,
 				B69C5A2A2E3EC5E300794FC7 /* XmlRegistryKey.m in Sources */,
 				B65E3A6E2E689C0A00994D92 /* GenericTree.m in Sources */,
 				B64B39322E58DD6300FC359D /* CpfWrapper.m in Sources */,
 				B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */,
+				B6687EB22E7B1B4600BFA0B3 /* LocalizedEnums.m in Sources */,
 				B6D042C42E69022700366E80 /* DefaultWrapperFactory.m in Sources */,
 				B6AF28FE2E6A07B000EDEB2D /* EnumComboBox.m in Sources */,
 				B64F1C9E2E44011C001C0DEC /* FileTableItem.m in Sources */,
@@ -1963,6 +1998,7 @@
 				B6385F402E7365C300DB7DDF /* cShape.m in Sources */,
 				B616F7122E60A5FC00D0263A /* LifoUI.m in Sources */,
 				B64B39162E58CE8200FC359D /* HashAlgorithmParameters.m in Sources */,
+				B6687EA92E7B101700BFA0B3 /* ObjdWrapper.m in Sources */,
 				B671B48D2E4FC38A004559C3 /* IWrapperReferencedResources.m in Sources */,
 				B69C5A382E3ED3E200794FC7 /* Thread.m in Sources */,
 				B61BA7CF2E6B4D2800392771 /* Elements.m in Sources */,

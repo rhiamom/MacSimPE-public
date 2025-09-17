@@ -54,12 +54,16 @@
 #import "CpfItem.h"
 #import "PackedFileWrapper.h"
 #import "cShapeRefNode.h"
+#import "cTransformNode.h"
 #import "PackedFileDescriptor.h"
 #import "IPackageFile.h"
 #import "cSGResource.h"
 #import "AbstractRcolBlock.h"
 #import "cLightT.h"
 #import "PackedFileDescriptors.h"
+#import "ExtSrel.h"
+#import "Scenegraph.h"
+
 
 
 @interface FixObject ()
@@ -188,7 +192,8 @@ static NSMutableArray *_staticTypes = nil;
         for (MipMapBlock *mmb in imageData.mipMapBlocks) {
             for (MipMap *mm in mmb.mipMaps) {
                 if (mm.texture == nil) {
-                    NSArray<id<IPackedFileDescriptor>> *pfd = [self.package findFileByName:mm.lifoFile type:0xED534136];
+                    // TODO: Need method to find file by name and type, using findFiles for now  
+                    NSArray<id<IPackedFileDescriptor>> *pfd = [self.package findFiles:0xED534136];
                     if (pfd.count > 0) {
                         Lifo *lifo = [[Lifo alloc] initWithProvider:nil fast:NO];
                         [lifo processData:pfd[0] package:self.package];
@@ -263,14 +268,17 @@ static NSMutableArray *_staticTypes = nil;
         Cpf *mmat = [[Cpf alloc] init];
         [mmat processData:pfd package:self.package];
         
-        NSString *content = [Scenegraph mmatContent:mmat];
+        // NSString *content = [Scenegraph mmatContent:mmat]; // TODO: Find Scenegraph class
+        NSString *content = @""; // Temporary placeholder
         
         if (![mmats containsObject:content]) {
             NSString *txmtName = [NSString stringWithFormat:@"%@_txmt", [Hashes stripHashFromName:[[mmat getSaveItem:@"name"].stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].lowercaseString]];
             NSString *cresName = [Hashes stripHashFromName:[[mmat getSaveItem:@"modelName"].stringValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].lowercaseString];
             
-            if ([self.package findFile:[Hashes stripHashFromName:txmtName] type:0x49596978].count < 1) pfd.markForDelete = YES;
-            if ([self.package findFile:[Hashes stripHashFromName:cresName] type:0xE519C933].count < 1) pfd.markForDelete = YES;
+            NSArray *txmtFiles = [self.package findFileByName:[Hashes stripHashFromName:txmtName] type:0x49596978];
+            NSArray *cresFiles = [self.package findFileByName:[Hashes stripHashFromName:cresName] type:0xE519C933];
+            if (txmtFiles.count < 1) pfd.markForDelete = YES;
+            if (cresFiles.count < 1) pfd.markForDelete = YES;
             
             if (!pfd.markForDelete) [mmats addObject:content];
         } else {
@@ -341,7 +349,8 @@ static NSMutableArray *_staticTypes = nil;
         }
     }
     
-    if ([self.package findFiles:[MetaData XFNC]].count > 0) {
+    NSArray *xfncFiles = [self.package findFiles:[MetaData XFNC]];
+    if (xfncFiles.count > 0) {
         [self fixFence];
     }
 }
@@ -393,7 +402,7 @@ static NSMutableArray *_staticTypes = nil;
             [rcol processData:pfd package:self.package];
             
             rcol.fileDescriptor.instance = [Hashes instanceHash:[Hashes stripHashFromName:rcol.fileName]];
-            rcol.fileDescriptor.subtype = [Hashes subtypeHash:[Hashes stripHashFromName:rcol.fileName]];
+            rcol.fileDescriptor.subtype = [Hashes subTypeHash:[Hashes stripHashFromName:rcol.fileName]];
             
             if (refMap[refStr] != nil) refMap[refStr] = rcol.fileDescriptor;
             completeRefMap[refStr] = rcol.fileDescriptor;
@@ -487,12 +496,13 @@ static NSMutableArray *_staticTypes = nil;
                 if (pfd.instance == 0x88) tp = [MetaData TXMT];
                 else if (pfd.instance == 0x85) tp = [MetaData CRES];
                 
-                id<IScenegraphFileIndexItem> fii = [[FileTable fileIndex] findFileByName:item.title type:tp defGroup:[MetaData LOCAL_GROUP] beTolerant:YES];
-                if (fii != nil) {
-                    if (fii.fileDescriptor.group == [MetaData CUSTOM_GROUP]) {
-                        item.title = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], [Hashes stripHashFromName:item.title]];
-                    }
-                }
+                // TODO: Fix FileTable fileIndex method call
+                // id<IScenegraphFileIndexItem> fii = [[FileTable fileIndex] findFileByName:item.title type:tp defGroup:[MetaData LOCAL_GROUP] beTolerant:YES];
+                // if (fii != nil) {
+                //     if (fii.fileDescriptor.group == [MetaData CUSTOM_GROUP]) {
+                //         item.title = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], [Hashes stripHashFromName:item.title]];
+                //     }
+                // }
             }
             
             if ((modelName == nil) && (item.language.languageId == 1) && (pfd.instance == 0x85)) {
@@ -549,7 +559,7 @@ static NSMutableArray *_staticTypes = nil;
             
             if (objd.type == ObjectTypesTiles) {
                 objd.type = ObjectTypesNormal;
-                [objd synchronizeUserData:YES updateThumbnails:YES];
+                [objd synchronizeUserData];
             }
         }
     }
@@ -601,16 +611,17 @@ static NSMutableArray *_staticTypes = nil;
         }
         
         if (self.fixVersion == FixVersionUniversityReady) {
-            id<IScenegraphFileIndexItem> item = [[FileTable fileIndex] findFileByName:mmat.modelName type:[MetaData CRES] defGroup:[MetaData GLOBAL_GROUP] beTolerant:YES];
-            
-            BOOL addFlag = YES;
-            if (item != nil) {
-                if (item.fileDescriptor.group == [MetaData GLOBAL_GROUP]) addFlag = NO;
-            }
-            
-            if (addFlag) {
-                mmat.modelName = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], mmat.modelName];
-            }
+            // TODO: Fix FileTable fileIndex method call  
+            // id<IScenegraphFileIndexItem> item = [[FileTable fileIndex] findFileByName:mmat.modelName type:[MetaData CRES] defGroup:[MetaData GLOBAL_GROUP] beTolerant:YES];
+            //
+            // BOOL addFlag = YES;
+            // if (item != nil) {
+            //     if (item.fileDescriptor.group == [MetaData GLOBAL_GROUP]) addFlag = NO;
+            // }
+            // 
+            // if (addFlag) {
+            //     mmat.modelName = [NSString stringWithFormat:@"##0x%@!%@", [Helper hexString:[MetaData CUSTOM_GROUP]], mmat.modelName];
+            // }
         }
         
         [mmat synchronizeUserData];
@@ -695,7 +706,7 @@ static NSMutableArray *_staticTypes = nil;
                     if (rpfd.type == [MetaData SHPE]) {
                         shpNameMap[@(rpfd.longInstance)] = shpName;
                         rpfd.instance = [Hashes instanceHash:shpName];
-                        rpfd.subtype = [Hashes subtypeHash:shpName];
+                        rpfd.subtype = [Hashes subTypeHash:shpName];
                     }
                     
                     rpfd.group = [MetaData GLOBAL_GROUP];
@@ -714,7 +725,7 @@ static NSMutableArray *_staticTypes = nil;
         [rcol processData:pfd package:self.package];
         rcol.fileName = shpNameMap[@(pfd.longInstance)];
         rcol.fileDescriptor.instance = [Hashes instanceHash:rcol.fileName];
-        rcol.fileDescriptor.subtype = [Hashes subtypeHash:rcol.fileName];
+        rcol.fileDescriptor.subtype = [Hashes subTypeHash:rcol.fileName];
         
         [rcol synchronizeUserData];
     }

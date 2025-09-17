@@ -229,7 +229,7 @@ typedef NS_ENUM(uint32_t, RelationshipTypes) {
     RelationshipTypesParent = 0x01,
     RelationshipTypesChild = 0x02,
     RelationshipTypesSibling = 0x03,
-    RelationshipTypesGradparent = 0x04,
+    RelationshipTypesGrandparent = 0x04,
     RelationshipTypesGrandchild = 0x05,
     RelationshipTypesNiceNephew = 0x07,
     RelationshipTypesAunt = 0x06,
@@ -618,7 +618,7 @@ typedef NS_ENUM(uint32_t, Careers) {
 + (NSArray<NSNumber *> *)rcolList;
 + (NSArray<NSNumber *> *)compressionCandidates;
 + (NSArray<NSNumber *> *)cachedFileTypes;
-+ (ChildAge)ageTranslation:(LifeSections)age;
++ (Age)ageTranslation:(LifeSections)age;
 + (TypeAlias *)findTypeAlias:(uint32_t)pfdType;
 
 // MARK: - Semi-Global Methods

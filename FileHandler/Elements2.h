@@ -55,9 +55,7 @@ typedef void (^ExecutePreview)(Cpf *cpf, id package);
     // NREF Panel controls
     IBOutlet NSView *panel4;
     IBOutlet NSTextField *label12;
-    IBOutlet NSTextField *tbNref;
     IBOutlet NSTextField *label10;
-    IBOutlet NSTextField *tbnrefhash;
     IBOutlet NSTextField *label9;
     IBOutlet NSButton *button2;
     
@@ -72,6 +70,10 @@ typedef void (^ExecutePreview)(Cpf *cpf, id package);
 @property (nonatomic, assign) BOOL cpfNameEditingFlag;
 @property (nonatomic, assign) BOOL cpfAutoChangeInProgress;
 @property (nonatomic, assign) BOOL nrefTextChangeEnabled;
+
+// NREF Panel control properties for external access
+@property (nonatomic, weak) IBOutlet NSTextField *tbNref;
+@property (nonatomic, weak) IBOutlet NSTextField *tbnrefhash;
 
 // Main panel properties for external access
 @property (nonatomic, weak) IBOutlet NSView *cpfPanel;
