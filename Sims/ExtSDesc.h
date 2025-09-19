@@ -30,7 +30,7 @@
 #import <Foundation/Foundation.h>
 #import "SDescWrapper.h"
 
-@class ExtSrel, SimDNA, BinaryReader, BinaryWriter;
+@class ExtSRel, SimDNA, BinaryReader, BinaryWriter;
 @protocol IPackedFileUI, IWrapperInfo, ILotItem;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -102,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param dst Destination Sim
  * @return The relationship object or nil
  */
-+ (nullable ExtSrel *)findRelation:(ExtSDesc *)src destination:(ExtSDesc *)dst;
++ (nullable ExtSRel *)findRelation:(ExtSDesc *)src destination:(ExtSDesc *)dst;
 
 /**
  * Find a relationship between two Sims with cache
@@ -111,14 +111,14 @@ NS_ASSUME_NONNULL_BEGIN
  * @param dst Destination Sim
  * @return The relationship object or nil
  */
-+ (nullable ExtSrel *)findRelation:(ExtSDesc *)cache source:(ExtSDesc *)src destination:(ExtSDesc *)dst;
++ (nullable ExtSRel *)findRelation:(ExtSDesc *)cache source:(ExtSDesc *)src destination:(ExtSDesc *)dst;
 
 /**
  * Find a relationship with another Sim
  * @param sDesc The other Sim
  * @return The relationship object or nil
  */
-- (nullable ExtSrel *)findRelation:(ExtSDesc *)sDesc;
+- (nullable ExtSRel *)findRelation:(ExtSDesc *)sDesc;
 
 /**
  * Get the relation instance for another Sim
@@ -132,7 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param sDesc The other Sim
  * @return The new relationship object
  */
-- (ExtSrel *)createRelation:(ExtSDesc *)sDesc;
+- (ExtSRel *)createRelation:(ExtSDesc *)sDesc;
 
 // MARK: - Internal Relationship Cache Methods
 
@@ -141,26 +141,26 @@ NS_ASSUME_NONNULL_BEGIN
  * @param instance The instance ID
  * @return The cached relationship or nil
  */
-- (nullable ExtSrel *)getCachedRelation:(uint32_t)instance;
+- (nullable ExtSRel *)getCachedRelation:(uint32_t)instance;
 
 /**
  * Get cached relationship by Sim
  * @param sDesc The Sim
  * @return The cached relationship or nil
  */
-- (nullable ExtSrel *)getCachedRelationForSim:(ExtSDesc *)sDesc;
+- (nullable ExtSRel *)getCachedRelationForSim:(ExtSDesc *)sDesc;
 
 /**
  * Add relationship to cache
  * @param srel The relationship to cache
  */
-- (void)addRelationToCache:(ExtSrel *)srel;
+- (void)addRelationToCache:(ExtSRel *)srel;
 
 /**
  * Remove relationship from cache
  * @param srel The relationship to remove
  */
-- (void)removeRelationFromCache:(ExtSrel *)srel;
+- (void)removeRelationFromCache:(ExtSRel *)srel;
 
 @end
 

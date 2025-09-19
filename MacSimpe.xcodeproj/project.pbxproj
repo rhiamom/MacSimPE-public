@@ -118,6 +118,9 @@
 		B671B4872E4F95FF004559C3 /* cSGResource.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B4862E4F95FF004559C3 /* cSGResource.m */; };
 		B671B48A2E4F9930004559C3 /* LoadFileWrappers.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B4892E4F9930004559C3 /* LoadFileWrappers.m */; };
 		B671B48D2E4FC38A004559C3 /* IWrapperReferencedResources.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B48C2E4FC38A004559C3 /* IWrapperReferencedResources.m */; };
+		B671C1232E7C64BC008E5525 /* cDataListExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = B671C1222E7C64BC008E5525 /* cDataListExtension.m */; };
+		B671C1262E7C67E5008E5525 /* cExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = B671C1252E7C67E5008E5525 /* cExtension.m */; };
+		B671C1292E7C755E008E5525 /* ScenegraphException.m in Sources */ = {isa = PBXBuildFile; fileRef = B671C1282E7C755E008E5525 /* ScenegraphException.m */; };
 		B673A1262E6368ED004039D3 /* ObjectComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = B673A1252E6368ED004039D3 /* ObjectComboBox.m */; };
 		B673A1292E636A2B004039D3 /* MemoryCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B673A1282E636A2B004039D3 /* MemoryCacheItem.m */; };
 		B673A12C2E636B2D004039D3 /* MemoryCacheFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B673A12B2E636B2D004039D3 /* MemoryCacheFile.m */; };
@@ -190,6 +193,9 @@
 		B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F0672E54E0890073156B /* InternalListeners.m */; };
 		B6C3F0722E54E4DE0073156B /* OpcodeProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F0712E54E4DE0073156B /* OpcodeProvider.m */; };
 		B6C3F0752E54E6450073156B /* SimCommonPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F0742E54E6450073156B /* SimCommonPackage.m */; };
+		B6C6717D2E7B79D900D1A7D0 /* ExtSRel.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C6717C2E7B79D900D1A7D0 /* ExtSRel.m */; };
+		B6C671802E7B845100D1A7D0 /* Scenegraph.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C6717F2E7B845100D1A7D0 /* Scenegraph.m */; };
+		B6C671832E7B887000D1A7D0 /* ObjectCloner.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C671822E7B887000D1A7D0 /* ObjectCloner.m */; };
 		B6CCE7E52E6893BA00BE2BB3 /* GenericFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CCE7E42E6893BA00BE2BB3 /* GenericFileItem.m */; };
 		B6CCE7E82E68956000BE2BB3 /* GenericExtendedFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CCE7E72E68956000BE2BB3 /* GenericExtendedFileItem.m */; };
 		B6CCE7EB2E6895F700BE2BB3 /* Generic.m in Sources */ = {isa = PBXBuildFile; fileRef = B6CCE7EA2E6895F700BE2BB3 /* Generic.m */; };
@@ -529,6 +535,12 @@
 		B671B4892E4F9930004559C3 /* LoadFileWrappers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadFileWrappers.m; sourceTree = "<group>"; };
 		B671B48B2E4FC354004559C3 /* IWrapperReferencedResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperReferencedResources.h; sourceTree = "<group>"; };
 		B671B48C2E4FC38A004559C3 /* IWrapperReferencedResources.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IWrapperReferencedResources.m; sourceTree = "<group>"; };
+		B671C1212E7C64A3008E5525 /* cDataListExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cDataListExtension.h; sourceTree = "<group>"; };
+		B671C1222E7C64BC008E5525 /* cDataListExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cDataListExtension.m; sourceTree = "<group>"; };
+		B671C1242E7C67CE008E5525 /* cExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cExtension.h; sourceTree = "<group>"; };
+		B671C1252E7C67E5008E5525 /* cExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cExtension.m; sourceTree = "<group>"; };
+		B671C1272E7C7548008E5525 /* ScenegraphException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScenegraphException.h; sourceTree = "<group>"; };
+		B671C1282E7C755E008E5525 /* ScenegraphException.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScenegraphException.m; sourceTree = "<group>"; };
 		B673A1242E6368D2004039D3 /* ObjectComboBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectComboBox.h; sourceTree = "<group>"; };
 		B673A1252E6368ED004039D3 /* ObjectComboBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjectComboBox.m; sourceTree = "<group>"; };
 		B673A1272E636A11004039D3 /* MemoryCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryCacheItem.h; sourceTree = "<group>"; };
@@ -685,6 +697,12 @@
 		B6C3F0732E54E5FC0073156B /* SimCommonPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimCommonPackage.h; sourceTree = "<group>"; };
 		B6C3F0742E54E6450073156B /* SimCommonPackage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimCommonPackage.m; sourceTree = "<group>"; };
 		B6C3F0762E54E6B50073156B /* ICommonPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommonPackage.h; sourceTree = "<group>"; };
+		B6C6717B2E7B79BE00D1A7D0 /* ExtSRel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtSRel.h; sourceTree = "<group>"; };
+		B6C6717C2E7B79D900D1A7D0 /* ExtSRel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtSRel.m; sourceTree = "<group>"; };
+		B6C6717E2E7B843E00D1A7D0 /* Scenegraph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scenegraph.h; sourceTree = "<group>"; };
+		B6C6717F2E7B845100D1A7D0 /* Scenegraph.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Scenegraph.m; sourceTree = "<group>"; };
+		B6C671812E7B885900D1A7D0 /* ObjectCloner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectCloner.h; sourceTree = "<group>"; };
+		B6C671822E7B887000D1A7D0 /* ObjectCloner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjectCloner.m; sourceTree = "<group>"; };
 		B6CCE7E42E6893BA00BE2BB3 /* GenericFileItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GenericFileItem.m; sourceTree = "<group>"; };
 		B6CCE7E62E68953700BE2BB3 /* GenericExtendedFileItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenericExtendedFileItem.h; sourceTree = "<group>"; };
 		B6CCE7E72E68956000BE2BB3 /* GenericExtendedFileItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GenericExtendedFileItem.m; sourceTree = "<group>"; };
@@ -1073,6 +1091,10 @@
 				B6B02CD72E4EBA34009240FD /* RcolUI.m */,
 				B6F4409C2E46567200870564 /* RcolWrapper.h */,
 				B6F4409D2E4656B400870564 /* RcolWrapper.m */,
+				B671C1212E7C64A3008E5525 /* cDataListExtension.h */,
+				B671C1222E7C64BC008E5525 /* cDataListExtension.m */,
+				B671C1242E7C67CE008E5525 /* cExtension.h */,
+				B671C1252E7C67E5008E5525 /* cExtension.m */,
 			);
 			path = Rcol;
 			sourceTree = "<group>";
@@ -1190,6 +1212,12 @@
 				B6194B522E5E008100255858 /* WorkshopItems.m */,
 				B6E2B5D92E5BB05A00AA6170 /* WrapperFactory.h */,
 				B6E2B5E02E5BB3D900AA6170 /* WrapperFactory.m */,
+				B6C6717E2E7B843E00D1A7D0 /* Scenegraph.h */,
+				B6C6717F2E7B845100D1A7D0 /* Scenegraph.m */,
+				B6C671812E7B885900D1A7D0 /* ObjectCloner.h */,
+				B6C671822E7B887000D1A7D0 /* ObjectCloner.m */,
+				B671C1272E7C7548008E5525 /* ScenegraphException.h */,
+				B671C1282E7C755E008E5525 /* ScenegraphException.m */,
 			);
 			path = Scenegraph;
 			sourceTree = "<group>";
@@ -1637,6 +1665,8 @@
 				B6F1144F2E64CBD300348F44 /* SimsComboBox.m */,
 				B6F114512E64CCAC00348F44 /* ExtSDesc.h */,
 				B6F114522E64CCC000348F44 /* ExtSDesc.m */,
+				B6C6717B2E7B79BE00D1A7D0 /* ExtSRel.h */,
+				B6C6717C2E7B79D900D1A7D0 /* ExtSRel.m */,
 			);
 			path = Sims;
 			sourceTree = "<group>";
@@ -1832,6 +1862,7 @@
 				B61CE5732E3A882000547C40 /* Wait.m in Sources */,
 				B62437DE2E35A0950052119F /* Parameters.m in Sources */,
 				B66C34672E3BC60900B4B9B8 /* PathSettings.m in Sources */,
+				B6C671832E7B887000D1A7D0 /* ObjectCloner.m in Sources */,
 				B6CDCC7D2E33EB1F004FDF82 /* ToolTypes.m in Sources */,
 				B69F34F42E3835A1007EEA89 /* ResourceViewManager.m in Sources */,
 				B6F114532E64CCC000348F44 /* ExtSDesc.m in Sources */,
@@ -1855,6 +1886,7 @@
 				B64B39282E58D2E300FC359D /* SemiGlobalListing.m in Sources */,
 				B6BF52652E5B7542007B48A1 /* NmapItem.m in Sources */,
 				B6AAC5EE2E5A1C5C00846641 /* SOIL2.c in Sources */,
+				B6C671802E7B845100D1A7D0 /* Scenegraph.m in Sources */,
 				B60ADF502E592B4F00F66F86 /* PackedFileForm.m in Sources */,
 				B6C01F912E731A3600AA6108 /* FixObject.m in Sources */,
 				B61CE5A32E3AE68400547C40 /* PackageRepair.m in Sources */,
@@ -1865,6 +1897,7 @@
 				B6B8D02F2E57A8EA008557A2 /* CollectibleAlias.m in Sources */,
 				B6F605032E5F985E0038ECC5 /* ImageSize.m in Sources */,
 				B6819E582E3E734000E37434 /* FileIndexItem.m in Sources */,
+				B671C1292E7C755E008E5525 /* ScenegraphException.m in Sources */,
 				B69C59FD2E3E907000794FC7 /* FlagBase.m in Sources */,
 				B6C01F6A2E72435600AA6108 /* GenericCommon.m in Sources */,
 				B6CDCC772E33E8C7004FDF82 /* SharedTypes.m in Sources */,
@@ -1914,6 +1947,7 @@
 				B69C5A2D2E3EC83B00794FC7 /* WarningException.m in Sources */,
 				B64F1CA12E44041A001C0DEC /* FileTableItemType.m in Sources */,
 				B61CE5A02E3AE10A00547C40 /* FileTableBase.m in Sources */,
+				B671C1262E7C67E5008E5525 /* cExtension.m in Sources */,
 				B64B393E2E58E6F800FC359D /* PackedFileItem.m in Sources */,
 				B6F114562E64CE2900348F44 /* SDescWrapper.m in Sources */,
 				B6FDC59C2E3FE170004E8AA6 /* StreamMaintainer.m in Sources */,
@@ -1950,6 +1984,7 @@
 				B673A12C2E636B2D004039D3 /* MemoryCacheFile.m in Sources */,
 				B673A1332E636D71004039D3 /* Vectors.m in Sources */,
 				B64EEF452E3938AE0008E7CA /* AResourceTreeNodeBuilder.m in Sources */,
+				B6C6717D2E7B79D900D1A7D0 /* ExtSRel.m in Sources */,
 				B6D042C72E6904AC00366E80 /* StrListViewer.m in Sources */,
 				B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */,
 				B67DE0792E7067AA00A17C62 /* ExtObjdWrapper.m in Sources */,
@@ -1964,6 +1999,7 @@
 				B6CDCC862E33F887004FDF82 /* File.m in Sources */,
 				B61986FE2E62079D00600ED7 /* ObjectCacheItem.m in Sources */,
 				B67DE0762E70649D00A17C62 /* ObjdPropertyParser.m in Sources */,
+				B671C1232E7C64BC008E5525 /* cDataListExtension.m in Sources */,
 				B6CDCC9A2E340790004FDF82 /* HeaderData.m in Sources */,
 				B6B02CD12E4EB2FC009240FD /* FileTable.m in Sources */,
 				B6687EAF2E7B1A0900BFA0B3 /* SRelUI.m in Sources */,

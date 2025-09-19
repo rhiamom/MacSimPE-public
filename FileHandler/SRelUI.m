@@ -28,57 +28,156 @@
 // ***************************************************************************/
 
 #import "SRelUI.h"
-#import "IFileWrapper.h"
 #import "SRelWrapper.h"
 #import "LocalizedEnums.h"
 #import "MetaData.h"
 #import "Boolset.h"
 
-@implementation SRel
+@implementation SRelUI
 
 // MARK: - Initialization
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        // Load the view from nib if needed
-        [self loadView];
-        [self setupRelationshipTypes];
+        // NSViewController will call loadView automatically when view is needed
+        // Don't call it manually in init
     }
     return self;
 }
 
-// MARK: - View Setup
+// MARK: - NSViewController Methods
+
+- (void)loadView {
+    // Create the main view
+    self.view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 400, 300)];
+    
+    // Create realPanel as the main container
+    self.realPanel = [[NSView alloc] initWithFrame:self.view.bounds];
+    self.realPanel.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    [self.view addSubview:self.realPanel];
+    
+    // Create UI components programmatically
+    [self createUIComponents];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setupRelationshipTypes];
+}
+
+// MARK: - UI Creation
+
+- (void)createUIComponents {
+    // Create the family type popup button
+    self.cbfamtype = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(20, 250, 200, 24)];
+    [self.realPanel addSubview:self.cbfamtype];
+    
+    // Create text fields
+    self.tbshortterm = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 220, 100, 24)];
+    self.tblongterm = [[NSTextField alloc] initWithFrame:NSMakeRect(130, 220, 100, 24)];
+    [self.realPanel addSubview:self.tbshortterm];
+    [self.realPanel addSubview:self.tblongterm];
+    
+    // Create relationship checkboxes
+    [self createRelationshipCheckboxes];
+}
+
+- (void)createRelationshipCheckboxes {
+    NSInteger row = 0, col = 0;
+    NSInteger startY = 180;
+    NSInteger checkboxWidth = 120;
+    NSInteger checkboxHeight = 20;
+    NSInteger spacing = 25;
+    
+    // Define checkbox titles and create them
+    NSDictionary *checkboxes = @{
+        @"cbcrush": @"Crush",
+        @"cblove": @"Love",
+        @"cbengaged": @"Engaged",
+        @"cbmarried": @"Married",
+        @"cbfriend": @"Friend",
+        @"cbbuddie": @"Buddy",
+        @"cbsteady": @"Steady",
+        @"cbenemy": @"Enemy",
+        @"cbfamily": @"Family",
+        @"cbbest": @"Best Friend"
+    };
+    
+    for (NSString *property in checkboxes) {
+        NSString *title = checkboxes[property];
+        NSRect frame = NSMakeRect(20 + (col * (checkboxWidth + 10)),
+                                  startY - (row * spacing),
+                                  checkboxWidth,
+                                  checkboxHeight);
+        
+        NSButton *checkbox = [[NSButton alloc] initWithFrame:frame];
+        [checkbox setButtonType:NSButtonTypeSwitch];
+        checkbox.title = title;
+        [self.realPanel addSubview:checkbox];
+        
+        // Set the property using setValue:forKey:
+        [self setValue:checkbox forKey:property];
+        
+        col++;
+        if (col >= 2) {
+            col = 0;
+            row++;
+        }
+    }
+}
+
+// MARK: - Setup Methods
 
 - (void)setupRelationshipTypes {
     [self.cbfamtype removeAllItems];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesUnsetUnknown]];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesAunt]];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesChild]];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesCousin]];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesGrandchild]];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesGrandparent]];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesNiceNephew]];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesParent]];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesSibling]];
-    [self.cbfamtype addItemWithTitle:[LocalizedRelationshipTypes displayNameForType:RelationshipTypesSpouses]];
+    
+    // Add relationship types to popup
+    NSArray *relationshipTypes = @[
+        @(RelationshipTypesUnsetUnknown),
+        @(RelationshipTypesAunt),
+        @(RelationshipTypesChild),
+        @(RelationshipTypesCousin),
+        @(RelationshipTypesGrandchild),
+        @(RelationshipTypesGrandparent),
+        @(RelationshipTypesNiceNephew),
+        @(RelationshipTypesParent),
+        @(RelationshipTypesSibling),
+        @(RelationshipTypesSpouses)
+    ];
+    
+    for (NSNumber *typeNumber in relationshipTypes) {
+        RelationshipTypes type = (RelationshipTypes)[typeNumber unsignedIntValue];
+        NSString *displayName = [LocalizedRelationshipTypes displayNameForType:type];
+        [self.cbfamtype addItemWithTitle:displayName];
+    }
 }
 
 // MARK: - IPackedFileUI Protocol
 
 - (NSView *)guiHandle {
+    // Ensure view is loaded by accessing it (this triggers loadView if needed)
+    if (!self.isViewLoaded) {
+        // Just accessing self.view will trigger loadView automatically
+        __unused NSView *view = self.view;
+    }
     return self.realPanel;
 }
 
 - (void)updateGUI:(id<IFileWrapper>)wrapper {
-    SRelWrapper *srel = (SRelWrapper *)wrapper;
+    SRel *srel = (SRel *)wrapper;
     self.wrapper = srel;
     
     self.tbshortterm.stringValue = [NSString stringWithFormat:@"%d", srel.shortterm];
     self.tblongterm.stringValue = [NSString stringWithFormat:@"%d", srel.longterm];
     
-    // Create array of checkboxes matching the C# pattern
-    NSArray<NSButton *> *ltcb = @[
+    // Update checkboxes based on relationship state
+    [self updateCheckboxesFromWrapper:srel];
+}
+
+- (void)updateCheckboxesFromWrapper:(SRel *)srel {
+    // Create array of checkboxes matching the C# pattern - use 'id' type to allow NSNull
+    NSArray<id> *ltcb = @[
         self.cbcrush,      // 0
         self.cblove,       // 1
         self.cbengaged,    // 2
@@ -87,34 +186,18 @@
         self.cbbuddie,     // 5
         self.cbsteady,     // 6
         self.cbenemy,      // 7
-        [NSNull null],     // 8
-        [NSNull null],     // 9
-        [NSNull null],     // 10
-        [NSNull null],     // 11
-        [NSNull null],     // 12
-        [NSNull null],     // 13
+        [NSNull null],     // 8-13 (unused)
+        [NSNull null],
+        [NSNull null],
+        [NSNull null],
+        [NSNull null],
+        [NSNull null],
         self.cbfamily,     // 14
         self.cbbest,       // 15
-        [NSNull null],     // 16
-        [NSNull null],     // 17
-        [NSNull null],     // 18
-        [NSNull null],     // 19
-        [NSNull null],     // 20
-        [NSNull null],     // 21
-        [NSNull null],     // 22
-        [NSNull null],     // 23
-        [NSNull null],     // 24 - BFF slot
-        [NSNull null],     // 25
-        [NSNull null],     // 26
-        [NSNull null],     // 27
-        [NSNull null],     // 28
-        [NSNull null],     // 29
-        [NSNull null],     // 30
-        [NSNull null],     // 31
     ];
     
-    Boolset *bs1 = srel.relationState.value;
-    Boolset *bs2 = srel.relationState2.value;
+    Boolset *bs1 = [[Boolset alloc] initWithUInt16:srel.relationState.value];
+    Boolset *bs2 = [[Boolset alloc] initWithUInt16:srel.relationState2.value];
     
     for (NSInteger i = 0; i < ltcb.count; i++) {
         id buttonObj = ltcb[i];
@@ -123,18 +206,6 @@
             Boolset *boolset = (i < 16) ? bs1 : bs2;
             NSInteger bitIndex = i & 0x0f;
             button.state = [boolset getBit:bitIndex] ? NSControlStateValueOn : NSControlStateValueOff;
-        }
-    }
-    
-    // Set family type selection
-    [self.cbfamtype selectItemAtIndex:0];
-    for (NSInteger i = 1; i < self.cbfamtype.numberOfItems; i++) {
-        LocalizedRelationshipTypes *currentType = [[LocalizedRelationshipTypes alloc] initWithType:srel.familyRelation];
-        NSString *currentTitle = self.cbfamtype.itemTitleAtIndex:i;
-        NSString *expectedTitle = [currentType displayName];
-        if ([currentTitle isEqualToString:expectedTitle]) {
-            [self.cbfamtype selectItemAtIndex:i];
-            break;
         }
     }
 }
