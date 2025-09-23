@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B6049BE72E82F30400380906 /* FamiWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6049BE62E82F30400380906 /* FamiWrapper.m */; };
+		B6049BEA2E82F89A00380906 /* FamilyTieItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6049BE92E82F89A00380906 /* FamilyTieItem.m */; };
+		B6049BED2E82F93000380906 /* FamilyTiesWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6049BEC2E82F93000380906 /* FamilyTiesWrapper.m */; };
 		B6053BF62E5E52BD00751B39 /* LifoWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6053BF52E5E52BD00751B39 /* LifoWrapper.m */; };
 		B6053BF92E5E53C400751B39 /* LifoForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6053BF82E5E53C400751B39 /* LifoForm.m */; };
 		B60ADF502E592B4F00F66F86 /* PackedFileForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */; };
@@ -232,6 +235,8 @@
 		B6E2B5E72E5BB65000AA6170 /* GroupCacheWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5E62E5BB65000AA6170 /* GroupCacheWrapper.m */; };
 		B6E2B5EA2E5BB87400AA6170 /* GroupCacheForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5E92E5BB87400AA6170 /* GroupCacheForm.m */; };
 		B6E2B5ED2E5BB92700AA6170 /* GroupCacheUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E2B5EC2E5BB92700AA6170 /* GroupCacheUI.m */; };
+		B6E4D58E2E7DDF630018B6E4 /* SimDNA.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E4D58D2E7DDF630018B6E4 /* SimDNA.m */; };
+		B6E4D5912E7DE2F40018B6E4 /* FamiUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E4D5902E7DE2F40018B6E4 /* FamiUI.m */; };
 		B6F1144C2E63BB8900348F44 /* PropertyParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F1144B2E63BB8900348F44 /* PropertyParser.m */; };
 		B6F114502E64CBD300348F44 /* SimsComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F1144F2E64CBD300348F44 /* SimsComboBox.m */; };
 		B6F114532E64CCC000348F44 /* ExtSDesc.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F114522E64CCC000348F44 /* ExtSDesc.m */; };
@@ -274,6 +279,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B6049BE52E82F2F200380906 /* FamiWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FamiWrapper.h; sourceTree = "<group>"; };
+		B6049BE62E82F30400380906 /* FamiWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FamiWrapper.m; sourceTree = "<group>"; };
+		B6049BE82E82F88200380906 /* FamilyTieItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FamilyTieItem.h; sourceTree = "<group>"; };
+		B6049BE92E82F89A00380906 /* FamilyTieItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FamilyTieItem.m; sourceTree = "<group>"; };
+		B6049BEB2E82F91900380906 /* FamilyTiesWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FamilyTiesWrapper.h; sourceTree = "<group>"; };
+		B6049BEC2E82F93000380906 /* FamilyTiesWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FamilyTiesWrapper.m; sourceTree = "<group>"; };
 		B6053BF42E5E52A500751B39 /* LifoWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LifoWrapper.h; sourceTree = "<group>"; };
 		B6053BF52E5E52BD00751B39 /* LifoWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LifoWrapper.m; sourceTree = "<group>"; };
 		B6053BF72E5E53B000751B39 /* LifoForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LifoForm.h; sourceTree = "<group>"; };
@@ -789,6 +800,10 @@
 		B6E2B5E92E5BB87400AA6170 /* GroupCacheForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupCacheForm.m; sourceTree = "<group>"; };
 		B6E2B5EB2E5BB90E00AA6170 /* GroupCacheUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupCacheUI.h; sourceTree = "<group>"; };
 		B6E2B5EC2E5BB92700AA6170 /* GroupCacheUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupCacheUI.m; sourceTree = "<group>"; };
+		B6E4D58C2E7DDF4E0018B6E4 /* SimDNA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimDNA.h; sourceTree = "<group>"; };
+		B6E4D58D2E7DDF630018B6E4 /* SimDNA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimDNA.m; sourceTree = "<group>"; };
+		B6E4D58F2E7DE2E40018B6E4 /* FamiUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FamiUI.h; sourceTree = "<group>"; };
+		B6E4D5902E7DE2F40018B6E4 /* FamiUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FamiUI.m; sourceTree = "<group>"; };
 		B6F1144A2E63BB7300348F44 /* PropertyParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyParser.h; sourceTree = "<group>"; };
 		B6F1144B2E63BB8900348F44 /* PropertyParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyParser.m; sourceTree = "<group>"; };
 		B6F1144E2E64CBBE00348F44 /* SimsComboBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimsComboBox.h; sourceTree = "<group>"; };
@@ -1010,6 +1025,14 @@
 				B6687EAB2E7B17B800BFA0B3 /* SRelWrapper.m */,
 				B6687EAD2E7B19EF00BFA0B3 /* SRelUI.h */,
 				B6687EAE2E7B1A0900BFA0B3 /* SRelUI.m */,
+				B6E4D58F2E7DE2E40018B6E4 /* FamiUI.h */,
+				B6E4D5902E7DE2F40018B6E4 /* FamiUI.m */,
+				B6049BE52E82F2F200380906 /* FamiWrapper.h */,
+				B6049BE62E82F30400380906 /* FamiWrapper.m */,
+				B6049BE82E82F88200380906 /* FamilyTieItem.h */,
+				B6049BE92E82F89A00380906 /* FamilyTieItem.m */,
+				B6049BEB2E82F91900380906 /* FamilyTiesWrapper.h */,
+				B6049BEC2E82F93000380906 /* FamilyTiesWrapper.m */,
 			);
 			path = FileHandler;
 			sourceTree = "<group>";
@@ -1667,6 +1690,8 @@
 				B6F114522E64CCC000348F44 /* ExtSDesc.m */,
 				B6C6717B2E7B79BE00D1A7D0 /* ExtSRel.h */,
 				B6C6717C2E7B79D900D1A7D0 /* ExtSRel.m */,
+				B6E4D58C2E7DDF4E0018B6E4 /* SimDNA.h */,
+				B6E4D58D2E7DDF630018B6E4 /* SimDNA.m */,
 			);
 			path = Sims;
 			sourceTree = "<group>";
@@ -1873,6 +1898,7 @@
 				B6B02CCE2E4EB2B8009240FD /* AbstractWrapper.m in Sources */,
 				B6B02CD82E4EBA34009240FD /* RcolUI.m in Sources */,
 				B69F34E02E37EF74007EEA89 /* CRCParameters.m in Sources */,
+				B6049BEA2E82F89A00380906 /* FamilyTieItem.m in Sources */,
 				B6CDCC812E33EBD2004FDF82 /* SidebarView.m in Sources */,
 				B6687EAC2E7B17B800BFA0B3 /* SRelWrapper.m in Sources */,
 				B616F7152E60A7B900D0263A /* MmatWrapper.m in Sources */,
@@ -1903,6 +1929,7 @@
 				B6CDCC772E33E8C7004FDF82 /* SharedTypes.m in Sources */,
 				B6B02CDE2E4EBF3B009240FD /* WrapperBaseControl.m in Sources */,
 				B6CDCC902E340297004FDF82 /* FileStream.m in Sources */,
+				B6049BE72E82F30400380906 /* FamiWrapper.m in Sources */,
 				B69F34DA2E37ECDD007EEA89 /* Hashes.m in Sources */,
 				B651C6992E74A5B7001B3B03 /* cGeometryNode.m in Sources */,
 				B671B48A2E4F9930004559C3 /* LoadFileWrappers.m in Sources */,
@@ -1966,6 +1993,7 @@
 				B6E2B5EA2E5BB87400AA6170 /* GroupCacheForm.m in Sources */,
 				B6194B5B2E5E02FE00255858 /* TxtrForm.m in Sources */,
 				B6C01F942E731C1900AA6108 /* FixGUID.m in Sources */,
+				B6049BED2E82F93000380906 /* FamilyTiesWrapper.m in Sources */,
 				B6C01F972E731FCA00AA6108 /* RenameForm.m in Sources */,
 				B61C4CFC2E456EF300BC38B4 /* PackageFiles.m in Sources */,
 				B62EC0362E70EB28000BC233 /* FileSelect.m in Sources */,
@@ -2029,6 +2057,7 @@
 				B673A12F2E636C92004039D3 /* cMaterialDefinition.m in Sources */,
 				B64B391C2E58D05800FC359D /* PropertyUserTypes.m in Sources */,
 				B6B02CDB2E4EBADF009240FD /* RcolForm.m in Sources */,
+				B6E4D58E2E7DDF630018B6E4 /* SimDNA.m in Sources */,
 				B6172AA42E78800C00C750DE /* cShapeRefNode.m in Sources */,
 				B6172AA12E787CC300C750DE /* NrefWrapper.m in Sources */,
 				B6385F402E7365C300DB7DDF /* cShape.m in Sources */,
@@ -2077,6 +2106,7 @@
 				B69F34E62E37F319007EEA89 /* PackageMaintainer.m in Sources */,
 				B64EEF812E3987F20008E7CA /* ResourceTreeTypeNodeExt.m in Sources */,
 				B6CCE7E82E68956000BE2BB3 /* GenericExtendedFileItem.m in Sources */,
+				B6E4D5912E7DE2F40018B6E4 /* FamiUI.m in Sources */,
 				B65044672E46C40F0014569E /* DBPFIndexUtility.m in Sources */,
 				B6CDCCA02E3427DE004FDF82 /* HeaderHole.m in Sources */,
 				B6385F742E745A1D00DB7DDF /* cCompositionTreeNode.m in Sources */,

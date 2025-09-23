@@ -28,20 +28,22 @@
 
 #import "Elements.h"
 #import "IFileWrapperSaveExtension.h"
-#import "Fami.h"
-#import "Xml.h"
-#import "SDesc.h"
+#import "FamiWrapper.h"
+#import "XmlWrapper.h"
+#import "SDescWrapper.h"
 #import "PictureWrapper.h"
-#import "FamilyTies.h"
-#import "SRel.h"
-#import "Objd.h"
+#import "FamilyTiesWrapper.h"
+#import "SRelWrapper.h"
+#import "ObjdWrapper.h"
 #import "Helper.h"
 #import "Localization.h"
 #import "Registry.h"
-#import "GUIDGetterForm.h"
+//#import "GUIDGetterForm.h"
 #import "FixGuid.h"
-#import "FamiFlags.h"
+#import "FamiWrapper.h"
 #import "Boolset.h"
+#import "ExceptionForm.h"
+#import <AppKit/AppKit.h>
 
 @implementation Elements
 
@@ -137,12 +139,12 @@
             
             [wrapper synchronizeUserData];
             NSAlert *alert = [[NSAlert alloc] init];
-            [alert setMessageText:[[LocalizationManager sharedManager] getString:@"committed"]];
+            [alert setMessageText:[[Localization shared] getString:@"committed"]];
             [alert runModal];
             [alert release];
             
         } @catch (NSException *ex) {
-            [Helper exceptionMessage:[[LocalizationManager sharedManager] getString:@"cantcommitfamily"]
+            [ExceptionForm showError:[[Localization shared] getString:@"cannot commit family"]
                            exception:ex];
         } @finally {
             [NSCursor pop];
@@ -157,7 +159,7 @@
             [xml setText:[rtb string]];
             [wrapper synchronizeUserData];
             NSAlert *alert = [[NSAlert alloc] init];
-            [alert setMessageText:[[LocalizationManager sharedManager] getString:@"commited"]];
+            [alert setMessageText:[[Localization shared] getString:@"commited"]];
             [alert runModal];
             [alert release];
         } @catch (NSException *ex) {
@@ -268,7 +270,7 @@
         [lbties reloadData];
         [tie release];
     } @catch (NSException *ex) {
-        [Helper exceptionMessage:[[LocalizationManager sharedManager] getString:@"cantaddtie"]
+        [Helper exceptionMessage:[[Localization shared] getString:@"cannot add tie"]
                        exception:ex];
     }
 }
@@ -289,7 +291,7 @@
             }
             [fts setTies:ftis];
         } @catch (NSException *ex) {
-            [Helper exceptionMessage:[[LocalizationManager sharedManager] getString:@"cantcommitfamt"]
+            [Helper exceptionMessage:[[Localization shared] getString:@"cannot commit famt"]
                            exception:ex];
         }
     }
@@ -317,7 +319,7 @@
             
             [famt synchronizeUserData];
         } @catch (NSException *ex) {
-            [Helper exceptionMessage:[[LocalizationManager sharedManager] getString:@"cantcommittie"]
+            [Helper exceptionMessage:[[Localization shared] getString:@"cannot commit"]
                            exception:ex];
         }
     }
@@ -372,7 +374,7 @@
             
             [wrapper synchronizeUserData];
             NSAlert *alert = [[NSAlert alloc] init];
-            [alert setMessageText:[[LocalizationManager sharedManager] getString:@"commited"]];
+            [alert setMessageText:[[Localization shared] getString:@"committed"]];
             [alert runModal];
             [alert release];
         } @catch (NSException *ex) {
@@ -433,11 +435,11 @@
             
             [objd synchronizeUserData];
             NSAlert *alert = [[NSAlert alloc] init];
-            [alert setMessageText:[[LocalizationManager sharedManager] getString:@"commited"]];
+            [alert setMessageText:[[Localization shared] getString:@"committed"]];
             [alert runModal];
             [alert release];
         } @catch (NSException *ex) {
-            [Helper exceptionMessage:[[LocalizationManager sharedManager] getString:@"cantcommitobjd"]
+            [Helper exceptionMessage:[[Localization sharedM] getString:@"cannot commit objd"]
                            exception:ex];
         } @finally {
             [NSCursor pop];
