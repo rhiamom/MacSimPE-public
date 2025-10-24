@@ -43,12 +43,23 @@
  */
 @interface GenericRcol : Rcol <IScenegraphItem>
 
+@property (nonatomic, assign, getter=isEditable) BOOL editable;
+
 // MARK: - Initialization
 
-/**
- * Constructor
- */
-- (instancetype)initWithProvider:(id<IProviderRegistry>)provider fast:(BOOL)fast;
+/** Designated initializer from the C# shape: GenericRcol(IProvider provider, bool editable) */
+- (instancetype)initWithProvider:(id<IProviderRegistry>)provider
+                        editable:(BOOL)editable NS_DESIGNATED_INITIALIZER;
+
+/** Convenience initializer: editable defaults to NO */
+- (instancetype)initWithProvider:(id<IProviderRegistry>)provider;
+
+/** Existing processor; keep your current one-arg version */
+- (void)processData:(id<IScenegraphFileIndexItem>)item;
+
+/** 2-arg C# shape: ProcessData(item, editable) */
+- (void)processData:(id<IScenegraphFileIndexItem>)item
+           editable:(BOOL)editable;
 
 - (instancetype)init;
 

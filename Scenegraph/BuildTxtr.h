@@ -32,6 +32,7 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
 #import "WrapperFactory.h" // For ICommandLine protocol
+#import "ImageLoader.h"
 
 @class ImageData, DDSData, MipMap, MipMapBlock;
 

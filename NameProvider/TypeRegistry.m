@@ -40,7 +40,7 @@
 #import "IToolFactory.h"
 #import "IHelpFactory.h"
 #import "ISettingsFactory.h"
-#import "ICommandLineFactory.h"
+#import "ICommandLineRegistry.h"
 #import "ITool.h"
 #import "IDockableTool.h"
 #import "IToolAction.h"
@@ -58,8 +58,19 @@
 #import "SkinProvider.h"
 #import "LotProvider.h"
 #import "Localization.h"
+#import "ExceptionForm.h"
 
-@implementation TypeRegistry
+@implementation TypeRegistry {
+    // Instance variable declarations go here
+    NSMutableArray<id<IToolAction>> *_actionTools;
+    NSMutableArray<id<IDockableTool>> *_dockableTools;
+    NSMutableArray<id<IToolPlus>> *_toolsPlus;
+}
+
+@synthesize actions = _actionTools;
+@synthesize docks = _dockableTools;
+@synthesize knownCommandLines = _knownCommandLines;
+@synthesize commandLines = _commandLines;
 
 // MARK: - Initialization
 
@@ -75,8 +86,8 @@
         _simFamilynameProvider = [[SimFamilyNames alloc] init];
         _simNameProvider = [[SimNames alloc] initWithOpcodes:nil];
         _simDescriptionProvider = [[SimDescriptions alloc] initWithNames:_simNameProvider
-                                                                          familyNames:_simFamilynameProvider];
-        _skinProvider = [[SkinProvider alloc] init];
+                                                                famNames:_simFamilynameProvider];
+        _skinProvider = [[Skins alloc] init];
         _lotProvider = [[LotProvider alloc] init];
         
         // Set up provider connections
@@ -90,6 +101,7 @@
         _dockableTools = [[NSMutableArray alloc] init];
         _actionTools = [[NSMutableArray alloc] init];
         _commandLines = [[NSMutableArray alloc] init];
+        _knownCommandLines = [[NSMutableArray alloc] init];
         _helpTopics = [[NSMutableArray alloc] init];
         _settings = [[NSMutableArray alloc] init];
         _listeners = [[InternalListeners alloc] init];
@@ -97,8 +109,8 @@
         _wrapperImages = [[NSMutableArray alloc] init];
         
         // Add default images
-        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-        NSImage *emptyImage = [NSImage imageNamed:@"empty"];
+        // Add default images (placeholders for now)
+        NSImage *emptyImage  = [NSImage imageNamed:@"empty"];
         NSImage *binaryImage = [NSImage imageNamed:@"binary"];
         
         if (emptyImage) {
@@ -149,9 +161,8 @@
             // Make sure we have two instances of each Wrapper otherwise,
             // AbstractWrapper.ResourceName could corrupt a open Resource
             if (![wrapper allowMultipleInstances] && [wrapper isKindOfClass:[AbstractWrapper class]]) {
-                [(AbstractWrapper *)wrapper setSingleGuiWrapper:guiWrappers[i]];
+                [(AbstractWrapper *)wrapper setSingleGuiWrapper:(id<IFileWrapper>)guiWrappers[i]];
             }
-            
             [self registerWrapper:wrapper];
         }
     }
@@ -219,10 +230,14 @@
     
     for (id<IPackedFileWrapper> handler in wrappers) {
         if ([handler conformsToProtocol:@protocol(IPackedFileWrapper)]) {
-            NSArray<NSNumber *> *assignableTypes = [handler assignableTypes];
-            for (NSNumber *typeNumber in assignableTypes) {
-                if ([typeNumber unsignedIntValue] == type) {
-                    return handler;
+            // Check if this handler also implements IFileWrapper (which has assignableTypes)
+            if ([handler conformsToProtocol:@protocol(IFileWrapper)]) {
+                id<IFileWrapper> fileHandler = (id<IFileWrapper>)handler;
+                NSArray<NSNumber *> *assignableTypes = [fileHandler assignableTypes];
+                for (NSNumber *typeNumber in assignableTypes) {
+                    if ([typeNumber unsignedIntValue] == type) {
+                        return handler;
+                    }
                 }
             }
         }
@@ -236,27 +251,31 @@
     
     for (id<IPackedFileWrapper> handler in wrappers) {
         if ([handler conformsToProtocol:@protocol(IPackedFileWrapper)]) {
-            NSData *signature = [handler fileSignature];
-            if (signature == nil || [signature length] == 0) {
-                continue;
-            }
-            
-            BOOL check = YES;
-            const uint8_t *signatureBytes = [signature bytes];
-            const uint8_t *dataBytes = [data bytes];
-            
-            for (NSUInteger i = 0; i < [signature length]; i++) {
-                if (i >= [data length]) {
-                    break;
+            // Check if this handler also implements IFileWrapper (which has fileSignature)
+            if ([handler conformsToProtocol:@protocol(IFileWrapper)]) {
+                id<IFileWrapper> fileHandler = (id<IFileWrapper>)handler;
+                NSData *signature = [fileHandler fileSignature];
+                if (signature == nil || [signature length] == 0) {
+                    continue;
                 }
-                if (dataBytes[i] != signatureBytes[i]) {
-                    check = NO;
-                    break;
+                
+                BOOL check = YES;
+                const uint8_t *signatureBytes = [signature bytes];
+                const uint8_t *dataBytes = [data bytes];
+                
+                for (NSUInteger i = 0; i < [signature length]; i++) {
+                    if (i >= [data length]) {
+                        break;
+                    }
+                    if (dataBytes[i] != signatureBytes[i]) {
+                        check = NO;
+                        break;
+                    }
                 }
-            }
-            
-            if (check) {
-                return handler;
+                
+                if (check) {
+                    return handler;
+                }
             }
         }
     }
@@ -296,23 +315,23 @@
     if (tool != nil) {
         if ([tool conformsToProtocol:@protocol(IDockableTool)]) {
             if (![self.dockableTools containsObject:tool]) {
-                [self.dockableTools addObject:(id<IDockableTool>)tool];
+                [self.dockableTools addObject:tool];  // Remove cast
             }
         } else if ([tool conformsToProtocol:@protocol(IToolAction)]) {
             if (![self.actionTools containsObject:tool]) {
-                [self.actionTools addObject:(id<IToolAction>)tool];
+                [self.actionTools addObject:tool];  // Remove cast
             }
         } else if ([tool conformsToProtocol:@protocol(IToolPlus)]) {
             if (![self.toolsPlus containsObject:tool]) {
-                [self.toolsPlus addObject:(id<IToolPlus>)tool];
+                [self.toolsPlus addObject:tool];  // Remove cast
             }
         } else if ([tool conformsToProtocol:@protocol(IListener)]) {
-            if (![self.listeners containsListener:(id<IListener>)tool]) {
-                [self.listeners addListener:(id<IListener>)tool];
-            }
-        } else if ([tool conformsToProtocol:@protocol(ITool)]) {
+            // Check what methods Listeners actually has - probably 'addListener:' not 'containsListener:'
+            [self.listeners addListener:(id<IListener>)tool];
+        } else {
+            // Default case - add to regular tools array
             if (![self.tools containsObject:tool]) {
-                [self.tools addObject:(id<ITool>)tool];
+                [self.tools addObject:tool];
             }
         }
     }
@@ -336,7 +355,7 @@
         [self registerTools:[factory knownTools]];
     } @catch (NSException *exception) {
         NSString *message = [NSString stringWithFormat:@"Unable to load Tool \"%@\". You Probably have a Plugin/Tool installed, that is not compatible with the current SimPE Release.", fileName];
-        [Helper exceptionMessage:message exception:exception];
+        [ExceptionForm executeWithMessage:message exception:exception];
     }
     
     [self addUpdatablePlugin:factory];
@@ -411,6 +430,11 @@
         [self.settings addObject:setting];
     }
 }
+
+- (void)register:(id<ISettingsFactory>)factory { 
+    <#code#>
+}
+
 
 // MARK: - ICommandLineRegistry Implementation
 

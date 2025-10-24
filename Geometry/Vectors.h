@@ -38,19 +38,19 @@
 /**
  * Contains a 2D Vector (when (un)serialized, it will be interpreted as SingleFloat!)
  */
-@interface Vector2f : NSObject
+@interface Vector2f : NSObject <NSCopying>
 
 // MARK: - Properties
 
 /**
  * The X Coordinate of the Vector
  */
-@property (nonatomic, assign) double x;
+@property (nonatomic, assign) float x;
 
 /**
  * The Y Coordinate of the Vector
  */
-@property (nonatomic, assign) double y;
+@property (nonatomic, assign) float y;
 
 // MARK: - Class Methods
 
@@ -71,7 +71,8 @@
  * @param x X-Coordinate
  * @param y Y-Coordinate
  */
-- (instancetype)initWithX:(double)x y:(double)y;
+- (instancetype)initWithX:(float)x y:(float)y NS_DESIGNATED_INITIALIZER;
+
 
 // MARK: - Serialization
 
@@ -104,14 +105,14 @@
 /**
  * Contains a 3D Vector (when (un)serialized, it will be interpreted as SingleFloat!)
  */
-@interface Vector3f : Vector2f
+@interface Vector3f : Vector2f <NSCopying>
 
 // MARK: - Properties
 
 /**
  * The Z Coordinate of the Vector
  */
-@property (nonatomic, assign) double z;
+@property (nonatomic, assign) float z;
 
 /**
  * Returns the UnitVector for this Vector
@@ -121,12 +122,12 @@
 /**
  * Returns the Norm of the Vector
  */
-@property (nonatomic, readonly) double norm;
+@property (nonatomic, readonly) float norm;
 
 /**
  * Returns the Length of the Vector
  */
-@property (nonatomic, readonly) double length;
+@property (nonatomic, readonly) float length;
 
 // MARK: - Class Methods
 
@@ -148,7 +149,9 @@
  * @param y Y-Coordinate
  * @param z Z-Coordinate
  */
-- (instancetype)initWithX:(double)x y:(double)y z:(double)z;
+- (instancetype)initWithX:(float)x
+                        y:(float)y
+                        z:(float)z NS_DESIGNATED_INITIALIZER;
 
 /**
  * Creates new Vector Instance from string array
@@ -166,7 +169,7 @@
  * Creates new Vector Instance from double array
  * @param data Double array with x, y, z values
  */
-- (instancetype)initWithDoubleArray:(NSArray<NSNumber *> *)data;
+- (instancetype)initWithNumberArray:(NSArray<NSNumber *> *)data;
 
 // MARK: - Vector Operations
 
@@ -199,21 +202,21 @@
  * @param scalar The scalar to multiply by
  * @return The resulting vector
  */
-- (Vector3f *)multiplyByScalar:(double)scalar;
+- (Vector3f *)multiplyByScalar:(float)scalar;
 
 /**
  * Scalar division
  * @param scalar The scalar to divide by
  * @return The resulting vector
  */
-- (Vector3f *)divideByScalar:(double)scalar;
+- (Vector3f *)divideByScalar:(float)scalar;
 
 /**
  * Scalar product (dot product)
  * @param other The other vector
  * @return The dot product result
  */
-- (double)dotProduct:(Vector3f *)other;
+- (float)dotProduct:(Vector3f *)other;
 
 /**
  * Cross product
@@ -236,14 +239,14 @@
  * @param index Index of the component
  * @returns the value stored in that Component
  */
-- (double)getComponent:(int)index;
+- (float)getComponent:(int)index;
 
 /**
  * Set a Component of this Vector (0=x, 1=y, 2=z)
  * @param index Index of the component
  * @param val The new Value
  */
-- (void)setComponent:(int)index value:(double)val;
+- (void)setComponent:(int)index value:(float)val;
 
 // MARK: - String Representation
 
@@ -266,7 +269,7 @@
 /**
  * Contains a 3D Vector with integer components
  */
-@interface Vector3i : NSObject
+@interface Vector3i : NSObject <NSCopying>
 
 // MARK: - Properties
 
@@ -298,7 +301,7 @@
  * @param y Y-Coordinate
  * @param z Z-Coordinate
  */
-- (instancetype)initWithX:(int)x y:(int)y z:(int)z;
+- (instancetype)initWithX:(int32_t)x y:(int32_t)y z:(int32_t)z NS_DESIGNATED_INITIALIZER;
 
 // MARK: - Serialization
 
@@ -331,7 +334,7 @@
 /**
  * The 4th Component of a Vector (often used as focal Point)
  */
-@property (nonatomic, assign) double w;
+@property (nonatomic, assign) float w;
 
 // MARK: - Class Methods
 
@@ -353,7 +356,7 @@
  * @param y Y-Coordinate
  * @param z Z-Coordinate
  */
-- (instancetype)initWithX:(double)x y:(double)y z:(double)z;
+- (instancetype)initWithX:(float)x y:(float)y z:(float)z;
 
 /**
  * Creates new Vector Instance
@@ -362,7 +365,7 @@
  * @param z Z-Coordinate
  * @param w 4th-Coordinate (often the focal Point)
  */
-- (instancetype)initWithX:(double)x y:(double)y z:(double)z w:(double)w;
+- (instancetype)initWithX:(float)x y:(float)y z:(float)z w:(float)w NS_DESIGNATED_INITIALIZER;
 
 // MARK: - Component Access
 
@@ -371,14 +374,14 @@
  * @param index Index of the component
  * @returns the value stored in that Component
  */
-- (double)getComponent:(int)index;
+- (float)getComponent:(int)index;
 
 /**
  * Set a Component of this Vector (0=x, 1=y, 2=z, 3=w)
  * @param index Index of the component
  * @param val The new Value
  */
-- (void)setComponent:(int)index value:(double)val;
+- (void)setComponent:(int)index value:(float)val;
 
 // MARK: - Operations
 

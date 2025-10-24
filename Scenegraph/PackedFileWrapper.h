@@ -31,6 +31,7 @@
 #import "AbstractWrapper.h"
 #import "IFileWrapper.h"
 #import "IFileWrapperSaveExtension.h"
+#import "MetaData.h"
 
 @protocol IPackedFileDescriptor;
 @class BinaryReader, BinaryWriter, MetaData;
@@ -78,40 +79,3 @@
 
 @end
 
-/**
- * Individual item within a RefFile
- */
-@interface RefFileItem : NSObject <IPackedFileDescriptor>
-
-/**
- * Reference to the parent RefFile
- */
-@property (nonatomic, weak) RefFile *parent;
-
-/**
- * File type
- */
-@property (nonatomic, assign) uint32_t type;
-
-/**
- * File group
- */
-@property (nonatomic, assign) uint32_t group;
-
-/**
- * File instance
- */
-@property (nonatomic, assign) uint32_t instance;
-
-/**
- * File subtype
- */
-@property (nonatomic, assign) uint32_t subType;
-
-/**
- * Initialize with parent RefFile
- * @param parent The parent RefFile
- */
-- (instancetype)initWithParent:(RefFile *)parent;
-
-@end

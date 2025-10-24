@@ -59,34 +59,3 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#import <Foundation/Foundation.h>
-
-@class BinaryReader, BinaryWriter;
-
-NS_ASSUME_NONNULL_BEGIN
-
-/**
- * Contains one CacheItem
- */
-@protocol ICacheItem <NSObject>
-
-/**
- * Load the Item from the Stream
- * @param reader the Stream Reader
- */
-- (void)load:(BinaryReader *)reader;
-
-/**
- * Save the Item to the Stream
- * @param writer the Stream Writer
- */
-- (void)save:(BinaryWriter *)writer;
-
-/**
- * Returns the Version of this CacheItem
- */
-@property (nonatomic, readonly) uint8_t version;
-
-@end
-
-NS_ASSUME_NONNULL_END

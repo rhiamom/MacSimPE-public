@@ -29,6 +29,7 @@
 
 #import "WorkshopItems.h"
 #import "CpfWrapper.h"
+#import "CpfItem.h"
 #import "Helper.h"
 
 @interface WorkshopMMAT ()
@@ -70,7 +71,7 @@
     // Get the objectStateIndex value from the MMAT
     CpfItem *objectStateIndexItem = [mmat getItem:@"objectStateIndex"];
     if (objectStateIndexItem != nil) {
-        uint32_t objectStateIndexValue = [objectStateIndexItem uIntegerValue];
+        uint32_t objectStateIndexValue = [objectStateIndexItem uintegerValue];
         
         // Only add if the objectStateIndex doesn't already exist
         if ([self addObjectStateIndex:objectStateIndexValue]) {

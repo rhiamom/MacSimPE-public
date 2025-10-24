@@ -76,7 +76,7 @@
 
 @property (nonatomic, strong) RenderableNode *renderableNode;
 @property (nonatomic, strong) BoundedNode *boundedNode;
-@property (nonatomic, strong) TransformNode *transformNode;
+
 
 // MARK: - Data Properties
 

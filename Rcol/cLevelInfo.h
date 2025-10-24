@@ -39,12 +39,12 @@
 
 /**
  * MipMap data type enumeration
- */
+ 
 typedef NS_ENUM(NSUInteger, MipMapType) {
     MipMapTypeSimPEPlainData,
     MipMapTypeTexture,
     MipMapTypeLifoReference
-};
+};*/
 
 
  // This is the actual FileWrapper for Level Info

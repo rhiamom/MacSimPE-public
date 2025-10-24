@@ -56,7 +56,7 @@ typedef NS_ENUM(int32_t, FamiVersions) {
     FamiVersionsUniversity = 0x4f,
     FamiVersionsBusiness = 0x51,
     FamiVersionsVoyage = 0x55,
-    FamiVersionsCastaway = 0x56
+    //FamiVersionsCastaway = 0x56
 };
 
 // MARK: - Flag Classes
@@ -115,20 +115,20 @@ typedef NS_ENUM(int32_t, FamiVersions) {
 
 /**
  * Returns/Sets Castaway Resources
- */
+ 
 @property (nonatomic, assign) int32_t castAwayResources;
 
-/**
+
  * Returns/Sets Castaway Food
- */
+ 
 @property (nonatomic, assign) int32_t castAwayFood;
 
-/**
+**
  * Returns/Sets Castaway Food Decay
- */
+ 
 @property (nonatomic, assign) int32_t castAwayFoodDecay;
 
-/**
+**
  * Returns the Number of Family friends
  */
 @property (nonatomic, assign) uint32_t friends;

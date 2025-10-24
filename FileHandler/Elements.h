@@ -25,22 +25,10 @@
 // *   Free Software Foundation, Inc.,                                       *
 // *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 // ***************************************************************************
-//
-//  Elements.h
-//  SimPE
-//
-//  Copyright (C) 2005 by Ambertation
-//  quaxi@ambertation.de
-//
-//  This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-//
 
 #import <Cocoa/Cocoa.h>
 
-@class IFileWrapperSaveExtension;
+@protocol IFileWrapperSaveExtension;
 @class Fami;
 @class Xml;
 @class SDesc;
@@ -132,52 +120,15 @@
     IBOutlet NSPopUpButton *cbfamtype;
     IBOutlet NSTextField *label91;
     IBOutlet NSTextField *tbflag;
-    IBOutlet NSTextField *label92;
     IBOutlet NSTextField *tbalbum;
-    IBOutlet NSTextField *label93;
-    IBOutlet NSTextField *tborgguid;
-    IBOutlet NSTextField *tbproxguid;
-    IBOutlet NSTextField *label97;
-    IBOutlet NSTextField *label63;
-    IBOutlet NSBox *groupBox4;
-    IBOutlet NSButton *cbphone;
-    IBOutlet NSButton *cbbaby;
-    IBOutlet NSButton *cbcomputer;
-    IBOutlet NSButton *cblot;
-    IBOutlet NSButton *cbupdate;
-    IBOutlet NSTextField *tbsubhood;
-    IBOutlet NSTextField *label89;
-    IBOutlet NSButton *btPicExport;
-    IBOutlet NSTextField *tbvac;
-    IBOutlet NSTextField *label7;
-    IBOutlet NSBox *gbCastaway;
-    IBOutlet NSTextField *tbcaunk;
-    IBOutlet NSTextField *label13;
-    IBOutlet NSTextField *tbcares;
-    IBOutlet NSTextField *label11;
-    IBOutlet NSTextField *tbcafood1;
-    IBOutlet NSTextField *label10;
-    IBOutlet NSTextField *tbblot;
-    IBOutlet NSTextField *label14;
-    IBOutlet NSTextField *tbbmoney;
-    IBOutlet NSTextField *label16;
     
     // Internal properties
-    IFileWrapperSaveExtension *wrapper;
-    IFileWrapperSaveExtension *picwrapper;
-    BOOL simnamechanged;
     BOOL intern;
 }
 
-@property (nonatomic, weak) IBOutlet NSImageView *pb;
-@property (nonatomic, weak) IBOutlet NSView *jpegPanel;
-@property (nonatomic, weak) IBOutlet NSView *xmlPanel;
-@property (nonatomic, weak) IBOutlet NSView *objdPanel;
-@property (nonatomic, weak) IBOutlet NSView *realPanel;
-@property (nonatomic, weak) IBOutlet NSView *famiPanel;
-@property (nonatomic, weak) IBOutlet NSView *familytiePanel;
-@property (nonatomic, strong) IFileWrapperSaveExtension *wrapper;
-@property (nonatomic, strong) IFileWrapperSaveExtension *picwrapper;
+// Properties
+@property (nonatomic, strong) id<IFileWrapperSaveExtension> wrapper;
+@property (nonatomic, strong) id<IFileWrapperSaveExtension> picwrapper;
 @property (nonatomic, assign) BOOL simnamechanged;
 
 // Actions

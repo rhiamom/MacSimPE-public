@@ -64,12 +64,12 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
 /**
  * Returns the Norm of the Quaternion
  */
-@property (nonatomic, readonly) double norm;
+@property (nonatomic, readonly) float norm;
 
 /**
  * Returns the Length of the Quaternion
  */
-@property (nonatomic, readonly) double length;
+@property (nonatomic, readonly) float length;
 
 /**
  * Returns the Conjugate for this Quaternion
@@ -84,7 +84,7 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
 /**
  * Returns the Rotation Angle (in Radians)
  */
-@property (nonatomic, readonly) double angle;
+@property (nonatomic, readonly) float angle;
 
 /**
  * Returns the rotation (unit-)Axis
@@ -135,7 +135,7 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
  * @param axis The (unit-)Axis
  * @param angle The rotation Angle in radians
  */
-+ (instancetype)fromAxisAngle:(Vector3f *)axis angle:(double)angle;
++ (instancetype)fromAxisAngle:(Vector3f *)axis angle:(float)angle;
 
 /**
  * Create from Axis-Angle representation
@@ -144,14 +144,14 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
  * @param z Z component of axis
  * @param angle The rotation Angle in radians
  */
-+ (instancetype)fromAxisAngleX:(double)x y:(double)y z:(double)z angle:(double)angle;
++ (instancetype)fromAxisAngleX:(float)x y:(float)y z:(float)z angle:(float)angle;
 
 /**
  * Create from Imaginary-Real representation
  * @param imaginary The imaginary part
  * @param w The real part
  */
-+ (instancetype)fromImaginary:(Vector3f *)imaginary real:(double)w;
++ (instancetype)fromImaginary:(Vector3f *)imaginary real:(float)w;
 
 /**
  * Create from Imaginary-Real representation
@@ -166,7 +166,7 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
  * @param z Z imaginary component
  * @param w Real component
  */
-+ (instancetype)fromImaginaryRealX:(double)x y:(double)y z:(double)z w:(double)w;
++ (instancetype)fromImaginaryRealX:(float)x y:(float)y z:(float)z w:(float)w;
 
 /**
  * Create from Euler Angles
@@ -180,7 +180,7 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
  * @param pitch Pitch angle
  * @param roll Roll angle
  */
-+ (instancetype)fromEulerAnglesYaw:(double)yaw pitch:(double)pitch roll:(double)roll;
++ (instancetype)fromEulerAnglesYaw:(float)yaw pitch:(float)pitch roll:(float)roll;
 
 /**
  * Create from Rotation Matrix
@@ -195,14 +195,14 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
  * @param radians Angle in Radians
  * @returns Angle in Degrees
  */
-+ (double)radiansToDegrees:(double)radians;
++ (float)radiansToDegrees:(float)radians;
 
 /**
  * Returns an Angle in Radians
  * @param degrees Angle in Degrees
  * @returns Angle in Radians
  */
-+ (double)degreesToRadians:(double)degrees;
++ (float)degreesToRadians:(float)degrees;
 
 // MARK: - Quaternion Operations
 
@@ -220,7 +220,7 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
  * @param scalar The scalar value
  * @returns The resulting quaternion
  */
-+ (Quaternion *)multiplyQuaternion:(Quaternion *)quaternion byScalar:(double)scalar;
++ (Quaternion *)multiplyQuaternion:(Quaternion *)quaternion byScalar:(float)scalar;
 
 /**
  * Add two quaternions
@@ -236,7 +236,7 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
  * @param q2 Second quaternion
  * @returns The dot product
  */
-+ (double)dotProduct:(Quaternion *)q1 with:(Quaternion *)q2;
++ (float)dotProduct:(Quaternion *)q1 with:(Quaternion *)q2;
 
 /**
  * Cross product
@@ -263,7 +263,7 @@ typedef NS_ENUM(uint8_t, QuaternionParameterType) {
  * @param axis The (unit-)Axis
  * @param angle The rotation Angle in radians
  */
-- (void)setFromAxisAngle:(Vector3f *)axis angle:(double)angle;
+- (void)setFromAxisAngle:(Vector3f *)axis angle:(float)angle;
 
 /**
  * Get the Euler Angles represented by this Quaternion

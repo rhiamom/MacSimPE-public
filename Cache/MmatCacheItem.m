@@ -83,10 +83,10 @@ const uint8_t MMAT_CACHE_ITEM_VERSION = 1;
 // MARK: - ICacheItem Protocol
 
 - (void)load:(BinaryReader *)reader {
-    self.version = [reader readUInt8];
+    self.version = [reader readByte];
     if (self.version > MMAT_CACHE_ITEM_VERSION) {
         @throw [[CacheException alloc] initWithMessage:@"Unknown CacheItem Version."
-                                               details:nil
+                                              filename:nil
                                                version:self.version];
     }
     

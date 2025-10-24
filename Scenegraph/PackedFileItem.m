@@ -39,6 +39,7 @@
 #import "Localization.h"
 #import "IPackedFileDescriptor.h"
 #import "IScenegraphFileIndexItem.h"
+#import "IScenegraphFileIndex.h"
 #import "IPackageFile.h"
 
 @implementation SkinChain
@@ -100,7 +101,7 @@
     if (self.cpf) {
         @try {
             id<IPackedFileDescriptor> descriptor = [self.cpf.package findFileWithType:0xAC506764
-                                                                              subType:self.cpf.fileDescriptor.subType
+                                                                              subtype:self.cpf.fileDescriptor.subtype
                                                                                 group:self.cpf.fileDescriptor.group
                                                                              instance:self.cpf.fileDescriptor.instance];
             if (descriptor) {
@@ -120,7 +121,7 @@
     if (descriptor.type == type) {
         NSArray<id<IScenegraphFileIndexItem>> *items = [[FileTable fileIndex] findFile:descriptor package:nil];
         if (items.count > 0) {
-            GenericRcol *rcol = [[GenericRcol alloc] initWithWrapper:nil editable:NO];
+            GenericRcol *rcol = [[GenericRcol alloc] initWithProvider:nil editable:NO];
             [rcol processData:items[0] editable:NO];
             return rcol;
         }
@@ -141,10 +142,10 @@
         
         id<IScenegraphFileIndexItem> item = [[FileTable fileIndex] findFileByName:txtrName
                                                                              type:[MetaData TXTR]
-                                                                            group:[MetaData LOCAL_GROUP]
-                                                                           global:YES];
+                                                                         defGroup:[MetaData LOCAL_GROUP]
+                                                                       beTolerant:YES];
         if (item) {
-            GenericRcol *rcol = [[GenericRcol alloc] initWithWrapper:nil editable:NO];
+            GenericRcol *rcol = [[GenericRcol alloc] initWithProvider:nil editable:NO];
             [rcol processData:item editable:NO];
             return rcol;
         }
@@ -290,7 +291,7 @@
         _parent = parent;
         self.group = descriptor.group;
         self.type = descriptor.type;
-        self.subType = descriptor.subType;
+        self.subType = descriptor.subtype;
         self.instance = descriptor.instance;
     }
     return self;
@@ -337,7 +338,7 @@
 - (instancetype)initWithCpf:(Cpf *)cpf {
     self = [super initWithCpf:cpf];
     if (self) {
-        _name = [[Localization manager] getString:@"Unknown"];
+        _name = [Localization getString:@"Unknown"];
         _category = 0;
         
         if (cpf) {

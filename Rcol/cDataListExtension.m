@@ -58,7 +58,10 @@
 
 - (void)unserialize:(BinaryReader *)reader {
     self.version = [reader readUInt32];
-    NSString *fldsc = [reader readString];
+    
+    // Read and discard unused string field (advances stream position)
+    (void)[reader readString];
+    
     uint32_t myid = [reader readUInt32];
     
     [_extension unserialize:reader version:self.version];

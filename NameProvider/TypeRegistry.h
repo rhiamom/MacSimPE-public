@@ -67,7 +67,7 @@
 @class SimFamilyNamesProvider;
 @class SimNamesProvider;
 @class SimDescriptionsProvider;
-@class SkinsProvider;
+@class SkinProvider;
 @class LotProvider;
 
 /// <summary>
@@ -92,23 +92,17 @@
 /// Contains all available Tool Plugins
 /// </summary>
 @property (nonatomic, strong) NSMutableArray *tools;
-@property (nonatomic, strong) NSMutableArray *toolsPlus;
 
-/// <summary>
-/// Contains all available dockable Tool Plugins
-/// </summary>
 @property (nonatomic, strong) NSMutableArray *dockableTools;
 
-/// <summary>
-/// Contains all available action Tool Plugins
-/// </summary>
 @property (nonatomic, strong) NSMutableArray *actionTools;
 
-/// <summary>
-/// Contains all known CommandLine tools
-/// </summary>
-@property (nonatomic, strong) NSMutableArray *commandLines;
+@property (nonatomic, strong) NSMutableArray *toolsPlus;
 
+/**
+ * Contains all known CommandLine tools
+ */
+@property (nonatomic, strong) NSMutableArray<id<ICommandLine>> *commandLines;
 /// <summary>
 /// Contains all known Helptopics
 /// </summary>
@@ -117,8 +111,9 @@
 /// <summary>
 /// Contains all known Custom Settings
 /// </summary>
-@property (nonatomic, strong) NSMutableArray *settings;
+@property (nonatomic, strong) NSMutableArray<id<ISettings>> *settings;
 
+@property (nonatomic, readonly) NSMutableArray<id<ISettings>> *knownSettings;
 /// <summary>
 /// Contains all available Listeners
 /// </summary>

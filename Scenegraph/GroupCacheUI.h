@@ -29,6 +29,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
+#import "IPackedFileUI.h"
 
 // Forward declarations
 @protocol IPackedFileUI, IFileWrapper;

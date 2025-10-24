@@ -45,6 +45,7 @@
 // MARK: - Private Properties
 @property (nonatomic, strong) NSMutableArray *seenBones;
 @property (nonatomic, assign) NSInteger pos;
+@property (nonatomic, strong) TransformNode *transformNode;
 
 // MARK: - Initialization
 - (instancetype)initWithParent:(Rcol *)parent;

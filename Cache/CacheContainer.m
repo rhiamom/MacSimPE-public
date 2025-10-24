@@ -30,7 +30,7 @@
 #import "CacheContainer.h"
 #import "BinaryReader.h"
 #import "BinaryWriter.h"
-#import "CacheItems.h"
+#import "CacheLists.h"
 #import "ObjectCacheItem.h"
 #import "MmatCacheItem.h"
 #import "RcolCacheItem.h"
@@ -83,8 +83,8 @@ const uint8_t CACHE_CONTAINER_VERSION = 1;
     [self.items removeAllObjects];
     
     int32_t offset = [reader readInt32];
-    self.version = [reader readUInt8];
-    self.type = (ContainerType)[reader readUInt8];
+    self.version = [reader readByte];
+    self.type = (ContainerType)[reader readByte];
     int32_t count = [reader readInt32];
     
     long long pos = [reader position];

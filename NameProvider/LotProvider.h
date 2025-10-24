@@ -168,4 +168,6 @@
  */
 - (void)loadLotsFromFolder;
 
+- (void)simDescriptionProviderChangedPackage:(NSNotification *)notification;
+
 @end

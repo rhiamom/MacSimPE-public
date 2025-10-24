@@ -231,7 +231,7 @@
         } else {
             // The lifo wasn't found globally, so look in local package
             id<IPackageFile> pkg = self.parent.parent.package;
-            NSArray<id<IPackedFileDescriptor>> *pfds = [pkg findFile:_lifoFile type:[MetaData LIFO]]; // Fixed method name
+            NSArray<id<IPackedFileDescriptor>> *pfds = [pkg findFileByName:_lifoFile type:[MetaData LIFO]];  // Fixed method name
             if (pfds.count > 0) {
                 rcol = [[GenericRcol alloc] initWithProvider:nil fast:NO];
                 [rcol processData:pfds[0] package:pkg]; // Use correct method signature
@@ -499,7 +499,7 @@
 
 - (void)unserialize:(BinaryReader *)reader {
     self.version = [reader readUInt32];
-    NSString *s = [reader readString];
+    (void)[reader readString];  // advance past unused string
     
     self.sgres.blockId = [reader readUInt32];
     [self.sgres unserialize:reader];

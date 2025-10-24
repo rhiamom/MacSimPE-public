@@ -28,13 +28,14 @@
 // ***************************************************************************
 
 #import "CacheFile.h"
-#import "CacheContainers.h"
+#import "CacheLists.h"
 #import "CacheContainer.h"
 #import "BinaryReader.h"
 #import "BinaryWriter.h"
 #import "FileStream.h"
 #import "Helper.h"
 #import "CacheException.h"
+#import "StreamMaintainer.h"
 
 // MARK: - Constants
 
@@ -63,59 +64,64 @@ const uint8_t CACHE_FILE_VERSION = 1;
 
 // MARK: - File Operations
 
-- (void)load:(NSString *)filename {
-    [self load:filename withProgress:NO];
-}
-
 - (void)load:(NSString *)filename withProgress:(BOOL)withProgress {
-    self.fileName = filename;
+    _fileName = [filename copy];
     [self.containers removeAllObjects];
     
+    // Check if file exists
     if (![[NSFileManager defaultManager] fileExistsAtPath:filename]) {
         return;
     }
     
-    FileStream *fileStream = [[FileStream alloc] initWithPath:filename mode:NSStreamModeRead];
+    // Use StreamFactory to get a FileStream for reading
+    StreamItem *streamItem = [StreamFactory useStream:filename fileAccess:@"Read"];
     @try {
-        [fileStream open];
-        BinaryReader *reader = [[BinaryReader alloc] initWithStream:fileStream];
+        if (streamItem.streamState == StreamStateRemoved) {
+            @throw [NSException exceptionWithName:@"CacheException"
+                                           reason:[NSString stringWithFormat:@"File not found: %@", filename]
+                                         userInfo:nil];
+        }
+        
+        // Create BinaryReader with the FileStream
+        BinaryReader *reader = [[BinaryReader alloc] initWithStream:streamItem.fileStream];
         
         @try {
-            uint64_t sig = [reader readUInt64];
-            if (sig != CACHE_FILE_SIGNATURE) {
-                NSString *hexSig = [Helper hexString:sig];
-                @throw [[CacheException alloc] initWithMessage:[NSString stringWithFormat:@"Unknown Cache File Signature (%@)", hexSig]
-                                                      filename:filename
-                                                       version:0];
+            // Read and verify cache file signature
+            uint64_t signature = [reader readUInt64];
+            if (signature != CACHE_FILE_SIGNATURE) {
+                @throw [NSException exceptionWithName:@"CacheException"
+                                               reason:[NSString stringWithFormat:@"Unknown Cache File Signature (%llx)", signature]
+                                             userInfo:@{@"filename": filename, @"version": @0}];
             }
             
-            self.version = [reader readUInt8];
-            if (self.version > CACHE_FILE_VERSION) {
-                @throw [[CacheException alloc] initWithMessage:@"Unable to read Cache"
-                                                      filename:filename
-                                                       version:self.version];
+            // Read and verify version
+            uint8_t fileVersion = [reader readByte];
+            if (fileVersion > CACHE_FILE_VERSION) {
+                @throw [NSException exceptionWithName:@"CacheException"
+                                               reason:@"Unable to read Cache"
+                                             userInfo:@{@"filename": filename, @"version": @(fileVersion)}];
             }
             
+            // Set internal version
+            _version = fileVersion;
+            
+            // Read container count and load containers
             int32_t count = [reader readInt32];
-            // TODO: Implement progress tracking if needed
-            // if (withProgress) Wait.MaxProgress = count;
-            
             for (int32_t i = 0; i < count; i++) {
-                CacheContainer *cc = [[CacheContainer alloc] initWithType:self.defaultType];
-                [cc load:reader];
-                [self.containers addObject:cc];
+                CacheContainer *container = [[CacheContainer alloc] initWithType:self.defaultType];
+                [container load:reader];
+                [self.containers addCacheContainer:container];
                 
-                // TODO: Implement progress tracking and event processing if needed
-                // if (withProgress) Wait.Progress = i;
-                // if (i % 10 == 0) [NSApplication.sharedApplication processEvents];
+                // Progress handling could be added here if needed
+                // if (withProgress && i % 10 == 0) { /* update progress */ }
             }
-        }
-        @finally {
+            
+        } @finally {
             [reader close];
         }
-    }
-    @finally {
-        [fileStream close];
+        
+    } @finally {
+        [streamItem close];
     }
 }
 
@@ -129,84 +135,108 @@ const uint8_t CACHE_FILE_VERSION = 1;
     self.fileName = filename;
     self.version = CACHE_FILE_VERSION;
     
-    FileStream *fileStream = [[FileStream alloc] initWithPath:filename mode:NSStreamModeWrite];
+    // Use StreamFactory to get a FileStream for writing
+    StreamItem *streamItem = [StreamFactory useStreamCreate:filename fileAccess:@"Write" create:YES];
     @try {
         [self cleanUp];
         
-        [fileStream open];
-        [fileStream seekToBeginning];
-        [fileStream truncateAtOffset:0];
+        if (streamItem.streamState == StreamStateRemoved) {
+            @throw [NSException exceptionWithName:@"CacheException"
+                                           reason:@"Unable to create or open file for writing"
+                                         userInfo:nil];
+        }
+        // Create BinaryWriter with the FileStream
+        BinaryWriter *writer = [[BinaryWriter alloc] initWithFileStream:streamItem.fileStream];
         
-        BinaryWriter *writer = [[BinaryWriter alloc] initWithStream:fileStream];
+        // Seek to beginning and truncate (equivalent to C# SetLength(0))
+        [writer seekToPosition:0];
         
+        // Write cache file signature
         [writer writeUInt64:CACHE_FILE_SIGNATURE];
+        
+        // Write version
         [writer writeUInt8:self.version];
         
+        // Write container count
         [writer writeInt32:(int32_t)self.containers.count];
-        NSMutableArray<NSNumber *> *offsets = [[NSMutableArray alloc] init];
         
-        // Prepare the Index
+        // Prepare the Index - first pass (equivalent to C# Save(writer, -1))
+        NSMutableArray<NSNumber *> *offsets = [[NSMutableArray alloc] init];
         for (NSUInteger i = 0; i < self.containers.count; i++) {
-            [offsets addObject:@([fileStream offsetInFile])];
+            [offsets addObject:@(writer.position)];
             [self.containers[i] save:writer offset:-1];
         }
         
-        // Write the Data
+        // Write the Data - second pass (equivalent to C# Save(writer, offset))
         for (NSUInteger i = 0; i < self.containers.count; i++) {
-            long offset = [fileStream offsetInFile];
-            [fileStream seekToFileOffset:[offsets[i] longLongValue]];
-            [self.containers[i] save:writer offset:(int32_t)offset];
+            int64_t currentOffset = writer.position;
+            [writer seekToPosition:offsets[i].longLongValue];
+            [self.containers[i] save:writer offset:(int32_t)currentOffset];
+        }
+        
+        [writer flush];
+        [writer close];
+        
+    } @catch (NSException *exception) {
+        // Re-throw the exception
+        @throw exception;
+    } @finally {
+        // Always close the stream
+        [streamItem close];
+    }
+}
+    
+    // MARK: - Container Management
+    
+    - (CacheContainer *)useContainer:(ContainerType)containerType fileName:(NSString * _Nullable)name {
+        if (name == nil) {
+            name = @"";
+        }
+        name = [[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] lowercaseString];
+        
+        CacheContainer *mycc = nil;
+        for (CacheContainer *cc in self.containers) {
+            if (cc.type == containerType && cc.valid && [cc.fileName isEqualToString:name]) {
+                mycc = cc;
+                break;
+            }
+        }
+        
+        if (mycc == nil) {
+            mycc = [[CacheContainer alloc] initWithType:containerType];
+            mycc.fileName = name;
+            [self.containers addObject:mycc];
+        }
+        
+        return mycc;
+    }
+    
+    - (void)cleanUp {
+        for (NSInteger i = (NSInteger)self.containers.count - 1; i >= 0; i--) {
+            if (!self.containers[i].valid) {
+                [self.containers removeObjectAtIndex:i];
+            }
         }
     }
-    @finally {
-        [fileStream close];
-    }
-}
-
-// MARK: - Container Management
-
-- (CacheContainer *)useContainer:(ContainerType)containerType fileName:(NSString * _Nullable)name {
-    if (name == nil) {
-        name = @"";
-    }
-    name = [[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] lowercaseString];
     
-    CacheContainer *mycc = nil;
-    for (CacheContainer *cc in self.containers) {
-        if (cc.type == containerType && cc.valid && [cc.fileName isEqualToString:name]) {
-            mycc = cc;
-            break;
+    // MARK: - Memory Management
+    
+    - (void)dispose {
+        for (CacheContainer *cc in self.containers) {
+            [cc dispose];
         }
+        [self.containers removeAllObjects];
     }
     
-    if (mycc == nil) {
-        mycc = [[CacheContainer alloc] initWithType:containerType];
-        mycc.fileName = name;
-        [self.containers addObject:mycc];
+    - (void)dealloc {
+        [self dispose];
     }
-    
-    return mycc;
-}
 
-- (void)cleanUp {
-    for (NSInteger i = (NSInteger)self.containers.count - 1; i >= 0; i--) {
-        if (!self.containers[i].valid) {
-            [self.containers removeObjectAtIndex:i];
-        }
-    }
-}
+ //MARK: ICacheTestFile implementation
 
-// MARK: - Memory Management
-
-- (void)dispose {
-    for (CacheContainer *cc in self.containers) {
-        [cc dispose];
-    }
-    [self.containers removeAllObjects];
-}
-
-- (void)dealloc {
-    [self dispose];
+- (void)load:(NSString *)fileName {
+    // Call the more detailed load method with progress disabled
+    [self load:fileName withProgress:NO];
 }
 
 @end

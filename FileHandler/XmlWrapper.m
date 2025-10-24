@@ -72,19 +72,21 @@
     }
 }
 
-- (NSInteger)serialize:(BinaryWriter *)writer {
-    // Convert text to data and write (similar to the C# version)
+- (void)serialize:(BinaryWriter *)writer {
     NSData *data = [self.text dataUsingEncoding:NSUTF8StringEncoding];
     if (data == nil) {
         data = [self.text dataUsingEncoding:NSASCIIStringEncoding];
     }
-    
     if (data != nil) {
         [writer writeData:data];
-        return [data length];
     }
-    
-    return 0;
+}
+
+// Optional helper — matches C# logic using BinaryWriter.position
+- (NSInteger)serializeReturningLength:(BinaryWriter *)writer {
+    NSInteger start = writer.position;
+    [self serialize:writer]; // reuse the conforming method
+    return writer.position - start;
 }
 
 - (id<IWrapperInfo>)createWrapperInfo {

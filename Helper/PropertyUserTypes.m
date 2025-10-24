@@ -290,13 +290,8 @@ static NSInteger _digitBase = 16;
 
 - (id)objectValue {
     if (_type == [NSNumber class]) {
-        // Return appropriate NSNumber type based on original type
-        const char *typeName = [NSStringFromClass(_type) UTF8String];
-        
-        // For simplicity, return as NSNumber with appropriate value
         return @(_val);
     }
-    
     return @(_val);
 }
 
@@ -315,8 +310,9 @@ static NSInteger _digitBase = 16;
     
     if (_digitBase == 16) {
         length = length / 4;
-        NSString *hexString = [NSString stringWithFormat:@"%llx", _val];
-        return [NSString stringWithFormat:@"0x%@", [Helper hexStringWithPadding:(NSUInteger)_val padding:length]];
+        return [NSString stringWithFormat:@"0x%@",
+                [Helper hexStringWithPadding:(NSUInteger)_val padding:length]];
+        
     } else if (_digitBase == 2) {
         // Convert to binary string
         NSMutableString *binaryString = [[NSMutableString alloc] init];

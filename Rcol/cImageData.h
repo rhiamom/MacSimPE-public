@@ -31,6 +31,8 @@
 #import <AppKit/AppKit.h>
 #import "AbstractRcolBlock.h"
 #import "IScenegraphBlock.h"
+#import "ImageLoader.h"
+
 
 // Forward declarations
 @class ImageData, MipMapBlock, Rcol, SGResource, DDSData;
@@ -46,9 +48,9 @@ typedef NS_ENUM(uint8_t, MipMapType) {
     MipMapTypeSimPEPlainData = 0xff
 };
 
-/**
+/*
  * Texture formats supported by ImageLoader
- */
+ 
 typedef NS_ENUM(uint32_t, TxtrFormats) {
     TxtrFormatsExtRaw24Bit,
     TxtrFormatsExtRaw32Bit,
@@ -56,7 +58,7 @@ typedef NS_ENUM(uint32_t, TxtrFormats) {
     TxtrFormatsDXT3,
     TxtrFormatsDXT5
     // Add other formats as needed
-};
+};*/
 
 /**
  * A MipMap contains one Texture in a specific Size

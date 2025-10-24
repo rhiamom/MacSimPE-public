@@ -35,14 +35,14 @@
 #import <math.h>
 
 @interface Quaternion ()
-- (instancetype)initWithType:(QuaternionParameterType)parameterType x:(double)x y:(double)y z:(double)z w:(double)w;
-- (instancetype)initWithType:(QuaternionParameterType)parameterType vector:(Vector3f *)vector angle:(double)angle;
+- (instancetype)initWithType:(QuaternionParameterType)parameterType x:(float)x y:(float)y z:(float)z w:(float)w;
+- (instancetype)initWithType:(QuaternionParameterType)parameterType vector:(Vector3f *)vector angle:(float)angle;
 - (void)makeRobust;
 - (void)doMakeRobust;
-- (double)makeRobustAngle:(double)radians;
-- (double)normalizeRad:(double)radians;
-- (double)clip1:(double)value;
-- (BOOL)isNear:(double)value near:(double)near delta:(double)delta;
+- (float)makeRobustAngle:(float)radians;
+- (float)normalizeRad:(float)radians;
+- (float)clip1:(float)value;
+- (BOOL)isNear:(float)value near:(float)near delta:(float)delta;
 - (void)loadCorrection;
 @end
 
@@ -50,7 +50,7 @@
 
 // MARK: - Internal Initializers
 
-- (instancetype)initWithType:(QuaternionParameterType)parameterType x:(double)x y:(double)y z:(double)z w:(double)w {
+- (instancetype)initWithType:(QuaternionParameterType)parameterType x:(float)x y:(float)y z:(float)z w:(float)w {
     self = [super init];
     if (self) {
         if (parameterType == QuaternionParameterTypeImaginaryReal) {
@@ -65,7 +65,7 @@
     return self;
 }
 
-- (instancetype)initWithType:(QuaternionParameterType)parameterType vector:(Vector3f *)vector angle:(double)angle {
+- (instancetype)initWithType:(QuaternionParameterType)parameterType vector:(Vector3f *)vector angle:(float)angle {
     self = [super init];
     if (self) {
         if (parameterType == QuaternionParameterTypeImaginaryReal) {
@@ -88,12 +88,12 @@
 
 // MARK: - Properties
 
-- (double)norm {
+- (float)norm {
     double n = [self.imaginary norm] + pow(self.w, 2);
     return n;
 }
 
-- (double)length {
+- (float)length {
     return sqrt(self.norm);
 }
 
@@ -106,7 +106,7 @@
     return [[Vector3f alloc] initWithX:self.x y:self.y z:self.z];
 }
 
-- (double)angle {
+- (float)angle {
     [self makeRobust];
     [self makeUnitQuaternion];
     return acos(self.w) * 2.0;
@@ -116,7 +116,7 @@
     [self makeRobust];
     [self makeUnitQuaternion];
     
-    double sina = sqrt(1 - pow(self.w, 2));
+    float sina = sqrt(1 - pow(self.w, 2));
     
     if (sina == 0) {
         return [[Vector3f alloc] initWithX:0 y:0 z:0];
@@ -130,9 +130,9 @@
     [self makeUnitQuaternion];
     
     Matrixd *m = [[Matrixd alloc] initWithRows:4 columns:4];
-    double sx = pow(self.x, 2);
-    double sy = pow(self.y, 2);
-    double sz = pow(self.z, 2);
+    float sx = pow(self.x, 2);
+    float sy = pow(self.y, 2);
+    float sz = pow(self.z, 2);
     
     [m setValue:(1 - 2*(sy + sz)) atRow:0 column:0];
     [m setValue:(2*(self.x * self.y - self.w * self.z)) atRow:0 column:1];
@@ -175,16 +175,16 @@
 
 // MARK: - Factory Methods
 
-+ (instancetype)fromAxisAngle:(Vector3f *)axis angle:(double)angle {
++ (instancetype)fromAxisAngle:(Vector3f *)axis angle:(float)angle {
     [axis makeUnitVector];
     return [[self alloc] initWithType:QuaternionParameterTypeUnitAxisAngle x:axis.x y:axis.y z:axis.z w:angle];
 }
 
-+ (instancetype)fromAxisAngleX:(double)x y:(double)y z:(double)z angle:(double)angle {
++ (instancetype)fromAxisAngleX:(float)x y:(float)y z:(float)z angle:(float)angle {
     return [[self alloc] initWithType:QuaternionParameterTypeUnitAxisAngle x:x y:y z:z w:angle];
 }
 
-+ (instancetype)fromImaginary:(Vector3f *)imaginary real:(double)w {
++ (instancetype)fromImaginary:(Vector3f *)imaginary real:(float)w {
     return [[self alloc] initWithType:QuaternionParameterTypeImaginaryReal x:imaginary.x y:imaginary.y z:imaginary.z w:w];
 }
 
@@ -192,7 +192,7 @@
     return [[self alloc] initWithType:QuaternionParameterTypeImaginaryReal x:vector.x y:vector.y z:vector.z w:vector.w];
 }
 
-+ (instancetype)fromImaginaryRealX:(double)x y:(double)y z:(double)z w:(double)w {
++ (instancetype)fromImaginaryRealX:(float)x y:(float)y z:(float)z w:(float)w {
     return [[self alloc] initWithType:QuaternionParameterTypeImaginaryReal x:x y:y z:z w:w];
 }
 
@@ -204,24 +204,24 @@
     return [self fromRotationMatrix:rotation];
 }
 
-+ (instancetype)fromEulerAnglesYaw:(double)yaw pitch:(double)pitch roll:(double)roll {
++ (instancetype)fromEulerAnglesYaw:(float)yaw pitch:(float)pitch roll:(float)roll {
     Vector3f *euler = [[Vector3f alloc] initWithX:pitch y:yaw z:roll];
     return [self fromEulerAngles:euler];
 }
 
 + (instancetype)fromRotationMatrix:(Matrixd *)rotationMatrix {
-    double x = 0, y = 0, z = 0, w = 0;
+    float x = 0, y = 0, z = 0, w = 0;
     
-    double trace = [rotationMatrix trace];
+    float trace = [rotationMatrix trace];
     if (trace > 0) {
         w = sqrt(trace) / 2;
         x = ([rotationMatrix valueAtRow:2 column:1] - [rotationMatrix valueAtRow:1 column:2]) / (4 * w);
         y = ([rotationMatrix valueAtRow:0 column:2] - [rotationMatrix valueAtRow:2 column:0]) / (4 * w);
         z = ([rotationMatrix valueAtRow:1 column:0] - [rotationMatrix valueAtRow:0 column:1]) / (4 * w);
     } else {
-        double r00 = [rotationMatrix valueAtRow:0 column:0];
-        double r11 = [rotationMatrix valueAtRow:1 column:1];
-        double r22 = [rotationMatrix valueAtRow:2 column:2];
+        float r00 = [rotationMatrix valueAtRow:0 column:0];
+        float r11 = [rotationMatrix valueAtRow:1 column:1];
+        float r22 = [rotationMatrix valueAtRow:2 column:2];
         
         if (r00 >= r11 && r00 >= r22) {
             x = sqrt(r00 - r11 - r22 + 1) / 2;
@@ -249,11 +249,11 @@
 
 // MARK: - Angle Conversion Utilities
 
-+ (double)radiansToDegrees:(double)radians {
++ (float)radiansToDegrees:(float)radians {
     return (radians * 180.0) / M_PI;
 }
 
-+ (double)degreesToRadians:(double)degrees {
++ (float)degreesToRadians:(float)degrees {
     return (degrees * M_PI) / 180.0;
 }
 
@@ -267,23 +267,23 @@
     Vector3f *q2ScaledByQ1W = [q1Imaginary multiplyByScalar:q2.w];
     Vector3f *q1ScaledByQ2W = [q2Imaginary multiplyByScalar:q1.w];
     
-    Vector3f *imaginaryResult = [[crossProduct addVector:q2ScaledByQ1W] addVector:q1ScaledByQ2W];
+    Vector3f *imaginaryResult = [[crossProduct add:q2ScaledByQ1W] add:q1ScaledByQ2W];
     double realResult = q1.w * q2.w - [q1Imaginary dotProduct:q2Imaginary];
     
     return [Quaternion fromImaginary:imaginaryResult real:realResult];
 }
 
-+ (Quaternion *)multiplyQuaternion:(Quaternion *)quaternion byScalar:(double)scalar {
++ (Quaternion *)multiplyQuaternion:(Quaternion *)quaternion byScalar:(float)scalar {
     Vector3f *scaledImaginary = [quaternion.imaginary multiplyByScalar:scalar];
     return [Quaternion fromImaginary:scaledImaginary real:(quaternion.w * scalar)];
 }
 
 + (Quaternion *)add:(Quaternion *)q1 to:(Quaternion *)q2 {
-    Vector3f *imaginarySum = [q1.imaginary addVector:q2.imaginary];
+    Vector3f *imaginarySum = [q1.imaginary add:q2.imaginary];
     return [Quaternion fromImaginary:imaginarySum real:(q1.w + q2.w)];
 }
 
-+ (double)dotProduct:(Quaternion *)q1 with:(Quaternion *)q2 {
++ (float)dotProduct:(Quaternion *)q1 with:(Quaternion *)q2 {
     return q1.w * q2.w + [q1.imaginary dotProduct:q2.imaginary];
 }
 
@@ -299,7 +299,7 @@
 }
 
 - (void)makeUnitQuaternion {
-    double length = self.length;
+    float length = self.length;
     if (length != 0) {
         self.x = self.x / length;
         self.y = self.y / length;
@@ -308,10 +308,10 @@
     }
 }
 
-- (void)setFromAxisAngle:(Vector3f *)axis angle:(double)angle {
+- (void)setFromAxisAngle:(Vector3f *)axis angle:(float)angle {
     [axis makeUnitVector];
     
-    double sina = sin(angle / 2.0);
+    float sina = sin(angle / 2.0);
     self.x = axis.x * sina;
     self.y = axis.y * sina;
     self.z = axis.z * sina;
@@ -441,23 +441,23 @@
     // Implementation placeholder - robust mathematical corrections
 }
 
-- (double)makeRobustAngle:(double)radians {
+- (float)makeRobustAngle:(float)radians {
     return radians; // Simplified - original had complex robustness logic
 }
 
-- (double)normalizeRad:(double)radians {
+- (float)normalizeRad:(float)radians {
     while (radians > M_PI) radians -= 2 * M_PI;
     while (radians < -M_PI) radians += 2 * M_PI;
     return radians;
 }
 
-- (double)clip1:(double)value {
+- (float)clip1:(float)value {
     if (value < -1) return -1;
     if (value > 1) return 1;
     return value;
 }
 
-- (BOOL)isNear:(double)value near:(double)near delta:(double)delta {
+- (BOOL)isNear:(float)value near:(float)near delta:(float)delta {
     return (fabs(fabs(value) - near) < delta);
 }
 

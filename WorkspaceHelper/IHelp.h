@@ -41,7 +41,7 @@
 
 /// Returns a short describing String that identifies the Topic. This will resemble the Menu name
 /// @discussion This is explicitly listed in the Interface description, as you should return a String (best would be Name) that identifies the Topic
-@property (nonatomic, strong, readonly) NSString *title;
+@property (nonatomic, strong, readonly, nonnull) NSString *title;
 
 /// A 16x16 Image, that is displayed as an Icon for the Help Topic (by default this is a question mark)
 /// @returns nil for the default, or a custom Image
@@ -51,6 +51,6 @@
 
 /// Executed when the User decided to show the Help
 /// @param eventArgs Currently, this does not provide any data
-- (void)showHelpWithEventArgs:(ShowHelpEventArgs *)eventArgs;
+- (void)showHelpWithEventArgs:(nonnull ShowHelpEventArgs *)eventArgs;
 
 @end

@@ -377,4 +377,10 @@
     }
 }
 
+- (void)simDescriptionProviderChangedPackage:(NSNotification *)notification {
+    // This corresponds to the C# sdescprovider_ChangedPackage method
+    // The C# version was empty, so you can leave this empty too
+    // or add any logic you need for handling the package change
+}
+
 @end

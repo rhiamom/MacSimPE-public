@@ -37,7 +37,7 @@
 #import "File.h"
 #import "GroupCacheWrapper.h"
 // Import specific wrappers
-#import "PackedFile.h"
+#import "PackedFileWrapper.h"
 #import "TxtrWrapper.h"
 #import "LifoWrapper.h"
 #import "GenericRcolWrapper.h"
@@ -46,13 +46,14 @@
 // Import command line implementations (uploaded by user)
 #import "BuildTxtr.h"
 #import "FixPackage.h"
+#import "GeneratableFile.h"
 
 // Forward declaration for Rcol class
 @class Rcol;
 
-@implementation ScenegraphWrapperFactory {
-    static BOOL inited;
-}
+static BOOL inited;
+
+@implementation ScenegraphWrapperFactory
 
 // MARK: - Static Initialization
 
@@ -95,9 +96,9 @@
 
     @try {
         NSString *name = [NSString pathWithComponents:@[[PathProvider simSavegameFolder], @"Groups.cache"]];
-
+        
         if ([[NSFileManager defaultManager] fileExistsAtPath:name]) {
-            File *pkg = [File loadFromFile:name];
+            GeneratableFile *pkg = [File loadFromFile:name];  // Change File * to GeneratableFile *
             id<IPackedFileDescriptor> pfd = [pkg findFileWithType:0x54535053 subtype:0 group:1 instance:1];
             if (pfd != nil) {
                 [gc processData:pfd package:pkg sync:NO];
@@ -106,9 +107,9 @@
     }
     @catch (NSException *ex) {
         Warning *warning = [[Warning alloc] initWithMessage:@"Unable to load groups.cache"
-                                                     details:ex.reason
-                                                   exception:ex];
-        [Helper exceptionMessage:warning];
+                                                    details:ex.reason
+                                                  exception:ex];
+        [ExceptionForm showWarning:warning];
     }
 
     [FileTable setGroupCache:gc];
@@ -121,7 +122,7 @@
     if (self) {
         // Prepare the FileIndex
         [FileTable setFileIndex:[[FileIndex alloc] init]];
-        [[PackageMaintainer sharedMaintainer] setFileIndex:[[FileTable fileIndex] addNewChild]];
+        [[PackageMaintainer maintainer] setFileIndex:[[FileTable fileIndex] addNewChild]];
     }
     return self;
 }

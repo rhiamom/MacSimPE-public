@@ -101,9 +101,10 @@
         [reader.baseStream seekToOffset:0x0c origin:SeekOriginBegin];
         int32_t height = [reader readInt32];
         int32_t width = [reader readInt32];
-        NSSize size = NSMakeSize(width, height);
-        int32_t firstSize = [reader readInt32];
-        int32_t unknown = [reader readInt32];
+        // pitchOrLinearSize (unused here) — read to advance
+        (void)[reader readInt32];
+        // depth (unused for 2D textures) — read to advance
+        (void)[reader readInt32];
         int32_t mapCount = [reader readInt32];
         
         // Read DXT signature

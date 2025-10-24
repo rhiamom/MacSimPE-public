@@ -31,6 +31,7 @@
 #import <AppKit/AppKit.h>
 #import "AbstractRcolBlock.h"
 #import "IScenegraphBlock.h"
+#import "Vectors.h"
 
 @class BinaryReader, BinaryWriter, Rcol, Vector2, Vector3, Vector4, PropertyParser;
 
@@ -56,9 +57,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 // MARK: - Value Conversion
 - (double)toValue;
-- (Vector2 *)toVector2;
-- (Vector3 *)toVector3;
-- (Vector4 *)toVector4;
+- (Vector2f *)toVector2;
+- (Vector3f *)toVector3;
+- (Vector4f *)toVector4;
+- (void)clampVector3:(Vector3f *)v;
+- (void)clampVector4:(Vector4f *)v;
 - (NSArray<NSNumber *> *)toFloatArray;
 - (NSColor *)toRGB;
 - (NSColor *)toARGB;
@@ -87,11 +90,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Array of material properties
  */
-@property (nonatomic, strong) NSArray<MaterialDefinitionProperty *> *properties;
+@property (nonatomic, strong) NSMutableArray<MaterialDefinitionProperty *> *properties;
 
-/**
- * String listing array
- */
 @property (nonatomic, strong) NSMutableArray<NSString *> *listing;
 
 // MARK: - Class Properties

@@ -134,6 +134,22 @@
  */
 @property (nonatomic, weak) RefFile *parent;
 
+@property (nonatomic, assign) uint32_t type;
+
+/**
+ * File group
+ */
+@property (nonatomic, assign) uint32_t group;
+
+/**
+ * File instance
+ */
+@property (nonatomic, assign) uint32_t instance;
+
+/**
+ * File subtype
+ */
+@property (nonatomic, assign) uint32_t subType;
 /**
  * Associated skin chain data
  */

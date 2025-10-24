@@ -68,6 +68,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, strong) NSData *fileSignature;
 
+- (NSInteger)serializeReturningLength:(BinaryWriter *)writer;
+
 @end
 
 NS_ASSUME_NONNULL_END

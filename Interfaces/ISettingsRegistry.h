@@ -36,7 +36,7 @@
 
 - (void)registerSettings:(id<ISettings>)settings;
 
-- (void)registerSettingsArray:(NSArray<id<ISettings>> *)settings;
+- (void)registerSettingsArray:(NSMutableArray<id<ISettings>> *)settings;
 
 - (void)register:(id<ISettingsFactory>)factory;
 

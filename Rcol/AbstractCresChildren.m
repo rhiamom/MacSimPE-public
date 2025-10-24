@@ -33,16 +33,19 @@
 #import "VectorTransformation.h"
 #import "RcolWrapper.h"
 #import "IRcolBlock.h"
+#import "Quaternion.h"
+#import "cObjectGraphNode.h"
 
 @implementation AbstractCresChildren
 
 // MARK: - Abstract Methods (Must be implemented by subclasses)
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
 - (NSString *)getName {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:@"Subclasses must implement getName"
-                                 userInfo:nil];
+    return self.transformNode.objectGraphNode.fileName;
 }
+#pragma clang diagnostic pop
 
 - (IntArrayList *)childBlocks {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -106,8 +109,8 @@
         
         if ([irb conformsToProtocol:@protocol(ICresChildren)]) {
             id<ICresChildren> icc = (id<ICresChildren>)irb;
-            if ([icc.childBlocks contains:self.index]) {
-                [l add:i];
+            if ([icc.childBlocks containsInt:(int)self.index]) {  // Cast NSInteger to int
+                [l addInt:(int)i];  // Cast NSInteger to int
             }
         }
     }
@@ -117,7 +120,7 @@
 - (id<ICresChildren>)getFirstParent {
     IntArrayList *l = [self getParentBlocks];
     if (l.length == 0) return nil;
-    return (id<ICresChildren>)self.parent.blocks[[l get:0]];
+    return (id<ICresChildren>)self.parent.blocks[[l intAtIndex:0]];
 }
 
 // MARK: - Hierarchy Transformations
@@ -131,7 +134,7 @@
     
     [self.seenBones addObject:@(node.index)];
     
-    [v add:node.storedTransformNode.transformation];
+    [v addTransformation:node.storedTransformNode.transformation];  // Use addTransformation: instead of add:
     v = [self getAbsoluteTransformation:[node getFirstParent] vectorTransformations:v];
     
     return v;
@@ -159,11 +162,11 @@
         
         VectorTransformation *l = nil;
         for (NSInteger i = list.length - 1; i >= 0; i--) {
-            VectorTransformation *t = [list get:i];
+            VectorTransformation *t = [list objectAtIndex:i];  // Use objectAtIndex: instead of get:
             [t.rotation makeUnitQuaternion];
             
-            v.rotation = [v.rotation multiply:t.rotation];
-            v.translation = [[t.rotation rotate:v.translation] subtract:[t.rotation rotate:t.translation]];
+            v.rotation = [Quaternion multiply:v.rotation by:t.rotation];  // Use class method for multiply
+            v.translation = [[t.rotation rotateVector:v.translation] subtract:[t.rotation rotateVector:t.translation]];  // Use rotateVector: instead of rotate:
             
 #ifdef DEBUG
             debugContent = [debugContent stringByAppendingFormat:@"++++%@ %@\n", [t description], t.name];
@@ -181,7 +184,6 @@
     
     return v;
 }
-
 // MARK: - NSFastEnumeration Support
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
@@ -195,15 +197,15 @@
     
     NSUInteger count = 0;
     while (count < len && self.pos < self.childBlocks.count) {
-        id<ICresChildren> block = [self getBlock:[self.childBlocks get:self.pos]];
+        id<ICresChildren> block = [self getBlock:[self.childBlocks intAtIndex:self.pos]];
         if (block != nil) {
-            buffer[count] = block;
+            buffer[count] = (id)block;  // Cast to __unsafe_unretained id
             count++;
         }
         self.pos++;
     }
     
-    state->itemsPtr = buffer;
+    state->itemsPtr = (__unsafe_unretained id *)buffer;  // Cast the buffer pointer
     return count;
 }
 

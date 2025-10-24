@@ -38,6 +38,7 @@
 #import "ScenegraphHelper.h"
 #import "IPackedFileDescriptor.h"
 #import "MetaData.h"
+#import "AbstractRcolBlock.h"
 
 // MARK: - MaterialDefinitionProperty Implementation
 
@@ -70,26 +71,26 @@
     return 0.0;
 }
 
-- (Vector2 *)toVector2 {
+- (Vector2f *)toVector2 {
     NSArray<NSNumber *> *floatArray = [self toFloatArray];
-    Vector2 *v = [Vector2 zero];
+    Vector2f *v = [[Vector2f alloc] init]; // Use alloc/init instead of class method
     if (floatArray.count > 0) v.x = floatArray[0].doubleValue;
     if (floatArray.count > 1) v.y = floatArray[1].doubleValue;
     return v;
 }
 
-- (Vector3 *)toVector3 {
+- (Vector3f *)toVector3 {
     NSArray<NSNumber *> *floatArray = [self toFloatArray];
-    Vector3 *v = [Vector3 zero];
+    Vector3f *v = [[Vector3f alloc] init]; // Use alloc/init instead of class method
     if (floatArray.count > 0) v.x = floatArray[0].doubleValue;
     if (floatArray.count > 1) v.y = floatArray[1].doubleValue;
     if (floatArray.count > 2) v.z = floatArray[2].doubleValue;
     return v;
 }
 
-- (Vector4 *)toVector4 {
+- (Vector4f *)toVector4 {
     NSArray<NSNumber *> *floatArray = [self toFloatArray];
-    Vector4 *v = [[Vector4 alloc] initWithX:0 y:0 z:0 w:0];
+    Vector4f *v = [[Vector4f alloc] init]; // Use simple init, then set properties
     if (floatArray.count > 0) v.x = floatArray[0].doubleValue;
     if (floatArray.count > 1) v.y = floatArray[1].doubleValue;
     if (floatArray.count > 2) v.z = floatArray[2].doubleValue;
@@ -114,7 +115,7 @@
 }
 
 - (NSColor *)toRGB {
-    Vector3 *v = [self toVector3];
+    Vector3f *v = [self toVector3];
     [self clampVector3:v];
     return [NSColor colorWithRed:v.x green:v.y blue:v.z alpha:1.0];
 }
@@ -124,18 +125,18 @@
     if (floatArray.count < 4) {
         return [self toRGB];
     }
-    Vector4 *v = [self toVector4];
+    Vector4f *v = [self toVector4];
     [self clampVector4:v];
     return [NSColor colorWithRed:v.x green:v.y blue:v.z alpha:v.w];
 }
 
-- (void)clampVector3:(Vector3 *)v {
+- (void)clampVector3:(Vector3f *)v {
     v.x = MAX(0, MIN(1, v.x));
     v.y = MAX(0, MIN(1, v.y));
     v.z = MAX(0, MIN(1, v.z));
 }
 
-- (void)clampVector4:(Vector4 *)v {
+- (void)clampVector4:(Vector4f *)v {
     v.x = MAX(0, MIN(1, v.x));
     v.y = MAX(0, MIN(1, v.y));
     v.z = MAX(0, MIN(1, v.z));
@@ -165,10 +166,11 @@ static PropertyParser *_propertyParser = nil;
 - (instancetype)initWithParent:(Rcol *)parent {
     self = [super initWithParent:parent];
     if (self) {
-        _properties = @[];
-        _listing = @[];
+        _properties = [NSMutableArray array];  // ✅ mutable empty array
+        _listing    = [NSMutableArray array];  // ✅ mutable empty array
         self.sgres = [[SGResource alloc] initWithParent:nil];
-        self.blockId = 0x49596978;
+        self.version = 9;
+        self.blockName = @"";
         _fileDescription = @"";
         _materialType = @"";
     }
@@ -177,47 +179,58 @@ static PropertyParser *_propertyParser = nil;
 
 // MARK: - Property Management
 
-- (MaterialDefinitionProperty *)findProperty:(NSString *)name {
-    NSString *lowercaseName = [[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-    for (MaterialDefinitionProperty *property in self.properties) {
-        NSString *propertyName = [[property.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-        if ([propertyName isEqualToString:lowercaseName]) {
-            return property;
+- (MaterialDefinitionProperty *)getProperty:(NSString *)name {
+    for (MaterialDefinitionProperty *prop in self.properties) {
+        if ([prop.name isEqualToString:name]) {
+            return prop;
         }
     }
-    return [[MaterialDefinitionProperty alloc] init];
+    // Return empty property if not found
+    MaterialDefinitionProperty *emptyProp = [[MaterialDefinitionProperty alloc] init];
+    emptyProp.name = name;
+    emptyProp.value = @"";
+    return emptyProp;
 }
 
-- (MaterialDefinitionProperty *)getProperty:(NSString *)name {
-    return [self findProperty:name];
+- (void)addProperty:(MaterialDefinitionProperty *)prop
+{
+    if (!prop) return;
+    
+    // Replace existing property with the same name (case-insensitive), or append if new
+    NSString *newName = prop.name; // If your property class uses a different field (e.g. key), change this accessor
+    if (newName.length == 0) {
+        // No name; just append
+        [self.properties addObject:prop];
+        return;
+    }
+    
+    NSUInteger existingIdx = NSNotFound;
+    for (NSUInteger i = 0; i < self.properties.count; i++) {
+        MaterialDefinitionProperty *p = self.properties[i];
+        if ([p.name caseInsensitiveCompare:newName] == NSOrderedSame) {
+            existingIdx = i;
+            break;
+        }
+    }
+    
+    if (existingIdx != NSNotFound) {
+        self.properties[existingIdx] = prop;
+    } else {
+        [self.properties addObject:prop];
+    }
 }
 
-- (void)addProperty:(MaterialDefinitionProperty *)property {
-    [self addProperty:property allowDuplicate:NO];
-}
 
 - (void)addProperty:(MaterialDefinitionProperty *)property allowDuplicate:(BOOL)allowDuplicate {
     if (!allowDuplicate) {
-        MaterialDefinitionProperty *existing = nil;
         NSMutableArray *mutableProperties = [self.properties mutableCopy];
-        
-        NSString *newPropertyName = [[property.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-        
-        for (NSInteger i = 0; i < mutableProperties.count; i++) {
-            MaterialDefinitionProperty *existingProperty = mutableProperties[i];
-            NSString *existingName = [[existingProperty.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-            
-            if ([existingName isEqualToString:newPropertyName]) {
-                existing = existingProperty;
-                existing.value = property.value;
-                break;
+        for (NSInteger i = mutableProperties.count - 1; i >= 0; i--) {
+            MaterialDefinitionProperty *existingProp = mutableProperties[i];
+            if ([existingProp.name isEqualToString:property.name]) {
+                [mutableProperties removeObjectAtIndex:i];
             }
         }
-        
-        if (existing == nil) {
-            [mutableProperties addObject:property];
-        }
-        
+        [mutableProperties addObject:property];
         self.properties = [mutableProperties copy];
     } else {
         NSMutableArray *mutableProperties = [self.properties mutableCopy];
@@ -226,58 +239,81 @@ static PropertyParser *_propertyParser = nil;
     }
 }
 
-- (void)sort {
-    self.properties = [self.properties sortedArrayUsingComparator:^NSComparisonResult(MaterialDefinitionProperty *obj1, MaterialDefinitionProperty *obj2) {
-        return [obj1.name compare:obj2.name];
+
+- (MaterialDefinitionProperty *)findProperty:(NSString *)name
+{
+    if (name.length == 0) return nil;
+    
+    for (MaterialDefinitionProperty *p in self.properties) {
+        if ([p.name caseInsensitiveCompare:name] == NSOrderedSame) {
+            return p;
+        }
+    }
+    return nil;
+}
+
+- (void)sort
+{
+    // Sort properties by name, case-insensitive, ascending
+    [self.properties sortUsingComparator:^NSComparisonResult(MaterialDefinitionProperty *a,
+                                                             MaterialDefinitionProperty *b) {
+        // Defensive if name can be nil
+        NSString *an = a.name ?: @"";
+        NSString *bn = b.name ?: @"";
+        return [an compare:bn options:NSCaseInsensitiveSearch];
     }];
 }
 
-// MARK: - IRcolBlock Implementation
+- (void)removeProperty:(NSString *)name {
+    NSMutableArray *mutableProperties = [self.properties mutableCopy];
+    for (NSInteger i = mutableProperties.count - 1; i >= 0; i--) {
+        MaterialDefinitionProperty *prop = mutableProperties[i];
+        if ([prop.name isEqualToString:name]) {
+            [mutableProperties removeObjectAtIndex:i];
+        }
+    }
+    self.properties = [mutableProperties copy];
+}
+
+// MARK: - Serialization
 
 - (void)unserialize:(BinaryReader *)reader {
+    [super unserialize:reader];
+    
     self.version = [reader readUInt32];
-    
-    NSString *name = [reader readString];
-    uint32_t myId = [reader readUInt32];
-    [self.sgres unserialize:reader];
-    self.sgres.blockId = myId;
-    
+    self.blockName = [reader readString];
     self.fileDescription = [reader readString];
-    self.materialType = [reader readString];
     
     uint32_t propertyCount = [reader readUInt32];
-    NSMutableArray *propertiesArray = [[NSMutableArray alloc] initWithCapacity:propertyCount];
+    NSMutableArray *props = [[NSMutableArray alloc] initWithCapacity:propertyCount];
     
-    for (int i = 0; i < propertyCount; i++) {
+    for (uint32_t i = 0; i < propertyCount; i++) {
         MaterialDefinitionProperty *property = [[MaterialDefinitionProperty alloc] init];
         [property unserialize:reader];
-        [propertiesArray addObject:property];
+        [props addObject:property];
     }
-    self.properties = [propertiesArray copy];
     
-    if (self.version == 8) {
-        self.listing = @[];
-    } else {
+    self.properties = [props copy];
+    
+    if (self.version != 8) {
         uint32_t listingCount = [reader readUInt32];
-        NSMutableArray *listingArray = [[NSMutableArray alloc] initWithCapacity:listingCount];
+        NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:listingCount];
         
-        for (int i = 0; i < listingCount; i++) {
-            [listingArray addObject:[reader readString]];
+        for (uint32_t i = 0; i < listingCount; i++) {
+            NSString *item = [reader readString];
+            [items addObject:item];
         }
-        self.listing = [listingArray copy];
+        
+        self.listing = [items copy];
     }
 }
 
 - (void)serialize:(BinaryWriter *)writer {
+    [super serialize:writer];
+    
     [writer writeUInt32:self.version];
-    
-    NSString *name = [self.sgres registerInListing:nil];
-    [writer writeString:name];
-    [writer writeUInt32:self.sgres.blockId];
-    [self.sgres serialize:writer];
-    
+    [writer writeString:self.blockName];
     [writer writeString:self.fileDescription];
-    [writer writeString:self.materialType];
     
     [writer writeUInt32:(uint32_t)self.properties.count];
     for (MaterialDefinitionProperty *property in self.properties) {
@@ -295,7 +331,6 @@ static PropertyParser *_propertyParser = nil;
 // MARK: - Import/Export
 
 - (void)exportProperties:(NSString *)filename {
-    NSError *error = nil;
     NSXMLDocument *document = [[NSXMLDocument alloc] initWithRootElement:nil];
     document.version = @"1.0";
     document.characterEncoding = @"UTF-8";
@@ -332,7 +367,7 @@ static PropertyParser *_propertyParser = nil;
 }
 
 - (void)importProperties:(NSString *)filename {
-    self.properties = @[];
+    self.properties = [[NSMutableArray alloc] init];
     [self mergeProperties:filename];
 }
 
@@ -390,8 +425,8 @@ static PropertyParser *_propertyParser = nil;
         NSMutableArray *baseTextureList = [[NSMutableArray alloc] init];
         NSString *txtrName = [NSString stringWithFormat:@"%@_txtr", refName];
         id<IPackedFileDescriptor> pfd = [ScenegraphHelper buildPfdWithFilename:txtrName
-                                                                      type:[MetaData TXTR]
-                                                              defaultGroup:parentGroup];
+                                                                          type:[MetaData TXTR]
+                                                                  defaultGroup:parentGroup];
         [baseTextureList addObject:pfd];
         refMap[@"stdMatBaseTextureName"] = baseTextureList;
     }
@@ -401,9 +436,9 @@ static PropertyParser *_propertyParser = nil;
     if (refName.length > 0 && ![[refName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
         NSMutableArray *normalMapList = [[NSMutableArray alloc] init];
         NSString *txtrName = [NSString stringWithFormat:@"%@_txtr", refName];
-        id pfd = [ScenegraphHelper buildPfdWithFilename:txtrName
-                                                   type:[MetaData TXTR]
-                                           defaultGroup:parentGroup];
+        id<IPackedFileDescriptor> pfd = [ScenegraphHelper buildPfdWithFilename:txtrName
+                                                                          type:[MetaData TXTR]
+                                                                  defaultGroup:parentGroup];
         [normalMapList addObject:pfd];
         refMap[@"stdMatNormalMapTextureName"] = normalMapList;
     }
@@ -413,9 +448,9 @@ static PropertyParser *_propertyParser = nil;
     if (refName.length > 0 && ![[refName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
         NSMutableArray *envCubeList = [[NSMutableArray alloc] init];
         NSString *txtrName = [NSString stringWithFormat:@"%@_txtr", refName];
-        id pfd = [ScenegraphHelper buildPfdWithFilename:txtrName
-                                                   type:[MetaData TXTR]
-                                           defaultGroup:parentGroup];
+        id<IPackedFileDescriptor> pfd = [ScenegraphHelper buildPfdWithFilename:txtrName
+                                                                          type:[MetaData TXTR]
+                                                                  defaultGroup:parentGroup];
         [envCubeList addObject:pfd];
         refMap[@"stdMatEnvCubeTextureName"] = envCubeList;
     }
@@ -441,9 +476,9 @@ static PropertyParser *_propertyParser = nil;
             if (![refName hasSuffix:@"_txtr"]) {
                 refName = [NSString stringWithFormat:@"%@_txtr", refName];
             }
-            id pfd = [ScenegraphHelper buildPfdWithFilename:refName
-                                                       type:[MetaData TXTR]
-                                               defaultGroup:parentGroup];
+            id<IPackedFileDescriptor> pfd = [ScenegraphHelper buildPfdWithFilename:refName
+                                                                              type:[MetaData TXTR]
+                                                                      defaultGroup:parentGroup];
             [baseTextureList addObject:pfd];
         }
     }
@@ -465,4 +500,3 @@ static PropertyParser *_propertyParser = nil;
 }
 
 @end
-

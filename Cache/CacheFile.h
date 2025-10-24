@@ -29,19 +29,9 @@
 
 #import <Foundation/Foundation.h>
 #import "ICacheFileTest.h"
+#import "CacheContainer.h"
 
 @class CacheContainers, CacheContainer;
-
-// Forward declarations for enums
-typedef NS_ENUM(uint8_t, ContainerType) {
-    ContainerTypeNone = 0x00,
-    ContainerTypeObject = 0x01,
-    ContainerTypeMaterialOverride = 0x02,
-    ContainerTypeWant = 0x03,
-    ContainerTypeMemory = 0x04,
-    ContainerTypePackage = 0x05,
-    ContainerTypeRcol = 0x06
-};
 
 NS_ASSUME_NONNULL_BEGIN
 

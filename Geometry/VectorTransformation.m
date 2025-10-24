@@ -94,9 +94,9 @@ const double VECTOR_TRANSFORMATION_SMALL_NUMBER = 0.000001;
 - (Vector3f *)transformVector:(Vector3f *)vector {
     if (self.order == VectorTransformationOrderRotateTranslate) {
         Vector3f *rotated = [self.rotation rotateVector:vector];
-        return [rotated addVector:self.translation];
+        return [rotated add:self.translation];  // Changed from addVector: to add:
     } else {
-        Vector3f *translated = [vector addVector:self.translation];
+        Vector3f *translated = [vector add:self.translation];  // Changed from addVector: to add:
         return [self.rotation rotateVector:translated];
     }
 }

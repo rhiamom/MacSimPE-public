@@ -256,10 +256,13 @@
 }
 
 // MARK: - AbstractCresChildren Overrides
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
 - (NSString *)getName {
     return self.transformNode.objectGraphNode.fileName;
 }
+#pragma clang diagnostic pop
+
 
 - (IntArrayList *)childBlocks {
     return self.transformNode.childBlocks;

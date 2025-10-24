@@ -36,9 +36,9 @@
 @implementation GeometryException
 
 + (instancetype)exceptionWithReason:(NSString *)reason {
-    return [GeometryException exceptionWithName:@"GeometryException"
-                                         reason:reason
-                                       userInfo:nil];
+    return [[GeometryException alloc] initWithName:@"GeometryException"
+                                            reason:reason
+                                          userInfo:nil];
 }
 
 @end

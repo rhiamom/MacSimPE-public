@@ -28,7 +28,7 @@
 // ***************************************************************************/
 
 #import "PropertyObjectBuilderExt.h"
-#import "PropertyuserTypes.h"
+#import "PropertyUserTypes.h"
 #import <AppKit/AppKit.h>
 
 @implementation PropertyDescription {
