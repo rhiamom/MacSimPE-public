@@ -1,0 +1,44 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2865
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red20\green0\blue196;\red151\green0\blue126;
+\red13\green100\blue1;}
+{\*\expandedcolortbl;;\csgray\c0;\cssrgb\c10980\c0\c81176;\cssrgb\c66667\c5098\c56863;
+\cssrgb\c0\c45490\c0;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs26 \cf2 MacSimPE \'97 Objective-C Port of SimPE\
+===================================\
+\
+Original SimPE (C#):\
+    Copyright \'a9 \cf3 2003\cf2 \'96\cf3 2006\cf2  Quaxi, Peter Jones,\
+    and the SimPE development team.\
+    Based on the publicly released SimPE \cf3 0.72\cf2 .x source code,\
+    with the goal of reaching functional parity with SimPE \cf3 0.75f\cf2 ,\
+    the \cf4 final\cf2  stable release by Quaxi.\
+    Licensed under the GNU General Public License, version \cf3 2\cf2  or later (GPL-\cf3 2.0\cf2 +)\
+    https:\cf5 //sims.ambertation.de/\cf2 \
+\
+Objective-C Translation (MacSimPE):\
+    Copyright \'a9 \cf3 2025\cf2  Catherine Gramze\
+    Translation of the SimPE \cf3 0.72\cf2 .x core and supporting modules into Objective-C\
+    \cf4 for\cf2  \cf4 native\cf2  macOS support (SimKit / MacSimPE).\
+    Licensed under the GNU General Public License, version \cf3 2\cf2  or later (GPL-\cf3 2.0\cf2 +)\
+\
+Contributors:\
+    (to be updated as community contributions are merged into the \cf4 private\cf2  MacSimPE repo)\
+\
+Notes:\
+    This project is a clean re-implementation based on Quaxi\'92s original open-source\
+    SimPE codebase. All adult or non-open content introduced in later unofficial\
+    forks has been excluded.\
+    The intent of MacSimPE is to provide a stable, open, and Mac-\cf4 native\cf2 \
+    equivalent to SimPE, preserving legitimate editing capabilities \cf4 for\cf2 \
+    The Sims \cf3 2\cf2  Super Collection by Aspyr.\
+\
+Maintainer Contact:\
+    Catherine Gramze  <your-preferred-contact-email>\
+\
+Repository:\
+    Public mirror (read-only): https:\cf5 //github.com/rhiamom/MacSimPE-public\cf2 \
+    Private active development: MacSimPE (\cf4 private\cf2 )}
