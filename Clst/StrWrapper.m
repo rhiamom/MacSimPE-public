@@ -72,7 +72,7 @@
 // MARK: - Core Properties
 
 - (NSString *)fileName {
-    return [Helper toStringFromBytes:(const uint8_t *)_filename.bytes length:_filename.length];
+    return [Helper dataToString:_filename];
 }
 
 - (void)setFileName:(NSString *)fileName {
@@ -292,7 +292,8 @@
 - (void)unserialize:(BinaryReader *)reader {
     _lines = [[NSMutableDictionary alloc] init];
     
-    if (reader.stream.length <= 0x40) {
+    Stream *s = reader.baseStream;
+    if (s == nil || s.length <= 0x40) {
         return;
     }
     

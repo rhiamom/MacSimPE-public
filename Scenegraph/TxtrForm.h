@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The associated texture wrapper
  */
 @property (nonatomic, weak) Txtr *wrapper;
-
+@property (nonatomic, strong, readonly) NSView *guiHandle; // required by IPackedFileUI
 // MARK: - UI Controls (IBOutlets)
 
 // Top toolbar

@@ -130,8 +130,8 @@ static ExecutePreviewBlock _globalCpfPreview;
             id<IPackedFileDescriptor> pfd = foundFiles[0];
             if (!pfd) {
                 // Fallback code
-                NSArray<id<IPackedFileDescriptor>> *pfds = [self.package findFile:((id<IPackedFileDescriptor>)cresArray[0]).filename
-                                                                             type:[MetaData CRES]];
+                NSArray<id<IPackedFileDescriptor>> *pfds = [self.package findFileByName:((id<IPackedFileDescriptor>)cresArray[0]).filename
+                                                                                   type:[MetaData CRES]];
                 if (pfds.count > 0) {
                     pfd = pfds[0];
                 }
@@ -167,7 +167,7 @@ static ExecutePreviewBlock _globalCpfPreview;
             
         if (!pfd) {
             // Fallback code - search by filename and type
-            pfds = [self.package findFile:((id<IPackedFileDescriptor>)txmtArray[0]).filename
+            pfds = [self.package findFileByName:((id<IPackedFileDescriptor>)txmtArray[0]).filename
                                       type:[MetaData TXMT]];
             pfd = pfds.firstObject;
         }
@@ -201,7 +201,7 @@ static ExecutePreviewBlock _globalCpfPreview;
         id<IPackedFileDescriptor> pfd = pfds.firstObject;
         if (!pfd) {
             // Fallback code
-            NSArray<id<IPackedFileDescriptor>> *pfds = [self.package findFile:((id<IPackedFileDescriptor>)txtrArray[0]).filename
+            NSArray<id<IPackedFileDescriptor>> *pfds = [self.package findFileByName:((id<IPackedFileDescriptor>)txtrArray[0]).filename
                                                                          type:[MetaData TXTR]];
             if (pfds.count > 0) {
                 pfd = pfds[0];

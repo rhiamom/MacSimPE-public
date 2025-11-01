@@ -38,7 +38,7 @@
 
 - (void)registerSettingsArray:(NSMutableArray<id<ISettings>> *)settings;
 
-- (void)register:(id<ISettingsFactory>)factory;
+- (void)registerSettingsFactory:(id<ISettingsFactory>)factory;
 
 @property (nonatomic, readonly) NSArray<id<ISettings>> *settings;
 

@@ -48,6 +48,19 @@
 #import "FixPackage.h"
 #import "GeneratableFile.h"
 
+// Tell the compiler these selectors exist somewhere at runtime.
+// They don't create methods, they just silence undeclared-selector warnings.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+
+@interface NSObject (RcolSelectors)
++ (void)addTokenAssemblyForClass:(Class)cls;
++ (id)sharedRegistry;
++ (id)defaultRegistry;
++ (id)currentRegistry;
+@end
+#pragma clang diagnostic pop
+
 // Forward declaration for Rcol class
 @class Rcol;
 
@@ -66,14 +79,33 @@ static BOOL inited;
 // MARK: - RCol Blocks Initialization
 
 + (void)initRcolBlocks {
-    if (!inited) {
-        // Add the assembly reference for GeometryDataContainer types
-        // In Objective-C, we would register the classes with the Rcol system
-        // This is equivalent to: Rcol.TokenAssemblies.Add(typeof(SimPe.Plugin.GeometryDataContainer).Assembly);
-        // Implementation depends on how the Rcol token system is implemented in Objective-C
-        [Rcol addTokenAssemblyForClass:[GeometryDataContainer class]];
-        inited = YES;
+    if (inited) return;
+    
+    Class gmdc = NSClassFromString(@"GeometryDataContainer");
+    if (gmdc) {
+        Class rcolClass = NSClassFromString(@"Rcol");
+        if (rcolClass) {
+            // Prefer a class API if it exists
+            if ([rcolClass respondsToSelector:@selector(addTokenAssemblyForClass:)]) {
+                [rcolClass performSelector:@selector(addTokenAssemblyForClass:) withObject:gmdc];
+            }
+            // Otherwise try a singleton-style instance
+            else {
+                id rcol = nil;
+                if ([rcolClass respondsToSelector:@selector(sharedRegistry)]) {
+                    rcol = [rcolClass performSelector:@selector(sharedRegistry)];
+                } else if ([rcolClass respondsToSelector:@selector(defaultRegistry)]) {
+                    rcol = [rcolClass performSelector:@selector(defaultRegistry)];
+                } else if ([rcolClass respondsToSelector:@selector(currentRegistry)]) {
+                    rcol = [rcolClass performSelector:@selector(currentRegistry)];
+                }
+                if (rcol && [rcol respondsToSelector:@selector(addTokenAssemblyForClass:)]) {
+                    [rcol performSelector:@selector(addTokenAssemblyForClass:) withObject:gmdc];
+                }
+            }
+        }
     }
+    inited = YES;
 }
 
 // MARK: - GroupCache Loading

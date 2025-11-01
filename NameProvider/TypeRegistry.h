@@ -99,6 +99,9 @@
 
 @property (nonatomic, strong) NSMutableArray *toolsPlus;
 
+@property (nonatomic, strong, readonly) NSMutableArray<id<IDockableTool>> *docks;
+
+@property (nonatomic, strong, readonly) NSMutableArray<id<IToolAction>>   *actions;
 /**
  * Contains all known CommandLine tools
  */

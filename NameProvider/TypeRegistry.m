@@ -67,11 +67,16 @@
     NSMutableArray<id<IToolPlus>> *_toolsPlus;
 }
 
-@synthesize actions = _actionTools;
-@synthesize docks = _dockableTools;
 @synthesize knownCommandLines = _knownCommandLines;
 @synthesize commandLines = _commandLines;
 
+- (NSArray<id<IDockableTool>> *)docks {
+    return [self.dockableTools copy];
+}
+
+- (NSArray<id<IToolAction>> *)actions {
+    return [self.actionTools copy];
+}
 // MARK: - Initialization
 
 - (instancetype)init {
@@ -430,11 +435,6 @@
         [self.settings addObject:setting];
     }
 }
-
-- (void)register:(id<ISettingsFactory>)factory { 
-    <#code#>
-}
-
 
 // MARK: - ICommandLineRegistry Implementation
 

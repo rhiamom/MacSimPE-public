@@ -33,6 +33,7 @@
 #import "Helper.h"
 #import "Localization.h"
 #import <AppKit/AppKit.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @interface TxtrForm () <NSTableViewDataSource, NSTableViewDelegate>
 
@@ -379,7 +380,22 @@
 
 - (IBAction)importTexture:(id)sender {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-    openPanel.allowedFileTypes = @[@"png", @"jpg", @"jpeg", @"bmp", @"gif", @"tiff", @"tif"];
+    
+    if (@available(macOS 12.0, *)) {
+        openPanel.allowedContentTypes = @[
+            UTTypePNG,
+            UTTypeJPEG,
+            UTTypeBMP,
+            UTTypeGIF,
+            UTTypeTIFF
+        ];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        openPanel.allowedFileTypes = @[@"png", @"jpg", @"jpeg", @"bmp", @"gif", @"tiff", @"tif"];
+#pragma clang diagnostic pop
+    }
+    
     openPanel.allowsMultipleSelection = NO;
     
     [openPanel beginWithCompletionHandler:^(NSInteger result) {
@@ -397,8 +413,22 @@
     if (!_textureImageView.image) return;
     
     NSSavePanel *savePanel = [NSSavePanel savePanel];
-    savePanel.allowedFileTypes = @[@"png"];
-    savePanel.nameFieldStringValue = [NSString stringWithFormat:@"%@.png", _filenameTextField.stringValue];
+    
+    if (@available(macOS 12.0, *)) {
+        savePanel.allowedContentTypes = @[ UTTypePNG ];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        savePanel.allowedFileTypes = @[ @"png" ];
+#pragma clang diagnostic pop
+    }
+    
+    // Ensure a sensible default name ends with .png
+    NSString *base = _filenameTextField.stringValue.length ? _filenameTextField.stringValue : @"texture";
+    if (![base.lowercaseString hasSuffix:@".png"]) {
+        base = [base stringByAppendingString:@".png"];
+    }
+    savePanel.nameFieldStringValue = base;
     
     [savePanel beginWithCompletionHandler:^(NSInteger result) {
         if (result == NSModalResponseOK) {
@@ -448,13 +478,19 @@
     if (_updatingControls) return;
     
     ImageData *selectedItem = [self selectedImageData];
-    if (selectedItem) {
-        NSInteger width = [_widthTextField.stringValue integerValue];
-        NSInteger height = [_heightTextField.stringValue integerValue];
-        
-        // Update texture size and rebuild mipmaps
-        [self buildDefaultMipMap:sender];
-    }
+    if (!selectedItem) return;
+    
+    NSInteger width  = _widthTextField.stringValue.integerValue;
+    NSInteger height = _heightTextField.stringValue.integerValue;
+    if (width <= 0 || height <= 0) return;
+    
+    // The TXTR/DDS pipeline (buildDefaultMipMap:) should read the current size/state
+    // and regenerate mipmaps accordingly.
+    [self buildDefaultMipMap:sender];
+    
+    // Silence “unused variable” warnings without changing behavior
+    (void)width;
+    (void)height;
 }
 
 - (IBAction)mipMapLevelChanged:(id)sender {
@@ -831,6 +867,18 @@
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
     [self updateTexturePreview];
+}
+
+- (void)updateGUI:(id<IFileWrapper>)wrapper { 
+    <#code#>
+}
+
+- (BOOL)commitEditingAndReturnError:(NSError *__autoreleasing  _Nullable * _Nullable)error { 
+    <#code#>
+}
+
+- (void)encodeWithCoder:(nonnull NSCoder *)coder { 
+    <#code#>
 }
 
 @end

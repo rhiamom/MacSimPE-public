@@ -35,6 +35,7 @@
 #import "cSGResource.h"
 #import "RcolWrapper.h"
 #import "Helper.h"
+#import "cImageData.h"
 
 @implementation LevelInfo {
     NSData *_data;
@@ -106,6 +107,7 @@
 - (void)unserialize:(BinaryReader *)reader {
     self.version = [reader readUInt32];
     NSString *s = [reader readString];
+    (void)s;  // mark as intentionally unused
     
     uint32_t blockId = [reader readUInt32];
     self.sgres.blockId = blockId;
@@ -168,7 +170,7 @@
 
 - (void)serialize:(BinaryWriter *)writer {
     [writer writeUInt32:self.version];
-    NSString *s = [self.sgres registerWithParent:nil];
+    NSString *s = [self.sgres register:nil];
     [writer writeString:s];
     [writer writeUInt32:self.sgres.blockId];
     [self.sgres serialize:writer];

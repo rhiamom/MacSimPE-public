@@ -288,10 +288,10 @@
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:sims02Path]) {
         File *package = [File loadFromFile:sims02Path];
-        NSArray<id<IPackedFileDescriptor>> *pfds = [package findFile:[matdName stringByReplacingOccurrencesOfString:@"CASIE_" withString:@""] type:0x49596978];
+        NSArray<id<IPackedFileDescriptor>> *pfds = [package findFileByName:[matdName stringByReplacingOccurrencesOfString:@"CASIE_" withString:@""] type:0x49596978];
         
         if ([pfds count] == 0) {
-            pfds = [package findFile:matdName type:0x49596978];
+            pfds = [package findFileByName:matdName type:0x49596978];
         }
         
         // Look for the right one
@@ -358,7 +358,7 @@
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:sims07Path]) {
         File *package = [File loadFromFile:sims07Path];
-        NSArray<id<IPackedFileDescriptor>> *pfds = [package findFile:name type:0x1C4A276C];
+        NSArray<id<IPackedFileDescriptor>> *pfds = [package findFileByName:name type:0x1C4A276C];
         
         // Look for the right one
         for (id<IPackedFileDescriptor> pfd in pfds) {

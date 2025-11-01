@@ -166,7 +166,6 @@
 		B69F35152E385D41007EEA89 /* ResourceListViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = B69F35142E385D41007EEA89 /* ResourceListViewExt.m */; };
 		B69F35182E385E4F007EEA89 /* NamedPackedFileDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = B69F35172E385E4F007EEA89 /* NamedPackedFileDescriptor.m */; };
 		B6AAC5EB2E5A1C4500846641 /* libsoil2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AAC5EA2E5A1C4500846641 /* libsoil2.a */; };
-		B6AAC5EE2E5A1C5C00846641 /* SOIL2.c in Sources */ = {isa = PBXBuildFile; fileRef = B6AAC5ED2E5A1C5C00846641 /* SOIL2.c */; };
 		B6AAC5F12E5A1F9100846641 /* cLevelInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAC5F02E5A1F9100846641 /* cLevelInfo.m */; };
 		B6AF28FD2E6A07A800EDEB2D /* ProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AF28FC2E6A07A800EDEB2D /* ProgressBar.m */; };
 		B6AF28FE2E6A07B000EDEB2D /* EnumComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AF28FA2E6A065200EDEB2D /* EnumComboBox.m */; };
@@ -1935,7 +1934,6 @@
 				B6B02CE12E4EC0E7009240FD /* ScenegraphHelper.m in Sources */,
 				B64B39282E58D2E300FC359D /* SemiGlobalListing.m in Sources */,
 				B6BF52652E5B7542007B48A1 /* NmapItem.m in Sources */,
-				B6AAC5EE2E5A1C5C00846641 /* SOIL2.c in Sources */,
 				B6C671802E7B845100D1A7D0 /* Scenegraph.m in Sources */,
 				B60ADF502E592B4F00F66F86 /* PackedFileForm.m in Sources */,
 				B6C01F912E731A3600AA6108 /* FixObject.m in Sources */,
@@ -2302,6 +2300,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/CSoil/include";
 				INFOPLIST_KEY_CFBundleDisplayName = "SimPE for Mac";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
