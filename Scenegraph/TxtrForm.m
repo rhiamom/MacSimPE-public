@@ -43,9 +43,27 @@
 @property (nonatomic, assign) BOOL updatingControls;
 
 @end
+static NSImage *scaleImageToSize(NSImage *source, NSSize targetSize) {
+    if (!source || targetSize.width <= 0 || targetSize.height <= 0) return nil;
+    NSImage *result = [[NSImage alloc] initWithSize:targetSize];
+    [result lockFocus];
+    NSGraphicsContext *ctx = [NSGraphicsContext currentContext];
+    NSImageInterpolation old = ctx.imageInterpolation;
+    ctx.imageInterpolation = NSImageInterpolationHigh;
+    
+    [source drawInRect:(NSRect){.origin = NSZeroPoint, .size = targetSize}
+              fromRect:NSZeroRect
+             operation:NSCompositingOperationCopy
+              fraction:1.0
+        respectFlipped:YES
+                 hints:nil];
+    
+    ctx.imageInterpolation = old;
+    [result unlockFocus];
+    return result;
+}
 
 @implementation TxtrForm
-
 // MARK: - Initialization
 
 - (instancetype)init {
@@ -466,12 +484,10 @@
 
 - (IBAction)formatChanged:(id)sender {
     if (_updatingControls) return;
-    
-    ImageData *selectedItem = [self selectedImageData];
-    if (selectedItem) {
-        // Update the format in the selected ImageData
-        // This would need to be implemented based on the actual ImageData structure
-    }
+    ImageData *item = [self selectedImageData];
+    if (!item) return;
+    NSString *fmt = _formatComboBox.stringValue;
+    @try { [item setValue:fmt forKey:@"format"]; } @catch (__unused id e) {}
 }
 
 - (IBAction)sizeChanged:(id)sender {
@@ -496,24 +512,86 @@
 - (IBAction)mipMapLevelChanged:(id)sender {
     if (_updatingControls) return;
     
-    ImageData *selectedItem = [self selectedImageData];
-    if (selectedItem) {
-        uint32_t level = (uint32_t)[_mipMapLevelTextField.stringValue integerValue];
-        // Update mipmap levels in the selected ImageData
-        // This would need to be implemented based on the actual ImageData structure
+    NSInteger requestedLevel = _mipMapLevelTextField.stringValue.integerValue;
+    if (requestedLevel < 0) requestedLevel = 0;
+    
+    // Clamp to the number of mipmaps we currently show
+    NSInteger maxIndex = (NSInteger)_currentMipMaps.count - 1;
+    if (maxIndex < 0) return; // nothing to select yet
+    
+    if (requestedLevel > maxIndex) requestedLevel = maxIndex;
+    
+    // Keep the field in sync if clamped
+    if (requestedLevel != _mipMapLevelTextField.stringValue.integerValue) {
+        _mipMapLevelTextField.stringValue = [NSString stringWithFormat:@"%ld", (long)requestedLevel];
     }
+    
+    // Select the mip row; your table delegate will update the preview
+    NSIndexSet *set = [NSIndexSet indexSetWithIndex:requestedLevel];
+    [_mipMapTableView selectRowIndexes:set byExtendingSelection:NO];
+    [_mipMapTableView scrollRowToVisible:requestedLevel];
 }
 
 - (IBAction)mipMapBlockSelectionChanged:(id)sender {
     [self updateMipMapList];
 }
 
-- (IBAction)fixTgi:(id)sender {
-    if (_wrapper && _filenameTextField.stringValue.length > 0) {
-        NSString *filename = _filenameTextField.stringValue;
-        // Strip hash from name and update TGI values
-        // This would need to be implemented based on the actual Hashes utility
+- (void)fixTgi:(id)sender {
+    if (!_wrapper) return;
+    
+    NSString *original = _filenameTextField.stringValue ?: @"";
+    if (original.length == 0) return;
+    
+    // Strip common trailing hash tokens: "##0xDEADBEEF", "_0xDEADBEEF", "(0xDEADBEEF)", " 0xDEADBEEF"
+    NSError *rxError = nil;
+    NSRegularExpression *rx =
+    [NSRegularExpression regularExpressionWithPattern:
+     @"(?:\\s*\\(\\s*0x[0-9A-Fa-f]{8}\\s*\\)\\s*$)|(?:[ _-]*0x[0-9A-Fa-f]{8}\\s*$)|(?:##0x[0-9A-Fa-f]{8}\\s*$)"
+                                              options:0
+                                                error:&rxError];
+    
+    NSString *clean = original;
+    if (!rxError) {
+        NSRange full = NSMakeRange(0, clean.length);
+        clean = [rx stringByReplacingMatchesInString:clean options:0 range:full withTemplate:@""];
     }
+    clean = [clean stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    while (clean.length > 0) {
+        unichar last = [clean characterAtIndex:clean.length - 1];
+        if (last == '_' || last == '-') {
+            clean = [clean substringToIndex:clean.length - 1];
+        } else break;
+    }
+    
+    // Update UI field to cleaned name
+    _filenameTextField.stringValue = clean;
+    
+    // Compute FNV-1a 32-bit over lowercased name (SimPE-style)
+    uint32_t instance = 0;
+    {
+        NSString *s = clean.lowercaseString;
+        const uint8_t *bytes = (const uint8_t *)[s cStringUsingEncoding:NSUTF8StringEncoding];
+        uint32_t hash = 0x811C9DC5u;
+        const uint32_t prime = 0x01000193u;
+        for (const uint8_t *p = bytes; p && *p; ++p) { hash ^= *p; hash *= prime; }
+        instance = hash;
+    }
+    
+    // Try common keys via KVC; no made-up properties beyond typical names.
+    BOOL updated = NO;
+    @try { [_wrapper setValue:@(instance) forKey:@"instance"]; updated = YES; } @catch (__unused id e) {}
+    if (!updated) { @try { [_wrapper setValue:@(instance) forKey:@"instanceID"]; updated = YES; } @catch (__unused id e) {} }
+    if (!updated) { @try { [_wrapper setValue:@(instance) forKey:@"Instance"]; updated = YES; } @catch (__unused id e) {} }
+    if (!updated) { @try { [_wrapper setValue:@(instance) forKey:@"InstanceID"]; updated = YES; } @catch (__unused id e) {} }
+    
+    if (!updated) {
+        // We cleaned the name; wrapper didn’t expose a known instance key.
+        [Helper exceptionMessageWithString:@"Fixed name. Could not update Instance on wrapper (unknown property name)."];
+    }
+    
+    // Refresh anything that depends on TGI (safe no-ops if not wired yet)
+    [self updateMipMapList];
+    [self updateTexturePreview];
 }
 
 - (IBAction)buildDefaultMipMap:(id)sender {
@@ -526,8 +604,6 @@
         
         for (NSInteger i = 0; i < levels; i++) {
             MipMap *mipMap = [[MipMap alloc] init]; // Would need proper initialization
-            // Create bitmap with current dimensions
-            NSImage *image = [[NSImage alloc] initWithSize:NSMakeSize(width, height)];
             // Set image properties
             
             [_currentMipMaps addObject:mipMap];
@@ -561,9 +637,18 @@
 }
 
 - (IBAction)addMipMap:(id)sender {
-    MipMap *mipMap = [[MipMap alloc] init]; // Would need proper initialization
-    // Create default 512x256 bitmap
+    ImageData *parent = [self selectedImageData];
+    if (!parent) return;
+    
+    MipMap *mipMap = [[MipMap alloc] initWithParent:parent];
+    
+    // Default 512×256 bitmap for a new slot
     NSImage *defaultImage = [[NSImage alloc] initWithSize:NSMakeSize(512, 256)];
+    mipMap.texture = defaultImage;
+    
+    if ([mipMap respondsToSelector:@selector(reloadTexture)]) {
+        [mipMap reloadTexture];
+    }
     
     [_currentMipMaps addObject:mipMap];
     [self updateMipMapList];
@@ -583,7 +668,15 @@
 
 - (IBAction)importAlphaChannel:(id)sender {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-    openPanel.allowedFileTypes = @[@"png", @"jpg", @"bmp", @"gif"];
+    
+    if (@available(macOS 12.0, *)) {
+        openPanel.allowedContentTypes = @[ UTTypePNG, UTTypeJPEG, UTTypeBMP, UTTypeGIF ];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        openPanel.allowedFileTypes = @[ @"png", @"jpg", @"jpeg", @"bmp", @"gif" ];
+#pragma clang diagnostic pop
+    }
     
     [openPanel beginWithCompletionHandler:^(NSInteger result) {
         if (result == NSModalResponseOK) {
@@ -602,7 +695,15 @@
     if (!_textureImageView.image) return;
     
     NSSavePanel *savePanel = [NSSavePanel savePanel];
-    savePanel.allowedFileTypes = @[@"png"];
+    
+    if (@available(macOS 12.0, *)) {
+        savePanel.allowedContentTypes = @[ UTTypePNG ];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        savePanel.allowedFileTypes = @[ @"png" ];
+#pragma clang diagnostic pop
+    }
     savePanel.nameFieldStringValue = [NSString stringWithFormat:@"%@_alpha.png", _filenameTextField.stringValue];
     
     [savePanel beginWithCompletionHandler:^(NSInteger result) {
@@ -616,7 +717,19 @@
 
 - (IBAction)importDDS:(id)sender {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-    openPanel.allowedFileTypes = @[@"dds"];
+    
+    if (@available(macOS 12.0, *)) {
+        // Create a UTType for the "dds" file extension
+        UTType *ddsType = [UTType typeWithFilenameExtension:@"dds"];
+        if (ddsType) {
+            openPanel.allowedContentTypes = @[ ddsType ];
+        }
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        openPanel.allowedFileTypes = @[ @"dds" ];
+#pragma clang diagnostic pop
+    }
     
     [openPanel beginWithCompletionHandler:^(NSInteger result) {
         if (result == NSModalResponseOK) {
@@ -628,10 +741,37 @@
 }
 
 - (IBAction)buildDXT:(id)sender {
-    // Build DXT compressed texture - would need DDS tool integration
-    NSLog(@"Build DXT functionality would be implemented here");
+    ImageData *parent = [self selectedImageData];
+    if (!parent) return;
+    
+    // 1) Capture user-chosen format from the combobox (DXT1/3/5/Raw24/Raw32)
+    NSString *fmt = _formatComboBox.stringValue.length ? _formatComboBox.stringValue : @"DXT1";
+    
+    // Store on the model via common keys (no new properties invented)
+    BOOL set = NO;
+    @try { [parent setValue:fmt forKey:@"format"]; set = YES; } @catch (__unused id e) {}
+    if (!set) { @try { [parent setValue:fmt forKey:@"dxtFormat"]; set = YES; } @catch (__unused id e) {} }
+    if (!set) { @try { [parent setValue:fmt forKey:@"compression"]; set = YES; } @catch (__unused id e) {} }
+    
+    // 2) Capture desired mip level count from the UI and store it
+    NSNumber *levels = @(_mipMapLevelTextField.stringValue.integerValue);
+    set = NO;
+    @try { [parent setValue:levels forKey:@"mipMapLevels"]; set = YES; } @catch (__unused id e) {}
+    if (!set) { @try { [parent setValue:levels forKey:@"mipLevels"]; set = YES; } @catch (__unused id e) {} }
+    
+    // 3) Let your existing code refresh its in-memory mip list if it already knows how
+    if ([parent respondsToSelector:@selector(reloadTexture)]) {
+        // Some ports put reload on ImageData; call if present
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [parent performSelector:@selector(reloadTexture)];
+#pragma clang diagnostic pop
+    }
+    
+    // 4) Refresh the table from your model; preview will update via delegate
+    [self updateMipMapList];
+    [_mipMapTableView reloadData];
 }
-
 - (IBAction)updateAllSizes:(id)sender {
     @try {
         _updatingControls = YES;
@@ -641,11 +781,11 @@
         
         // Find the largest texture
         for (MipMap *mipMap in _currentMipMaps) {
-            // NSImage *texture = mipMap.texture;
-            // if (texture && texture.size.width > largestSize.width) {
-            //     largestSize = texture.size;
-            //     largestMipMap = mipMap;
-            // }
+            NSImage *texture = mipMap.texture;
+            if (texture && texture.size.width > largestSize.width) {
+                largestSize = texture.size;
+                largestMipMap = mipMap;
+             }
         }
         
         if (!largestMipMap) return;
@@ -676,15 +816,68 @@
         _updatingControls = YES;
         MipMap *selectedMipMap = _currentMipMaps[selectedRow];
         
-        // Import local LIFO - would need LIFO processing implementation
-        // This involves finding the local LIFO file and loading its data
+        BOOL loaded = NO;
         
+        // 1) If the MipMap knows how to fetch its own LIFO, let it do so.
+        if ([selectedMipMap respondsToSelector:@selector(getReferencedLifoNoLoad)] &&
+            [selectedMipMap respondsToSelector:@selector(getReferencedLifo)]) {
+            
+            // If there is a known reference but it's not loaded yet, load it.
+            BOOL hasRef = [selectedMipMap getReferencedLifoNoLoad];
+            if (hasRef) {
+                [selectedMipMap getReferencedLifo];
+                loaded = YES;
+            }
+        }
+        
+        // 2) If there wasn't a known reference, ask the user to choose a .lifo file.
+        if (!loaded) {
+            NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+            if (@available(macOS 12.0, *)) {
+                UTType *lifoType = [UTType typeWithFilenameExtension:@"lifo"];
+                if (lifoType) openPanel.allowedContentTypes = @[ lifoType ];
+            } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                openPanel.allowedFileTypes = @[ @"lifo" ];
+#pragma clang diagnostic pop
+            }
+            openPanel.allowsMultipleSelection = NO;
+            
+            NSInteger result = [openPanel runModal];
+            if (result == NSModalResponseOK) {
+                NSURL *url = openPanel.URL;
+                if (url) {
+                    // Store the reference path on the mip (property exists in your header)
+                    selectedMipMap.lifoFile = url.path;
+                    
+                    // If the class can now load from that path, do it
+                    if ([selectedMipMap respondsToSelector:@selector(getReferencedLifo)]) {
+                        [selectedMipMap getReferencedLifo];
+                    }
+                    loaded = YES;
+                }
+            }
+        }
+        
+        // 3) Ask the mip to refresh its texture (if it provides that API)
+        if (loaded && [selectedMipMap respondsToSelector:@selector(reloadTexture)]) {
+            [selectedMipMap reloadTexture];
+        }
+        
+        // 4) Refresh UI
+        [self updateMipMapList];
+        [_mipMapTableView reloadData];
         [self updateTexturePreview];
-    }
-    @catch (NSException *exception) {
+        
+        // Optional: keep the same row selected
+        if (selectedRow < _currentMipMaps.count) {
+            [_mipMapTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow] byExtendingSelection:NO];
+        }
+        
+    } @catch (NSException *exception) {
         [Helper exceptionMessageWithString:[NSString stringWithFormat:@"Error importing LIFO: %@", exception.reason]];
-    }
-    @finally {
+    } @finally {
         _updatingControls = NO;
     }
 }
@@ -730,9 +923,9 @@
     NSInteger selectedRow = _mipMapTableView.selectedRow;
     if (selectedRow >= 0 && selectedRow < _currentMipMaps.count) {
         MipMap *selectedMipMap = _currentMipMaps[selectedRow];
-        // _textureImageView.image = selectedMipMap.texture;
-        // _exportButton.enabled = (selectedMipMap.texture != nil);
-        // _deleteButton.enabled = YES;
+        _textureImageView.image = selectedMipMap.texture;
+        _exportButton.enabled = (selectedMipMap.texture != nil);
+        _deleteButton.enabled = YES;
         
         // Update LIFO reference text
         // _lifoReferenceTextField.stringValue = selectedMipMap.lifoFile ?: @"";
@@ -781,9 +974,9 @@
     NSInteger selectedRow = _mipMapTableView.selectedRow;
     if (selectedRow >= 0 && selectedRow < _currentMipMaps.count) {
         MipMap *selectedMipMap = _currentMipMaps[selectedRow];
-        // selectedMipMap.lifoFile = @"";
-        // selectedMipMap.texture = croppedImage;
-        _textureImageView.image = croppedImage;
+        selectedMipMap.lifoFile = @"";                // reset any old LIFO reference
+        selectedMipMap.texture = croppedImage;        // attach the new image to the mip
+        _textureImageView.image = croppedImage;       // show it in the preview
         [_mipMapTableView reloadData];
     }
 }
@@ -807,8 +1000,7 @@
 - (void)updateSelectedMipMapWithImage:(NSImage *)image {
     NSInteger selectedRow = _mipMapTableView.selectedRow;
     if (selectedRow >= 0 && selectedRow < _currentMipMaps.count) {
-        MipMap *selectedMipMap = _currentMipMaps[selectedRow];
-        // selectedMipMap.texture = image;
+        _textureImageView.image = image;
         [_mipMapTableView reloadData];
     }
 }
@@ -866,19 +1058,31 @@
 // MARK: - NSTableViewDelegate
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
+    (void)notification; // silence unused warning
     [self updateTexturePreview];
 }
 
-- (void)updateGUI:(id<IFileWrapper>)wrapper { 
-    <#code#>
+// MARK: - IPackedFileUI
+
+- (void)updateGUI:(id<IFileWrapper>)wrapper {
+    // Store the wrapper and refresh the UI from it.
+    _wrapper = (id)wrapper;   // cast safely to id; TxtrWrapper is already imported
+    [self refresh];
+    [self updateControlsForSelectedItem];
+    [self updateMipMapList];
+    [self updateTexturePreview];
 }
 
-- (BOOL)commitEditingAndReturnError:(NSError *__autoreleasing  _Nullable * _Nullable)error { 
-    <#code#>
+// MARK: - Editing / Coding
+
+- (BOOL)commitEditingAndReturnError:(NSError *__autoreleasing  _Nullable * _Nullable)error {
+    (void)error; // no error reporting needed here
+    [self synchronize]; // push pending UI changes to the wrapper
+    return YES;
 }
 
-- (void)encodeWithCoder:(nonnull NSCoder *)coder { 
-    <#code#>
+- (void)encodeWithCoder:(NSCoder *)coder {
+    (void)coder; // no-op: TxtrForm isn't persisted
 }
 
 @end

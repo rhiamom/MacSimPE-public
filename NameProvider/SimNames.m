@@ -69,8 +69,12 @@
             if (![ei exists]) continue;
             
             NSArray *simNameDeepSearch = [ei simNameDeepSearch];
+            PathProvider *pp = [PathProvider global];
+            ExpansionItem *latest = [pp getLatestExpansion];
+            NSString *installRoot = latest.installFolder;
+            
             for (NSString *s in simNameDeepSearch) {
-                NSString *path = [NSString pathWithComponents:@[[[PathProvider global] latest].installFolder, s]];
+                NSString *path = [NSString pathWithComponents:@[installRoot, s]];
                 if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
                     path = [NSString pathWithComponents:@[[ei installFolder], s]];
                 }
@@ -177,10 +181,10 @@
     Alias *alias = nil;
     
     // Find string resource
-    id<IPackedFileDescriptor> strPfd = [packageFile findFile:[MetaData CTSS_FILE]
+    id<IPackedFileDescriptor> strPfd = [packageFile findFileWithType:[MetaData CTSS_FILE]
                                                       subtype:0
                                                         group:[[objd fileDescriptor] group]
-                                                     instance:[objd CTSSInstance]];
+                                                     instance:[objd ctssInstance]];
     
     if (strPfd != nil) {
         StrWrapper *str = [[StrWrapper alloc] init];
