@@ -31,13 +31,26 @@
 #import "Helper.h"
 #import "Registry.h"
 #import "FileTable.h"
+#import "FileIndex.h"
+#import "FileIndexItem.h"
+#import "WaitingScreen.h"      // so WaitingScreen is known
+#import "ExtObjdWrapper.h"     // declares ExtObjd
+#import "Str.h"
+#import "StrItem.h"
 #import "MetaData.h"
 #import "IAlias.h"
 #import "Alias.h"
 #import "Wait.h"
 #import "Localization.h"
 #import "PathProvider.h"
+#import "PackedFileDescriptor.h"
 #import "File.h"
+#import "Str.h"
+#import "ExtObjdWrapper.h"
+#import "PictureWrapper.h"
+#import "MetaData.h"
+#import "ExpansionItem.h"
+
 
 @implementation OpcodeProvider
 
@@ -48,15 +61,112 @@
     return self;
 }
 
-- (void)loadMemories {
+- (void)loadMemories
+{
     self.memories = [[NSMutableDictionary alloc] init];
     
-    Registry *reg = [Helper windowsRegistry];
-    NSMutableArray *list = [[NSMutableArray alloc] init];
+    // Load file index
+    [FileTable.fileIndex load];
     
-    // Implementation would need ExtObjd and Str wrapper classes
-    // This is a complex method that loads memory information from object files
-    // Leaving as stub for now since it requires many other translated classes
+    NSArray<id<IScenegraphFileIndexItem>> *items =
+    [[FileTable fileIndex] findFileDiscardingGroupWithType:[MetaData OBJD_FILE]
+                                                  instance:0x00000000000041A7];
+    
+    if (items.count == 0) return;
+    
+    BOOL wasRunning = WaitingScreen.running;
+    [WaitingScreen wait];
+    
+    ExtObjd *objd = [[ExtObjd alloc] init];
+    Str *str = [[Str alloc] init];
+    
+    NSUInteger count = 0;
+    NSString *max = [NSString stringWithFormat:@" / %lu", (unsigned long)items.count];
+    
+    @try {
+        for (id<IScenegraphFileIndexItem> item in items) {
+            count++;
+            if (count % 137 == 1) {
+                [WaitingScreen updateMessage:
+                 [NSString stringWithFormat:@"%lu%@", (unsigned long)count, max]];
+            }
+            
+            id<IPackedFileDescriptor> pfd = item.fileDescriptor;
+            
+            // Parse OBJD
+            [objd processData:item];
+            
+            NSNumber *guid = @(objd.guid);
+            if (self.memories[guid] != nil) continue;
+            
+            NSString *name = @"";
+            
+            // Try CTSS
+            @try {
+                PackedFileDescriptor *p = (PackedFileDescriptor *)pfd;
+                
+                NSArray<id<IScenegraphFileIndexItem>> *sitems =
+                [[FileTable fileIndex] findFileWithType:[MetaData CTSS_FILE]
+                                                  group:p.group
+                                               instance:objd.ctssInstance
+                                                package:nil];
+                
+                if (sitems.count > 0) {
+                    [str processData:sitems[0]];
+                    
+                    StrItemList *items =
+                    [str fallbackedLanguageItemsForLanguage:[AppPreferences languageCode]];
+                    
+                    if (items.count > 0) {
+                        StrToken *tok = [items objectAtIndex:0];
+                        name = tok.title ?: @"";
+                    }
+                }
+            }
+            @catch (__unused NSException *e) {
+            }
+            
+            // Still no name?
+            if (name.length == 0)
+                name = objd.fileName;
+            
+            Alias *alias =
+            [[Alias alloc] initWithId:objd.guid
+                                 name:name
+                             template:@"{1}: {name} (0x{id})"];
+            
+            // Attach metadata
+            NSMutableArray *tag = [[NSMutableArray alloc] initWithCapacity:3];
+            [tag addObject:pfd];
+            [tag addObject:@(objd.type)];
+            [tag addObject:[NSNull null]];
+            
+            // Try preview image
+            PictureWrapper *pic = [[PictureWrapper alloc] init];
+            NSArray<id<IScenegraphFileIndexItem>> *iitems =
+            [FileTable.fileIndex findFileWithType:MetaData.SIM_IMAGE_FILE
+                                            group:pfd.group
+                                         instance:1
+                                          package:nil];
+            
+            if (iitems.count > 0) {
+                [pic processData:iitems[0]];
+                NSImage *img = pic.image;
+                if (img) {
+                    tag[2] = img;
+                    [WaitingScreen updateImage:img
+                                  message:[NSString stringWithFormat:@"%lu%@", (unsigned long)count, max]];
+                }
+            }
+            
+            alias.tag = tag;
+            self.memories[guid] = alias;
+        }
+    }
+    @finally {
+        if (!wasRunning)
+            [WaitingScreen stop];
+    }
 }
 
 - (void)loadData:(NSMutableArray **)list instance:(uint16_t)instance lang:(uint16_t)lang {
@@ -68,23 +178,33 @@
 }
 
 - (void)loadObjdDescription:(uint16_t)type {
-    [self loadData:&_objddesc instance:0xCC lang:type];
+    id tmp = nil;
+    [self loadData:&tmp instance:0xCC lang:type];
+    _objddesc = tmp;
 }
 
 - (void)loadDataOwners {
-    [self loadData:&_dataowners instance:0x84 lang:1];
+    id tmp = nil;
+    [self loadData:&tmp instance:0x84 lang:1];
+    _dataowners = tmp;
 }
 
 - (void)loadObjf {
-    [self loadData:&_objf instance:0xF5 lang:1];
+    id tmp = nil;
+    [self loadData:&tmp instance:0xF5 lang:1];
+    _objf = tmp;
 }
 
 - (void)loadOperators {
-    [self loadData:&_operands instance:0x88 lang:1];
+    id tmp = nil;
+    [self loadData:&tmp instance:0x88 lang:1];
+    _operands = tmp;
 }
 
 - (void)loadMotives {
-    [self loadData:&_motives instance:0x86 lang:1];
+    id tmp = nil;
+    [self loadData:&tmp instance:0x86 lang:1];
+    _motives = tmp;
 }
 
 - (void)loadOpcodes {
@@ -92,27 +212,44 @@
     if (self.basePackage == nil) return;
     
     [[FileTable fileIndex] load];
-    NSArray<id<IScenegraphFileIndexItem>> *items = [[FileTable fileIndex] findFileWithType:STRING_FILE
-                                                                                      group:0x7FE59FD0
-                                                                                   instance:0x000000000000008B
-                                                                                    package:nil];
     
-    // Process string files to extract opcode names
-    // Implementation requires Str wrapper class
+    NSArray<id<IScenegraphFileIndexItem>> *items =
+    [[FileTable fileIndex] findFileWithType:MetaData.STRING_FILE
+                                      group:0x7FE59FD0
+                                   instance:0x000000000000008B
+                                    package:nil];
+    
+    if (items == nil || items.count == 0) return;
+    
+    Str *str = [[Str alloc] init];
+    
+    for (id<IScenegraphFileIndexItem> item in items) {
+        [str processData:item.fileDescriptor package:self.basePackage];
+        
+        for (StrToken *tok in str.items) {
+            if (tok.language.languageId == 1) {
+                if (tok.title != nil) [self.names addObject:tok.title];
+            }
+        }
+    }
 }
 
 - (void)loadPackage {
-    if (self.basePackage == nil) {
-        Registry *reg = [Helper windowsRegistry];
-        NSString *installFolder = [[PathProvider global] getExpansion:ExpansionsBaseGame].installFolder;
-        NSString *file = [installFolder stringByAppendingPathComponent:@"TSData/Res/Objects/objects.package"];
-        
-        if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
-            self.basePackage = [File loadFromFile:file];
-        } else {
-            self.basePackage = nil;
-        }
-    }
+    if (self.basePackage != nil) return;
+    
+    ExpansionItem *bg = [[PathProvider global] expansionForEnum:ExpansionsBaseGame];
+    if (bg == nil) return;
+    
+    // Prefer the computed realInstallFolder; fall back to installFolder if needed
+    NSString *installFolder = bg.realInstallFolder;
+    if (installFolder == nil || installFolder.length == 0) installFolder = bg.installFolder;
+    if (installFolder == nil || installFolder.length == 0) return;
+    
+    NSString *file = [installFolder stringByAppendingPathComponent:@"TSData/Res/Objects/objects.package"];
+    
+    // Use whatever PackageFile/DBPF loader your branch uses here:
+    // (I’m keeping your existing assumption that self.basePackage gets set from a path.)
+    self.basePackage = [[PackageFile alloc] initWithPath:file];
 }
 
 // MARK: - IOpcodeProvider Protocol Implementation
@@ -125,7 +262,7 @@
         if (self.basePackage == nil) return @"Unknown Global";
         
         [[FileTable fileIndex] load];
-        NSArray<id<IScenegraphFileIndexItem>> *items = [[FileTable fileIndex] findFileWithType:BHAV_FILE
+        NSArray<id<IScenegraphFileIndexItem>> *items = [[FileTable fileIndex] findFileWithType:MetaData.BHAV_FILE
                                                                                           group:0x7FD46CD0
                                                                                        instance:(uint64_t)opcode
                                                                                         package:nil];

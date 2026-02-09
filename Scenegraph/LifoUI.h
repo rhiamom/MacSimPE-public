@@ -36,6 +36,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class DDSData;
 /**
  * This class is used to fill the UI for this FileType with Data
  */

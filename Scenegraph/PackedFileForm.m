@@ -42,17 +42,17 @@
 #import "FileSelect.h"
 #import "PackageFiles.h"
 #import "Localization.h"
+#import "TGILoader.h"
 
 @implementation RefFileForm
 
 // MARK: - Initialization
 
 - (instancetype)init {
-    self = [super initWithWindowNibName:nil];
+    self = [super initWithWindow:nil]; // nibless, canonical
     if (self) {
         self.fileDescriptors = [[NSMutableArray alloc] init];
         self.isUpdatingFields = NO;
-        [self setupUI];
     }
     return self;
 }
@@ -61,7 +61,6 @@
     self = [self init];
     if (self) {
         self.wrapper = wrapper;
-        [self reloadFileList];
     }
     return self;
 }
@@ -81,12 +80,14 @@
     [self setupUI];
 }
 
+- (void)windowDidLoad {
+    [super windowDidLoad];
+    [self reloadFileList];
+}
+
 // MARK: - UI Setup
 
 - (void)setupUI {
-    if (!self.window) {
-        [self loadWindow];
-    }
     
     NSView *contentView = self.window.contentView;
     
@@ -389,48 +390,344 @@
     ]];
 }
 
-- (void)loadTypeAliases {
-    [self.typesPopUpButton removeAllItems];
+// MARK: - Actions
+
+- (IBAction)selectFile:(id)sender {
+    [self updateButtonStates];
     
-    // This would need to be implemented based on your MetaData.typeAliases structure
-    // For now, adding placeholder items
-    [self.typesPopUpButton addItemWithTitle:@"Select Type..."];
-    // NSArray *typeAliases = [MetaData typeAliases];
-    // for (TypeAlias *alias in typeAliases) {
-    //     [self.typesPopUpButton addItemWithTitle:alias.name];
-    // }
+    NSInteger selectedRow = self.fileListTableView.selectedRow;
+    if (selectedRow < 0 || self.isUpdatingFields) {
+        self.imageView.image = nil;
+        return;
+    }
+    
+    @try {
+        self.isUpdatingFields = YES;
+        
+        id<IPackedFileDescriptor> pfd = self.fileDescriptors[selectedRow];
+        
+        self.groupTextField.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexStringUInt:pfd.group]];
+        self.instanceTextField.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexStringUInt:pfd.instance]];
+        self.subtypeTextField.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexStringUInt:pfd.subtype]];
+        self.typeTextField.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexStringUInt:pfd.type]];
+        
+        // Sync popup selection to type field
+        [self typeTextChanged:self.typeTextField];
+        
+        [self updateImageForSelectedFile];
+        
+    } @catch (NSException *ex) {
+        [ExceptionForm executeWithMessage:[Localization getString:@"errconvert"] exception:ex];
+    } @finally {
+        self.isUpdatingFields = NO;
+    }
 }
 
-// MARK: - Actions
+- (IBAction)changeFile:(id)sender {
+    @try {
+        NSInteger selectedRow = self.fileListTableView.selectedRow;
+        
+        id<IPackedFileDescriptor> pfd = nil;
+        
+        if (selectedRow >= 0 && selectedRow < (NSInteger)self.fileDescriptors.count) {
+            pfd = self.fileDescriptors[selectedRow];
+        } else {
+            // Create a new item appropriate for this wrapper
+            if ([self.wrapper isKindOfClass:[RefFile class]]) {
+                pfd = [[RefFileItem alloc] initWithParent:(RefFile *)self.wrapper];
+            } else {
+                pfd = [[PackedFileDescriptor alloc] init];
+            }
+        }
+        
+        uint32_t groupVal = [Helper hexStringToUInt:self.groupTextField.stringValue];
+        uint32_t instVal  = [Helper hexStringToUInt:self.instanceTextField.stringValue];
+        uint32_t subVal   = [Helper hexStringToUInt:self.subtypeTextField.stringValue];
+        uint32_t typeVal  = [Helper hexStringToUInt:self.typeTextField.stringValue];
+        
+        [pfd beginUpdate];
+        pfd.group = groupVal;
+        pfd.instance = instVal;
+        pfd.subtype = subVal;
+        pfd.type = typeVal;
+        [pfd endUpdate];
+        
+        // Clear cached skin (matches C# behavior)
+        if ([pfd isKindOfClass:[RefFileItem class]]) {
+            ((RefFileItem *)pfd).skin = nil;
+        }
+        
+        if (selectedRow >= 0 && selectedRow < (NSInteger)self.fileDescriptors.count) {
+            self.fileDescriptors[selectedRow] = pfd;
+            [self.fileListTableView reloadData];
+            [self.fileListTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow] byExtendingSelection:NO];
+        } else {
+            [self.fileDescriptors addObject:pfd];
+            [self.fileListTableView reloadData];
+            NSInteger newRow = (NSInteger)self.fileDescriptors.count - 1;
+            [self.fileListTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:newRow] byExtendingSelection:NO];
+            [self.fileListTableView scrollRowToVisible:newRow];
+        }
+        
+        [self updateButtonStates];
+        [self updateImageForSelectedFile];
+        
+    } @catch (NSException *ex) {
+        [ExceptionForm executeWithMessage:[Localization getString:@"errconvert"] exception:ex];
+    }
+}
+
+- (IBAction)deleteFile:(id)sender {
+    NSInteger selectedRow = self.fileListTableView.selectedRow;
+    if (selectedRow < 0 || selectedRow >= (NSInteger)self.fileDescriptors.count) {
+        [self updateButtonStates];
+        return;
+    }
+    
+    [self.fileDescriptors removeObjectAtIndex:selectedRow];
+    [self.fileListTableView reloadData];
+    
+    NSInteger newSelection = MIN(selectedRow, (NSInteger)self.fileDescriptors.count - 1);
+    if (newSelection >= 0) {
+        [self.fileListTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:newSelection] byExtendingSelection:NO];
+        [self selectFile:self.fileListTableView];
+    } else {
+        self.imageView.image = nil;
+        self.typeTextField.stringValue = @"";
+        self.subtypeTextField.stringValue = @"";
+        self.groupTextField.stringValue = @"";
+        self.instanceTextField.stringValue = @"";
+    }
+    
+    [self updateButtonStates];
+}
+
+- (IBAction)addFile:(id)sender {
+    // Mirrors C# AddFile: deselect, change (creates new), then select last row
+    [self.fileListTableView deselectAll:nil];
+    [self changeFile:nil];
+    
+    NSInteger lastRow = (NSInteger)self.fileDescriptors.count - 1;
+    if (lastRow >= 0) {
+        [self.fileListTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:lastRow] byExtendingSelection:NO];
+        [self.fileListTableView scrollRowToVisible:lastRow];
+        [self selectFile:self.fileListTableView];
+    }
+}
+
+- (IBAction)commitAll:(id)sender {
+    @try {
+        if ([self.wrapper isKindOfClass:[RefFile class]]) {
+            ((RefFile *)self.wrapper).items = [self.fileDescriptors copy];
+        }
+        
+        [self.wrapper synchronizeUserData];
+        
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = [Localization getString:@"commited"];
+        [alert runModal];
+        
+    } @catch (NSException *ex) {
+        [ExceptionForm executeWithMessage:[Localization getString:@"errwritingfile"] exception:ex];
+    }
+}
+
+- (IBAction)moveUp:(id)sender {
+    NSInteger selectedRow = self.fileListTableView.selectedRow;
+    if (selectedRow < 1 || selectedRow >= (NSInteger)self.fileDescriptors.count) return;
+    
+    id obj = self.fileDescriptors[selectedRow];
+    self.fileDescriptors[selectedRow] = self.fileDescriptors[selectedRow - 1];
+    self.fileDescriptors[selectedRow - 1] = obj;
+    
+    [self.fileListTableView reloadData];
+    [self.fileListTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow - 1] byExtendingSelection:NO];
+    [self.fileListTableView scrollRowToVisible:selectedRow - 1];
+    
+    [self updateButtonStates];
+}
+
+- (IBAction)moveDown:(id)sender {
+    NSInteger selectedRow = self.fileListTableView.selectedRow;
+    if (selectedRow < 0) return;
+    if (selectedRow >= (NSInteger)self.fileDescriptors.count - 1) return;
+    
+    id obj = self.fileDescriptors[selectedRow];
+    self.fileDescriptors[selectedRow] = self.fileDescriptors[selectedRow + 1];
+    self.fileDescriptors[selectedRow + 1] = obj;
+    
+    [self.fileListTableView reloadData];
+    [self.fileListTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:selectedRow + 1] byExtendingSelection:NO];
+    [self.fileListTableView scrollRowToVisible:selectedRow + 1];
+    
+    [self updateButtonStates];
+}
+
+- (IBAction)chooseFile:(id)sender {
+    @try {
+        id<IPackedFileDescriptor> pfd = [FileSelect execute];
+        if (!pfd) return;
+        
+        self.isUpdatingFields = YES;
+        
+        self.groupTextField.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexStringUInt:pfd.group]];
+        self.instanceTextField.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexStringUInt:pfd.instance]];
+        self.subtypeTextField.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexStringUInt:pfd.subtype]];
+        self.typeTextField.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexStringUInt:pfd.type]];
+        
+        self.isUpdatingFields = NO;
+        
+        [self autoChange:sender];
+        
+    } @catch (NSException *ex) {
+        // C# swallowed exceptions here; keep behavior quiet, but don’t crash.
+        self.isUpdatingFields = NO;
+    }
+}
+
+- (IBAction)showPackageSelector:(id)sender {
+    PackageSelectorForm *form = [[PackageSelectorForm alloc] init];
+    
+    // Matches NmapForm: executeWithPackage:
+    if ([self.wrapper respondsToSelector:@selector(package)]) {
+        id pkg = [self.wrapper performSelector:@selector(package)];
+        if (pkg) {
+            [form executeWithPackage:pkg];
+            return;
+        }
+    }
+    
+    // Fallback: just show it without a package if wrapper doesn't expose one
+    [form showWindow:self];
+}
+
+// MARK: - Utility
+
+- (void)updateButtonStates {
+    NSInteger selectedRow = self.fileListTableView.selectedRow;
+    BOOL hasSelection = (selectedRow >= 0 && selectedRow < (NSInteger)self.fileDescriptors.count);
+    
+    self.deleteButton.enabled = hasSelection;
+    self.changeButton.enabled = hasSelection; // even though it's hidden by default, keep consistent
+    self.upButton.enabled = hasSelection && selectedRow > 0;
+    self.downButton.enabled = hasSelection && selectedRow < (NSInteger)self.fileDescriptors.count - 1;
+    
+    // Match C# behavior: only enable commit when something is selected
+    self.commitAllButton.enabled = hasSelection;
+    
+    if (!hasSelection) {
+        self.imageView.image = nil;
+    }
+}
+
+- (void)updateImageForSelectedFile {
+    NSInteger selectedRow = self.fileListTableView.selectedRow;
+    if (selectedRow < 0 || selectedRow >= (NSInteger)self.fileDescriptors.count) {
+        self.imageView.image = nil;
+        return;
+    }
+    
+    id<IPackedFileDescriptor> pfd = self.fileDescriptors[selectedRow];
+    
+    if (![pfd isKindOfClass:[RefFileItem class]]) {
+        self.imageView.image = nil;
+        return;
+    }
+    
+    RefFileItem *rfi = (RefFileItem *)pfd;
+    SkinChain *sc = rfi.skin;
+    
+    if (!sc) {
+        self.imageView.image = nil;
+        return;
+    }
+    
+    GenericRcol *txtr = sc.txtr;
+    if (!txtr || txtr.blocks.count == 0) {
+        self.imageView.image = nil;
+        return;
+    }
+    
+    id firstBlock = txtr.blocks[0];
+    if (![firstBlock isKindOfClass:[ImageData class]]) {
+        self.imageView.image = nil;
+        return;
+    }
+    
+    ImageData *imgData = (ImageData *)firstBlock;
+    MipMap *mm = [imgData getLargestTexture:self.imageView.bounds.size];
+    
+    self.imageView.image = mm.texture;
+}
+
+- (void)reloadFileList {
+    [self.fileDescriptors removeAllObjects];
+    
+    if ([self.wrapper isKindOfClass:[RefFile class]]) {
+        RefFile *wrp = (RefFile *)self.wrapper;
+        [self.fileDescriptors addObjectsFromArray:wrp.items ?: @[]];
+    }
+    
+    [self.fileListTableView reloadData];
+    [self updateButtonStates];
+}
+
+// MARK: - Type Alias UI
+
+- (void)loadTypeAliases {
+    [self.typesPopUpButton removeAllItems];
+    [self.typesPopUpButton addItemWithTitle:@"Select Type..."];
+    
+    NSArray<TypeAlias *> *types = [TGILoader shared].fileTypes ?: @[];
+    // Optional: sort by name for usability
+    types = [types sortedArrayUsingComparator:^NSComparisonResult(TypeAlias *a, TypeAlias *b) {
+        return [a.name compare:b.name options:NSCaseInsensitiveSearch];
+    }];
+    
+    for (TypeAlias *alias in types) {
+        [self.typesPopUpButton addItemWithTitle:alias.name ?: @"(unnamed)"];
+        self.typesPopUpButton.lastItem.representedObject = alias;
+    }
+}
 
 - (IBAction)selectType:(id)sender {
     if (self.isUpdatingFields) return;
     
-    NSInteger selectedIndex = [self.typesPopUpButton indexOfSelectedItem];
+    NSInteger selectedIndex = self.typesPopUpButton.indexOfSelectedItem;
     if (selectedIndex <= 0) return;
     
-    // This needs to be implemented based on your TypeAlias structure
-    // TypeAlias *selectedAlias = [MetaData typeAliases][selectedIndex - 1];
-    // [self.typeTextField setStringValue:[NSString stringWithFormat:@"0x%@", [Helper hexString:selectedAlias.id]]];
+    TypeAlias *alias = (TypeAlias *)self.typesPopUpButton.selectedItem.representedObject;
+    if (!alias) return;
+    
+    self.typeTextField.stringValue = [NSString stringWithFormat:@"0x%@", [Helper hexStringUInt:alias.typeID]];
 }
 
 - (IBAction)typeTextChanged:(id)sender {
-    self.isUpdatingFields = YES;
+    if (self.isUpdatingFields) return;
     
+    self.isUpdatingFields = YES;
     @try {
-        NSString *typeText = [self.typeTextField stringValue];
-        uint32_t typeValue = [Helper hexStringToUInt:typeText];
+        uint32_t typeVal = [Helper hexStringToUInt:self.typeTextField.stringValue];
+        TypeAlias *match = [MetaData findTypeAlias:typeVal];
         
-        // Find matching type alias
-        // TypeAlias *matchingAlias = [MetaData findTypeAlias:typeValue];
+        // Select matching popup item if present
+        NSInteger itemCount = self.typesPopUpButton.numberOfItems;
+        NSInteger matchIndex = -1;
+        
+        for (NSInteger i = 1; i < itemCount; i++) {
+            TypeAlias *alias = (TypeAlias *)[self.typesPopUpButton itemAtIndex:i].representedObject;
+            if (alias && alias.typeID == match.typeID) {
+                matchIndex = i;
+                break;
+            }
+        }
+        
+        [self.typesPopUpButton selectItemAtIndex:(matchIndex >= 0 ? matchIndex : 0)];
         
         [self autoChange:sender];
         
-        // Update popup button selection
-        // Implementation would depend on your MetaData structure
-        
-    } @catch (NSException *exception) {
-        [ExceptionForm execute:exception];
+    } @catch (NSException *ex) {
+        [ExceptionForm execute:ex];
     } @finally {
         self.isUpdatingFields = NO;
     }
@@ -440,20 +737,38 @@
     if (self.isUpdatingFields) return;
     
     self.isUpdatingFields = YES;
-    NSInteger selectedRow = [self.fileListTableView selectedRow];
+    NSInteger selectedRow = self.fileListTableView.selectedRow;
     if (selectedRow >= 0) {
         [self changeFile:nil];
     }
     self.isUpdatingFields = NO;
 }
 
-- (IBAction)selectFile:(id)sender {
-    [self updateButtonStates];
+@end
+
+// MARK: - TableView Data Source / Delegate
+
+@implementation RefFileForm (TableViewDataSource)
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return (NSInteger)self.fileDescriptors.count;
+}
+
+- (id)tableView:(NSTableView *)tableView
+objectValueForTableColumn:(NSTableColumn *)tableColumn
+            row:(NSInteger)row {
     
-    NSInteger selectedRow = [self.fileListTableView selectedRow];
-    if (selectedRow < 0 || self.isUpdatingFields) return;
+    if (row < 0 || row >= (NSInteger)self.fileDescriptors.count) return @"";
     
-    @try {
-        self.isUpdatingFields = YES;
-        
-        id<IPackedFileDescriptor> pfd = self.file
+    id<IPackedFileDescriptor> pfd = self.fileDescriptors[row];
+    if ([pfd respondsToSelector:@selector(toResListString)]) {
+        return [pfd toResListString];
+    }
+    return [pfd description];
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)notification {
+    [self selectFile:self.fileListTableView];
+}
+
+@end

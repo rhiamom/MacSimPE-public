@@ -30,7 +30,7 @@
 #import <Cocoa/Cocoa.h>
 
 // Forward declarations
-@class StrWrapper;
+@class Str;
 @class StrLanguage;
 @class StrItemList;
 @class StrToken;
@@ -73,7 +73,7 @@
 /**
  * The Str wrapper handling the packed file data
  */
-@property (nonatomic, strong) StrWrapper *wrapper;
+@property (nonatomic, strong) Str *wrapper;
 
 /**
  * Currently selected language
@@ -101,7 +101,7 @@
  * Updates the GUI with new string wrapper data
  * @param wrp The Str wrapper containing the data to display
  */
-- (void)updateGUI:(StrWrapper *)wrp;
+- (void)updateGUI:(Str *)wrp;
 
 // MARK: - Private Methods
 

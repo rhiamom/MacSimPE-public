@@ -44,7 +44,7 @@
 #import "IProviderRegistry.h"
 #import "PathProvider.h"
 #import "File.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "StrItem.h"
 #import "PictureWrapper.h"
 #import "XmlWrapper.h"
@@ -202,7 +202,7 @@
     
     NSString *uiTextPath = [NSString pathWithComponents:@[[[[PathProvider global] getLatestExpansion] installFolder], @"TSData", @"Res", @"Text", @"UIText.package"]];
     File *pkg = [File loadFromFile:uiTextPath];
-    StrWrapper *str = [[StrWrapper alloc] init];
+    Str *str = [[Str alloc] init];
     id<IPackedFileDescriptor> pfd = [pkg findFileWithType:[MetaData STRING_FILE] subtype:0 group:[MetaData LOCAL_GROUP] instance:0xe1];
     
     if (pfd != nil) {

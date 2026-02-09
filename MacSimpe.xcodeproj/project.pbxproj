@@ -13,7 +13,6 @@
 		B6053BF62E5E52BD00751B39 /* LifoWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6053BF52E5E52BD00751B39 /* LifoWrapper.m */; };
 		B6053BF92E5E53C400751B39 /* LifoForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6053BF82E5E53C400751B39 /* LifoForm.m */; };
 		B60ADF502E592B4F00F66F86 /* PackedFileForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */; };
-		B60ADF532E592D0600F66F86 /* PackedFileUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF522E592D0600F66F86 /* PackedFileUI.m */; };
 		B60ADF562E5937E900F66F86 /* cImageData.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF552E5937E900F66F86 /* cImageData.m */; };
 		B60ADF592E5938B600F66F86 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = B60ADF582E5938B600F66F86 /* ImageLoader.m */; };
 		B616F7122E60A5FC00D0263A /* LifoUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B616F7112E60A5FC00D0263A /* LifoUI.m */; };
@@ -62,6 +61,7 @@
 		B62437F02E35A3490052119F /* additionalmajors.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437EF2E35A3490052119F /* additionalmajors.xml */; };
 		B62437F22E35A35C0052119F /* additionalcareers.xml in Resources */ = {isa = PBXBuildFile; fileRef = B62437F12E35A35C0052119F /* additionalcareers.xml */; };
 		B62EC0362E70EB28000BC233 /* FileSelect.m in Sources */ = {isa = PBXBuildFile; fileRef = B62EC0352E70EB28000BC233 /* FileSelect.m */; };
+		B636D64F2F37DCE10005F9C4 /* SimRelations.m in Sources */ = {isa = PBXBuildFile; fileRef = B636D64E2F37DCE10005F9C4 /* SimRelations.m */; };
 		B6385F3B2E7357B800DB7DDF /* SplashForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F3A2E7357B800DB7DDF /* SplashForm.m */; };
 		B6385F3D2E7359BF00DB7DDF /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = B6385F3C2E7359BF00DB7DDF /* splash.png */; };
 		B6385F402E7365C300DB7DDF /* cShape.m in Sources */ = {isa = PBXBuildFile; fileRef = B6385F3F2E7365C300DB7DDF /* cShape.m */; };
@@ -120,7 +120,6 @@
 		B671B4842E4F959E004559C3 /* AbstractRcolBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B4832E4F959E004559C3 /* AbstractRcolBlock.m */; };
 		B671B4872E4F95FF004559C3 /* cSGResource.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B4862E4F95FF004559C3 /* cSGResource.m */; };
 		B671B48A2E4F9930004559C3 /* LoadFileWrappers.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B4892E4F9930004559C3 /* LoadFileWrappers.m */; };
-		B671B48D2E4FC38A004559C3 /* IWrapperReferencedResources.m in Sources */ = {isa = PBXBuildFile; fileRef = B671B48C2E4FC38A004559C3 /* IWrapperReferencedResources.m */; };
 		B671C1232E7C64BC008E5525 /* cDataListExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = B671C1222E7C64BC008E5525 /* cDataListExtension.m */; };
 		B671C1262E7C67E5008E5525 /* cExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = B671C1252E7C67E5008E5525 /* cExtension.m */; };
 		B671C1292E7C755E008E5525 /* ScenegraphException.m in Sources */ = {isa = PBXBuildFile; fileRef = B671C1282E7C755E008E5525 /* ScenegraphException.m */; };
@@ -135,7 +134,7 @@
 		B68881D72E734C69001C417B /* SplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = B68881D62E734C69001C417B /* SplashScreen.m */; };
 		B68881DA2E734DF8001C417B /* TransparentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B68881D92E734DF8001C417B /* TransparentButton.m */; };
 		B68EE9962E68DA520057ABE5 /* StrItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EE9952E68DA520057ABE5 /* StrItem.m */; };
-		B68EE9992E68DBF20057ABE5 /* StrWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EE9982E68DBF20057ABE5 /* StrWrapper.m */; };
+		B68EE9992E68DBF20057ABE5 /* Str.m in Sources */ = {isa = PBXBuildFile; fileRef = B68EE9982E68DBF20057ABE5 /* Str.m */; };
 		B68F5F4C2E83419C004616E8 /* RcolCacheItem..m in Sources */ = {isa = PBXBuildFile; fileRef = B68F5F4B2E83419C004616E8 /* RcolCacheItem..m */; };
 		B68F5F4F2E8343DF004616E8 /* WantCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B68F5F4E2E8343DF004616E8 /* WantCacheItem.m */; };
 		B68F5F522E83454A004616E8 /* PackageCacheItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B68F5F512E83454A004616E8 /* PackageCacheItem.m */; };
@@ -180,9 +179,6 @@
 		B6B02CDB2E4EBADF009240FD /* RcolForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CDA2E4EBADF009240FD /* RcolForm.m */; };
 		B6B02CDE2E4EBF3B009240FD /* WrapperBaseControl.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CDD2E4EBF3B009240FD /* WrapperBaseControl.m */; };
 		B6B02CE12E4EC0E7009240FD /* ScenegraphHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B02CE02E4EC0E7009240FD /* ScenegraphHelper.m */; };
-		B6B8D02F2E57A8EA008557A2 /* CollectibleAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B8D02E2E57A8EA008557A2 /* CollectibleAlias.m */; };
-		B6B8D0322E57A981008557A2 /* Events.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B8D0312E57A981008557A2 /* Events.m */; };
-		B6B8D0372E57ABAB008557A2 /* TraitAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B8D0362E57ABAB008557A2 /* TraitAlias.m */; };
 		B6B8D03A2E57ADCA008557A2 /* Html2Rtf.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B8D0392E57ADCA008557A2 /* Html2Rtf.m */; };
 		B6B8D03E2E57AF90008557A2 /* PropertyObjectBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = B6B8D03D2E57AF90008557A2 /* PropertyObjectBuilder.m */; };
 		B6BF52652E5B7542007B48A1 /* NmapItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B6BF52642E5B7542007B48A1 /* NmapItem.m */; };
@@ -226,6 +222,11 @@
 		B6D042C42E69022700366E80 /* DefaultWrapperFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D042C32E69022700366E80 /* DefaultWrapperFactory.m */; };
 		B6D042C72E6904AC00366E80 /* StrListViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D042C62E6904AC00366E80 /* StrListViewer.m */; };
 		B6D042CA2E6909DB00366E80 /* StrForm.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D042C92E6909DB00366E80 /* StrForm.m */; };
+		B6D81FE32F3A5537000BE221 /* PackedFileUI.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D81FDF2F3A5537000BE221 /* PackedFileUI.m */; };
+		B6D81FE42F3A5537000BE221 /* TraitAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D81FE12F3A5537000BE221 /* TraitAlias.m */; };
+		B6D81FE52F3A5537000BE221 /* Events.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D81FB82F3A5537000BE221 /* Events.m */; };
+		B6D81FE62F3A5537000BE221 /* CollectibleAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D81FB62F3A5537000BE221 /* CollectibleAlias.m */; };
+		B6D81FE72F3A5537000BE221 /* IWrapperReferencedResources.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D81FDD2F3A5537000BE221 /* IWrapperReferencedResources.m */; };
 		B6E24B232E561CE1003E2A3E /* SimFamilyNames.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B222E561CE1003E2A3E /* SimFamilyNames.m */; };
 		B6E24B282E561E63003E2A3E /* SimNames.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B272E561E63003E2A3E /* SimNames.m */; };
 		B6E24B2C2E561F98003E2A3E /* SimDescriptions.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E24B2B2E561F98003E2A3E /* SimDescriptions.m */; };
@@ -295,7 +296,6 @@
 		B60ADF4E2E592A9800F66F86 /* PackedFileForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileForm.h; sourceTree = "<group>"; };
 		B60ADF4F2E592B4F00F66F86 /* PackedFileForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileForm.m; sourceTree = "<group>"; };
 		B60ADF512E592C8E00F66F86 /* PackedFileUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileUI.h; sourceTree = "<group>"; };
-		B60ADF522E592D0600F66F86 /* PackedFileUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileUI.m; sourceTree = "<group>"; };
 		B60ADF542E59374E00F66F86 /* cImageData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cImageData.h; sourceTree = "<group>"; };
 		B60ADF552E5937E900F66F86 /* cImageData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cImageData.m; sourceTree = "<group>"; };
 		B60ADF572E59388800F66F86 /* ImageLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageLoader.h; sourceTree = "<group>"; };
@@ -407,8 +407,8 @@
 		B62EC0352E70EB28000BC233 /* FileSelect.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileSelect.m; sourceTree = "<group>"; };
 		B632A4362E36A3160024810C /* CompressedFileList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CompressedFileList.h; sourceTree = "<group>"; };
 		B632A4372E36A3AD0024810C /* CompressedFileList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompressedFileList.m; sourceTree = "<group>"; };
-		B632A4382E36B8AD0024810C /* IFileWrapperSaveExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFileWrapperSaveExtension.h; sourceTree = "<group>"; };
-		B632A4392E36B9120024810C /* IPackedFileSaveExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileSaveExtension.h; sourceTree = "<group>"; };
+		B636D64D2F37DCAC0005F9C4 /* SimRelations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimRelations.h; sourceTree = "<group>"; };
+		B636D64E2F37DCE10005F9C4 /* SimRelations.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimRelations.m; sourceTree = "<group>"; };
 		B6385F392E7357A500DB7DDF /* SplashForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplashForm.h; sourceTree = "<group>"; };
 		B6385F3A2E7357B800DB7DDF /* SplashForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SplashForm.m; sourceTree = "<group>"; };
 		B6385F3C2E7359BF00DB7DDF /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
@@ -479,9 +479,6 @@
 		B64E6BB72E354348009AD0A7 /* AbstractFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractFactory.m; sourceTree = "<group>"; };
 		B64E6BB82E3543BB009AD0A7 /* AbstractWrapperInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractWrapperInfo.h; sourceTree = "<group>"; };
 		B64E6BB92E3543E2009AD0A7 /* AbstractWrapperInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractWrapperInfo.m; sourceTree = "<group>"; };
-		B64E6BBA2E354556009AD0A7 /* IWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapper.h; sourceTree = "<group>"; };
-		B64E6BBC2E354958009AD0A7 /* IFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFileWrapper.h; sourceTree = "<group>"; };
-		B64E6BBD2E354A11009AD0A7 /* IPackedFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileWrapper.h; sourceTree = "<group>"; };
 		B64E6BBE2E354AD1009AD0A7 /* IPackedFileName.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileName.h; sourceTree = "<group>"; };
 		B64E6BBF2E3571AF009AD0A7 /* Registry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Registry.h; sourceTree = "<group>"; };
 		B64EEF412E3937560008E7CA /* IResourceTreeNodeBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IResourceTreeNodeBuilder.h; sourceTree = "<group>"; };
@@ -536,7 +533,6 @@
 		B6687EB12E7B1B4600BFA0B3 /* LocalizedEnums.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalizedEnums.m; sourceTree = "<group>"; };
 		B6687EB32E7B1CD900BFA0B3 /* Boolset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Boolset.h; sourceTree = "<group>"; };
 		B6687EB42E7B1CEC00BFA0B3 /* Boolset.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Boolset.m; sourceTree = "<group>"; };
-		B66C34612E3BC15100B4B9B8 /* IProviderRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IProviderRegistry.h; sourceTree = "<group>"; };
 		B66C34622E3BC28400B4B9B8 /* PathProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathProvider.h; sourceTree = "<group>"; };
 		B66C34632E3BC2D900B4B9B8 /* PathProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathProvider.m; sourceTree = "<group>"; };
 		B66C34652E3BC5E900B4B9B8 /* PathSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathSettings.h; sourceTree = "<group>"; };
@@ -547,8 +543,6 @@
 		B671B4862E4F95FF004559C3 /* cSGResource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cSGResource.m; sourceTree = "<group>"; };
 		B671B4882E4F98C3004559C3 /* LoadFileWrappers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadFileWrappers.h; sourceTree = "<group>"; };
 		B671B4892E4F9930004559C3 /* LoadFileWrappers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadFileWrappers.m; sourceTree = "<group>"; };
-		B671B48B2E4FC354004559C3 /* IWrapperReferencedResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperReferencedResources.h; sourceTree = "<group>"; };
-		B671B48C2E4FC38A004559C3 /* IWrapperReferencedResources.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IWrapperReferencedResources.m; sourceTree = "<group>"; };
 		B671C1212E7C64A3008E5525 /* cDataListExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cDataListExtension.h; sourceTree = "<group>"; };
 		B671C1222E7C64BC008E5525 /* cDataListExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = cDataListExtension.m; sourceTree = "<group>"; };
 		B671C1242E7C67CE008E5525 /* cExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cExtension.h; sourceTree = "<group>"; };
@@ -569,7 +563,6 @@
 		B67DE0752E70648D00A17C62 /* ObjdPropertyParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjdPropertyParser.m; sourceTree = "<group>"; };
 		B67DE0772E70679300A17C62 /* ExtObjdWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtObjdWrapper.h; sourceTree = "<group>"; };
 		B67DE0782E7067AA00A17C62 /* ExtObjdWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtObjdWrapper.m; sourceTree = "<group>"; };
-		B6819DE82E3C078F00E37434 /* IScenegraphFileIndexItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphFileIndexItem.h; sourceTree = "<group>"; };
 		B6819E562E3E72FF00E37434 /* FileIndexItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileIndexItem.h; sourceTree = "<group>"; };
 		B6819E572E3E734000E37434 /* FileIndexItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileIndexItem.m; sourceTree = "<group>"; };
 		B6819E5A2E3E75A000E37434 /* FileIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileIndex.h; sourceTree = "<group>"; };
@@ -581,8 +574,8 @@
 		B68EE9932E68D9A90057ABE5 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		B68EE9942E68DA3F0057ABE5 /* StrItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrItem.h; sourceTree = "<group>"; };
 		B68EE9952E68DA520057ABE5 /* StrItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrItem.m; sourceTree = "<group>"; };
-		B68EE9972E68DBDF0057ABE5 /* StrWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrWrapper.h; sourceTree = "<group>"; };
-		B68EE9982E68DBF20057ABE5 /* StrWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrWrapper.m; sourceTree = "<group>"; };
+		B68EE9972E68DBDF0057ABE5 /* Str.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Str.h; sourceTree = "<group>"; };
+		B68EE9982E68DBF20057ABE5 /* Str.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Str.m; sourceTree = "<group>"; };
 		B68F5F4A2E834185004616E8 /* RcolCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolCacheItem.h; sourceTree = "<group>"; };
 		B68F5F4B2E83419C004616E8 /* RcolCacheItem..m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolCacheItem..m; sourceTree = "<group>"; };
 		B68F5F4D2E8343CB004616E8 /* WantCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WantCacheItem.h; sourceTree = "<group>"; };
@@ -596,9 +589,6 @@
 		B691A41C2E67B5E10042D5A5 /* GenericCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenericCommon.h; sourceTree = "<group>"; };
 		B691A41D2E67B7B30042D5A5 /* GenericElements.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GenericElements.m; sourceTree = "<group>"; };
 		B691A41F2E67B7FF0042D5A5 /* GenericFileItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenericFileItem.h; sourceTree = "<group>"; };
-		B69C59F02E3E7FBA00794FC7 /* IWrapperRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperRegistry.h; sourceTree = "<group>"; };
-		B69C59F12E3E803F00794FC7 /* IWrapperInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperInfo.h; sourceTree = "<group>"; };
-		B69C59F22E3E807C00794FC7 /* IWrapperFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperFactory.h; sourceTree = "<group>"; };
 		B69C59F32E3E82F200794FC7 /* TypeRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TypeRegistry.h; sourceTree = "<group>"; };
 		B69C59F42E3E894900794FC7 /* TypeRegistry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TypeRegistry.m; sourceTree = "<group>"; };
 		B69C59F52E3E8BFA00794FC7 /* GlobalizedObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalizedObject.h; sourceTree = "<group>"; };
@@ -623,7 +613,6 @@
 		B69C5A342E3ED1E600794FC7 /* DescriptiveSerializer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DescriptiveSerializer.m; sourceTree = "<group>"; };
 		B69C5A362E3ED3BB00794FC7 /* Thread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Thread.h; sourceTree = "<group>"; };
 		B69C5A372E3ED3E200794FC7 /* Thread.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Thread.m; sourceTree = "<group>"; };
-		B69C5A392E3ED55D00794FC7 /* IScenegraphFileIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphFileIndex.h; sourceTree = "<group>"; };
 		B69F34D82E37EC48007EEA89 /* Hashes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Hashes.h; sourceTree = "<group>"; };
 		B69F34D92E37ECDD007EEA89 /* Hashes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Hashes.m; sourceTree = "<group>"; };
 		B69F34DB2E37EDA9007EEA89 /* CRC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRC.h; sourceTree = "<group>"; };
@@ -639,7 +628,6 @@
 		B69F34EB2E37F3F3007EEA89 /* GeneratableFile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeneratableFile.m; sourceTree = "<group>"; };
 		B69F34ED2E37F49A007EEA89 /* PackedFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFile.h; sourceTree = "<group>"; };
 		B69F34EE2E37F4D6007EEA89 /* PackedFile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFile.m; sourceTree = "<group>"; };
-		B69F34F02E37F564007EEA89 /* IPackedFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFile.h; sourceTree = "<group>"; };
 		B69F34F22E383544007EEA89 /* ResourceViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceViewManager.h; sourceTree = "<group>"; };
 		B69F34F32E3835A1007EEA89 /* ResourceViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResourceViewManager.m; sourceTree = "<group>"; };
 		B69F34F52E383618007EEA89 /* ResourceViewManagerHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceViewManagerHelpers.h; sourceTree = "<group>"; };
@@ -663,7 +651,6 @@
 		B6AF28FA2E6A065200EDEB2D /* EnumComboBox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnumComboBox.m; sourceTree = "<group>"; };
 		B6AF28FB2E6A079100EDEB2D /* ProgressBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgressBar.h; sourceTree = "<group>"; };
 		B6AF28FC2E6A07A800EDEB2D /* ProgressBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressBar.m; sourceTree = "<group>"; };
-		B6B02CD52E4EB567009240FD /* IPackedFileUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileUI.h; sourceTree = "<group>"; };
 		B6B02CD62E4EB9FB009240FD /* RcolUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolUI.h; sourceTree = "<group>"; };
 		B6B02CD72E4EBA34009240FD /* RcolUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolUI.m; sourceTree = "<group>"; };
 		B6B02CD92E4EBA69009240FD /* RcolForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolForm.h; sourceTree = "<group>"; };
@@ -672,23 +659,11 @@
 		B6B02CDD2E4EBF3B009240FD /* WrapperBaseControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WrapperBaseControl.m; sourceTree = "<group>"; };
 		B6B02CDF2E4EC0AA009240FD /* ScenegraphHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScenegraphHelper.h; sourceTree = "<group>"; };
 		B6B02CE02E4EC0E7009240FD /* ScenegraphHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScenegraphHelper.m; sourceTree = "<group>"; };
-		B6B02CE22E4EC150009240FD /* IScenegraphBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphBlock.h; sourceTree = "<group>"; };
-		B6B8D02C2E57A5AA008557A2 /* ISDesc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISDesc.h; sourceTree = "<group>"; };
-		B6B8D02D2E57A8A3008557A2 /* CollectibleAlias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectibleAlias.h; sourceTree = "<group>"; };
-		B6B8D02E2E57A8EA008557A2 /* CollectibleAlias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectibleAlias.m; sourceTree = "<group>"; };
-		B6B8D0302E57A946008557A2 /* Events.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Events.h; sourceTree = "<group>"; };
-		B6B8D0312E57A981008557A2 /* Events.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Events.m; sourceTree = "<group>"; };
-		B6B8D0332E57AA54008557A2 /* IGroupCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IGroupCache.h; sourceTree = "<group>"; };
-		B6B8D0342E57AAA4008557A2 /* IGroupCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IGroupCacheItem.h; sourceTree = "<group>"; };
-		B6B8D0352E57AB77008557A2 /* TraitAlias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TraitAlias.h; sourceTree = "<group>"; };
-		B6B8D0362E57ABAB008557A2 /* TraitAlias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TraitAlias.m; sourceTree = "<group>"; };
 		B6B8D0382E57AD94008557A2 /* Html2Rtf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Html2Rtf.h; sourceTree = "<group>"; };
 		B6B8D0392E57ADCA008557A2 /* Html2Rtf.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Html2Rtf.m; sourceTree = "<group>"; };
 		B6B8D03B2E57AE75008557A2 /* ICacheFileTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICacheFileTest.h; sourceTree = "<group>"; };
 		B6B8D03C2E57AF01008557A2 /* PropertyObjectBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyObjectBuilder.h; sourceTree = "<group>"; };
 		B6B8D03D2E57AF90008557A2 /* PropertyObjectBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyObjectBuilder.m; sourceTree = "<group>"; };
-		B6BBE6F82E40F17D003D5BCC /* ISettingsRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISettingsRegistry.h; sourceTree = "<group>"; };
-		B6BBE6F92E40F228003D5BCC /* ICommandLIne.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLIne.h; sourceTree = "<group>"; };
 		B6BBE6FB2E40F314003D5BCC /* ICommandLineRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLineRegistry.h; sourceTree = "<group>"; };
 		B6BF52632E5B74F5007B48A1 /* NmapItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NmapItem.h; sourceTree = "<group>"; };
 		B6BF52642E5B7542007B48A1 /* NmapItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NmapItem.m; sourceTree = "<group>"; };
@@ -711,12 +686,10 @@
 		B6C3F0672E54E0890073156B /* InternalListeners.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InternalListeners.m; sourceTree = "<group>"; };
 		B6C3F0692E54E2280073156B /* IDockableTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDockableTool.h; sourceTree = "<group>"; };
 		B6C3F06C2E54E3550073156B /* IUpdatablePlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IUpdatablePlugin.h; sourceTree = "<group>"; };
-		B6C3F06F2E54E4780073156B /* IOpcodeProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOpcodeProvider.h; sourceTree = "<group>"; };
 		B6C3F0702E54E4B50073156B /* OpcodeProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpcodeProvider.h; sourceTree = "<group>"; };
 		B6C3F0712E54E4DE0073156B /* OpcodeProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpcodeProvider.m; sourceTree = "<group>"; };
 		B6C3F0732E54E5FC0073156B /* SimCommonPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimCommonPackage.h; sourceTree = "<group>"; };
 		B6C3F0742E54E6450073156B /* SimCommonPackage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimCommonPackage.m; sourceTree = "<group>"; };
-		B6C3F0762E54E6B50073156B /* ICommonPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommonPackage.h; sourceTree = "<group>"; };
 		B6C6717B2E7B79BE00D1A7D0 /* ExtSRel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtSRel.h; sourceTree = "<group>"; };
 		B6C6717C2E7B79D900D1A7D0 /* ExtSRel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtSRel.m; sourceTree = "<group>"; };
 		B6C6717E2E7B843E00D1A7D0 /* Scenegraph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scenegraph.h; sourceTree = "<group>"; };
@@ -763,36 +736,70 @@
 		B6CDCCA62E342B3D004FDF82 /* PackedFileDescriptorSimple.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileDescriptorSimple.m; sourceTree = "<group>"; };
 		B6CDCCA82E342B75004FDF82 /* PackedFileDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileDescriptor.h; sourceTree = "<group>"; };
 		B6CDCCA92E342B97004FDF82 /* PackedFileDescriptor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileDescriptor.m; sourceTree = "<group>"; };
-		B6CDCCAC2E342CAA004FDF82 /* IPackageHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageHeader.h; sourceTree = "<group>"; };
-		B6CDCCAF2E342D63004FDF82 /* IPackageHeaderHole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageHeaderHole.h; sourceTree = "<group>"; };
-		B6CDCCB02E3438A4004FDF82 /* IPackageHeaderIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageHeaderIndex.h; sourceTree = "<group>"; };
 		B6CDCCB22E3440F7004FDF82 /* MetaData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MetaData.h; sourceTree = "<group>"; };
 		B6CDCCB32E34416F004FDF82 /* MetaData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetaData.m; sourceTree = "<group>"; };
-		B6CDCCB52E3447B2004FDF82 /* IPackedFileDescriptorSimple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileDescriptorSimple.h; sourceTree = "<group>"; };
-		B6CDCCB62E344A43004FDF82 /* IPackedFileDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileDescriptor.h; sourceTree = "<group>"; };
 		B6CDCCB82E3451DA004FDF82 /* IPackedFileDescriptorBasic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileDescriptorBasic.h; sourceTree = "<group>"; };
 		B6CDCCB92E3458C2004FDF82 /* PackedFileDescriptors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PackedFileDescriptors.h; sourceTree = "<group>"; };
 		B6CDCCBA2E345922004FDF82 /* PackedFileDescriptors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileDescriptors.m; sourceTree = "<group>"; };
-		B6CDCCBD2E34665C004FDF82 /* IPackageFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageFile.h; sourceTree = "<group>"; };
 		B6D042C22E69020400366E80 /* DefaultWrapperFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DefaultWrapperFactory.h; sourceTree = "<group>"; };
 		B6D042C32E69022700366E80 /* DefaultWrapperFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DefaultWrapperFactory.m; sourceTree = "<group>"; };
 		B6D042C52E69049A00366E80 /* StrListViewer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrListViewer.h; sourceTree = "<group>"; };
 		B6D042C62E6904AC00366E80 /* StrListViewer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrListViewer.m; sourceTree = "<group>"; };
 		B6D042C82E6909CA00366E80 /* StrForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrForm.h; sourceTree = "<group>"; };
 		B6D042C92E6909DB00366E80 /* StrForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrForm.m; sourceTree = "<group>"; };
+		B6D81FB52F3A5537000BE221 /* CollectibleAlias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectibleAlias.h; sourceTree = "<group>"; };
+		B6D81FB62F3A5537000BE221 /* CollectibleAlias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectibleAlias.m; sourceTree = "<group>"; };
+		B6D81FB72F3A5537000BE221 /* Events.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Events.h; sourceTree = "<group>"; };
+		B6D81FB82F3A5537000BE221 /* Events.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Events.m; sourceTree = "<group>"; };
+		B6D81FB92F3A5537000BE221 /* ICommandLIne.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLIne.h; sourceTree = "<group>"; };
+		B6D81FBA2F3A5537000BE221 /* ICommandLineFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLineFactory.h; sourceTree = "<group>"; };
+		B6D81FBB2F3A5537000BE221 /* ICommonPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommonPackage.h; sourceTree = "<group>"; };
+		B6D81FBC2F3A5537000BE221 /* IFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFileWrapper.h; sourceTree = "<group>"; };
+		B6D81FBD2F3A5537000BE221 /* IFileWrapperSaveExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFileWrapperSaveExtension.h; sourceTree = "<group>"; };
+		B6D81FBE2F3A5537000BE221 /* IGroupCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IGroupCache.h; sourceTree = "<group>"; };
+		B6D81FBF2F3A5537000BE221 /* IGroupCacheItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IGroupCacheItem.h; sourceTree = "<group>"; };
+		B6D81FC02F3A5537000BE221 /* ILotProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILotProvider.h; sourceTree = "<group>"; };
+		B6D81FC12F3A5537000BE221 /* IOpcodeProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOpcodeProvider.h; sourceTree = "<group>"; };
+		B6D81FC22F3A5537000BE221 /* IPackageFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageFile.h; sourceTree = "<group>"; };
+		B6D81FC32F3A5537000BE221 /* IPackageHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageHeader.h; sourceTree = "<group>"; };
+		B6D81FC42F3A5537000BE221 /* IPackageHeaderHole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageHeaderHole.h; sourceTree = "<group>"; };
+		B6D81FC52F3A5537000BE221 /* IPackageHeaderIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackageHeaderIndex.h; sourceTree = "<group>"; };
+		B6D81FC62F3A5537000BE221 /* IPackedFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFile.h; sourceTree = "<group>"; };
+		B6D81FC72F3A5537000BE221 /* IPackedFileDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileDescriptor.h; sourceTree = "<group>"; };
+		B6D81FC82F3A5537000BE221 /* IPackedFileDescriptorSimple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileDescriptorSimple.h; sourceTree = "<group>"; };
+		B6D81FC92F3A5537000BE221 /* IPackedFileSaveExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileSaveExtension.h; sourceTree = "<group>"; };
+		B6D81FCA2F3A5537000BE221 /* IPackedFileUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileUI.h; sourceTree = "<group>"; };
+		B6D81FCB2F3A5537000BE221 /* IPackedFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IPackedFileWrapper.h; sourceTree = "<group>"; };
+		B6D81FCC2F3A5537000BE221 /* IProviderRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IProviderRegistry.h; sourceTree = "<group>"; };
+		B6D81FCD2F3A5537000BE221 /* IScenegraphBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphBlock.h; sourceTree = "<group>"; };
+		B6D81FCE2F3A5537000BE221 /* IScenegraphFileIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphFileIndex.h; sourceTree = "<group>"; };
+		B6D81FCF2F3A5537000BE221 /* IScenegraphFileIndexItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphFileIndexItem.h; sourceTree = "<group>"; };
+		B6D81FD02F3A5537000BE221 /* IScenegraphItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphItem.h; sourceTree = "<group>"; };
+		B6D81FD12F3A5537000BE221 /* ISDesc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISDesc.h; sourceTree = "<group>"; };
+		B6D81FD22F3A5537000BE221 /* ISettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISettings.h; sourceTree = "<group>"; };
+		B6D81FD32F3A5537000BE221 /* ISettingsFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISettingsFactory.h; sourceTree = "<group>"; };
+		B6D81FD42F3A5537000BE221 /* ISettingsRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISettingsRegistry.h; sourceTree = "<group>"; };
+		B6D81FD52F3A5537000BE221 /* ISimDescriptionProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimDescriptionProvider.h; sourceTree = "<group>"; };
+		B6D81FD62F3A5537000BE221 /* ISimFamilyNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimFamilyNames.h; sourceTree = "<group>"; };
+		B6D81FD72F3A5537000BE221 /* ISimNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimNames.h; sourceTree = "<group>"; };
+		B6D81FD82F3A5537000BE221 /* ISkinProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISkinProvider.h; sourceTree = "<group>"; };
+		B6D81FD92F3A5537000BE221 /* IWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapper.h; sourceTree = "<group>"; };
+		B6D81FDA2F3A5537000BE221 /* IWrapperFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperFactory.h; sourceTree = "<group>"; };
+		B6D81FDB2F3A5537000BE221 /* IWrapperInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperInfo.h; sourceTree = "<group>"; };
+		B6D81FDC2F3A5537000BE221 /* IWrapperReferencedResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperReferencedResources.h; sourceTree = "<group>"; };
+		B6D81FDD2F3A5537000BE221 /* IWrapperReferencedResources.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IWrapperReferencedResources.m; sourceTree = "<group>"; };
+		B6D81FDE2F3A5537000BE221 /* IWrapperRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWrapperRegistry.h; sourceTree = "<group>"; };
+		B6D81FDF2F3A5537000BE221 /* PackedFileUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PackedFileUI.m; sourceTree = "<group>"; };
+		B6D81FE02F3A5537000BE221 /* TraitAlias.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TraitAlias.h; sourceTree = "<group>"; };
+		B6D81FE12F3A5537000BE221 /* TraitAlias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TraitAlias.m; sourceTree = "<group>"; };
 		B6E24B212E561C2A003E2A3E /* SimFamilyNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimFamilyNames.h; sourceTree = "<group>"; };
 		B6E24B222E561CE1003E2A3E /* SimFamilyNames.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimFamilyNames.m; sourceTree = "<group>"; };
-		B6E24B242E561D4B003E2A3E /* ISimFamilyNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimFamilyNames.h; sourceTree = "<group>"; };
-		B6E24B252E561DB8003E2A3E /* ISimNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimNames.h; sourceTree = "<group>"; };
 		B6E24B262E561E1A003E2A3E /* SimNames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimNames.h; sourceTree = "<group>"; };
 		B6E24B272E561E63003E2A3E /* SimNames.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimNames.m; sourceTree = "<group>"; };
-		B6E24B292E561EEB003E2A3E /* ISimDescriptionProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISimDescriptionProvider.h; sourceTree = "<group>"; };
 		B6E24B2A2E561F4F003E2A3E /* SimDescriptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimDescriptions.h; sourceTree = "<group>"; };
 		B6E24B2B2E561F98003E2A3E /* SimDescriptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SimDescriptions.m; sourceTree = "<group>"; };
-		B6E24B2D2E562052003E2A3E /* ISkinProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISkinProvider.h; sourceTree = "<group>"; };
 		B6E24B2E2E56209F003E2A3E /* SkinProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkinProvider.h; sourceTree = "<group>"; };
 		B6E24B2F2E5620E4003E2A3E /* SkinProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SkinProvider.m; sourceTree = "<group>"; };
-		B6E24B312E56216A003E2A3E /* ILotProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILotProvider.h; sourceTree = "<group>"; };
 		B6E24B322E5621C5003E2A3E /* LotProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LotProvider.h; sourceTree = "<group>"; };
 		B6E24B332E562218003E2A3E /* LotProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LotProvider.m; sourceTree = "<group>"; };
 		B6E2B5D92E5BB05A00AA6170 /* WrapperFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WrapperFactory.h; sourceTree = "<group>"; };
@@ -832,7 +839,6 @@
 		B6F4409B2E4655B000870564 /* IRcolBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRcolBlock.h; sourceTree = "<group>"; };
 		B6F4409C2E46567200870564 /* RcolWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RcolWrapper.h; sourceTree = "<group>"; };
 		B6F4409D2E4656B400870564 /* RcolWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RcolWrapper.m; sourceTree = "<group>"; };
-		B6F4409E2E4657A000870564 /* IScenegraphItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IScenegraphItem.h; sourceTree = "<group>"; };
 		B6F4409F2E46585D00870564 /* ASerializeFormater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASerializeFormater.h; sourceTree = "<group>"; };
 		B6F440A02E46589400870564 /* ASerializeFormater.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ASerializeFormater.m; sourceTree = "<group>"; };
 		B6F440A22E465E7B00870564 /* Containers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Containers.h; sourceTree = "<group>"; };
@@ -870,8 +876,6 @@
 		B6FDC5992E3FE031004E8AA6 /* IHelp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IHelp.h; sourceTree = "<group>"; };
 		B6FDC59A2E3FE139004E8AA6 /* StreamMaintainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StreamMaintainer.h; sourceTree = "<group>"; };
 		B6FDC59B2E3FE170004E8AA6 /* StreamMaintainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StreamMaintainer.m; sourceTree = "<group>"; };
-		B6FDC59D2E402907004E8AA6 /* ISettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISettings.h; sourceTree = "<group>"; };
-		B6FDC59E2E402956004E8AA6 /* ISettingsFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISettingsFactory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -998,8 +1002,8 @@
 				B68EE9952E68DA520057ABE5 /* StrItem.m */,
 				B6D042C52E69049A00366E80 /* StrListViewer.h */,
 				B6D042C62E6904AC00366E80 /* StrListViewer.m */,
-				B68EE9972E68DBDF0057ABE5 /* StrWrapper.h */,
-				B68EE9982E68DBF20057ABE5 /* StrWrapper.m */,
+				B68EE9972E68DBDF0057ABE5 /* Str.h */,
+				B68EE9982E68DBF20057ABE5 /* Str.m */,
 			);
 			path = Clst;
 			sourceTree = "<group>";
@@ -1017,6 +1021,14 @@
 				B61BA7CE2E6B4D2800392771 /* Elements.m */,
 				B61BA7D02E6B58A100392771 /* Elements2.h */,
 				B61BA7D12E6B58B200392771 /* Elements2.m */,
+				B6049BE82E82F88200380906 /* FamilyTieItem.h */,
+				B6049BE92E82F89A00380906 /* FamilyTieItem.m */,
+				B6049BEB2E82F91900380906 /* FamilyTiesWrapper.h */,
+				B6049BEC2E82F93000380906 /* FamilyTiesWrapper.m */,
+				B6E4D58F2E7DE2E40018B6E4 /* FamiUI.h */,
+				B6E4D5902E7DE2F40018B6E4 /* FamiUI.m */,
+				B6049BE52E82F2F200380906 /* FamiWrapper.h */,
+				B6049BE62E82F30400380906 /* FamiWrapper.m */,
 				B6C01F922E731C0700AA6108 /* FixGUID.h */,
 				B6C01F932E731C1900AA6108 /* FixGUID.m */,
 				B6687EA42E7B0DB700BFA0B3 /* NrefUI.h */,
@@ -1031,22 +1043,16 @@
 				B61BA7C72E6B492800392771 /* PictureWrapper.m */,
 				B6F114542E64CE1A00348F44 /* SDescWrapper.h */,
 				B6F114552E64CE2900348F44 /* SDescWrapper.m */,
+				B636D64D2F37DCAC0005F9C4 /* SimRelations.h */,
+				B636D64E2F37DCE10005F9C4 /* SimRelations.m */,
+				B6687EAD2E7B19EF00BFA0B3 /* SRelUI.h */,
+				B6687EAE2E7B1A0900BFA0B3 /* SRelUI.m */,
+				B6687EAA2E7B17A600BFA0B3 /* SRelWrapper.h */,
+				B6687EAB2E7B17B800BFA0B3 /* SRelWrapper.m */,
 				B61BA7C32E6B460D00392771 /* UIBase.h */,
 				B61BA7C42E6B461D00392771 /* UIBase.m */,
 				B61BA7F82E6E1BD400392771 /* XmlWrapper.h */,
 				B61BA7F92E6E1BE500392771 /* XmlWrapper.m */,
-				B6687EAA2E7B17A600BFA0B3 /* SRelWrapper.h */,
-				B6687EAB2E7B17B800BFA0B3 /* SRelWrapper.m */,
-				B6687EAD2E7B19EF00BFA0B3 /* SRelUI.h */,
-				B6687EAE2E7B1A0900BFA0B3 /* SRelUI.m */,
-				B6E4D58F2E7DE2E40018B6E4 /* FamiUI.h */,
-				B6E4D5902E7DE2F40018B6E4 /* FamiUI.m */,
-				B6049BE52E82F2F200380906 /* FamiWrapper.h */,
-				B6049BE62E82F30400380906 /* FamiWrapper.m */,
-				B6049BE82E82F88200380906 /* FamilyTieItem.h */,
-				B6049BE92E82F89A00380906 /* FamilyTieItem.m */,
-				B6049BEB2E82F91900380906 /* FamilyTiesWrapper.h */,
-				B6049BEC2E82F93000380906 /* FamilyTiesWrapper.m */,
 			);
 			path = FileHandler;
 			sourceTree = "<group>";
@@ -1398,10 +1404,10 @@
 		B6C3E7682E6F778F0095C28A /* ExtendedFilehandlers */ = {
 			isa = PBXGroup;
 			children = (
-				B67DE0742E70647700A17C62 /* ObjdPropertyParser.h */,
-				B67DE0752E70648D00A17C62 /* ObjdPropertyParser.m */,
 				B67DE0772E70679300A17C62 /* ExtObjdWrapper.h */,
 				B67DE0782E7067AA00A17C62 /* ExtObjdWrapper.m */,
+				B67DE0742E70647700A17C62 /* ObjdPropertyParser.h */,
+				B67DE0752E70648D00A17C62 /* ObjdPropertyParser.m */,
 			);
 			path = ExtendedFilehandlers;
 			sourceTree = "<group>";
@@ -1410,9 +1416,8 @@
 			isa = PBXGroup;
 			children = (
 				B6912DE72E9ABEE100F312AB /* Media.xcassets */,
-				B6912DE92E9AC76200F312AB /* AppIcon.appiconset */,
-				B68881D42E734C40001C417B /* Splash */,
 				B6BF52622E5B74DB007B48A1 /* 3IDR */,
+				B6912DE92E9AC76200F312AB /* AppIcon.appiconset */,
 				B6F13C6B2E60F7DE00691586 /* Cache */,
 				B632A4352E36A2FD0024810C /* Clst */,
 				B6AAC5E92E5A1C1700846641 /* CSoil2 */,
@@ -1425,7 +1430,7 @@
 				B6CDCC822E33F0F3004FDF82 /* GUI */,
 				B64E6BB32E353E8B009AD0A7 /* HandlerCommon */,
 				B6CDCCB12E3440CA004FDF82 /* Helper */,
-				B6CDCCAB2E342C69004FDF82 /* Interfaces */,
+				B6D81FE22F3A5537000BE221 /* Interfaces */,
 				B6CDCC872E33FBC2004FDF82 /* IO */,
 				B6CDCC462E33E837004FDF82 /* MacSimpe */,
 				B6CDCC5C2E33E838004FDF82 /* MacSimpeTests */,
@@ -1437,6 +1442,7 @@
 				B69F34F12E383523007EEA89 /* ResourceControls */,
 				B6819E592E3E758B00E37434 /* Scenegraph */,
 				B6F1144D2E64CBA600348F44 /* Sims */,
+				B68881D42E734C40001C417B /* Splash */,
 				B65044682E46D1DA0014569E /* Temp */,
 				B61BA7C92E6B49E100392771 /* TGA_View */,
 				B61CE59B2E3ADF2300547C40 /* WorkspaceHelper */,
@@ -1536,57 +1542,6 @@
 				B6CDCC962E340622004FDF82 /* BinaryWriter.m */,
 			);
 			path = IO;
-			sourceTree = "<group>";
-		};
-		B6CDCCAB2E342C69004FDF82 /* Interfaces */ = {
-			isa = PBXGroup;
-			children = (
-				B6B8D02D2E57A8A3008557A2 /* CollectibleAlias.h */,
-				B6B8D02E2E57A8EA008557A2 /* CollectibleAlias.m */,
-				B6B8D0302E57A946008557A2 /* Events.h */,
-				B6B8D0312E57A981008557A2 /* Events.m */,
-				B6BBE6F92E40F228003D5BCC /* ICommandLIne.h */,
-				B6C3F0762E54E6B50073156B /* ICommonPackage.h */,
-				B64E6BBC2E354958009AD0A7 /* IFileWrapper.h */,
-				B632A4382E36B8AD0024810C /* IFileWrapperSaveExtension.h */,
-				B6B8D0332E57AA54008557A2 /* IGroupCache.h */,
-				B6B8D0342E57AAA4008557A2 /* IGroupCacheItem.h */,
-				B6E24B312E56216A003E2A3E /* ILotProvider.h */,
-				B6C3F06F2E54E4780073156B /* IOpcodeProvider.h */,
-				B6CDCCBD2E34665C004FDF82 /* IPackageFile.h */,
-				B6CDCCAC2E342CAA004FDF82 /* IPackageHeader.h */,
-				B6CDCCAF2E342D63004FDF82 /* IPackageHeaderHole.h */,
-				B6CDCCB02E3438A4004FDF82 /* IPackageHeaderIndex.h */,
-				B69F34F02E37F564007EEA89 /* IPackedFile.h */,
-				B6CDCCB62E344A43004FDF82 /* IPackedFileDescriptor.h */,
-				B6CDCCB52E3447B2004FDF82 /* IPackedFileDescriptorSimple.h */,
-				B632A4392E36B9120024810C /* IPackedFileSaveExtension.h */,
-				B6B02CD52E4EB567009240FD /* IPackedFileUI.h */,
-				B64E6BBD2E354A11009AD0A7 /* IPackedFileWrapper.h */,
-				B66C34612E3BC15100B4B9B8 /* IProviderRegistry.h */,
-				B6B02CE22E4EC150009240FD /* IScenegraphBlock.h */,
-				B69C5A392E3ED55D00794FC7 /* IScenegraphFileIndex.h */,
-				B6819DE82E3C078F00E37434 /* IScenegraphFileIndexItem.h */,
-				B6F4409E2E4657A000870564 /* IScenegraphItem.h */,
-				B6B8D02C2E57A5AA008557A2 /* ISDesc.h */,
-				B6FDC59D2E402907004E8AA6 /* ISettings.h */,
-				B6FDC59E2E402956004E8AA6 /* ISettingsFactory.h */,
-				B6BBE6F82E40F17D003D5BCC /* ISettingsRegistry.h */,
-				B6E24B292E561EEB003E2A3E /* ISimDescriptionProvider.h */,
-				B6E24B242E561D4B003E2A3E /* ISimFamilyNames.h */,
-				B6E24B252E561DB8003E2A3E /* ISimNames.h */,
-				B6E24B2D2E562052003E2A3E /* ISkinProvider.h */,
-				B64E6BBA2E354556009AD0A7 /* IWrapper.h */,
-				B69C59F22E3E807C00794FC7 /* IWrapperFactory.h */,
-				B69C59F12E3E803F00794FC7 /* IWrapperInfo.h */,
-				B671B48B2E4FC354004559C3 /* IWrapperReferencedResources.h */,
-				B671B48C2E4FC38A004559C3 /* IWrapperReferencedResources.m */,
-				B69C59F02E3E7FBA00794FC7 /* IWrapperRegistry.h */,
-				B60ADF522E592D0600F66F86 /* PackedFileUI.m */,
-				B6B8D0352E57AB77008557A2 /* TraitAlias.h */,
-				B6B8D0362E57ABAB008557A2 /* TraitAlias.m */,
-			);
-			path = Interfaces;
 			sourceTree = "<group>";
 		};
 		B6CDCCB12E3440CA004FDF82 /* Helper */ = {
@@ -1694,6 +1649,58 @@
 				B69C5A292E3EC5E300794FC7 /* XmlRegistryKey.m */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		B6D81FE22F3A5537000BE221 /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				B6D81FB52F3A5537000BE221 /* CollectibleAlias.h */,
+				B6D81FB62F3A5537000BE221 /* CollectibleAlias.m */,
+				B6D81FB72F3A5537000BE221 /* Events.h */,
+				B6D81FB82F3A5537000BE221 /* Events.m */,
+				B6D81FB92F3A5537000BE221 /* ICommandLIne.h */,
+				B6D81FBA2F3A5537000BE221 /* ICommandLineFactory.h */,
+				B6D81FBB2F3A5537000BE221 /* ICommonPackage.h */,
+				B6D81FBC2F3A5537000BE221 /* IFileWrapper.h */,
+				B6D81FBD2F3A5537000BE221 /* IFileWrapperSaveExtension.h */,
+				B6D81FBE2F3A5537000BE221 /* IGroupCache.h */,
+				B6D81FBF2F3A5537000BE221 /* IGroupCacheItem.h */,
+				B6D81FC02F3A5537000BE221 /* ILotProvider.h */,
+				B6D81FC12F3A5537000BE221 /* IOpcodeProvider.h */,
+				B6D81FC22F3A5537000BE221 /* IPackageFile.h */,
+				B6D81FC32F3A5537000BE221 /* IPackageHeader.h */,
+				B6D81FC42F3A5537000BE221 /* IPackageHeaderHole.h */,
+				B6D81FC52F3A5537000BE221 /* IPackageHeaderIndex.h */,
+				B6D81FC62F3A5537000BE221 /* IPackedFile.h */,
+				B6D81FC72F3A5537000BE221 /* IPackedFileDescriptor.h */,
+				B6D81FC82F3A5537000BE221 /* IPackedFileDescriptorSimple.h */,
+				B6D81FC92F3A5537000BE221 /* IPackedFileSaveExtension.h */,
+				B6D81FCA2F3A5537000BE221 /* IPackedFileUI.h */,
+				B6D81FCB2F3A5537000BE221 /* IPackedFileWrapper.h */,
+				B6D81FCC2F3A5537000BE221 /* IProviderRegistry.h */,
+				B6D81FCD2F3A5537000BE221 /* IScenegraphBlock.h */,
+				B6D81FCE2F3A5537000BE221 /* IScenegraphFileIndex.h */,
+				B6D81FCF2F3A5537000BE221 /* IScenegraphFileIndexItem.h */,
+				B6D81FD02F3A5537000BE221 /* IScenegraphItem.h */,
+				B6D81FD12F3A5537000BE221 /* ISDesc.h */,
+				B6D81FD22F3A5537000BE221 /* ISettings.h */,
+				B6D81FD32F3A5537000BE221 /* ISettingsFactory.h */,
+				B6D81FD42F3A5537000BE221 /* ISettingsRegistry.h */,
+				B6D81FD52F3A5537000BE221 /* ISimDescriptionProvider.h */,
+				B6D81FD62F3A5537000BE221 /* ISimFamilyNames.h */,
+				B6D81FD72F3A5537000BE221 /* ISimNames.h */,
+				B6D81FD82F3A5537000BE221 /* ISkinProvider.h */,
+				B6D81FD92F3A5537000BE221 /* IWrapper.h */,
+				B6D81FDA2F3A5537000BE221 /* IWrapperFactory.h */,
+				B6D81FDB2F3A5537000BE221 /* IWrapperInfo.h */,
+				B6D81FDC2F3A5537000BE221 /* IWrapperReferencedResources.h */,
+				B6D81FDD2F3A5537000BE221 /* IWrapperReferencedResources.m */,
+				B6D81FDE2F3A5537000BE221 /* IWrapperRegistry.h */,
+				B6D81FDF2F3A5537000BE221 /* PackedFileUI.m */,
+				B6D81FE02F3A5537000BE221 /* TraitAlias.h */,
+				B6D81FE12F3A5537000BE221 /* TraitAlias.m */,
+			);
+			path = Interfaces;
 			sourceTree = "<group>";
 		};
 		B6F1144D2E64CBA600348F44 /* Sims */ = {
@@ -1942,7 +1949,6 @@
 				B61CE5692E3A84A200547C40 /* ResourceNameSorter.m in Sources */,
 				B6053BF92E5E53C400751B39 /* LifoForm.m in Sources */,
 				B64EEF782E3985AC0008E7CA /* ResourceTreeNodesByGroup.m in Sources */,
-				B6B8D02F2E57A8EA008557A2 /* CollectibleAlias.m in Sources */,
 				B6F605032E5F985E0038ECC5 /* ImageSize.m in Sources */,
 				B6819E582E3E734000E37434 /* FileIndexItem.m in Sources */,
 				B671C1292E7C755E008E5525 /* ScenegraphException.m in Sources */,
@@ -2038,7 +2044,13 @@
 				B6C6717D2E7B79D900D1A7D0 /* ExtSRel.m in Sources */,
 				B6D042C72E6904AC00366E80 /* StrListViewer.m in Sources */,
 				B6C3F0682E54E0890073156B /* InternalListeners.m in Sources */,
+				B6D81FE32F3A5537000BE221 /* PackedFileUI.m in Sources */,
+				B6D81FE42F3A5537000BE221 /* TraitAlias.m in Sources */,
+				B6D81FE52F3A5537000BE221 /* Events.m in Sources */,
+				B6D81FE62F3A5537000BE221 /* CollectibleAlias.m in Sources */,
+				B6D81FE72F3A5537000BE221 /* IWrapperReferencedResources.m in Sources */,
 				B67DE0792E7067AA00A17C62 /* ExtObjdWrapper.m in Sources */,
+				B636D64F2F37DCE10005F9C4 /* SimRelations.m in Sources */,
 				B6B8D03E2E57AF90008557A2 /* PropertyObjectBuilder.m in Sources */,
 				B6687EB52E7B1CEC00BFA0B3 /* Boolset.m in Sources */,
 				B673A1262E6368ED004039D3 /* ObjectComboBox.m in Sources */,
@@ -2089,7 +2101,6 @@
 				B616F7122E60A5FC00D0263A /* LifoUI.m in Sources */,
 				B64B39162E58CE8200FC359D /* HashAlgorithmParameters.m in Sources */,
 				B6687EA92E7B101700BFA0B3 /* ObjdWrapper.m in Sources */,
-				B671B48D2E4FC38A004559C3 /* IWrapperReferencedResources.m in Sources */,
 				B69C5A382E3ED3E200794FC7 /* Thread.m in Sources */,
 				B61BA7CF2E6B4D2800392771 /* Elements.m in Sources */,
 				B6B02CD32E4EB331009240FD /* GenericRcolWrapper.m in Sources */,
@@ -2103,7 +2114,6 @@
 				B6172A9E2E787A7C00C750DE /* cLightT.m in Sources */,
 				B6E24B282E561E63003E2A3E /* SimNames.m in Sources */,
 				B6F440A42E465EB300870564 /* Containers.m in Sources */,
-				B6B8D0372E57ABAB008557A2 /* TraitAlias.m in Sources */,
 				B6385F432E736CB700DB7DDF /* cObjectGraphNode.m in Sources */,
 				B6C3F0642E54DB640073156B /* AbstractWrapperInfo.m in Sources */,
 				B69F34FD2E383AE6007EEA89 /* ResourceMaps.m in Sources */,
@@ -2115,10 +2125,9 @@
 				B60ADF562E5937E900F66F86 /* cImageData.m in Sources */,
 				B6F13C742E60F98400691586 /* CacheContainer.m in Sources */,
 				B60ADF592E5938B600F66F86 /* ImageLoader.m in Sources */,
-				B60ADF532E592D0600F66F86 /* PackedFileUI.m in Sources */,
 				B64B39252E58D26100FC359D /* SemiGlobalAlias.m in Sources */,
 				B6AAC5F12E5A1F9100846641 /* cLevelInfo.m in Sources */,
-				B68EE9992E68DBF20057ABE5 /* StrWrapper.m in Sources */,
+				B68EE9992E68DBF20057ABE5 /* Str.m in Sources */,
 				B61CE56F2E3A863800547C40 /* WaitControl.m in Sources */,
 				B6385F3B2E7357B800DB7DDF /* SplashForm.m in Sources */,
 				B6BF52682E5B75BC007B48A1 /* NmapWrapper.m in Sources */,
@@ -2127,7 +2136,6 @@
 				B6B02CD22E4EB32A009240FD /* RcolWrapper.m in Sources */,
 				B6E2B5E72E5BB65000AA6170 /* GroupCacheWrapper.m in Sources */,
 				B6F440A72E465F2500870564 /* CountedListItem.m in Sources */,
-				B6B8D0322E57A981008557A2 /* Events.m in Sources */,
 				B69F34E62E37F319007EEA89 /* PackageMaintainer.m in Sources */,
 				B64EEF812E3987F20008E7CA /* ResourceTreeTypeNodeExt.m in Sources */,
 				B6CCE7E82E68956000BE2BB3 /* GenericExtendedFileItem.m in Sources */,

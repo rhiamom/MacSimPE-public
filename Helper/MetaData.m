@@ -33,6 +33,64 @@
 #import "PathProvider.h"
 #import <Cocoa/Cocoa.h>
 
+static NSMutableDictionary<NSNumber *, NSString *> *npcFamilyFromInstance = nil;
+
+static void initializeNpcFamilyFromInstance(void) {
+    if (npcFamilyFromInstance == nil) {
+        npcFamilyFromInstance = [[NSMutableDictionary alloc] init];
+    } else {
+        [npcFamilyFromInstance removeAllObjects];
+    }
+    
+    // Non-pervy mapping (C# else branch)
+    npcFamilyFromInstance[@(0x7F65)] = @"West World Locals";
+    npcFamilyFromInstance[@(0x7F66)] = @"Natives (castaway)";
+    npcFamilyFromInstance[@(0x7F67)] = @"Tau Ceti Locals";
+    npcFamilyFromInstance[@(0x7F68)] = @"Alpine Locals";
+    npcFamilyFromInstance[@(0x7F69)] = @"Spare Sims Pool";
+    
+    npcFamilyFromInstance[@(0x7FDF)] = @"Elite Social Group";
+    npcFamilyFromInstance[@(0x7FE0)] = @"High Social Group";
+    npcFamilyFromInstance[@(0x7FE1)] = @"Medium Social Group";
+    npcFamilyFromInstance[@(0x7FE2)] = @"Low Social Group";
+    npcFamilyFromInstance[@(0x7FE3)] = @"Bogan Social Group";
+    
+    npcFamilyFromInstance[@(0x7FE4)] = @"Iconic Hobby Sims";
+    
+    // Holiday tourists (many ids map to the same string)
+    npcFamilyFromInstance[@(0x7FE5)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FE6)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FE7)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FE8)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FE9)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FEA)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FEB)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FEC)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FED)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FEE)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FEF)] = @"Holiday Tourists";
+    npcFamilyFromInstance[@(0x7FF0)] = @"Holiday Tourists";
+    
+    npcFamilyFromInstance[@(0x7FF1)] = @"Tropical Locals";
+    npcFamilyFromInstance[@(0x7FF2)] = @"Mountain Locals";
+    npcFamilyFromInstance[@(0x7FF3)] = @"Asian Locals";
+    npcFamilyFromInstance[@(0x7FF4)] = @"Tourists";
+    npcFamilyFromInstance[@(0x7FF5)] = @"Unused - (Castaway)";
+    
+    npcFamilyFromInstance[@(0x7FF6)] = @"Garden Club";
+    
+    npcFamilyFromInstance[@(0x7FF7)] = @"Display Pets - In Use";
+    npcFamilyFromInstance[@(0x7FF8)] = @"Display Pets - Available";
+    npcFamilyFromInstance[@(0x7FF9)] = @"Orphan Pets";
+    npcFamilyFromInstance[@(0x7FFA)] = @"Strays";
+    
+    npcFamilyFromInstance[@(0x7FFB)] = @"Baby Club";
+    npcFamilyFromInstance[@(0x7FFC)] = @"Downtownies";
+    npcFamilyFromInstance[@(0x7FFD)] = @"Orphans";
+    npcFamilyFromInstance[@(0x7FFE)] = @"Townies";
+    npcFamilyFromInstance[@(0x7FFF)] = @"Service NPCs";
+}
+
 @implementation MetaData
 
 // MARK: - Core Constants
@@ -111,7 +169,6 @@
 + (NSString *)CTLG_FOLDER {
     return @"/Applications/The Sims 2/Contents/Assets/TSData/Res/Catalog/zCEP-EXTRA";
 }
-// Add these implementations to your MetaData.m file
 
 // MARK: - Color Properties Implementation
 
@@ -262,15 +319,15 @@
     return [list copy];
 }
 
-+ (ChildAge)ageTranslation:(LifeSections)age {
++ (Age)ageTranslation:(LifeSections)age {
     switch (age) {
-        case LifeSectionsAdult: return ChildAgeAdult;
-        case LifeSectionsBaby: return ChildAgeBaby;
-        case LifeSectionsChild: return ChildAgeChild;
-        case LifeSectionsElder: return ChildAgeElder;
-        case LifeSectionsTeen: return ChildAgeTeen;
-        case LifeSectionsToddler: return ChildAgeToddler;
-        default: return ChildAgeAdult;
+        case LifeSectionsAdult:    return AgeAdult;
+        case LifeSectionsBaby:     return AgeBaby;
+        case LifeSectionsChild:    return AgeChild;
+        case LifeSectionsElder:    return AgeElder;
+        case LifeSectionsTeen:     return AgeTeen;
+        case LifeSectionsToddler:  return AgeToddler;
+        default:                   return AgeAdult;
     }
 }
 
@@ -287,6 +344,19 @@
     }
     
     return typeAlias;
+}
+
++ (NSString *)npcFamily:(uint32_t)instance {
+    if (npcFamilyFromInstance == nil || npcFamilyFromInstance.count < 2) {
+        initializeNpcFamilyFromInstance();
+    }
+    
+    NSString *name = npcFamilyFromInstance[@(instance)];
+    if (name != nil) return name;
+    
+    if (instance == 0) return @"No Family";
+    if (instance < 32512) return @"Playable Family";
+    return @"Unknown NPC Family";
 }
 
 + (uint32_t)XMLTYPE {

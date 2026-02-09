@@ -207,20 +207,21 @@ typedef NS_OPTIONS(uint8_t, BaseResourceType) {
  * Clone a InGame Object based on the relations of the RCOL Files
  * @param modelname The Name of the Model
  */
-- (void)rcolModelClone:(NSString *)modelname;
+- (void)rcolModelCloneWithName:(NSString *)modelname;
 
 /**
  * Clone a InGame Object based on the relations of the RCOL Files
  * @param modelnames Array of Model names
  */
-- (void)rcolModelClone:(NSArray<NSString *> *)modelnames;
+- (void)rcolModelCloneWithNames:(NSArray<NSString *> *)modelnames;
 
 /**
  * Clone a InGame Object based on the relations of the RCOL Files
  * @param modelnames Array of Model names
  * @param exclude Array of ReferenceNames that should be excluded
  */
-- (void)rcolModelClone:(NSArray<NSString *> *)modelnames exclude:(NSArray<NSString *> *)exclude;
+- (void)rcolModelCloneWithNames:(NSArray<NSString *> *)modelnames
+                        exclude:(NSArray<NSString *> *)exclude;
 
 // MARK: - Name Extraction
 

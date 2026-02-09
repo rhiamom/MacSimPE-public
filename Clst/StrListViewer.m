@@ -28,7 +28,7 @@
 // ***************************************************************************/
 
 #import "StrListViewer.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "StrItem.h"
 
 @implementation StrListViewer
@@ -183,7 +183,7 @@
 
 #pragma mark - Public Methods
 
-- (void)updateGUI:(StrWrapper *)wrp {
+- (void)updateGUI:(Str *)wrp {
     self.wrapper = wrp;
     self.languages = [wrp.languages copy];
     self.currentLang = nil;

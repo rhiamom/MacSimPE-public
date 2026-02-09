@@ -33,7 +33,7 @@
 #import "IPackedFileUI.h"
 
 @protocol IFileWrapper;
-@class StrWrapper, StrLanguage, StrToken;
+@class Str, StrLanguage, StrToken;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -208,7 +208,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * The STR wrapper being edited
  */
-@property (nonatomic, strong, nullable) StrWrapper *wrapper;
+@property (nonatomic, strong, nullable) Str *wrapper;
 
 /**
  * Array of strings for current language (for table display)

@@ -29,7 +29,7 @@
 
 #import "DefaultWrapperFactory.h"
 #import "CompressedFileList.h"
-#import "StrWrapper.h"
+#import "Str.h"
 
 @implementation ClstWrapperFactory
 
@@ -38,7 +38,7 @@
 - (NSArray<id<IWrapper>> *)knownWrappers {
     NSArray<id<IWrapper>> *wrappers = @[
         [[CompressedFileList alloc] init],
-        [[StrWrapper alloc] init]
+        [[Str alloc] init]
     ];
     return wrappers;
 }

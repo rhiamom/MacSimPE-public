@@ -620,6 +620,7 @@ typedef NS_ENUM(uint32_t, Careers) {
 + (NSArray<NSNumber *> *)cachedFileTypes;
 + (Age)ageTranslation:(LifeSections)age;
 + (TypeAlias *)findTypeAlias:(uint32_t)pfdType;
++ (NSString *)npcFamily:(uint32_t)instance;
 
 // MARK: - Semi-Global Methods
 + (uint32_t)semiGlobalID:(NSString *)sgname;

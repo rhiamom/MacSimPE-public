@@ -277,6 +277,11 @@
 
 @implementation RefFileItem
 
+@dynamic type;
+@dynamic group;
+@dynamic instance;
+@dynamic subType;
+
 - (instancetype)initWithParent:(RefFile *)parent {
     self = [super init];
     if (self) {

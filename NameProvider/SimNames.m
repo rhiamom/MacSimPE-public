@@ -30,7 +30,7 @@
 #import "SimNames.h"
 #import "MetaData.h"
 #import "ExtObjdWrapper.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "PictureWrapper.h"
 #import "Alias.h"
 #import "IPackageFile.h"
@@ -50,6 +50,8 @@
 #import "Wait.h"
 #import "WaitingScreen.h"
 #import "Localization.h"
+#import "GeneratableFile.h"
+#import "ExceptionForm.h"
 
 @implementation SimNames
 
@@ -187,16 +189,16 @@
                                                      instance:[objd ctssInstance]];
     
     if (strPfd != nil) {
-        StrWrapper *str = [[StrWrapper alloc] init];
+        Str *str = [[Str alloc] init];
         [str processData:strPfd package:packageFile];
         StrItemList *items = [str fallbackedLanguageItemsForLanguage:[[Registry windowsRegistry] languageCode]];
         
         if ([items length] > 0) {
-#if DEBUG
-            alias = [[Alias alloc] initWithId:[objd guid] name:[[items objectAtIndex:0] title] nameFormat:@"{name} {2} (0x{id})"];
-#else
-            alias = [[Alias alloc] initWithId:[objd guid] name:[[items objectAtIndex:0] title] nameFormat:@"{name} {2} (0x{id})"];
-#endif
+
+            alias = [[Alias alloc] initWithId:[objd guid]
+                                         name:[[items objectAtIndex:0] title]
+                                     template:@"{name} {2} (0x{id})"];
+
             if ([items length] > 2) {
                 tags[2] = [[items objectAtIndex:2] title];
             }
@@ -261,8 +263,10 @@
 - (void)scanFileTable:(uint32_t)instance {
     if ([Helper startedGui] == ExecutableClassic) return;
     
-    NSArray *items = [[FileTable fileIndex] findFileDiscardingGroup:[MetaData OBJD_FILE] instance:instance];
-    [Wait setMaxProgress:[items count]];
+    NSArray *items = [[FileTable fileIndex] findFileDiscardingGroupWithType:[MetaData OBJD_FILE]
+                                                                   instance:instance];
+    
+    [Wait setMaxProgress:(uint32_t)items.count];
     NSInteger ct = 0;
     NSInteger step = MAX(2, [Wait maxProgress] / 100);
     
@@ -293,7 +297,7 @@
     if ([Helper startedGui] == ExecutableClassic) {
         [WaitingScreen wait];
     } else {
-        [Wait subStart:[packageFiles count]];
+        [Wait subStartWithCount:packageFiles.count];
     }
     
     @try {
@@ -307,7 +311,7 @@
                 break;
             }
             
-            File *packageFile = nil;
+            GeneratableFile *packageFile = nil;
             @try {
                 packageFile = [File loadFromFile:filePath];
             }
@@ -326,7 +330,7 @@
         }
     }
     @catch (NSException *exception) {
-        [Helper exceptionMessage:exception.localizedDescription];
+        [ExceptionForm executeWithMessage:@"Failed to load package file." exception:exception];
     }
     @finally {
         if ([Helper startedGui] == ExecutableClassic) {

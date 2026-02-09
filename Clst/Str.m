@@ -1,5 +1,5 @@
 //
-//  StrWrapper.m
+//  Str.m
 //  MacSimpe
 //
 //  Created by Catherine Gramze on 9/3/25.
@@ -29,7 +29,7 @@
 //*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 //***************************************************************************/
 
-#import "StrWrapper.h"
+#import "Str.h"
 #import "BinaryReader.h"
 #import "BinaryWriter.h"
 #import "Helper.h"
@@ -38,7 +38,7 @@
 #import "StrForm.h"
 #import "MetaData.h"
 
-@implementation StrWrapper {
+@implementation Str {
     NSMutableData *_filename;
     FormatCode _format;
     NSMutableDictionary<NSNumber *, StrItemList *> *_lines;

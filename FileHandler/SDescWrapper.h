@@ -36,6 +36,7 @@
 
 // Forward declarations
 @class BinaryReader, BinaryWriter;
+@class SimRelations;
 @protocol ISimNames, ISimFamilyNames, ISimDescriptions, IPackageFile, IPackedFileDescriptor;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -55,8 +56,8 @@ typedef NS_ENUM(NSInteger, SDescVersion) {
     SDescVersionCastaway = 0x2d,
     SDescVersionVoyage = 0x2e,
     SDescVersionVoyageB = 0x2f,
-    //SDescVersionFreetime = 0x33,
-    //SDescVersionApartment = 0x36,
+    SDescVersionFreetime = 0x33,
+    SDescVersionApartment = 0x36,
 };
 
 /**
@@ -84,7 +85,7 @@ typedef NS_ENUM(uint16_t, JobAssignment) {
 /**
  * Hobby types
  */
-/*typedef NS_ENUM(uint16_t, Hobbies) {
+typedef NS_ENUM(uint16_t, Hobbies) {
     HobbiesCuisine = 0xCC,
     HobbiesArts = 0xCD,
     HobbiesFilm = 0xCE,
@@ -96,7 +97,7 @@ typedef NS_ENUM(uint16_t, JobAssignment) {
     HobbiesScience = 0xD4,
     HobbiesMusic = 0xD5,
     HobbiesSecret = 0xD6
-};*/
+};
 
 /**
  * Species types
@@ -319,10 +320,10 @@ typedef NS_ENUM(uint16_t, SpeciesType) {
  */
 @interface SimRelationAttribute : Serializer
 @property (nonatomic, weak) SDesc *parent;
-@property (nonatomic, strong) NSArray *simInstances;
+@property (nonatomic, copy) NSArray<NSNumber *> *simInstances; // uint16 boxed
 - (instancetype)initWithParent:(SDesc *)parent;
 - (SDesc *)getSimDescription:(uint16_t)instance;
-- (id)getSimRelationships:(uint16_t)instance;
+- (nullable SimRelations *)getSimRelationships:(uint16_t)instance;
 @end
 
 // MARK: - Expansion Pack Data Classes

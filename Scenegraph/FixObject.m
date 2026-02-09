@@ -45,7 +45,7 @@
 #import "cGeometryNode.h"
 #import "cDirectionalLight.h"
 #import "cObjectGraphNode.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "StrItem.h"
 #import "NrefWrapper.h"
 #import "ExtObjdWrapper.h"
@@ -460,7 +460,7 @@ static NSMutableArray *_staticTypes = nil;
     NSString *modelName = nil;
     
     for (id<IPackedFileDescriptor> pfd in stringPfds) {
-        StrWrapper *str = [[StrWrapper alloc] init];
+        Str *str = [[Str alloc] init];
         [str processData:pfd package:self.package];
         
         for (StrToken *item in str.items) {

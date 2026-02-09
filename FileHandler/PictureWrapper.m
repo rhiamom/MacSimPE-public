@@ -35,7 +35,7 @@
 #import "AbstractWrapperInfo.h"
 #import "Helper.h"
 #import "Localization.h"
-#import "TGALoader.h"
+#import "SOIL2.h"
 
 @interface PictureWrapper ()
 
@@ -89,21 +89,18 @@
 // MARK: - Loading Methods
 
 - (BOOL)doLoad:(BinaryReader *)reader errmsg:(BOOL)errmsg {
+    NSMutableData *imageData = nil;
+    
     @try {
-        // Get the stream length to know how much data to read
         int64_t streamLength = reader.baseStream.length;
+        imageData = [NSMutableData dataWithLength:(NSUInteger)streamLength];
         
-        // Create a buffer to hold all the data
-        NSMutableData *imageData = [NSMutableData dataWithLength:streamLength];
-        
-        // Read all bytes from the stream
         NSInteger bytesRead = [reader.baseStream readBytes:(uint8_t *)[imageData mutableBytes]
-                                                 maxLength:streamLength];
+                                                 maxLength:(NSUInteger)streamLength];
         
         if (bytesRead > 0) {
-            // Adjust data length if we read less than expected
             if (bytesRead < streamLength) {
-                [imageData setLength:bytesRead];
+                [imageData setLength:(NSUInteger)bytesRead];
             }
             
             self.image = [[NSImage alloc] initWithData:imageData];
@@ -112,27 +109,66 @@
             }
         }
     } @catch (NSException *exception) {
-        // Fall through to TGA loading
+        // Fall through to CSoil2 loading
     }
     
+    // --- CSoil2 fallback goes here ---
+    
     @try {
-        // Try loading as TGA
-        self.image = [LoadTGAClass loadTGA:reader.baseStream];
-        if (self.image != nil) {
-            return YES;
+        if (imageData != nil && imageData.length > 0) {
+            int width = 0, height = 0, channels = 0;
+            
+            unsigned char *rgba =
+            SOIL_load_image_from_memory(
+                                        (const unsigned char *)imageData.bytes,
+                                        (int)imageData.length,
+                                        &width, &height, &channels,
+                                        SOIL_LOAD_RGBA
+                                        );
+            
+            if (rgba != NULL && width > 0 && height > 0) {
+                NSBitmapImageRep *rep =
+                [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
+                                                        pixelsWide:width
+                                                        pixelsHigh:height
+                                                     bitsPerSample:8
+                                                   samplesPerPixel:4
+                                                          hasAlpha:YES
+                                                          isPlanar:NO
+                                                    colorSpaceName:NSCalibratedRGBColorSpace
+                                                       bytesPerRow:width * 4
+                                                      bitsPerPixel:32];
+                
+                memcpy([rep bitmapData], rgba, (size_t)(width * height * 4));
+                SOIL_free_image_data(rgba);
+                
+                NSImage *img = [[NSImage alloc] initWithSize:NSMakeSize(width, height)];
+                [img addRepresentation:rep];
+                self.image = img;
+                return YES;
+            }
+            
+            if (rgba != NULL) {
+                SOIL_free_image_data(rgba);
+            }
         }
     } @catch (NSException *exception) {
-        if (errmsg) {
-            NSString *message = [Localization getString:@"errunsupportedimage"];
-            [Helper exceptionMessage:message error:[NSError errorWithDomain:@"PictureWrapper"
-                                                                        code:1
-                                                                    userInfo:@{NSLocalizedDescriptionKey: exception.reason}]];
-        }
+        // ignore; we'll handle errmsg below
+    }
+    
+    if (errmsg) {
+        NSString *message = [Localization getString:@"errunsupportedimage"];
+        const char *soilMsg = SOIL_last_result();
+        NSString *detail = soilMsg ? [NSString stringWithUTF8String:soilMsg] : @"(no SOIL error text)";
+        [Helper exceptionMessage:message
+                           error:[NSError errorWithDomain:@"PictureWrapper"
+                                                     code:1
+                                                 userInfo:@{ NSLocalizedDescriptionKey: detail }]];
     }
     
     return NO;
 }
-
+    
 // MARK: - Class Methods
 
 + (NSImage *)setAlpha:(NSImage *)img {

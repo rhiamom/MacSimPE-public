@@ -41,7 +41,9 @@ const uint8_t MEMORY_CACHE_ITEM_VERSION = 3;
 const uint8_t MEMORY_CACHE_ITEM_DISCARD_VERSIONS_SMALLER_THAN = 3;
 
 @interface MemoryCacheItem ()
-
+{
+    id<IPackedFileDescriptor> _fileDescriptor;
+}
 @property (nonatomic, assign) uint8_t version;
 
 @end
@@ -57,7 +59,7 @@ static NSImage *_emptyImage = nil;
     if (self) {
         _version = MEMORY_CACHE_ITEM_VERSION;
         _name = @"";
-        _fileDescriptor = [[PackedFileDescriptor alloc] init];
+        self.fileDescriptor = [[PackedFileDescriptor alloc] init];
         _valueNames = @[];
         _objectType = ObjectTypesNormal;
     }
@@ -67,12 +69,17 @@ static NSImage *_emptyImage = nil;
 // MARK: - Property Accessors
 
 - (id<IPackedFileDescriptor>)fileDescriptor {
-    _fileDescriptor.tag = self;
+    if (_fileDescriptor) {
+        _fileDescriptor.tag = self;
+    }
     return _fileDescriptor;
 }
 
 - (void)setFileDescriptor:(id<IPackedFileDescriptor>)fileDescriptor {
     _fileDescriptor = fileDescriptor;
+    if (_fileDescriptor) {
+        _fileDescriptor.tag = self;
+    }
 }
 
 - (void)setValueNames:(NSArray<NSString *> *)valueNames {
@@ -103,18 +110,18 @@ static NSImage *_emptyImage = nil;
 // MARK: - Object Classification Properties
 
 - (BOOL)isAspiration {
-    return [self.objdName.lowercaseString.stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] hasPrefix:@"aspiration"] &&
+    return [[[self.objdName lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] hasPrefix:@"aspiration"] &&
            self.objectType == ObjectTypesNormal;
 }
 
 - (BOOL)isToken {
     return self.isAspiration ||
-           ([self.objdName.lowercaseString.stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] hasPrefix:@"token"] &&
+    ([[[self.objdName lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] hasPrefix:@"token"] &&
             (self.objectType == ObjectTypesNormal || self.objectType == ObjectTypesMemory));
 }
 
 - (BOOL)isJobData {
-    return [self.objdName.lowercaseString.stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] hasPrefix:@"jobdata"] &&
+    return [[[self.objdName lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] hasPrefix:@"jobdata"] &&
            self.objectType == ObjectTypesNormal;
 }
 
@@ -123,12 +130,12 @@ static NSImage *_emptyImage = nil;
 }
 
 - (BOOL)isBadge {
-    return [self.objdName.lowercaseString.stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] hasPrefix:@"token - badge"] &&
+    return [[[self.objdName lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] hasPrefix:@"token - badge"] &&
            self.objectType == ObjectTypesNormal && self.isToken;
 }
 
 - (BOOL)isSkill {
-    return ([self.objdName.lowercaseString.stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] containsString:@"skill"]) &&
+    return ([[[self.objdName lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] containsString:@"skill"]) &&
            self.objectType == ObjectTypesNormal && self.isToken;
 }
 
@@ -142,9 +149,9 @@ static NSImage *_emptyImage = nil;
     @try {
         self.version = [reader readByte];
         if (self.version > MEMORY_CACHE_ITEM_VERSION) {
-            @throw [[CacheException alloc] initWithMessage:@"Unknown CacheItem Version."
-                                                  innerException:nil
-                                                         version:self.version];
+            [CacheException raiseWithMessage:@"Unknown CacheItem Version."
+                                    filename:nil
+                                     version:self.version];
         }
         
         self.name = [reader readString];

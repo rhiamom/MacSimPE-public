@@ -36,7 +36,7 @@
 #import "ExtObjdWrapper.h"
 #import "CacheContainer.h"
 #import "MetaData.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "StrItem.h"
 #import "PictureWrapper.h"
 #import "Registry.h"
@@ -178,7 +178,7 @@
                                                                                             instance:objd.ctssInstance
                                                                                              package:nil];
         if (stringItems.count > 0) {
-            StrWrapper *str = [[StrWrapper alloc] init];
+            Str *str = [[Str alloc] init];
             [str processData:stringItems[0]];
             StrItemList *strs = [str languageItemsForLanguage:[[Registry windowsRegistry] languageCode]];;
             
@@ -205,7 +205,7 @@
                                                                                             instance:0x100
                                                                                              package:nil];
         if (stringItems.count > 0) {
-            StrWrapper *str = [[StrWrapper alloc] init];
+            Str *str = [[Str alloc] init];
             [str processData:stringItems[0]];
             StrItemList *strs = [str languageItemsForLanguage:LanguagesEnglish];
             

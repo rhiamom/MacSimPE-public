@@ -34,6 +34,7 @@
 #import "Localization.h"
 #import "MetaData.h"
 #import "PackageFiles.h"
+#import "IPackageFile.h"
 #import "IPackedFileDescriptor.h"
 #import "ExceptionForm.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>

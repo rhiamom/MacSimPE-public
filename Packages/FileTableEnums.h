@@ -41,15 +41,15 @@ typedef NS_OPTIONS(uint32_t, Expansions) {
     ExpansionsGlamour =           0x20,
     ExpansionsPets =              0x40,
     ExpansionsSeasons =           0x80,
-    //ExpansionsCelebrations =      0x100,
-    //ExpansionsFashion =           0x200,
+    ExpansionsCelebrations =      0x100,
+    ExpansionsFashion =           0x200,
     ExpansionsVoyage =            0x400,
-    //ExpansionsTeen =              0x800,
-    //ExpansionsStore =             0x1000,
-    //ExpansionsFreeTime =          0x2000,
-    //ExpansionsApartments =        0x00010000,
-    //ExpansionsMansions =          0x00020000,
-    //ExpansionsCustom =            0x80000000
+    ExpansionsTeen =              0x800,
+    ExpansionsStore =             0x1000,
+    ExpansionsFreeTime =          0x2000,
+    ExpansionsApartments =        0x00010000,
+    ExpansionsMansions =          0x00020000,
+    ExpansionsCustom =            0x80000000
 };
 
 // Matches the C# FileTablePaths enum

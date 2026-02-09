@@ -89,6 +89,9 @@
 - (instancetype)init;
 - (instancetype)initWithWrapper:(id<IFileWrapperSaveExtension>)wrapper;
 
+// MARK: - Lifecycle
+- (void)windowDidLoad;
+
 // MARK: - UI Setup
 - (void)setupUI;
 - (void)setupConstraints;

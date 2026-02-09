@@ -56,7 +56,7 @@ typedef NS_ENUM(int32_t, FamiVersions) {
     FamiVersionsUniversity = 0x4f,
     FamiVersionsBusiness = 0x51,
     FamiVersionsVoyage = 0x55,
-    //FamiVersionsCastaway = 0x56
+    FamiVersionsCastaway = 0x56
 };
 
 // MARK: - Flag Classes

@@ -31,7 +31,7 @@
 #import "IPackageFile.h"
 #import "IPackedFileDescriptor.h"
 #import "MetaData.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "StrItem.h"
 #import "CpfWrapper.h"
 #import "CpfItem.h"
@@ -84,7 +84,7 @@ static NSString *currentUnique = nil;
     NSArray<id<IPackedFileDescriptor>> *pfds = [package findFiles:[MetaData STRING_FILE]];
     for (id<IPackedFileDescriptor> pfd in pfds) {
         if (pfd.instance == 0x85) {
-            StrWrapper *str = [[StrWrapper alloc] init];
+            Str *str = [[Str alloc] init];
             [str processData:pfd package:package];
             
             StrItemList *sil = [str languageItemsForLanguage:1];
@@ -130,6 +130,41 @@ static NSString *currentUnique = nil;
                 first = NO;
                 name = [name stringByAppendingFormat:@"-%@", newUnique];
             }
+        }
+    }
+    
+    return name;
+}
+
++ (NSString *)replaceOldUnique:(NSString *)name
+                     newUnique:(NSString *)newUnique
+                     extension:(BOOL)extension
+{
+    if (name == nil) return nil;
+    if (newUnique == nil) newUnique = @"";
+    
+    NSString *nu = [newUnique stringByReplacingOccurrencesOfString:@"_" withString:@"."];
+    
+    NSRange openBracket = [name rangeOfString:@"["];
+    if (openBracket.location != NSNotFound) {
+        NSString *before = [name substringToIndex:openBracket.location];
+        NSString *afterOpen = [name substringFromIndex:openBracket.location + 1];
+        
+        NSRange closeBracket = [afterOpen rangeOfString:@"]"];
+        if (closeBracket.location != NSNotFound) {
+            NSString *afterClose = [afterOpen substringFromIndex:closeBracket.location + 1];
+            return [NSString stringWithFormat:@"%@%@%@", before, nu, afterClose];
+        }
+    }
+    
+    if (extension) {
+        NSRange underscore = [name rangeOfString:@"_"];
+        if (underscore.location != NSNotFound) {
+            NSString *first = [name substringToIndex:underscore.location];
+            NSString *rest  = [name substringFromIndex:underscore.location + 1];
+            return [NSString stringWithFormat:@"%@-%@_%@", first, nu, rest];
+        } else {
+            return [NSString stringWithFormat:@"%@-%@", name, nu];
         }
     }
     

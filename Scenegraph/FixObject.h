@@ -38,7 +38,7 @@ typedef NS_ENUM(uint8_t, FixVersion) {
 @class Rcol;
 @class Cpf;
 @class CpfItem;
-@class IPackedFileDescriptor;
+@protocol IPackedFileDescriptor;
 @class MaterialDefinition;
 
 @interface FixObject : FixGuid
@@ -65,7 +65,7 @@ typedef NS_ENUM(uint8_t, FixVersion) {
 - (void)cleanUp;
 - (void)fixGroup;
 - (NSMutableDictionary *)getNameMap:(BOOL)uniqueName;
-- (NSString *)buildRefString:(IPackedFileDescriptor *)pfd;
+- (NSString *)buildRefString:(id<IPackedFileDescriptor>)pfd;
 - (void)fix:(NSMutableDictionary *)map uniqueFamily:(BOOL)uniqueFamily;
 - (void)fixObjd;
 - (void)fixMmat:(NSMutableDictionary *)map

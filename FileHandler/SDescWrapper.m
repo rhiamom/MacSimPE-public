@@ -40,6 +40,11 @@
 #import "MetaData.h"
 #import "FileTable.h"
 #import "ExtSDesc.h"
+#import "ISimNames.h"
+#import "ISimFamilyNames.h"
+#import "IAlias.h"
+#import "SRelWrapper.h"
+#import "SimRelations.h"
 
 // MARK: - GhostFlags Implementation
 
@@ -665,14 +670,14 @@
         return nil;
     }
     
-    id<IPackedFileDescriptor> pfd = [_parent.package findFileWithType:SIM_DESCRIPTION_FILE
+    id<IPackedFileDescriptor> pfd = [_parent.package findFileWithType:[MetaData SIM_DESCRIPTION_FILE]
                                                               subtype:0
                                                                 group:_parent.fileDescriptor.group
                                                              instance:instance];
     
     SDesc *sdesc = [[SDesc alloc] initWithNameProvider:_parent.nameProvider
-                                  familyNameProvider:_parent.familyNameProvider
-                                descriptionProvider:_parent.descriptionProvider];
+                                    familyNameProvider:_parent.familyNameProvider
+                                   descriptionProvider:_parent.descriptionProvider];
     if (pfd != nil) {
         [sdesc processData:pfd package:_parent.package];
     }
@@ -681,13 +686,36 @@
 }
 
 // Note: SimRelations and SRel classes would need to be implemented separately
-- (id)getSimRelationships:(uint16_t)instance {
+- (SimRelations *)getSimRelationships:(uint16_t)instance {
     if (instance == _parent.fileDescriptor.instance) {
         return nil;
     }
     
-    // Implementation would require SimRelations and SRel classes
-    return nil;
+    uint32_t parentInstance = (uint32_t)_parent.fileDescriptor.instance;
+    
+    // pfd1: (other << 16) + me  => inbound relation stored in rels[1]
+    uint32_t inst1 = ((uint32_t)instance << 16) + parentInstance;
+    id<IPackedFileDescriptor> pfd1 =
+    [_parent.package findFileWithType:[MetaData RELATION_FILE]
+                              subtype:0
+                                group:_parent.fileDescriptor.group
+                             instance:inst1];
+    
+    // pfd2: (me << 16) + other  => outbound relation stored in rels[0]
+    uint32_t inst2 = (parentInstance << 16) + (uint32_t)instance;
+    id<IPackedFileDescriptor> pfd2 =
+    [_parent.package findFileWithType:[MetaData RELATION_FILE]
+                              subtype:0
+                                group:_parent.fileDescriptor.group
+                             instance:inst2];
+    
+    SRel *outbound = [[SRel alloc] init];
+    SRel *inbound = [[SRel alloc] init];
+    
+    if (pfd1 != nil) [inbound processData:pfd1 package:_parent.package];
+    if (pfd2 != nil) [outbound processData:pfd2 package:_parent.package];
+    
+    return [[SimRelations alloc] initWithRelations:@[ outbound, inbound ]];
 }
 
 @end
@@ -1043,28 +1071,45 @@
         return nil;
     }
 
-    // MARK: - Name Properties
+// MARK: - Name Properties
 
-    - (NSString *)simName {
-        if (_nameProvider) {
-            return [_nameProvider simName:_instance];
+- (NSString *)simName {
+    if (self.nameProvider) {
+        id<IAlias> alias = [self.nameProvider findName:(uint32_t)self.simId];
+        if (alias && alias.name.length > 0) {
+            return alias.name;
         }
-        return @"---";
     }
+    return @"---";
+}
 
-    - (NSString *)simFamilyName {
-        if (_familyNameProvider) {
-            return [_familyNameProvider simFamilyName:_familyInstance];
+- (NSString *)simFamilyName {
+    if (self.nameProvider) {
+        id<IAlias> alias = [self.nameProvider findName:(uint32_t)self.simId];
+        if (alias && alias.tag.count > 2) {
+            id v = alias.tag[2];
+            if (v && v != [NSNull null]) {
+                NSString *s = [v description];
+                if (s.length > 0) return s;
+            }
         }
-        return @"---";
     }
+    return [Localization getString:@"Unknown"];
+}
 
-    - (NSString *)householdName {
-        if (_familyNameProvider) {
-            return [_familyNameProvider householdName:_familyInstance];
+- (NSString *)householdName {
+    if (self.familyNameProvider) {
+        id<IAlias> alias = [self.familyNameProvider findName:(uint32_t)self.simId];
+        if (alias && alias.name.length > 0) {
+            NSString *unknown = [Localization getString:@"Unknown"];
+            if ([alias.name isEqualToString:unknown]) {
+                return [MetaData npcFamily:(uint32_t)self.familyInstance];
+            }
+            return alias.name;
         }
-        return @"---";
     }
+    return @"---";
+}
 
     - (NSString *)characterFileName {
         // Implementation depends on your character file system

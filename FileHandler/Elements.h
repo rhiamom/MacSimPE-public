@@ -130,6 +130,11 @@
 @property (nonatomic, strong) id<IFileWrapperSaveExtension> wrapper;
 @property (nonatomic, strong) id<IFileWrapperSaveExtension> picwrapper;
 @property (nonatomic, assign) BOOL simnamechanged;
+@property (nonatomic, strong) NSView *jpegPanel;
+@property (nonatomic, strong) NSView *xmlPanel;
+@property (nonatomic, strong) NSView *objdPanel;
+@property (nonatomic, strong) NSImageView *pb;
+
 
 // Actions
 - (IBAction)commitFamiClick:(id)sender;

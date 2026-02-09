@@ -31,7 +31,7 @@
 #import "BinaryReader.h"
 #import "BinaryWriter.h"
 #import "SDescWrapper.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "MetaData.h"
 #import "Localization.h"
 #import "Registry.h"
@@ -39,6 +39,13 @@
 #import "IPackageFile.h"
 #import "ISimNames.h"
 #import "AbstractWrapperInfo.h"
+#import "FamiWrapper.h"
+
+@interface Fami ()
+@property (nonatomic, assign) int32_t castAwayFoodDecay;
+@property (nonatomic, assign) int32_t castAwayResources;
+@property (nonatomic, assign) int32_t castAwayFood;
+@end
 
 // MARK: - FamiFlags Implementation
 
@@ -165,7 +172,7 @@
         
         // Found a Text Resource
         if (pfd != nil) {
-            StrWrapper *str = [[StrWrapper alloc] init];
+            Str *str = [[Str alloc] init];
             [str processData:pfd package:self.package];
             
             StrItemList *items = [str fallbackedLanguageItemsForLanguage:[[Registry windowsRegistry] languageCode]];
@@ -190,7 +197,7 @@
         
         // Found a Text Resource
         if (pfd != nil) {
-            StrWrapper *str = [[StrWrapper alloc] init];
+            Str *str = [[Str alloc] init];
             [str processData:pfd package:self.package];
             
             for (StrLanguage *lng in str.languages) {

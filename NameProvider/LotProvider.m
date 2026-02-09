@@ -36,7 +36,7 @@
 #import "FileIndex.h"
 #import "FileIndexItem.h"
 #import "GeneratableFile.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "StrItem.h"
 #import "PictureWrapper.h"
 #import "Helper.h"
@@ -81,7 +81,7 @@
 - (NSString *)lotName {
     id<IScenegraphFileIndexItem> strItem = [self strFileIndexItem];
     if (strItem != nil) {
-        StrWrapper *str = [[StrWrapper alloc] init];
+        Str *str = [[Str alloc] init];
         [str processData:strItem];
         StrItemList *items = [str fallbackedLanguageItemsForLanguage:[[Registry windowsRegistry] languageCode]];
         
@@ -320,7 +320,7 @@
                                                          instance:0x00000A46];
             NSString *name = [Localization getString:@"Unknown"];
             if (pfd != nil) {
-                StrWrapper *str = [[StrWrapper alloc] init];
+                Str *str = [[Str alloc] init];
                 [str processData:pfd package:pkg];
                 
                 StrItemList *list = [str fallbackedLanguageItemsForLanguage:[[Registry windowsRegistry] languageCode]];

@@ -30,7 +30,7 @@
 // ***************************************************************************
 
 #import "StrForm.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "StrItem.h"
 #import "Helper.h"
 #import "Localization.h"
@@ -359,7 +359,7 @@
 }
 
 - (void)updateGUI:(id<IFileWrapper>)wrapper {
-    self.wrapper = (StrWrapper *)wrapper;
+    self.wrapper = (Str *)wrapper;
     self.isUpdatingUI = YES;
     
     // Update file name display

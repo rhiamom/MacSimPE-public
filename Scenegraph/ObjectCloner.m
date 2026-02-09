@@ -34,7 +34,7 @@
 #import "MmatWrapper.h"
 #import "GenericRcolWrapper.h"
 #import "cShape.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "StrItem.h"
 #import "MetaData.h"
 #import "FileTable.h"
@@ -60,7 +60,7 @@
 }
 
 - (uint32_t)instance {
-    return (uint32_t)self.aliasId;
+    return (uint32_t)self.typeID;
 }
 
 - (NSString *)extension {
@@ -126,46 +126,65 @@
 
 // MARK: - Static Utility Methods
 
-+ (NSArray<id<IPackedFileDescriptor>> *)findStateMatchingMatd:(NSString *)name package:(id<IPackageFile>)package {
-    NSArray<id<IPackedFileDescriptor>> *pfds = nil;
-    NSString *searchName = name;
++ (NSArray<id<IPackedFileDescriptor>> *)findStateMatchingMatd:(NSString *)name
+                                                      package:(id<IPackageFile>)package
+{
+    if (name == nil || package == nil) return nil;
     
-    // Handle state matching patterns from C#
+    NSString *searchName = nil;
+    
     if ([name hasSuffix:@"_clean"]) {
         searchName = [[name substringToIndex:name.length - 6] stringByAppendingString:@"_dirty"];
-        pfds = [package findFile:[searchName stringByAppendingString:@"_txmt"] type:0x49596978];
-    } else if ([name hasSuffix:@"_dirty"]) {
+    }
+    else if ([name hasSuffix:@"_dirty"]) {
         searchName = [[name substringToIndex:name.length - 6] stringByAppendingString:@"_clean"];
-        pfds = [package findFile:[searchName stringByAppendingString:@"_txmt"] type:0x49596978];
-    } else if ([name hasSuffix:@"_lit"]) {
+    }
+    else if ([name hasSuffix:@"_lit"]) {
         searchName = [[name substringToIndex:name.length - 4] stringByAppendingString:@"_unlit"];
-        pfds = [package findFile:[searchName stringByAppendingString:@"_txmt"] type:0x49596978];
-    } else if ([name hasSuffix:@"_unlit"]) {
+    }
+    else if ([name hasSuffix:@"_unlit"]) {
         searchName = [[name substringToIndex:name.length - 6] stringByAppendingString:@"_lit"];
-        pfds = [package findFile:[searchName stringByAppendingString:@"_txmt"] type:0x49596978];
-    } else if ([name hasSuffix:@"_on"]) {
+    }
+    else if ([name hasSuffix:@"_on"]) {
         searchName = [[name substringToIndex:name.length - 3] stringByAppendingString:@"_off"];
-        pfds = [package findFile:[searchName stringByAppendingString:@"_txmt"] type:0x49596978];
-    } else if ([name hasSuffix:@"_off"]) {
+    }
+    else if ([name hasSuffix:@"_off"]) {
         searchName = [[name substringToIndex:name.length - 4] stringByAppendingString:@"_on"];
-        pfds = [package findFile:[searchName stringByAppendingString:@"_txmt"] type:0x49596978];
-    } else if ([name hasSuffix:@"_shadeinside"]) {
+    }
+    else if ([name hasSuffix:@"_shadeinside"]) {
         searchName = [[name substringToIndex:name.length - 12] stringByAppendingString:@"_shadeoutside"];
-        pfds = [package findFile:[searchName stringByAppendingString:@"_txmt"] type:0x49596978];
-    } else if ([name hasSuffix:@"_shadeoutside"]) {
+    }
+    else if ([name hasSuffix:@"_shadeoutside"]) {
         searchName = [[name substringToIndex:name.length - 13] stringByAppendingString:@"_shadeinside"];
-        pfds = [package findFile:[searchName stringByAppendingString:@"_txmt"] type:0x49596978];
+    }
+    else {
+        return nil;
     }
     
-    return pfds;
+    // In SimPE this is “find the matching TXMT by name”
+    // Correct Obj-C selector from IPackageFile: findFileByName:type:
+    NSString *txmtName = [searchName stringByAppendingString:@"_txmt"];
+    return [package findFileByName:txmtName type:0x49596978]; // TXMT
 }
 
 // MARK: - GUID Management
 
 - (uint32_t)getPrimaryGuid {
     uint32_t guid = 0;
-    NSArray<id<IPackedFileDescriptor>> *pfds = [self.package findFile:[MetaData OBJD_FILE] group:0 instance:0x41A7];
     
+    // Original intent: try a specific OBJD reference first.
+    // The Obj-C API doesn’t have (type, group, instance) returning an array.
+    // Closest equivalent: single descriptor lookup by (type, subtype, group, instance),
+    // then wrap it in an array to preserve the rest of your logic.
+    id<IPackedFileDescriptor> pfd =
+    [self.package findFileWithType:[MetaData OBJD_FILE]
+                           subtype:0
+                             group:0
+                          instance:0x41A7];
+    
+    NSArray<id<IPackedFileDescriptor>> *pfds = (pfd != nil) ? @[ pfd ] : @[];
+    
+    // Fallback: grab all OBJDs
     if (pfds.count == 0) {
         pfds = [self.package findFiles:[MetaData OBJD_FILE]];
     }
@@ -214,21 +233,21 @@
 
 // MARK: - Model Cloning
 
-- (void)rcolModelClone:(NSString *)modelname {
+- (void)rcolModelCloneWithName:(NSString *)modelname {
     if (modelname == nil) return;
-    [self rcolModelClone:@[modelname]];
+    [self rcolModelCloneWithNames:@[modelname]];
 }
 
-- (void)rcolModelClone:(NSArray<NSString *> *)modelnames {
-    [self rcolModelClone:modelnames exclude:@[]];
+- (void)rcolModelCloneWithNames:(NSArray<NSString *> *)modelnames {
+    [self rcolModelCloneWithNames:modelnames exclude:@[]];
 }
 
-- (void)rcolModelClone:(NSArray<NSString *> *)modelnames exclude:(NSArray<NSString *> *)exclude {
+- (void)rcolModelCloneWithNames:(NSArray<NSString *> *)modelnames exclude:(NSArray<NSString *> *)exclude {
     if (modelnames == nil) return;
     
     [Scenegraph setFileExcludeList:[Scenegraph.defaultFileExcludeList mutableCopy]];
     
-    [[FileTable fileIndex] load];
+    [FileTable reload];
     if ([WaitingScreen running]) {
         [WaitingScreen updateMessage:@"Walking Scenegraph"];
     }
@@ -365,11 +384,11 @@
         NSArray<id<IPackedFileDescriptor>> *pfds = [self.package findFiles:type];
         
         for (id<IPackedFileDescriptor> pfd in pfds) {
-            if ([targetPackage findFile:pfd] != nil) continue;
+            if ([targetPackage findFileWithDescriptor:pfd] != nil) continue;
             
-            id<IPackedFile> file = [self.package read:pfd];
+            id<IPackedFile> file = [self.package readDescriptor:pfd];
             pfd.userData = file.uncompressedData;
-            
+
             // Update the modelName in the MMAT
             if ((pfd.type == [MetaData MMAT]) && (names.count > 0)) {
                 MmatWrapper *mmat = [[MmatWrapper alloc] init];
@@ -387,7 +406,7 @@
                 }
             }
             
-            [targetPackage add:pfd];
+            [targetPackage addDescriptor:pfd];
         }
     }
 }
@@ -440,7 +459,7 @@
                 }
                 
                 NSMutableArray *names = [[NSMutableArray alloc] init];
-                NSArray<id<IPackedFileDescriptor>> *rpfds = [self.package findFile:n type:[MetaData TXMT]];
+                NSArray<id<IPackedFileDescriptor>> *rpfds = [self.package findFileByName:n type:[MetaData TXMT]];
                 
                 for (id<IPackedFileDescriptor> rpfd in rpfds) {
                     [names addObject:rpfd];
@@ -449,7 +468,7 @@
                 NSInteger pos = 0;
                 while (pos < names.count) {
                     id<IPackedFileDescriptor> rpfd = names[pos++];
-                    rpfd = [self.package findFile:rpfd];
+                    rpfd = [self.package findFileWithDescriptor:rpfd];
                     
                     if (rpfd != nil) {
                         rpfd.markForDelete = YES;

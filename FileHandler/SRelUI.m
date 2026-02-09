@@ -147,8 +147,11 @@
     ];
     
     for (NSNumber *typeNumber in relationshipTypes) {
-        RelationshipTypes type = (RelationshipTypes)[typeNumber unsignedIntValue];
-        NSString *displayName = [LocalizedRelationshipTypes displayNameForType:type];
+        RelationshipTypes type = (RelationshipTypes)typeNumber.unsignedIntValue;
+        
+        LocalizedRelationshipTypes *lrt = [LocalizedRelationshipTypes localizedWithType:type];
+        NSString *displayName = [lrt description];
+        
         [self.cbfamtype addItemWithTitle:displayName];
     }
 }

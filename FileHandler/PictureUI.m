@@ -52,7 +52,9 @@
     Elements *form = [UIBase form];
     
     // Direct assignment with cast - the original C# probably did this
-    form.picwrapper = (IFileWrapperSaveExtension *)wrapper;
+    form.picwrapper = ([wrapper conformsToProtocol:@protocol(IFileWrapperSaveExtension)]
+                       ? (id<IFileWrapperSaveExtension>)wrapper
+                       : nil);
     
     // Show jpeg panel, hide others
     [form.jpegPanel setHidden:NO];

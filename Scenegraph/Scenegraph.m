@@ -36,7 +36,7 @@
 #import "PackedFileDescriptors.h"
 #import "MmatWrapper.h"
 #import "CpfWrapper.h"
-#import "StrWrapper.h"
+#import "Str.h"
 #import "StrItem.h"
 #import "NmapWrapper.h"
 #import "NmapItem.h"
@@ -264,7 +264,7 @@ static MmatCacheFile *_cacheFile = nil;
                                                                 instance:0x85];
     if ([pfds count] > 0) {
         for (id<IPackedFileDescriptor> pfd in pfds) {
-            StrWrapper *str = [[StrWrapper alloc] init];
+            Str *str = [[Str alloc] init];
             [str processData:pfd package:package];
             
             for (StrToken *token in str.items) {
@@ -837,15 +837,98 @@ static MmatCacheFile *_cacheFile = nil;
 }
 
 + (nonnull NSArray<NSString *> *)getParentSubsets:(nonnull id<IPackageFile>)package {
+    return [self getSubsets:package blockname:@"tsmaterialsmeshname"];
 }
 
 + (nonnull NSArray<NSString *> *)getRecolorableSubsets:(nonnull id<IPackageFile>)package {
+    return [self getSubsets:package blockname:@"tsdesignmodeenabled"];
 }
 
-+ (nonnull NSArray<NSString *> *)getSubsets:(nonnull id<IPackageFile>)package blockname:(nullable NSString *)blockname {
++ (nonnull NSArray<NSString *> *)getSubsets:(nonnull id<IPackageFile>)package
+                                  blockname:(nullable NSString *)blockname
+{
+    NSString *bn = blockname ?: @"";
+    bn = [[bn stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+    
+    NSMutableArray<NSString *> *list = [NSMutableArray array];
+    
+    NSArray<id<IPackedFileDescriptor>> *gmnds = [package findFiles:[MetaData GMND]];
+    for (id<IPackedFileDescriptor> pfd in gmnds) {
+        GenericRcol *gmnd = [[GenericRcol alloc] init];
+        [gmnd processData:pfd package:package];
+        
+        for (id<IRcolBlock> irb in gmnd.blocks) {
+            NSString *blockName = [[irb.blockName stringByTrimmingCharactersInSet:
+                                    [NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+            
+            if (![blockName isEqualToString:@"cdatalistextension"]) continue;
+            
+            DataListExtension *dle = (DataListExtension *)irb;
+            NSString *varName = [[dle.extension.varName stringByTrimmingCharactersInSet:
+                                  [NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+            
+            if (![varName isEqualToString:bn]) continue;
+            
+            for (ExtensionItem *ei in dle.extension.items) {
+                NSString *name = [[ei.name stringByTrimmingCharactersInSet:
+                                   [NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+                [list addObject:name];
+            }
+        }
+    }
+    
+    return list;
 }
 
-+ (nonnull NSArray<NSString *> *)loadParentModelNames:(nonnull id<IPackageFile>)package delete:(BOOL)shouldDelete {
++ (nonnull NSArray<NSString *> *)loadParentModelNames:(nonnull id<IPackageFile>)package
+                                               delete:(BOOL)shouldDelete
+{
+    if ([WaitingScreen running]) {
+        [WaitingScreen updateMessage:@"Loading Parent Modelnames"];
+    }
+    
+    NSMutableArray<NSString *> *list = [NSMutableArray array];
+    
+    NSArray<id<IPackedFileDescriptor>> *pfds = [package findFiles:[MetaData GMND]];
+    for (id<IPackedFileDescriptor> pfd in pfds) {
+        GenericRcol *rcol = [[GenericRcol alloc] init];
+        [rcol processData:pfd package:package];
+        
+        for (id<IRcolBlock> irb in rcol.blocks) {
+            NSString *blockName = [[irb.blockName stringByTrimmingCharactersInSet:
+                                    [NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+            
+            if (![blockName isEqualToString:@"cdatalistextension"]) continue;
+            
+            DataListExtension *dle = (DataListExtension *)irb;
+            NSString *varName = [[dle.extension.varName stringByTrimmingCharactersInSet:
+                                  [NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+            
+            if (![varName isEqualToString:@"tsmaterialsmeshname"]) continue;
+            
+            for (ExtensionItem *ei in dle.extension.items) {
+                NSString *mname = [[ei.string stringByTrimmingCharactersInSet:
+                                    [NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+                
+                // C# quirk: if it ends with "_cres", append "_cres" again
+                if ([mname hasSuffix:@"_cres"]) {
+                    mname = [mname stringByAppendingString:@"_cres"];
+                }
+                
+                if (![list containsObject:mname]) {
+                    [list addObject:mname];
+                }
+            }
+            
+            // C# behavior: clears regardless of the 'delete' parameter
+            dle.extension.items = [NSMutableArray array];
+            [rcol synchronizeUserData];
+            
+            break; // matches intent: only one tsMaterialsMeshName block needed
+        }
+    }
+    
+    return list;
 }
 
 @end

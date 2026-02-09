@@ -502,7 +502,7 @@
         self.isUpdatingUI = YES;
         LevelInfo *selectedItem = (LevelInfo *)[self.cbitem objectValueOfSelectedItem];
         NSNumber *format = [self.cbformats objectValueOfSelectedItem];
-        selectedItem.format = [format integerValue];
+        selectedItem.format = (TxtrFormats)[format integerValue];
     }
     @catch (NSException *ex) {
         [ExceptionForm executeWithMessage:[Localization getString:@"erropenfile"] exception:ex];
@@ -642,8 +642,7 @@
                 NSArray<DDSData *> *maps = [ImageLoader parseDDS:url.path];
                 if (maps.count == 0) return;
                 
-                NSArray<NSData *> *levels = [maps valueForKey:@"data"]; // <- fix
-                [self loadDDS:levels];
+                [self loadDDS:maps];
             }
             @catch (NSException *ex) {
                 [ExceptionForm executeWithMessage:@"" exception:ex];
@@ -718,7 +717,7 @@
         Lifo *wrp = (Lifo *)self.wrapper;
         levelInfo = [[LevelInfo alloc] initWithParent:wrp];
         levelInfo.nameResource.fileName = @"Unknown";
-        levelInfo.format = [(NSNumber *)[self.cbformats objectValueOfSelectedItem] integerValue];
+        levelInfo.format = (TxtrFormats)[(NSNumber *)[self.cbformats objectValueOfSelectedItem] integerValue];
         
         NSMutableArray *blocks = [wrp.blocks mutableCopy];
         [blocks addObject:levelInfo];
@@ -906,8 +905,10 @@
             
             NSImage *croppedImage = [[NSImage alloc] initWithSize:NSMakeSize(w, h)];
             [croppedImage lockFocus];
-            [img drawAtPoint:NSZeroPoint fromRect:NSMakeRect(0, 0, w, h) operation:NSCompositeSourceOver fraction:1.0];
-            [croppedImage unlockFocus];
+            [img drawAtPoint:NSZeroPoint
+                    fromRect:NSMakeRect(0, 0, w, h)
+                   operation:NSCompositingOperationSourceOver
+                    fraction:1.0];
             return croppedImage;
         } else {
             return nil;
@@ -994,11 +995,6 @@
 
 - (NSString *)tabTooltip {
     return @"LIFO (Light Information) File Editor";
-}
-
-- (BOOL)commitEditingAndReturnError:(NSError *__autoreleasing  _Nullable * _Nullable)error {
-    // No special validation or save logic needed for now
-    return YES;
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
