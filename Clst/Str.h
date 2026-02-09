@@ -1,5 +1,5 @@
 //
-//  StrWrapper.h
+//  Str.h
 //  MacSimpe
 //
 //  Created by Catherine Gramze on 9/3/25.
@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads
  * a BinaryStream and translates the data into some userdefine Attributes.
  */
-@interface StrWrapper : AbstractWrapper <IFileWrapper, IFileWrapperSaveExtension>
+@interface Str : AbstractWrapper <IFileWrapper, IFileWrapperSaveExtension>
 
 // MARK: - Initialization
 
