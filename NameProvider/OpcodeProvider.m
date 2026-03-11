@@ -50,7 +50,8 @@
 #import "PictureWrapper.h"
 #import "MetaData.h"
 #import "ExpansionItem.h"
-
+#import "File.h"
+#import "PackedFile.h"
 
 @implementation OpcodeProvider
 
@@ -240,16 +241,17 @@
     ExpansionItem *bg = [[PathProvider global] expansionForEnum:ExpansionsBaseGame];
     if (bg == nil) return;
     
-    // Prefer the computed realInstallFolder; fall back to installFolder if needed
     NSString *installFolder = bg.realInstallFolder;
-    if (installFolder == nil || installFolder.length == 0) installFolder = bg.installFolder;
+    if (installFolder == nil || installFolder.length == 0) {
+        installFolder = bg.installFolder;
+    }
     if (installFolder == nil || installFolder.length == 0) return;
     
-    NSString *file = [installFolder stringByAppendingPathComponent:@"TSData/Res/Objects/objects.package"];
+    NSString *path =
+    [installFolder stringByAppendingPathComponent:
+     @"TSData/Res/Objects/objects.package"];
     
-    // Use whatever PackageFile/DBPF loader your branch uses here:
-    // (I’m keeping your existing assumption that self.basePackage gets set from a path.)
-    self.basePackage = [[PackageFile alloc] initWithPath:file];
+    self.basePackage = [[File alloc] initWithFilename:path];
 }
 
 // MARK: - IOpcodeProvider Protocol Implementation
@@ -271,10 +273,13 @@
             if (item.fileDescriptor != nil) {
                 id<IPackedFile> pf = [item.package readDescriptor:item.fileDescriptor];
                 NSData *data;
-                if (pf.isCompressed) {
-                    data = [pf decompress:0x40];
+                
+                PackedFile *packed = (PackedFile *)pf;
+                
+                if (packed.isCompressed) {
+                    data = [packed decompressWithSize:0x40];
                 } else {
-                    data = pf.data;
+                    data = packed.data;
                 }
                 return [Helper dataToString:data];
             }
@@ -358,7 +363,7 @@
 
 - (id<IScenegraphFileIndexItem>)loadSemiGlobalBHAV:(uint16_t)opcode group:(uint32_t)group {
     [[FileTable fileIndex] load];
-    NSArray<id<IScenegraphFileIndexItem>> *items = [[FileTable fileIndex] findFileWithType:BHAV_FILE
+    NSArray<id<IScenegraphFileIndexItem>> *items = [[FileTable fileIndex] findFileWithType:MetaData.BHAV_FILE
                                                                                       group:group
                                                                                    instance:opcode
                                                                                     package:nil];

@@ -30,13 +30,13 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
 #import "IPackedFileUI.h"
+#import "MmatWrapper.h"
 
 @class Cpf, CpfItem, IPackageFile, IFileWrapper, IFileWrapperSaveExtension;
 
 /**
  * Preview execution callback type
  */
-typedef void (^ExecutePreviewBlock)(Cpf *cpf, IPackageFile *package);
 
 /**
  * UI Handler for a CPF Wrapper

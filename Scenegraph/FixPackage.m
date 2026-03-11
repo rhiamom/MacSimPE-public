@@ -35,6 +35,7 @@
 #import "RenameForm.h"
 #import "ArgParser.h"
 #import "Message.h"
+#import "ICommandLine.h"
 
 @implementation FixPackage
 

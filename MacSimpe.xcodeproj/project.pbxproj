@@ -751,7 +751,7 @@
 		B6D81FB62F3A5537000BE221 /* CollectibleAlias.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectibleAlias.m; sourceTree = "<group>"; };
 		B6D81FB72F3A5537000BE221 /* Events.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Events.h; sourceTree = "<group>"; };
 		B6D81FB82F3A5537000BE221 /* Events.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Events.m; sourceTree = "<group>"; };
-		B6D81FB92F3A5537000BE221 /* ICommandLIne.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLIne.h; sourceTree = "<group>"; };
+		B6D81FB92F3A5537000BE221 /* ICommandLine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLine.h; sourceTree = "<group>"; };
 		B6D81FBA2F3A5537000BE221 /* ICommandLineFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommandLineFactory.h; sourceTree = "<group>"; };
 		B6D81FBB2F3A5537000BE221 /* ICommonPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICommonPackage.h; sourceTree = "<group>"; };
 		B6D81FBC2F3A5537000BE221 /* IFileWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFileWrapper.h; sourceTree = "<group>"; };
@@ -962,6 +962,8 @@
 				B6C01F992E73242900AA6108 /* Message.m */,
 				B6F1144A2E63BB7300348F44 /* PropertyParser.h */,
 				B6F1144B2E63BB8900348F44 /* PropertyParser.m */,
+				B65044692E46D1F10014569E /* RemoteControl.h */,
+				B650446A2E46D2160014569E /* RemoteControl.m */,
 				B6B02CDF2E4EC0AA009240FD /* ScenegraphHelper.h */,
 				B6B02CE02E4EC0E7009240FD /* ScenegraphHelper.m */,
 				B6B02CDC2E4EBEEB009240FD /* WrapperBaseControl.h */,
@@ -1140,15 +1142,6 @@
 				B671C1252E7C67E5008E5525 /* cExtension.m */,
 			);
 			path = Rcol;
-			sourceTree = "<group>";
-		};
-		B65044682E46D1DA0014569E /* Temp */ = {
-			isa = PBXGroup;
-			children = (
-				B65044692E46D1F10014569E /* RemoteControl.h */,
-				B650446A2E46D2160014569E /* RemoteControl.m */,
-			);
-			path = Temp;
 			sourceTree = "<group>";
 		};
 		B673A1302E636D4F004039D3 /* Geometry */ = {
@@ -1443,7 +1436,6 @@
 				B6819E592E3E758B00E37434 /* Scenegraph */,
 				B6F1144D2E64CBA600348F44 /* Sims */,
 				B68881D42E734C40001C417B /* Splash */,
-				B65044682E46D1DA0014569E /* Temp */,
 				B61BA7C92E6B49E100392771 /* TGA_View */,
 				B61CE59B2E3ADF2300547C40 /* WorkspaceHelper */,
 				B62437E22E35A2470052119F /* XMLResourceFiles */,
@@ -1658,7 +1650,7 @@
 				B6D81FB62F3A5537000BE221 /* CollectibleAlias.m */,
 				B6D81FB72F3A5537000BE221 /* Events.h */,
 				B6D81FB82F3A5537000BE221 /* Events.m */,
-				B6D81FB92F3A5537000BE221 /* ICommandLIne.h */,
+				B6D81FB92F3A5537000BE221 /* ICommandLine.h */,
 				B6D81FBA2F3A5537000BE221 /* ICommandLineFactory.h */,
 				B6D81FBB2F3A5537000BE221 /* ICommonPackage.h */,
 				B6D81FBC2F3A5537000BE221 /* IFileWrapper.h */,

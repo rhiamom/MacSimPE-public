@@ -30,11 +30,6 @@
 #import <Foundation/Foundation.h>
 #import "FixGuid.h"
 
-typedef NS_ENUM(uint8_t, FixVersion) {
-    FixVersionUniversityReady = 0x00,
-    FixVersionUniversityReady2 = 0x01
-};
-
 @class Rcol;
 @class Cpf;
 @class CpfItem;

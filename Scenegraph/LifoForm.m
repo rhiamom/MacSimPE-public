@@ -48,6 +48,11 @@
 @end
 
 @implementation LifoForm
+{
+    NSView *_guiHandle;
+}
+
+@synthesize guiHandle = _guiHandle;
 
 // MARK: - Initialization
 
@@ -457,7 +462,7 @@
         self.isUpdatingUI = YES;
         LevelInfo *selectedItem = (LevelInfo *)[self.cbitem objectValueOfSelectedItem];
         NSNumber *format = [self.cbformats objectValueOfSelectedItem];
-        selectedItem.format = [format integerValue];
+        selectedItem.format = (TxtrFormats)[format integerValue];
     }
     @catch (NSException *ex) {
         [ExceptionForm executeWithMessage:[Localization getString:@"erropenfile"] exception:ex];
@@ -621,7 +626,7 @@
         Lifo *wrp = (Lifo *)self.wrapper;
         levelInfo = [[LevelInfo alloc] initWithParent:wrp];
         levelInfo.nameResource.fileName = @"Unknown";
-        levelInfo.format = [(NSNumber *)[self.cbformats objectValueOfSelectedItem] integerValue];
+        levelInfo.format = (TxtrFormats)[(NSNumber *)[self.cbformats objectValueOfSelectedItem] integerValue];
         
         NSMutableArray *blocks = [wrp.blocks mutableCopy];
         [blocks addObject:levelInfo];
@@ -809,7 +814,10 @@
             
             NSImage *croppedImage = [[NSImage alloc] initWithSize:NSMakeSize(w, h)];
             [croppedImage lockFocus];
-            [img drawAtPoint:NSZeroPoint fromRect:NSMakeRect(0, 0, w, h) operation:NSCompositeSourceOver fraction:1.0];
+            [img drawAtPoint:NSZeroPoint
+                    fromRect:NSMakeRect(0, 0, w, h)
+                   operation:NSCompositingOperationSourceOver
+                    fraction:1.0];
             [croppedImage unlockFocus];
             return croppedImage;
         } else {
@@ -899,16 +907,42 @@
     return @"LIFO (Light Information) File Editor";
 }
 
-- (void)updateGUI:(id<IFileWrapper>)wrapper { 
-    <#code#>
+- (void)updateGUI:(id<IFileWrapper>)wrapper {
+    if (wrapper == nil) return;
+    if (![wrapper isKindOfClass:[Lifo class]]) return;
+    
+    self.wrapper = (Lifo *)wrapper;
+    [self updateUIForSelectedItem];
 }
 
-- (BOOL)commitEditingAndReturnError:(NSError *__autoreleasing  _Nullable * _Nullable)error { 
-    <#code#>
+- (BOOL)commitEditingAndReturnError:(NSError *__autoreleasing  _Nullable * _Nullable)error {
+    // Let Cocoa commit any pending edits first
+    if (![super commitEditingAndReturnError:error]) return NO;
+    
+    @try {
+        Lifo *wrp = self.wrapper;
+        if (wrp) {
+            [wrp synchronizeUserData];
+        }
+        return YES;
+    }
+    @catch (NSException *ex) {
+        if (error) {
+            NSDictionary *info = @{
+                NSLocalizedDescriptionKey: @"Failed to save LIFO changes.",
+                NSLocalizedFailureReasonErrorKey: (ex.reason ?: @"Unknown error")
+            };
+            *error = [NSError errorWithDomain:@"MacSimpe"
+                                         code:1
+                                     userInfo:info];
+        }
+        return NO;
+    }
 }
 
-- (void)encodeWithCoder:(nonnull NSCoder *)coder { 
-    <#code#>
+- (void)encodeWithCoder:(nonnull NSCoder *)coder {
+    [super encodeWithCoder:coder];
+    // Intentionally do not encode self.wrapper (weak / external model object)
 }
 
 @end

@@ -130,8 +130,9 @@ static ExecutePreviewBlock _globalCpfPreview;
             id<IPackedFileDescriptor> pfd = foundFiles[0];
             if (!pfd) {
                 // Fallback code
-                NSArray<id<IPackedFileDescriptor>> *pfds = [self.package findFileByName:((id<IPackedFileDescriptor>)cresArray[0]).filename
-                                                                                   type:[MetaData CRES]];
+                NSArray<id<IPackedFileDescriptor>> *pfds =
+                [self.package findFileByName:((id<IPackedFileDescriptor>)cresArray[0]).filename
+                                        type:[MetaData CRES]];
                 if (pfds.count > 0) {
                     pfd = pfds[0];
                 }
@@ -146,7 +147,8 @@ static ExecutePreviewBlock _globalCpfPreview;
             if (!pfd) {
                 // FileTable fallback code
                 id<IPackedFileDescriptor> descriptor = (id<IPackedFileDescriptor>)cresArray[0];
-                NSArray<id<IScenegraphFileIndexItem>> *items = [[FileTable fileIndex] findFileDiscardingGroup:descriptor];
+                NSArray<id<IScenegraphFileIndexItem>> *items =
+                [[FileTable fileIndex] findFileDiscardingGroup:descriptor];
                 if (items.count > 0) {
                     GenericRcol *cres = [[GenericRcol alloc] initWithProvider:nil fast:NO];
                     [cres processData:items[0].fileDescriptor package:items[0].package];
@@ -154,8 +156,9 @@ static ExecutePreviewBlock _globalCpfPreview;
                 }
             }
         }
-        return nil;
     }
+    
+    return nil;
 }
 
 - (GenericRcol *)txmt {

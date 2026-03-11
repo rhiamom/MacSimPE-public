@@ -60,4 +60,16 @@
     self.form.tbNref.tag = 0;  // Clear tag to re-enable event handling
 }
 
+- (void)dispose {
+    // Under ARC, explicit disposal is usually just "unhook + nil out strong refs".
+    // Do any event/unhook cleanup specific to NrefUI here.
+    
+    // Example: if you registered notifications, remove them:
+    // [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    // If you hold onto wrapper/provider strongly and want to release:
+    // self.wrapper = nil;
+    
+    // IMPORTANT: Do NOT call [super dispose] unless the superclass declares it.
+}
 @end

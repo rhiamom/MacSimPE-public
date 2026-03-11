@@ -343,9 +343,11 @@ static ExpansionItem *nilExpansionItem = nil;
         case ExpansionsPets:            return @"Pets";
         case ExpansionsSeasons:         return @"Seasons";
         case ExpansionsVoyage:          return @"Bon Voyage";
-      //case ExpansionsFreeTime:        return @"FreeTime";
-      //case ExpansionsApartmentLife:   return @"Apartment Life";
-      // Add any SPs if you model them; use the exact folder names in Contents/Assets/Expansion Packs
+        case ExpansionsFreeTime:        return @"FreeTime";
+        case ExpansionsApartments:      return @"Apartment Life";
+        // Add any SPs if you model them; use the exact folder names in Contents/Assets/Expansion Packs
+        default:
+            return nil;
     }
 }
 

@@ -34,6 +34,7 @@
 #import "AbstractWrapperInfo.h"
 #import "MetaData.h"
 #import "IPackedFileDescriptor.h"
+#import "PackedFileitem.h"
 
 @implementation RefFile {
     uint32_t _fileId;
@@ -46,7 +47,7 @@
     if (self) {
         _items = [[NSMutableArray alloc] init];
         _fileId = 0xDEADBEEF;
-        _indexType = IndexTypesLongFileIndex;
+        _indexType = ptLongFileIndex;
     }
     return self;
 }
@@ -119,7 +120,7 @@
         item.group = [reader readUInt32];
         item.instance = [reader readUInt32];
         
-        if (_indexType == IndexTypesLongFileIndex) {
+        if (_indexType == ptLongFileIndex) {
             item.subType = [reader readUInt32];
         }
         
@@ -137,38 +138,13 @@
         [writer writeUInt32:item.group];
         [writer writeUInt32:item.instance];
         
-        if (_indexType == IndexTypesLongFileIndex) {
-            [writer writeUInt32:item.subType];
+        if (_indexType == ptLongFileIndex) {
+            RefFileItem *rfi = (RefFileItem *)item;
+            [writer writeUInt32:rfi.subType];
+        }
         }
     }
-}
 
 @end
 
-#pragma mark - RefFileItem Implementation
 
-@implementation RefFileItem
-
-- (instancetype)initWithParent:(RefFile *)parent {
-    self = [super init];
-    if (self) {
-        _parent = parent;
-        _type = 0;
-        _group = 0;
-        _instance = 0;
-        _subType = 0;
-    }
-    return self;
-}
-
-#pragma mark - IPackedFileDescriptor Protocol
-
-// Note: Additional IPackedFileDescriptor methods would be implemented here
-// based on the actual protocol definition
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"RefFileItem - Type: 0x%08X, Group: 0x%08X, Instance: 0x%08X, SubType: 0x%08X",
-            _type, _group, _instance, _subType];
-}
-
-@end
